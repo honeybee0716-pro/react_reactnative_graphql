@@ -72,9 +72,8 @@ const setupServer = () => __awaiter(void 0, void 0, void 0, function* () {
         },
     });
     const { url } = yield server.listen({ port });
-    console.log(`Running app in ${nodeEnv} mode.`);
     console.log(`Server is running at ${url}`);
-    console.log(`GraphQL Playground available at http://localhost:${port}/graphql`);
+    console.log(`GraphQL Playground is available at http://localhost:${port}/graphql`);
     try {
         yield exports.prisma.$connect();
         yield exports.prisma.prismaInfo.deleteMany();
@@ -87,10 +86,10 @@ const setupServer = () => __awaiter(void 0, void 0, void 0, function* () {
             where: { prismaIsConnected: true },
         });
         if ((prismaInfo === null || prismaInfo === void 0 ? void 0 : prismaInfo.prismaIsConnected) === true) {
-            console.log('Prisma is connected');
+            console.log('Prisma is connected.');
         }
         else {
-            throw new Error('prismaIsConnected did not return true');
+            throw new Error('prismaIsConnected did not return true.');
         }
     }
     catch (e) {

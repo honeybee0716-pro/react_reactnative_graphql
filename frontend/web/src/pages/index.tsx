@@ -1,5 +1,5 @@
-import { HomeScreen } from 'shared/screens/HomeScreen'
+import { Landing } from 'shared/screens/Landing'
 
 export default function Page() {
-  return <HomeScreen />
+  return <Landing />
 }
