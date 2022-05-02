@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PrismaInfo {
+  id                Int     @id @default(autoincrement())
+  prismaIsConnected Boolean @default(true)
+}
+
+model User {
+  id               Int      @id @default(autoincrement())
+  firstName        String
+  lastName         String
+  email            String   @unique
+  phoneNumber      String?
+  username         String
+  password         String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now())
+  createdIPAddress String
+  // authorizedIPAddresses String[]
+  twitter          String?
+  facebook         String?
+  google           String?
+  github           String?
+  linkedin         String?
+  instagram        String?
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  body      String
+  // authorId  Int      @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Page {
+  id           Int      @id @default(autoincrement())
+  name         String
+  username     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  phoneNumber  String
+  website      String
+  supportEmail String
+  twitter      String
+  instagram    String
+  facebook     String
+  linkedIn     String
+  youtube      String
+}

@@ -1,0 +1,8 @@
+tsconfig.json
+package.json
+.prettierrc.js
+/node_modules
+/scripts
+webpack.config.js
+/dist
+/conf
