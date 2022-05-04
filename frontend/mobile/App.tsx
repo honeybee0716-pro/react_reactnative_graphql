@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { LogBox } from 'react-native'
 
-import { HomeScreen } from 'shared/screens/HomeScreen'
+import { Landing } from 'shared/screens/Landing'
 
 enableScreens(true)
 
@@ -18,7 +18,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <StatusBar style="dark" />
-      <HomeScreen />
+      <Landing />
     </SafeAreaProvider>
   )
 }
