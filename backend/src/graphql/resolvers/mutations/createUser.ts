@@ -42,7 +42,7 @@ const createUser = async (parent: null, args: any) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(args.input.password, salt);
 
-  await context.prisma.user.create({
+  const createdUser = await context.prisma.user.create({
     data: {
       ...args.input,
       password: hashedPassword,
@@ -62,6 +62,7 @@ const createUser = async (parent: null, args: any) => {
     name: `${args.input.firstName} ${args.input.lastName}`,
     balance: 0,
     metadata: {
+      userID: createdUser.id,
       firstName: args.input.firstName,
       lastName: args.input.lastName,
       phoneNumber: args.input.phoneNumber,

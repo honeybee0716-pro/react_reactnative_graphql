@@ -47,9 +47,10 @@ const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function*
     }
     const salt = yield bcrypt_1.default.genSalt(10);
     const hashedPassword = yield bcrypt_1.default.hash(args.input.password, salt);
-    yield context_1.context.prisma.user.create({
+    const createdUser = yield context_1.context.prisma.user.create({
         data: Object.assign(Object.assign({}, args.input), { password: hashedPassword }),
     });
+    console.log({ createdUser });
     // send sendgrid transactional email
     yield (0, sendgrid_1.sendEmail)({
         to: args.input.email,
@@ -62,6 +63,7 @@ const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function*
         name: `${args.input.firstName} ${args.input.lastName}`,
         balance: 0,
         metadata: {
+            userID: createdUser.id,
             firstName: args.input.firstName,
             lastName: args.input.lastName,
             phoneNumber: args.input.phoneNumber,
