@@ -19,11 +19,11 @@ const loadNumericEnvironmentVariable = (key, defaultValue) => {
 };
 exports.loadNumericEnvironmentVariable = loadNumericEnvironmentVariable;
 exports.AppConfig = {
-    env: (0, exports.loadEnvironmentVariable)('NODE_ENV'),
-    description: 'Cantaloupe Payments Backend API',
-    port: (0, exports.loadNumericEnvironmentVariable)('PORT', 6000),
-    JWTSecret: (0, exports.loadEnvironmentVariable)('JWT_SECRET'),
-    nodeEnv: (0, exports.loadEnvironmentVariable)('NODE_ENV'),
-    corsOrigin: (0, exports.loadEnvironmentVariable)('CORS_ORIGIN'),
+    NODE_ENV: (0, exports.loadEnvironmentVariable)('NODE_ENV'),
+    PORT: (0, exports.loadNumericEnvironmentVariable)('PORT', 6000),
+    JWT_SECRET: (0, exports.loadEnvironmentVariable)('JWT_SECRET'),
+    CORS_ORIGIN: (0, exports.loadEnvironmentVariable)('CORS_ORIGIN'),
+    SENDGRID_API_KEY: (0, exports.loadEnvironmentVariable)('SENDGRID_API_KEY'),
+    DATABASE_URL: (0, exports.loadEnvironmentVariable)('DATABASE_URL'),
 };
 //# sourceMappingURL=appConfig.js.map

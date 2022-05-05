@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 
 import {context} from '../../context';
+import {sendEmail} from '../../../utils/sendgrid';
 
 const createUser = async (parent: null, args: any) => {
   const foundUser = await context.prisma.user.findUnique({
@@ -28,6 +29,13 @@ const createUser = async (parent: null, args: any) => {
       ...args.input,
       password: hashedPassword,
     },
+  });
+
+  // send sendgrid transactional email
+  await sendEmail({
+    to: args.input.email,
+    subject: 'Welcome to the GraphQL API',
+    body: 'You have successfully signed up!',
   });
 
   return {

@@ -9,17 +9,7 @@ import {typeDefs} from './graphql/typeDefs/typeDefs';
 import {resolvers} from './graphql/resolvers';
 import {AppConfig} from './config/appConfig';
 
-// add prisma to the NodeJS global type
-interface CustomNodeJsGlobal extends NodeJS.Global {
-  prisma: PrismaClient;
-}
-
-// Prevent multiple instances of Prisma Client in development
-declare const global: CustomNodeJsGlobal;
-
-export const prisma = global.prisma || new PrismaClient();
-
-if (process.env.NODE_ENV === 'localhost') global.prisma = prisma;
+export const prisma = new PrismaClient();
 
 const createContext = ({req}: any) => {
   const {headers} = req;
@@ -73,7 +63,7 @@ const schema = applyMiddleware(
 );
 
 export const setupServer = async () => {
-  const {port, nodeEnv, corsOrigin} = AppConfig;
+  const {PORT, NODE_ENV, CORS_ORIGIN} = AppConfig;
 
   const server = new ApolloServer({
     schema: applyMiddleware(schema, permissions),
@@ -81,18 +71,18 @@ export const setupServer = async () => {
     introspection: true,
     cors: {
       origin:
-        nodeEnv === 'localhost'
-          ? [corsOrigin, 'https://studio.apollographql.com']
-          : corsOrigin,
+        NODE_ENV === 'localhost'
+          ? [CORS_ORIGIN, 'https://studio.apollographql.com']
+          : CORS_ORIGIN,
       credentials: true,
     },
   });
 
-  const {url} = await server.listen({port});
+  const {url} = await server.listen({port: PORT});
 
   console.log(`Server is running at ${url}`);
   console.log(
-    `GraphQL Playground is available at http://localhost:${port}/graphql`,
+    `GraphQL Playground is available at http://localhost:${PORT}/graphql`,
   );
 
   try {

@@ -24,19 +24,19 @@ export const loadNumericEnvironmentVariable = (
 };
 
 export interface IAppConfig {
-  env: string;
-  description: string;
-  port: number;
-  JWTSecret: string;
-  nodeEnv: string;
-  corsOrigin: string;
+  DATABASE_URL: string;
+  NODE_ENV: string;
+  JWT_SECRET: string;
+  CORS_ORIGIN: string;
+  PORT: number;
+  SENDGRID_API_KEY: string;
 }
 
 export const AppConfig: IAppConfig = {
-  env: loadEnvironmentVariable('NODE_ENV'),
-  description: 'Cantaloupe Payments Backend API',
-  port: loadNumericEnvironmentVariable('PORT', 6000),
-  JWTSecret: loadEnvironmentVariable('JWT_SECRET'),
-  nodeEnv: loadEnvironmentVariable('NODE_ENV'),
-  corsOrigin: loadEnvironmentVariable('CORS_ORIGIN'),
+  NODE_ENV: loadEnvironmentVariable('NODE_ENV'),
+  PORT: loadNumericEnvironmentVariable('PORT', 6000),
+  JWT_SECRET: loadEnvironmentVariable('JWT_SECRET'),
+  CORS_ORIGIN: loadEnvironmentVariable('CORS_ORIGIN'),
+  SENDGRID_API_KEY: loadEnvironmentVariable('SENDGRID_API_KEY'),
+  DATABASE_URL: loadEnvironmentVariable('DATABASE_URL'),
 };
