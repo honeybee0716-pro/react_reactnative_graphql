@@ -25,5 +25,6 @@ exports.AppConfig = {
     CORS_ORIGIN: (0, exports.loadEnvironmentVariable)('CORS_ORIGIN'),
     SENDGRID_API_KEY: (0, exports.loadEnvironmentVariable)('SENDGRID_API_KEY'),
     DATABASE_URL: (0, exports.loadEnvironmentVariable)('DATABASE_URL'),
+    STRIPE_SECRET_KEY: (0, exports.loadEnvironmentVariable)('STRIPE_SECRET_KEY'),
 };
 //# sourceMappingURL=appConfig.js.map

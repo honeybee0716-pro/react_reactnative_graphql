@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const context_1 = require("../../context");
 const sendgrid_1 = require("../../../utils/sendgrid");
+const stripe_1 = require("../../../utils/stripe");
 const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
     const foundUser = yield context_1.context.prisma.user.findUnique({
         select: {
@@ -36,7 +37,15 @@ const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function*
         data: Object.assign(Object.assign({}, args.input), { password: hashedPassword }),
     });
     // send sendgrid transactional email
-    yield (0, sendgrid_1.sendEmail)();
+    yield (0, sendgrid_1.sendEmail)({
+        to: args.input.email,
+        subject: 'Welcome to the GraphQL API',
+        body: 'You have successfully signed up!',
+    });
+    // create stripe customer
+    const stripeCustomer = yield stripe_1.stripe.customers.create({
+        email: args.input.email,
+    });
     return {
         message: 'User created successfully',
         status: 'success',

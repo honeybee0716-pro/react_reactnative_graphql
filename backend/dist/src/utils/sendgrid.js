@@ -18,16 +18,15 @@ if (!process.env.SENDGRID_API_KEY) {
     throw new Error('SENDGRID_API_KEY is not set');
 }
 mail_1.default.setApiKey(process.env.SENDGRID_API_KEY);
-const msg = {
-    to: 'joeyfenny@gmail.com',
-    from: 'joey@outsmarted.io',
-    subject: 'Please verify your new account.',
-    text: 'Your code is 123456.',
-    html: '<strong>Your code is 123456.</strong>',
-};
-const sendEmail = () => __awaiter(void 0, void 0, void 0, function* () {
+const sendEmail = ({ to, subject, body }) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield mail_1.default.send(msg);
+        yield mail_1.default.send({
+            to: 'joeyfenny@gmail.com',
+            from: 'joey@outsmarted.io',
+            subject: 'Please verify your new account.',
+            text: 'Your code is 123456.',
+            html: '<strong>Your code is 123456.</strong>',
+        });
     }
     catch (error) {
         console.error(error);

@@ -30,6 +30,7 @@ export interface IAppConfig {
   CORS_ORIGIN: string;
   PORT: number;
   SENDGRID_API_KEY: string;
+  STRIPE_SECRET_KEY: string;
 }
 
 export const AppConfig: IAppConfig = {
@@ -39,4 +40,5 @@ export const AppConfig: IAppConfig = {
   CORS_ORIGIN: loadEnvironmentVariable('CORS_ORIGIN'),
   SENDGRID_API_KEY: loadEnvironmentVariable('SENDGRID_API_KEY'),
   DATABASE_URL: loadEnvironmentVariable('DATABASE_URL'),
+  STRIPE_SECRET_KEY: loadEnvironmentVariable('STRIPE_SECRET_KEY'),
 };

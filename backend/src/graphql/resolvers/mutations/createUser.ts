@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 
 import {context} from '../../context';
 import {sendEmail} from '../../../utils/sendgrid';
+import {stripe} from '../../../utils/stripe';
 
 const createUser = async (parent: null, args: any) => {
   const foundUser = await context.prisma.user.findUnique({
@@ -36,6 +37,20 @@ const createUser = async (parent: null, args: any) => {
     to: args.input.email,
     subject: 'Welcome to the GraphQL API',
     body: 'You have successfully signed up!',
+  });
+
+  // create stripe customer
+  await stripe.customers.create({
+    email: args.input.email,
+    name: `${args.input.firstName} ${args.input.lastName}`,
+    balance: 0,
+    metadata: {
+      firstName: args.input.firstName,
+      lastName: args.input.lastName,
+      phoneNumber: args.input.phoneNumber,
+      username: args.input.username,
+      createdIPAddress: args.input.createdIPAddress,
+    },
   });
 
   return {
