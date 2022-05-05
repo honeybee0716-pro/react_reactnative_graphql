@@ -20,3 +20,4 @@ you may need to run the command:
 npx prisma db push
 
 View the prisma studio for easy database reading/writing
+```yarn prisma studio```

@@ -17,7 +17,7 @@ const context_1 = require("../../context");
 const sendgrid_1 = require("../../../utils/sendgrid");
 const stripe_1 = require("../../../utils/stripe");
 const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = yield context_1.context.prisma.user.findUnique({
+    const foundEmail = yield context_1.context.prisma.user.findUnique({
         select: {
             id: true,
         },
@@ -25,9 +25,23 @@ const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function*
             email: args.input.email,
         },
     });
-    if (foundUser) {
+    if (foundEmail) {
         return {
             message: 'An account with this email already exists. Please sign in instead.',
+            status: 'failed',
+        };
+    }
+    const foundUsername = yield context_1.context.prisma.user.findUnique({
+        select: {
+            id: true,
+        },
+        where: {
+            username: args.input.username,
+        },
+    });
+    if (foundUsername) {
+        return {
+            message: 'An account with this username already exists. Please sign in instead.',
             status: 'failed',
         };
     }
@@ -43,8 +57,17 @@ const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function*
         body: 'You have successfully signed up!',
     });
     // create stripe customer
-    const stripeCustomer = yield stripe_1.stripe.customers.create({
+    yield stripe_1.stripe.customers.create({
         email: args.input.email,
+        name: `${args.input.firstName} ${args.input.lastName}`,
+        balance: 0,
+        metadata: {
+            firstName: args.input.firstName,
+            lastName: args.input.lastName,
+            phoneNumber: args.input.phoneNumber,
+            username: args.input.username,
+            createdIPAddress: args.input.createdIPAddress,
+        },
     });
     return {
         message: 'User created successfully',

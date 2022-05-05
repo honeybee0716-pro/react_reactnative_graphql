@@ -5,7 +5,7 @@ import {sendEmail} from '../../../utils/sendgrid';
 import {stripe} from '../../../utils/stripe';
 
 const createUser = async (parent: null, args: any) => {
-  const foundUser = await context.prisma.user.findUnique({
+  const foundEmail = await context.prisma.user.findUnique({
     select: {
       id: true,
     },
@@ -14,10 +14,27 @@ const createUser = async (parent: null, args: any) => {
     },
   });
 
-  if (foundUser) {
+  if (foundEmail) {
     return {
       message:
         'An account with this email already exists. Please sign in instead.',
+      status: 'failed',
+    };
+  }
+
+  const foundUsername = await context.prisma.user.findUnique({
+    select: {
+      id: true,
+    },
+    where: {
+      username: args.input.username,
+    },
+  });
+
+  if (foundUsername) {
+    return {
+      message:
+        'An account with this username already exists. Please sign in instead.',
       status: 'failed',
     };
   }
