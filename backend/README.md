@@ -18,3 +18,5 @@ The table (not available) does not exist in the current database #10771
 
 you may need to run the command:
 npx prisma db push
+
+View the prisma studio for easy database reading/writing

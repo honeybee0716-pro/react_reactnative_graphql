@@ -19,7 +19,7 @@ declare const global: CustomNodeJsGlobal;
 
 export const prisma = global.prisma || new PrismaClient();
 
-if (process.env.NODE_ENV === 'development') global.prisma = prisma;
+if (process.env.NODE_ENV === 'localhost') global.prisma = prisma;
 
 const createContext = ({req}: any) => {
   const {headers} = req;
@@ -81,7 +81,7 @@ export const setupServer = async () => {
     introspection: true,
     cors: {
       origin:
-        nodeEnv === 'development'
+        nodeEnv === 'localhost'
           ? [corsOrigin, 'https://studio.apollographql.com']
           : corsOrigin,
       credentials: true,

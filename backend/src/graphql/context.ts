@@ -3,7 +3,7 @@ import {PrismaClient} from '@prisma/client';
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: 'postgresql://joey:Password123@localhost/joey',
+      url: process.env.DATABASE_URL,
     },
   },
 });

@@ -20,7 +20,7 @@ const typeDefs_1 = require("./graphql/typeDefs/typeDefs");
 const resolvers_1 = require("./graphql/resolvers");
 const appConfig_1 = require("./config/appConfig");
 exports.prisma = global.prisma || new client_1.PrismaClient();
-if (process.env.NODE_ENV === 'development')
+if (process.env.NODE_ENV === 'localhost')
     global.prisma = exports.prisma;
 const createContext = ({ req }) => {
     const { headers } = req;
@@ -65,7 +65,7 @@ const setupServer = () => __awaiter(void 0, void 0, void 0, function* () {
         context: createContext,
         introspection: true,
         cors: {
-            origin: nodeEnv === 'development'
+            origin: nodeEnv === 'localhost'
                 ? [corsOrigin, 'https://studio.apollographql.com']
                 : corsOrigin,
             credentials: true,
