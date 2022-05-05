@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 import {context} from '../../context';
 
@@ -26,8 +27,12 @@ const loginUser = async (parent: null, args: any) => {
   );
 
   if (passwordMatches) {
+    const token = jwt.sign({id: foundUser.id}, <string>process.env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
+
     return {
-      id: foundUser.id,
+      jwt: token,
       message: 'User logged in.',
       status: 'success',
     };

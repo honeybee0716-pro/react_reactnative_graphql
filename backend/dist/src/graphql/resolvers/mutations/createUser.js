@@ -13,16 +13,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const context_1 = require("../../context");
 const sendgrid_1 = require("../../../utils/sendgrid");
 const stripe_1 = require("../../../utils/stripe");
+const context_1 = require("../../context");
 const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
     const foundEmail = yield context_1.context.prisma.user.findUnique({
         select: {
             id: true,
         },
         where: {
-            email: args.input.email,
+            email: args.input.email.toLowerCase().trim(),
         },
     });
     if (foundEmail) {
@@ -36,7 +36,7 @@ const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function*
             id: true,
         },
         where: {
-            username: args.input.username,
+            username: args.input.username.toLowerCase().trim(),
         },
     });
     if (foundUsername) {
@@ -50,7 +50,6 @@ const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function*
     const createdUser = yield context_1.context.prisma.user.create({
         data: Object.assign(Object.assign({}, args.input), { password: hashedPassword }),
     });
-    console.log({ createdUser });
     // send sendgrid transactional email
     yield (0, sendgrid_1.sendEmail)({
         to: args.input.email,

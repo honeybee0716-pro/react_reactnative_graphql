@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 
-import {context} from '../../context';
 import {sendEmail} from '../../../utils/sendgrid';
 import {stripe} from '../../../utils/stripe';
+import {context} from '../../context';
 
 const createUser = async (parent: null, args: any) => {
   const foundEmail = await context.prisma.user.findUnique({
@@ -10,7 +10,7 @@ const createUser = async (parent: null, args: any) => {
       id: true,
     },
     where: {
-      email: args.input.email,
+      email: args.input.email.toLowerCase().trim(),
     },
   });
 
@@ -27,7 +27,7 @@ const createUser = async (parent: null, args: any) => {
       id: true,
     },
     where: {
-      username: args.input.username,
+      username: args.input.username.toLowerCase().trim(),
     },
   });
 

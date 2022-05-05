@@ -14,7 +14,7 @@ export const typeDefs = gql`
   }
 
   type LoginUserResponse {
-    id: ID
+    jwt: String!
     message: String!
     status: String!
   }
