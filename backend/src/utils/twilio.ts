@@ -12,3 +12,16 @@ export const sendTextMessage = async (to: string, body: string) => {
     to,
   });
 };
+
+export const exampleTWIML = '<Response><Say>Hello World</Say></Response>';
+
+export const sendRobotCall = async (
+  to: string,
+  twiml: string = exampleTWIML,
+) => {
+  await client.calls.create({
+    twiml,
+    from: <string>process.env.TWILIO_NUMBER,
+    to,
+  });
+};
