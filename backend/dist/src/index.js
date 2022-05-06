@@ -25,9 +25,17 @@ const createContext = ({ req }) => {
     const auth = headers;
     // parse Auth header and parse it / check for validity / get auth state from it
     // put the auth info into context
+    // const currentUser =
+    // (req.headers.authorization &&
+    //   (jwt.verify(
+    //     req.headers.authorization,
+    //     process.env.JWTSIGN
+    //   ) as Context["currentUser"])) ||
+    // null;
     return {
         auth,
         ipAddress: req.ip,
+        req,
     };
 };
 const isAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () { return context.user !== null; }));

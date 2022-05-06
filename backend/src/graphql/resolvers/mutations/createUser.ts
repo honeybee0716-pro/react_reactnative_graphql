@@ -23,7 +23,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
     };
   }
 
-  const foundUsername = await context.prisma.user.findUnique({
+  const foundUsername = await prismaContext.prisma.user.findUnique({
     select: {
       id: true,
     },
@@ -43,7 +43,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(args.input.password, salt);
 
-  const createdUser = await context.prisma.user.create({
+  const createdUser = await prismaContext.prisma.user.create({
     data: {
       ...args.input,
       password: hashedPassword,

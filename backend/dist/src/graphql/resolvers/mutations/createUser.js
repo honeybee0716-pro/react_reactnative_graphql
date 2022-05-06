@@ -16,8 +16,8 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const sendgrid_1 = require("../../../utils/sendgrid");
 const stripe_1 = require("../../../utils/stripe");
 const prismaContext_1 = require("../../prismaContext");
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createUser = (parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log({ context, info });
     const foundEmail = yield prismaContext_1.prismaContext.prisma.user.findUnique({
         select: {
             id: true,
@@ -49,7 +49,7 @@ const createUser = (parent, args, context, info) => __awaiter(void 0, void 0, vo
     const salt = yield bcrypt_1.default.genSalt(10);
     const hashedPassword = yield bcrypt_1.default.hash(args.input.password, salt);
     const createdUser = yield context.prisma.user.create({
-        data: Object.assign(Object.assign({}, args.input), { password: hashedPassword }),
+        data: Object.assign(Object.assign({}, args.input), { password: hashedPassword, createdIPAddress: context.ipAddress }),
     });
     // send sendgrid transactional email
     yield (0, sendgrid_1.sendEmail)({
@@ -68,7 +68,7 @@ const createUser = (parent, args, context, info) => __awaiter(void 0, void 0, vo
             lastName: args.input.lastName,
             phoneNumber: args.input.phoneNumber,
             username: args.input.username,
-            createdIPAddress: args.input.createdIPAddress,
+            createdIPAddress: context.ipAddress,
         },
     });
     return {
