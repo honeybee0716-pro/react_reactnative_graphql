@@ -8,7 +8,7 @@ const client = twilio(
 export const sendTextMessage = async (to: string, body: string) => {
   await client.messages.create({
     body,
-    from: <string>process.env.TWILIO_NUMBER,
+    from: <string>process.env.TWILIO_PHONE_NUMBER,
     to,
   });
 };
@@ -21,7 +21,7 @@ export const sendRobotCall = async (
 ) => {
   await client.calls.create({
     twiml,
-    from: <string>process.env.TWILIO_NUMBER,
+    from: <string>process.env.TWILIO_PHONE_NUMBER,
     to,
   });
 };

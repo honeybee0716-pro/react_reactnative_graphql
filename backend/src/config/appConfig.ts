@@ -35,6 +35,9 @@ export interface IAppConfig {
   PROTOCOL: string;
   EMAIL_FROM: string;
   SENTRY_DSN: string;
+  TWILIO_ACCOUNT_SID: string;
+  TWILIO_AUTH_TOKEN: string;
+  TWILIO_PHONE_NUMBER: string;
 }
 
 export const AppConfig: IAppConfig = {
@@ -49,4 +52,7 @@ export const AppConfig: IAppConfig = {
   PROTOCOL: loadEnvironmentVariable('PROTOCOL'),
   EMAIL_FROM: loadEnvironmentVariable('EMAIL_FROM'),
   SENTRY_DSN: loadEnvironmentVariable('SENTRY_DSN'),
+  TWILIO_ACCOUNT_SID: loadEnvironmentVariable('TWILIO_ACCOUNT_SID'),
+  TWILIO_AUTH_TOKEN: loadEnvironmentVariable('TWILIO_AUTH_TOKEN'),
+  TWILIO_PHONE_NUMBER: loadEnvironmentVariable('TWILIO_PHONE_NUMBER'),
 };
