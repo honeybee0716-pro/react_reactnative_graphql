@@ -16,23 +16,24 @@ model PrismaInfo {
 }
 
 model User {
-  id               Int      @id @default(autoincrement())
-  firstName        String
-  lastName         String
-  email            String   @unique
-  phoneNumber      String?
-  username         String   @unique
-  password         String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @default(now())
-  createdIPAddress String
+  id                   Int      @id @default(autoincrement())
+  firstName            String
+  lastName             String
+  email                String   @unique
+  phoneNumber          String?
+  username             String   @unique
+  password             String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now())
+  allowMarketingEmails Boolean  @default(true)
+  createdIPAddress     String
   // authorizedIPAddresses String[]
-  twitter          String?
-  facebook         String?
-  google           String?
-  github           String?
-  linkedin         String?
-  instagram        String?
+  twitter              String?
+  facebook             String?
+  google               String?
+  github               String?
+  linkedin             String?
+  instagram            String?
 }
 
 model Post {
