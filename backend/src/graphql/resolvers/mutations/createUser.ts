@@ -54,8 +54,9 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
   // send sendgrid transactional email
   await sendEmail({
     to: args.input.email,
-    subject: 'Welcome to the GraphQL API',
-    body: 'You have successfully signed up!',
+    subject: 'Login link',
+    html: `<strong>You have successfully signed up.</strong>`,
+    text: `You have successfully signed up.`,
   });
 
   // create stripe customer

@@ -50,7 +50,8 @@ const permissions = shield(
   {
     Query: {
       getUser: isAuthenticated,
-      loginUser: isNotAuthenticated,
+      loginUserWithPassword: isNotAuthenticated,
+      loginUserWithMagicLink: isNotAuthenticated,
       signOut: isAuthenticated,
     },
     Mutation: {

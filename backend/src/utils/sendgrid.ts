@@ -5,17 +5,18 @@ sgMail.setApiKey(<string>process.env.SENDGRID_API_KEY);
 interface ISendEmail {
   to: string;
   subject: string;
-  body: string;
+  text: string;
+  html: string;
 }
 
-export const sendEmail = async ({to, subject, body}: ISendEmail) => {
+export const sendEmail = async ({to, subject, text, html}: ISendEmail) => {
   try {
     await sgMail.send({
       to,
-      from: 'joey@outsmarted.io', // Sender must be verified in SendGrid
+      from: <string>process.env.EMAIL_FROM, // Sender must be verified in SendGrid
       subject,
-      text: body,
-      html: `<strong>${body}</strong>`,
+      text,
+      html,
     });
   } catch (error: any) {
     console.error(error);

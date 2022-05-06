@@ -1,10 +1,12 @@
 import getUser from './getUser';
-import loginUser from './loginUser';
+import loginUserWithPassword from './loginUserWithPassword';
+import loginUserWithMagicLink from './loginUserWithMagicLink';
 import signOut from './signOut';
 
 export const RootQuery = {
   getUser,
-  loginUser,
+  loginUserWithPassword,
+  loginUserWithMagicLink,
   signOut,
 };
 

@@ -32,7 +32,7 @@ const createUser = (parent, args, context, info) => __awaiter(void 0, void 0, vo
             status: 'failed',
         };
     }
-    const foundUsername = yield context.prisma.user.findUnique({
+    const foundUsername = yield prismaContext_1.prismaContext.prisma.user.findUnique({
         select: {
             id: true,
         },
@@ -48,7 +48,7 @@ const createUser = (parent, args, context, info) => __awaiter(void 0, void 0, vo
     }
     const salt = yield bcrypt_1.default.genSalt(10);
     const hashedPassword = yield bcrypt_1.default.hash(args.input.password, salt);
-    const createdUser = yield context.prisma.user.create({
+    const createdUser = yield prismaContext_1.prismaContext.prisma.user.create({
         data: Object.assign(Object.assign({}, args.input), { password: hashedPassword, createdIPAddress: context.ipAddress }),
     });
     // send sendgrid transactional email

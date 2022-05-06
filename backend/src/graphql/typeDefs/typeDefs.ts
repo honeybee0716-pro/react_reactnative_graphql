@@ -8,9 +8,13 @@ export const typeDefs = gql`
     status: String!
   }
 
-  input LoginUserInput {
+  input LoginUserWithPasswordInput {
     email: String!
     password: String!
+  }
+
+  input LoginUserWithMagicLinkInput {
+    email: String!
   }
 
   type LoginUserResponse {
@@ -20,7 +24,10 @@ export const typeDefs = gql`
   }
 
   type Query {
-    loginUser(input: LoginUserInput): LoginUserResponse!
+    loginUserWithPassword(input: LoginUserWithPasswordInput): LoginUserResponse!
+    loginUserWithMagicLink(
+      input: LoginUserWithMagicLinkInput
+    ): LoginUserResponse!
     getUser: ResponseStatus!
     signOut: ResponseStatus!
   }

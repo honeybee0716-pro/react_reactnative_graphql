@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import {prismaContext} from '../../prismaContext';
 
-const loginUser = async (parent: null, args: any) => {
+const loginUserWithPassword = async (parent: null, args: any) => {
   const foundUser = await prismaContext.prisma.user.findUnique({
     select: {
       id: true,
@@ -44,4 +44,4 @@ const loginUser = async (parent: null, args: any) => {
   };
 };
 
-export default loginUser;
+export default loginUserWithPassword;
