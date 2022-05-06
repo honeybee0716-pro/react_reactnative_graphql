@@ -31,6 +31,10 @@ export interface IAppConfig {
   PORT: number;
   SENDGRID_API_KEY: string;
   STRIPE_SECRET_KEY: string;
+  DOMAIN: string;
+  PROTOCOL: string;
+  EMAIL_FROM: string;
+  SENTRY_DSN: string;
 }
 
 export const AppConfig: IAppConfig = {
@@ -41,4 +45,8 @@ export const AppConfig: IAppConfig = {
   SENDGRID_API_KEY: loadEnvironmentVariable('SENDGRID_API_KEY'),
   DATABASE_URL: loadEnvironmentVariable('DATABASE_URL'),
   STRIPE_SECRET_KEY: loadEnvironmentVariable('STRIPE_SECRET_KEY'),
+  DOMAIN: loadEnvironmentVariable('DOMAIN'),
+  PROTOCOL: loadEnvironmentVariable('PROTOCOL'),
+  EMAIL_FROM: loadEnvironmentVariable('EMAIL_FROM'),
+  SENTRY_DSN: loadEnvironmentVariable('SENTRY_DSN'),
 };

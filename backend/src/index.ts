@@ -4,10 +4,22 @@ import {makeExecutableSchema} from '@graphql-tools/schema';
 import {PrismaClient} from '@prisma/client';
 import {applyMiddleware} from 'graphql-middleware';
 import {rule, shield, not} from 'graphql-shield';
+import * as Sentry from '@sentry/node';
+import '@sentry/tracing';
 
 import {typeDefs} from './graphql/typeDefs/typeDefs';
 import {resolvers} from './graphql/resolvers';
 import {AppConfig} from './config/appConfig';
+
+if (process.env.NODE_ENV !== 'localhost') {
+  Sentry.init({
+    dsn: <string>process.env.SENTRY_DSN,
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
+  });
+}
 
 export const prisma = new PrismaClient();
 
