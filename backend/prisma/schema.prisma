@@ -16,7 +16,8 @@ model PrismaInfo {
 }
 
 model User {
-  id                   Int      @id @default(autoincrement())
+  id                   String   @id @default(uuid())
+  idAutoIncrement      Int      @default(autoincrement())
   firstName            String
   lastName             String
   email                String   @unique
