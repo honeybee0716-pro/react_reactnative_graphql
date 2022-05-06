@@ -14,9 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const context_1 = require("../../context");
+const prismaContext_1 = require("../../prismaContext");
 const loginUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = yield context_1.context.prisma.user.findUnique({
+    const foundUser = yield prismaContext_1.prismaContext.prisma.user.findUnique({
         select: {
             id: true,
             password: true,
@@ -33,11 +33,11 @@ const loginUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* 
     }
     const passwordMatches = yield bcrypt_1.default.compare(args.input.password, foundUser.password);
     if (passwordMatches) {
-        const token = jsonwebtoken_1.default.sign({ id: foundUser.id }, process.env.JWT_SECRET);
+        const token = jsonwebtoken_1.default.sign({ id: foundUser.id }, process.env.JWT_SECRET, {
+            expiresIn: '1d',
+        });
         return {
-            data: {
-                jwt: token,
-            },
+            jwt: token,
             message: 'User logged in.',
             status: 'success',
         };

@@ -1,9 +1,9 @@
-import {context} from '../../context';
+import {prismaContext} from '../../prismaContext';
 
 const getUser = (parent: any, args: any) => {
   const {id} = args;
 
-  return context.prisma.user.findUnique({
+  return prismaContext.prisma.user.findUnique({
     select: {id},
     where: {id},
     // include: { posts: true },

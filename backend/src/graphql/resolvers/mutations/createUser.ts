@@ -2,10 +2,11 @@ import bcrypt from 'bcrypt';
 
 import {sendEmail} from '../../../utils/sendgrid';
 import {stripe} from '../../../utils/stripe';
-import {context} from '../../context';
+import {prismaContext} from '../../prismaContext';
 
-const createUser = async (parent: null, args: any) => {
-  const foundEmail = await context.prisma.user.findUnique({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const createUser = async (parent: null, args: any, context: any, info: any) => {
+  const foundEmail = await prismaContext.prisma.user.findUnique({
     select: {
       id: true,
     },
@@ -46,6 +47,7 @@ const createUser = async (parent: null, args: any) => {
     data: {
       ...args.input,
       password: hashedPassword,
+      createdIPAddress: context.ipAddress,
     },
   });
 
@@ -67,7 +69,7 @@ const createUser = async (parent: null, args: any) => {
       lastName: args.input.lastName,
       phoneNumber: args.input.phoneNumber,
       username: args.input.username,
-      createdIPAddress: args.input.createdIPAddress,
+      createdIPAddress: context.ipAddress,
     },
   });
 

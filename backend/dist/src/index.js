@@ -25,7 +25,10 @@ const createContext = ({ req }) => {
     const auth = headers;
     // parse Auth header and parse it / check for validity / get auth state from it
     // put the auth info into context
-    return { auth };
+    return {
+        auth,
+        ipAddress: req.ip,
+    };
 };
 const isAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () { return context.user !== null; }));
 const isNotAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () {

@@ -16,7 +16,7 @@ exports.typeDefs = (0, apollo_server_1.gql) `
   }
 
   type LoginUserResponse {
-    id: ID
+    jwt: String!
     message: String!
     status: String!
   }

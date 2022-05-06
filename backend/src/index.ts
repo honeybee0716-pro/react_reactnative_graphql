@@ -14,10 +14,24 @@ export const prisma = new PrismaClient();
 const createContext = ({req}: any) => {
   const {headers} = req;
   const auth = headers;
+
   // parse Auth header and parse it / check for validity / get auth state from it
 
   // put the auth info into context
-  return {auth};
+
+  // const currentUser =
+  // (req.headers.authorization &&
+  //   (jwt.verify(
+  //     req.headers.authorization,
+  //     process.env.JWTSIGN
+  //   ) as Context["currentUser"])) ||
+  // null;
+
+  return {
+    auth,
+    ipAddress: req.ip,
+    req,
+  };
 };
 
 const isAuthenticated = rule()(

@@ -15,9 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const sendgrid_1 = require("../../../utils/sendgrid");
 const stripe_1 = require("../../../utils/stripe");
-const context_1 = require("../../context");
-const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundEmail = yield context_1.context.prisma.user.findUnique({
+const prismaContext_1 = require("../../prismaContext");
+const createUser = (parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log({ context, info });
+    const foundEmail = yield prismaContext_1.prismaContext.prisma.user.findUnique({
         select: {
             id: true,
         },
@@ -31,7 +32,7 @@ const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function*
             status: 'failed',
         };
     }
-    const foundUsername = yield context_1.context.prisma.user.findUnique({
+    const foundUsername = yield context.prisma.user.findUnique({
         select: {
             id: true,
         },
@@ -47,7 +48,7 @@ const createUser = (parent, args) => __awaiter(void 0, void 0, void 0, function*
     }
     const salt = yield bcrypt_1.default.genSalt(10);
     const hashedPassword = yield bcrypt_1.default.hash(args.input.password, salt);
-    const createdUser = yield context_1.context.prisma.user.create({
+    const createdUser = yield context.prisma.user.create({
         data: Object.assign(Object.assign({}, args.input), { password: hashedPassword }),
     });
     // send sendgrid transactional email

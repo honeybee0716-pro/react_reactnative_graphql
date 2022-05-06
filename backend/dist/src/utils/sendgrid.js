@@ -14,18 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = void 0;
 const mail_1 = __importDefault(require("@sendgrid/mail"));
-if (!process.env.SENDGRID_API_KEY) {
-    throw new Error('SENDGRID_API_KEY is not set');
-}
 mail_1.default.setApiKey(process.env.SENDGRID_API_KEY);
 const sendEmail = ({ to, subject, body }) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield mail_1.default.send({
-            to: 'joeyfenny@gmail.com',
+            to,
             from: 'joey@outsmarted.io',
-            subject: 'Please verify your new account.',
-            text: 'Your code is 123456.',
-            html: '<strong>Your code is 123456.</strong>',
+            subject,
+            text: body,
+            html: `<strong>${body}</strong>`,
         });
     }
     catch (error) {
