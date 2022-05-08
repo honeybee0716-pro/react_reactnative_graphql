@@ -1,5 +1,9 @@
 import {gql} from 'apollo-server';
 
+import {prismaContext} from '../../prismaContext';
+import {generateRandomNumber} from '../../../utils/generateRandomNumber';
+import {sendEmail} from '../../../utils/sendgrid';
+
 export const forgotPasswordSchema = gql`
   scalar JSON
 
@@ -8,7 +12,6 @@ export const forgotPasswordSchema = gql`
   }
 
   type forgotPasswordResponse {
-    jwt: String!
     message: String!
     status: String!
   }
@@ -18,6 +21,39 @@ export const forgotPasswordSchema = gql`
   }
 `;
 
-export default async function (parent: null, args: any) {
-  return true;
-}
+const forgotPassword = async (parent: any, args: any) => {
+  const {email} = args.input;
+
+  const passwordResetCode = generateRandomNumber();
+
+  await prismaContext.prisma.user.update({
+    where: {
+      email,
+    },
+    data: {
+      passwordResetCode,
+    },
+  });
+
+  await sendEmail({
+    to: email,
+    subject: 'Password Reset',
+    text: `You have requested to reset your password. Please click here to reset your password: ${process.env.FRONTEND_URL}/reset-password?code=${passwordResetCode}.`,
+    html: `
+      <p>
+        You have requested to reset your password.
+      </p>
+      <p>
+        <a href="${process.env.FRONTEND_URL}/reset-password?code=${passwordResetCode}">Please here to reset your password</a>
+      </p>
+    `,
+  });
+
+  return {
+    message:
+      'If there is a user with this email, there will be a link to reset your password in your email inbox.',
+    status: 'success',
+  };
+};
+
+export default forgotPassword;

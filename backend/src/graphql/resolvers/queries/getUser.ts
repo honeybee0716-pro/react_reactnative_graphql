@@ -32,7 +32,7 @@ const getUser = async (parent: any, args: any) => {
   if (!foundUser) {
     return {
       message: 'User not found',
-      status: 'error',
+      status: 'failed',
       data: null,
     };
   }
