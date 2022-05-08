@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -16,9 +35,20 @@ const schema_1 = require("@graphql-tools/schema");
 const client_1 = require("@prisma/client");
 const graphql_middleware_1 = require("graphql-middleware");
 const graphql_shield_1 = require("graphql-shield");
-const typeDefs_1 = require("./graphql/typeDefs/typeDefs");
+const Sentry = __importStar(require("@sentry/node"));
+require("@sentry/tracing");
+const index_1 = require("./graphql/typeDefs/index");
 const resolvers_1 = require("./graphql/resolvers");
 const appConfig_1 = require("./config/appConfig");
+if (process.env.NODE_ENV !== 'localhost') {
+    Sentry.init({
+        dsn: process.env.SENTRY_DSN,
+        // Set tracesSampleRate to 1.0 to capture 100%
+        // of transactions for performance monitoring.
+        // We recommend adjusting this value in production
+        tracesSampleRate: 1.0,
+    });
+}
 exports.prisma = new client_1.PrismaClient();
 const createContext = ({ req }) => {
     const { headers } = req;
@@ -48,7 +78,8 @@ const isNotAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context, 
 const permissions = (0, graphql_shield_1.shield)({
     Query: {
         getUser: isAuthenticated,
-        loginUser: isNotAuthenticated,
+        loginUserWithPassword: isNotAuthenticated,
+        loginUserWithMagicLink: isNotAuthenticated,
         signOut: isAuthenticated,
     },
     Mutation: {
@@ -64,7 +95,7 @@ const permissions = (0, graphql_shield_1.shield)({
     allowExternalErrors: true, // false on prod
 });
 const schema = (0, graphql_middleware_1.applyMiddleware)((0, schema_1.makeExecutableSchema)({
-    typeDefs: typeDefs_1.typeDefs,
+    typeDefs: index_1.typeDefs,
     resolvers: resolvers_1.resolvers,
 }), permissions);
 const setupServer = () => __awaiter(void 0, void 0, void 0, function* () {

@@ -1,8 +1,38 @@
 import bcrypt from 'bcrypt';
+import {gql} from 'apollo-server';
 
 import {sendEmail} from '../../../utils/sendgrid';
 import {stripe} from '../../../utils/stripe';
 import {prismaContext} from '../../prismaContext';
+
+export const createUserSchema = gql`
+  scalar JSON
+
+  type createUserResponse {
+    message: String!
+    status: String!
+  }
+
+  input createUserInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    phoneNumber: String!
+    username: String!
+    password: String!
+    createdIPAddress: String!
+    twitter: String
+    facebook: String
+    google: String
+    github: String
+    linkedin: String
+    instagram: String
+  }
+
+  type Mutation {
+    createUser(input: createUserInput): createUserResponse!
+  }
+`;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createUser = async (parent: null, args: any, context: any, info: any) => {

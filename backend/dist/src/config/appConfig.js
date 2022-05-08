@@ -26,5 +26,12 @@ exports.AppConfig = {
     SENDGRID_API_KEY: (0, exports.loadEnvironmentVariable)('SENDGRID_API_KEY'),
     DATABASE_URL: (0, exports.loadEnvironmentVariable)('DATABASE_URL'),
     STRIPE_SECRET_KEY: (0, exports.loadEnvironmentVariable)('STRIPE_SECRET_KEY'),
+    DOMAIN: (0, exports.loadEnvironmentVariable)('DOMAIN'),
+    PROTOCOL: (0, exports.loadEnvironmentVariable)('PROTOCOL'),
+    EMAIL_FROM: (0, exports.loadEnvironmentVariable)('EMAIL_FROM'),
+    SENTRY_DSN: (0, exports.loadEnvironmentVariable)('SENTRY_DSN'),
+    TWILIO_ACCOUNT_SID: (0, exports.loadEnvironmentVariable)('TWILIO_ACCOUNT_SID'),
+    TWILIO_AUTH_TOKEN: (0, exports.loadEnvironmentVariable)('TWILIO_AUTH_TOKEN'),
+    TWILIO_PHONE_NUMBER: (0, exports.loadEnvironmentVariable)('TWILIO_PHONE_NUMBER'),
 };
 //# sourceMappingURL=appConfig.js.map

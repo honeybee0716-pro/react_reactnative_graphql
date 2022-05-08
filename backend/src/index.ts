@@ -7,7 +7,7 @@ import {rule, shield, not} from 'graphql-shield';
 import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 
-import {typeDefs} from './graphql/typeDefs/typeDefs';
+import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
 import {AppConfig} from './config/appConfig';
 
@@ -64,7 +64,7 @@ const permissions = shield(
       getUser: isAuthenticated,
       loginUserWithPassword: isNotAuthenticated,
       loginUserWithMagicLink: isNotAuthenticated,
-      signOut: isAuthenticated,
+      verifyUser: isAuthenticated,
     },
     Mutation: {
       changePassword: isAuthenticated,
@@ -72,12 +72,11 @@ const permissions = shield(
       createUser: isNotAuthenticated,
       forgotPassword: isNotAuthenticated,
       updateUser: isAuthenticated,
-      verifyUser: isAuthenticated,
     },
   },
   {
     fallbackError: 'Not authorized',
-    allowExternalErrors: true, // false on prod
+    allowExternalErrors: process.env.NODE_ENV === 'localhost',
   },
 );
 

@@ -12,10 +12,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const bcrypt_1 = __importDefault(require("bcrypt"));
+exports.typeDef = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const apollo_server_1 = require("apollo-server");
 const prismaContext_1 = require("../../prismaContext");
-const loginUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
+const sendgrid_1 = require("../../../utils/sendgrid");
+exports.typeDef = (0, apollo_server_1.gql) `
+  scalar JSON
+
+  input LoginUserWithMagicLinkInput {
+    email: String!
+  }
+
+  type LoginUserWithMagicLinkResponse {
+    jwt: String!
+    message: String!
+    status: String!
+  }
+
+  type Query {
+    LoginUserWithMagicLink(
+      input: LoginUserWithMagicLinkInput
+    ): LoginUserWithMagicLinkResponse!
+  }
+`;
+const loginUserWithMagicLink = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
     const foundUser = yield prismaContext_1.prismaContext.prisma.user.findUnique({
         select: {
             id: true,
@@ -25,27 +46,26 @@ const loginUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* 
             email: args.input.email,
         },
     });
+    const message = 'If there is an account with that email, you will receive a login link in your email.';
     if (!foundUser) {
         return {
-            message: 'There was an issue with your login.',
-            status: 'failed',
-        };
-    }
-    const passwordMatches = yield bcrypt_1.default.compare(args.input.password, foundUser.password);
-    if (passwordMatches) {
-        const token = jsonwebtoken_1.default.sign({ id: foundUser.id }, process.env.JWT_SECRET, {
-            expiresIn: '1d',
-        });
-        return {
-            jwt: token,
-            message: 'User logged in.',
+            message,
             status: 'success',
         };
     }
+    const token = jsonwebtoken_1.default.sign({ id: foundUser.id }, process.env.JWT_SECRET, {
+        expiresIn: '1d',
+    });
+    yield (0, sendgrid_1.sendEmail)({
+        to: args.input.email,
+        subject: 'Here is your magic login link.',
+        html: `<a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/login?token=${token}">Login</a>`,
+        text: `Here is your magic login link: ${process.env.PROTOCOL}://${process.env.DOMAIN}/login?token=${token}`,
+    });
     return {
-        message: 'There was an issue with your login.',
-        status: 'failed',
+        message,
+        status: 'success',
     };
 });
-exports.default = loginUser;
+exports.default = loginUserWithMagicLink;
 //# sourceMappingURL=loginUserWithMagicLink.js.map

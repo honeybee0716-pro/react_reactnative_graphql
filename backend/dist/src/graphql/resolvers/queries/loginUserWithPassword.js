@@ -12,10 +12,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.typeDef = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const apollo_server_1 = require("apollo-server");
 const prismaContext_1 = require("../../prismaContext");
-const loginUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
+exports.typeDef = (0, apollo_server_1.gql) `
+  scalar JSON
+
+  input LoginUserWithPasswordInput {
+    email: String!
+    password: String!
+  }
+
+  type LoginUserWithPasswordResponse {
+    jwt: String!
+    message: String!
+    status: String!
+  }
+
+  type Query {
+    loginUserWithPassword(
+      input: LoginUserWithPasswordInput
+    ): LoginUserWithPasswordResponse!
+  }
+`;
+const loginUserWithPassword = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
     const foundUser = yield prismaContext_1.prismaContext.prisma.user.findUnique({
         select: {
             id: true,
@@ -47,5 +69,5 @@ const loginUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* 
         status: 'failed',
     };
 });
-exports.default = loginUser;
+exports.default = loginUserWithPassword;
 //# sourceMappingURL=loginUserWithPassword.js.map

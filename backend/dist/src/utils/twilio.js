@@ -12,22 +12,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendEmail = void 0;
-const mail_1 = __importDefault(require("@sendgrid/mail"));
-mail_1.default.setApiKey(process.env.SENDGRID_API_KEY);
-const sendEmail = ({ to, subject, text, html }) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield mail_1.default.send({
-            to,
-            from: process.env.EMAIL_FROM,
-            subject,
-            text,
-            html,
-        });
-    }
-    catch (error) {
-        console.error(error);
-    }
+exports.sendRobotCall = exports.exampleTWIML = exports.sendTextMessage = void 0;
+const twilio_1 = __importDefault(require("twilio"));
+const client = (0, twilio_1.default)(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+const sendTextMessage = (to, body) => __awaiter(void 0, void 0, void 0, function* () {
+    yield client.messages.create({
+        body,
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to,
+    });
 });
-exports.sendEmail = sendEmail;
-//# sourceMappingURL=sendgrid.js.map
+exports.sendTextMessage = sendTextMessage;
+exports.exampleTWIML = '<Response><Say>Hello World</Say></Response>';
+const sendRobotCall = (to, twiml = exports.exampleTWIML) => __awaiter(void 0, void 0, void 0, function* () {
+    yield client.calls.create({
+        twiml,
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to,
+    });
+});
+exports.sendRobotCall = sendRobotCall;
+//# sourceMappingURL=twilio.js.map

@@ -1,7 +1,29 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import {gql} from 'apollo-server';
 
 import {prismaContext} from '../../prismaContext';
+
+export const loginUserWithPasswordSchema = gql`
+  scalar JSON
+
+  input loginUserWithPasswordInput {
+    email: String!
+    password: String!
+  }
+
+  type loginUserWithPasswordResponse {
+    jwt: String!
+    message: String!
+    status: String!
+  }
+
+  type Query {
+    loginUserWithPassword(
+      input: loginUserWithPasswordInput
+    ): loginUserWithPasswordResponse!
+  }
+`;
 
 const loginUserWithPassword = async (parent: null, args: any) => {
   const foundUser = await prismaContext.prisma.user.findUnique({

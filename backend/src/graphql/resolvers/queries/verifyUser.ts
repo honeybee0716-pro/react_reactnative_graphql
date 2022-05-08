@@ -1,14 +1,14 @@
 import {gql} from 'apollo-server';
 
-export const updateUserSchema = gql`
+export const verifyUserSchema = gql`
   scalar JSON
 
-  type updateUserResponse {
+  type verifyUserResponse {
     message: String!
     status: String!
   }
 
-  input updateUserInput {
+  input verifyUserInput {
     firstName: String!
     lastName: String!
     email: String!
@@ -24,12 +24,11 @@ export const updateUserSchema = gql`
     instagram: String
   }
 
-  type Mutation {
-    updateUser(input: updateUserInput): updateUserResponse!
+  type Query {
+    verifyUser(input: verifyUserInput): verifyUserResponse!
   }
 `;
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 export default async function (parent: null, args: any) {
   return true;
 }

@@ -1,13 +1,13 @@
 import getUser from './getUser';
+import verifyUser from './verifyUser';
 import loginUserWithPassword from './loginUserWithPassword';
 import loginUserWithMagicLink from './loginUserWithMagicLink';
-import signOut from './signOut';
 
 export const RootQuery = {
   getUser,
   loginUserWithPassword,
   loginUserWithMagicLink,
-  signOut,
+  verifyUser,
 };
 
 export default RootQuery;

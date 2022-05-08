@@ -12,10 +12,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.typeDef = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const apollo_server_1 = require("apollo-server");
 const sendgrid_1 = require("../../../utils/sendgrid");
 const stripe_1 = require("../../../utils/stripe");
 const prismaContext_1 = require("../../prismaContext");
+exports.typeDef = (0, apollo_server_1.gql) `
+  scalar JSON
+
+  type Response {
+    message: String!
+    status: String!
+  }
+
+  input CreateUserInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    phoneNumber: String!
+    username: String!
+    password: String!
+    createdIPAddress: String!
+    twitter: String
+    facebook: String
+    google: String
+    github: String
+    linkedin: String
+    instagram: String
+  }
+
+  type Mutation {
+    createUser(input: CreateUserInput): Response!
+  }
+`;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createUser = (parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () {
     const foundEmail = yield prismaContext_1.prismaContext.prisma.user.findUnique({
@@ -54,8 +84,9 @@ const createUser = (parent, args, context, info) => __awaiter(void 0, void 0, vo
     // send sendgrid transactional email
     yield (0, sendgrid_1.sendEmail)({
         to: args.input.email,
-        subject: 'Welcome to the GraphQL API',
-        body: 'You have successfully signed up!',
+        subject: 'Login link',
+        html: `<strong>You have successfully signed up.</strong>`,
+        text: `You have successfully signed up.`,
     });
     // create stripe customer
     yield stripe_1.stripe.customers.create({

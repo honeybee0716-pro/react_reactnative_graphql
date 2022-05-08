@@ -1,4 +1,24 @@
+import {gql} from 'apollo-server';
+
 import {prismaContext} from '../../prismaContext';
+
+export const getUserSchema = gql`
+  scalar JSON
+
+  input getUserInput {
+    email: String!
+  }
+
+  type getUserResponse {
+    jwt: String!
+    message: String!
+    status: String!
+  }
+
+  type Query {
+    getUser(input: getUserInput): getUserResponse!
+  }
+`;
 
 const getUser = (parent: any, args: any) => {
   const {id} = args;

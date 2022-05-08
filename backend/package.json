@@ -24,6 +24,7 @@
     ]
   },
   "dependencies": {
+    "@graphql-tools/merge": "^8.2.10",
     "@graphql-tools/schema": "^8.3.2",
     "@prisma/client": "3.5.0",
     "@sendgrid/mail": "^7.6.2",

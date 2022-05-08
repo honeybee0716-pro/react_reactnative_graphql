@@ -1,7 +1,28 @@
 import jwt from 'jsonwebtoken';
+import {gql} from 'apollo-server';
 
 import {prismaContext} from '../../prismaContext';
 import {sendEmail} from '../../../utils/sendgrid';
+
+export const loginUserWithMagicLinkSchema = gql`
+  scalar JSON
+
+  input loginUserWithMagicLinkInput {
+    email: String!
+  }
+
+  type loginUserWithMagicLinkResponse {
+    jwt: String!
+    message: String!
+    status: String!
+  }
+
+  type Query {
+    loginUserWithMagicLink(
+      input: loginUserWithMagicLinkInput
+    ): loginUserWithMagicLinkResponse!
+  }
+`;
 
 const loginUserWithMagicLink = async (parent: null, args: any) => {
   const foundUser = await prismaContext.prisma.user.findUnique({
