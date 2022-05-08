@@ -12,21 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.typeDef = void 0;
+exports.createUserSchema = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const apollo_server_1 = require("apollo-server");
 const sendgrid_1 = require("../../../utils/sendgrid");
 const stripe_1 = require("../../../utils/stripe");
 const prismaContext_1 = require("../../prismaContext");
-exports.typeDef = (0, apollo_server_1.gql) `
+exports.createUserSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
-  type Response {
+  type createUserResponse {
     message: String!
     status: String!
   }
 
-  input CreateUserInput {
+  input createUserInput {
     firstName: String!
     lastName: String!
     email: String!
@@ -43,7 +43,7 @@ exports.typeDef = (0, apollo_server_1.gql) `
   }
 
   type Mutation {
-    createUser(input: CreateUserInput): Response!
+    createUser(input: createUserInput): createUserResponse!
   }
 `;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

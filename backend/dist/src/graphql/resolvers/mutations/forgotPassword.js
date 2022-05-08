@@ -9,7 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/* eslint-disable @typescript-eslint/no-unused-vars */
+exports.forgotPasswordSchema = void 0;
+const apollo_server_1 = require("apollo-server");
+exports.forgotPasswordSchema = (0, apollo_server_1.gql) `
+  scalar JSON
+
+  input forgotPasswordInput {
+    email: String!
+  }
+
+  type forgotPasswordResponse {
+    jwt: String!
+    message: String!
+    status: String!
+  }
+
+  type Mutation {
+    forgotPassword(input: forgotPasswordInput): forgotPasswordResponse!
+  }
+`;
 function default_1(parent, args) {
     return __awaiter(this, void 0, void 0, function* () {
         return true;

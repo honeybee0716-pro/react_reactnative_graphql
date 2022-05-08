@@ -12,20 +12,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.typeDef = void 0;
+exports.loginUserWithPasswordSchema = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const apollo_server_1 = require("apollo-server");
 const prismaContext_1 = require("../../prismaContext");
-exports.typeDef = (0, apollo_server_1.gql) `
+exports.loginUserWithPasswordSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
-  input LoginUserWithPasswordInput {
+  input loginUserWithPasswordInput {
     email: String!
     password: String!
   }
 
-  type LoginUserWithPasswordResponse {
+  type loginUserWithPasswordResponse {
     jwt: String!
     message: String!
     status: String!
@@ -33,8 +33,8 @@ exports.typeDef = (0, apollo_server_1.gql) `
 
   type Query {
     loginUserWithPassword(
-      input: LoginUserWithPasswordInput
-    ): LoginUserWithPasswordResponse!
+      input: loginUserWithPasswordInput
+    ): loginUserWithPasswordResponse!
   }
 `;
 const loginUserWithPassword = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {

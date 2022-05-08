@@ -9,17 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserSchema = void 0;
+exports.verifyUserSchema = void 0;
 const apollo_server_1 = require("apollo-server");
-exports.updateUserSchema = (0, apollo_server_1.gql) `
+exports.verifyUserSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
-  type updateUserResponse {
+  type verifyUserResponse {
     message: String!
     status: String!
   }
 
-  input updateUserInput {
+  input verifyUserInput {
     firstName: String!
     lastName: String!
     email: String!
@@ -35,15 +35,14 @@ exports.updateUserSchema = (0, apollo_server_1.gql) `
     instagram: String
   }
 
-  type Mutation {
-    updateUser(input: updateUserInput): updateUserResponse!
+  type Query {
+    verifyUser(input: verifyUserInput): verifyUserResponse!
   }
 `;
-/* eslint-disable @typescript-eslint/no-unused-vars */
 function default_1(parent, args) {
     return __awaiter(this, void 0, void 0, function* () {
         return true;
     });
 }
 exports.default = default_1;
-//# sourceMappingURL=updateUser.js.map
+//# sourceMappingURL=verifyUser.js.map

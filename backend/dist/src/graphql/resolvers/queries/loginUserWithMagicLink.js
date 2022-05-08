@@ -12,28 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.typeDef = void 0;
+exports.loginUserWithMagicLinkSchema = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const apollo_server_1 = require("apollo-server");
 const prismaContext_1 = require("../../prismaContext");
 const sendgrid_1 = require("../../../utils/sendgrid");
-exports.typeDef = (0, apollo_server_1.gql) `
+exports.loginUserWithMagicLinkSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
-  input LoginUserWithMagicLinkInput {
+  input loginUserWithMagicLinkInput {
     email: String!
   }
 
-  type LoginUserWithMagicLinkResponse {
+  type loginUserWithMagicLinkResponse {
     jwt: String!
     message: String!
     status: String!
   }
 
   type Query {
-    LoginUserWithMagicLink(
-      input: LoginUserWithMagicLinkInput
-    ): LoginUserWithMagicLinkResponse!
+    loginUserWithMagicLink(
+      input: loginUserWithMagicLinkInput
+    ): loginUserWithMagicLinkResponse!
   }
 `;
 const loginUserWithMagicLink = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {

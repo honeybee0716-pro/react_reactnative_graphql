@@ -80,7 +80,7 @@ const permissions = (0, graphql_shield_1.shield)({
         getUser: isAuthenticated,
         loginUserWithPassword: isNotAuthenticated,
         loginUserWithMagicLink: isNotAuthenticated,
-        signOut: isAuthenticated,
+        verifyUser: isAuthenticated,
     },
     Mutation: {
         changePassword: isAuthenticated,
@@ -88,11 +88,10 @@ const permissions = (0, graphql_shield_1.shield)({
         createUser: isNotAuthenticated,
         forgotPassword: isNotAuthenticated,
         updateUser: isAuthenticated,
-        verifyUser: isAuthenticated,
     },
 }, {
     fallbackError: 'Not authorized',
-    allowExternalErrors: true, // false on prod
+    allowExternalErrors: process.env.NODE_ENV === 'localhost',
 });
 const schema = (0, graphql_middleware_1.applyMiddleware)((0, schema_1.makeExecutableSchema)({
     typeDefs: index_1.typeDefs,
