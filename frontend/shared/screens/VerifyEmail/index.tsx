@@ -1,1 +1,1 @@
-export const VerifyEmailScreen = () => null;
+export const VerifyEmail = () => null;

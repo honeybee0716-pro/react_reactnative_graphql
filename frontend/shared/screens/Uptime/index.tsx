@@ -1,1 +1,1 @@
-export const HomeScreen = () => null;
+export const Uptime = () => null;
