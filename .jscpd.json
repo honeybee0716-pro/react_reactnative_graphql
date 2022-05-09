@@ -15,6 +15,7 @@
         "/**/*/tests",
         "/**/*/prisma",
         "/**/*/tsconfig.json",
-        "/**/*/posts.ts"
+        "/**/*/posts.ts",
+        "/**/*/*.svg"
     ]
 }
