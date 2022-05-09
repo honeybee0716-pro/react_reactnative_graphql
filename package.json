@@ -17,8 +17,10 @@
     "prepare": "husky install",
     "test": "jest"
   },
-  "hooks": {
-    "pre-commit": "lint-staged"
+  "husky": {
+    "hooks": {
+        "pre-commit": "lint-staged && jscpd -t 1"
+     }
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [
