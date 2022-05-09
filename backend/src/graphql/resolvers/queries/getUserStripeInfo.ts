@@ -23,9 +23,10 @@ export const getUserStripeInfoSchema = gql`
 
 const getUserStripeInfo = async (parent: any, {id}: any) => {
   const foundUser = await getUserByID(id);
+  const message = 'Stripe customer was not found.';
 
   if (!foundUser) {
-    throw new Error('User not found');
+    throw new Error(message);
   }
 
   const stripeCustomer = await stripe.customers.retrieve(
@@ -35,7 +36,7 @@ const getUserStripeInfo = async (parent: any, {id}: any) => {
   if (!stripeCustomer) {
     return {
       status: 'failed',
-      message: 'Stripe customer was not found.',
+      message,
       data: null,
     };
   }

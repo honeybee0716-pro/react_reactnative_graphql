@@ -23,6 +23,10 @@ export const getUserSchema = gql`
 const getUser = async (parent: any, {id}: any) => {
   const foundUser = await getUserByID(id);
 
+  if (!foundUser) {
+    throw new Error('User not found.');
+  }
+
   const user: any = {...foundUser};
 
   delete user.password;
