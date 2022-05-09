@@ -6,6 +6,7 @@
   "author": "Joey Fenny <16143306+JoeyFenny@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
+    "husky": "^8.0.0",
     "jscpd": "^3.4.5"
   },
   "scripts": {
