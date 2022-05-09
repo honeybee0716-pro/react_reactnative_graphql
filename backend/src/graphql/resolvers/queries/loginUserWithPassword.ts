@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {gql} from 'apollo-server';
 
-import {findUserByEmail} from '../../../utils/findUserByEmail';
+import {getUserByEmail} from '../../../utils/getUserByEmail';
 
 export const loginUserWithPasswordSchema = gql`
   scalar JSON
@@ -18,7 +18,7 @@ export const loginUserWithPasswordSchema = gql`
 `;
 
 const loginUserWithPassword = async (parent: null, args: any) => {
-  const foundUser = await findUserByEmail(args.input.email);
+  const foundUser = await getUserByEmail(args.input.email);
 
   if (!foundUser) {
     return {

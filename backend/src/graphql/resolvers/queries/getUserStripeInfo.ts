@@ -1,7 +1,7 @@
 import {gql} from 'apollo-server';
 
 import {stripe} from '../../../utils/stripe';
-import {prismaContext} from '../../prismaContext';
+import {getUserByID} from '../../../utils/getUserByID';
 
 export const getUserStripeInfoSchema = gql`
   scalar JSON
@@ -24,11 +24,7 @@ export const getUserStripeInfoSchema = gql`
 const getUserStripeInfo = async (parent: any, args: any) => {
   const {id} = args;
 
-  const foundUser = await prismaContext.prisma.user.findFirst({
-    where: {
-      id,
-    },
-  });
+  const foundUser = await getUserByID(id);
 
   if (!foundUser) {
     return {
