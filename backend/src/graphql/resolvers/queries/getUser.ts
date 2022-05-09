@@ -25,14 +25,6 @@ const getUser = async (parent: any, args: any) => {
 
   const foundUser = await getUserByID(id);
 
-  if (!foundUser) {
-    return {
-      message: 'User not found',
-      status: 'failed',
-      data: null,
-    };
-  }
-
   const user: any = {...foundUser};
   delete user.password;
 
