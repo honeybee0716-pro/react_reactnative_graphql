@@ -10,7 +10,7 @@ export const HomeScreen = () => {
       <MainGutter>
         <Navbar />
         <Feed />
-        <Text>Uptime</Text>
+        <Text>Home</Text>
       </MainGutter>
     </Styled.Container>
   )
