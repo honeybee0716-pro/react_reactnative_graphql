@@ -80,8 +80,26 @@ const createUser = (parent, args, context, info) => __awaiter(void 0, void 0, vo
     const salt = yield bcrypt_1.default.genSalt(10);
     const hashedPassword = yield bcrypt_1.default.hash(args.input.password, salt);
     const verifyEmailCode = (0, generateRandomNumber_1.generateRandomNumber)();
+    // create stripe customer
+    const stripeCustomer = yield stripe_1.stripe.customers.create({
+        email: args.input.email,
+        name: `${args.input.firstName} ${args.input.lastName}`,
+        balance: 0,
+        metadata: {
+            firstName: args.input.firstName,
+            lastName: args.input.lastName,
+            phoneNumber: args.input.phoneNumber,
+            username: args.input.username,
+            createdIPAddress: context.ipAddress,
+        },
+    });
+    // need to create stripeCustomer before db user because db user requires field stripeCustomerID
     const createdUser = yield prismaContext_1.prismaContext.prisma.user.create({
-        data: Object.assign(Object.assign({}, args.input), { password: hashedPassword, createdIPAddress: context.ipAddress, verifyEmailCode, verifyEmailCodeTimestamp: new Date() }),
+        data: Object.assign(Object.assign({}, args.input), { password: hashedPassword, createdIPAddress: context.ipAddress, verifyEmailCode, verifyEmailCodeTimestamp: new Date(), stripeCustomerID: stripeCustomer.id }),
+    });
+    // update stripeCustomer with userID
+    yield stripe_1.stripe.customers.update(stripeCustomer.id, {
+        metadata: { userID: createdUser.id },
     });
     yield (0, sendgrid_1.sendEmail)({
         to: args.input.email,
@@ -95,20 +113,6 @@ const createUser = (parent, args, context, info) => __awaiter(void 0, void 0, vo
         <a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/verify-email?code=${verifyEmailCode}">Please here to verify your email</a>
       </p>
     `,
-    });
-    // create stripe customer
-    yield stripe_1.stripe.customers.create({
-        email: args.input.email,
-        name: `${args.input.firstName} ${args.input.lastName}`,
-        balance: 0,
-        metadata: {
-            userID: createdUser.id,
-            firstName: args.input.firstName,
-            lastName: args.input.lastName,
-            phoneNumber: args.input.phoneNumber,
-            username: args.input.username,
-            createdIPAddress: context.ipAddress,
-        },
     });
     return {
         message: 'User created successfully',

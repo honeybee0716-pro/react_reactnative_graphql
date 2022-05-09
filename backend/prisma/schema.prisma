@@ -18,6 +18,7 @@ model PrismaInfo {
 model User {
   id                         String    @id @default(uuid())
   idAutoIncrement            Int       @default(autoincrement())
+  stripeCustomerID           String    @unique
   firstName                  String
   lastName                   String
   email                      String    @unique

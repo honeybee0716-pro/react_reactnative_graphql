@@ -8,11 +8,13 @@ const getUser_1 = __importDefault(require("./getUser"));
 const verifyUser_1 = __importDefault(require("./verifyUser"));
 const loginUserWithPassword_1 = __importDefault(require("./loginUserWithPassword"));
 const loginUserWithMagicLink_1 = __importDefault(require("./loginUserWithMagicLink"));
+const getUserStripeInfo_1 = __importDefault(require("./getUserStripeInfo"));
 exports.RootQuery = {
     getUser: getUser_1.default,
     loginUserWithPassword: loginUserWithPassword_1.default,
     loginUserWithMagicLink: loginUserWithMagicLink_1.default,
     verifyUser: verifyUser_1.default,
+    getUserStripeInfo: getUserStripeInfo_1.default,
 };
 exports.default = exports.RootQuery;
 //# sourceMappingURL=index.js.map

@@ -12,6 +12,7 @@ const verifyUser_1 = require("../resolvers/queries/verifyUser");
 const loginUserWithMagicLink_1 = require("../resolvers/queries/loginUserWithMagicLink");
 const loginUserWithPassword_1 = require("../resolvers/queries/loginUserWithPassword");
 const banUser_1 = require("../resolvers/mutations/banUser");
+const getUserStripeInfo_1 = require("../resolvers/queries/getUserStripeInfo");
 const shared_1 = require("./shared");
 exports.typeDefs = (0, merge_1.mergeTypeDefs)([
     shared_1.sharedSchema,
@@ -25,5 +26,6 @@ exports.typeDefs = (0, merge_1.mergeTypeDefs)([
     completeForgotPassword_1.completeForgotPasswordSchema,
     updateUser_1.updateUserSchema,
     banUser_1.banUserSchema,
+    getUserStripeInfo_1.getUserStripeInfoSchema,
 ]);
 //# sourceMappingURL=index.js.map

@@ -10,6 +10,7 @@ import {verifyUserSchema} from '../resolvers/queries/verifyUser';
 import {loginUserWithMagicLinkSchema} from '../resolvers/queries/loginUserWithMagicLink';
 import {loginUserWithPasswordSchema} from '../resolvers/queries/loginUserWithPassword';
 import {banUserSchema} from '../resolvers/mutations/banUser';
+import {getUserStripeInfoSchema} from '../resolvers/queries/getUserStripeInfo';
 
 import {sharedSchema} from './shared';
 
@@ -25,4 +26,5 @@ export const typeDefs = mergeTypeDefs([
   completeForgotPasswordSchema,
   updateUserSchema,
   banUserSchema,
+  getUserStripeInfoSchema,
 ]) as any;

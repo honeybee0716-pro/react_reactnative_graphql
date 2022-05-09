@@ -76,6 +76,21 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
 
   const verifyEmailCode = generateRandomNumber();
 
+  // create stripe customer
+  const stripeCustomer = await stripe.customers.create({
+    email: args.input.email,
+    name: `${args.input.firstName} ${args.input.lastName}`,
+    balance: 0,
+    metadata: {
+      firstName: args.input.firstName,
+      lastName: args.input.lastName,
+      phoneNumber: args.input.phoneNumber,
+      username: args.input.username,
+      createdIPAddress: context.ipAddress,
+    },
+  });
+
+  // need to create stripeCustomer before db user because db user requires field stripeCustomerID
   const createdUser = await prismaContext.prisma.user.create({
     data: {
       ...args.input,
@@ -83,7 +98,13 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
       createdIPAddress: context.ipAddress,
       verifyEmailCode,
       verifyEmailCodeTimestamp: new Date(),
+      stripeCustomerID: stripeCustomer.id,
     },
+  });
+
+  // update stripeCustomer with userID
+  await stripe.customers.update(stripeCustomer.id, {
+    metadata: {userID: createdUser.id},
   });
 
   await sendEmail({
@@ -98,21 +119,6 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
         <a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/verify-email?code=${verifyEmailCode}">Please here to verify your email</a>
       </p>
     `,
-  });
-
-  // create stripe customer
-  await stripe.customers.create({
-    email: args.input.email,
-    name: `${args.input.firstName} ${args.input.lastName}`,
-    balance: 0,
-    metadata: {
-      userID: createdUser.id,
-      firstName: args.input.firstName,
-      lastName: args.input.lastName,
-      phoneNumber: args.input.phoneNumber,
-      username: args.input.username,
-      createdIPAddress: context.ipAddress,
-    },
   });
 
   return {
