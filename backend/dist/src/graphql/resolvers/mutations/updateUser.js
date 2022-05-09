@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUserSchema = void 0;
 const apollo_server_1 = require("apollo-server");
+const prismaContext_1 = require("../../prismaContext");
 exports.updateUserSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
@@ -39,11 +40,20 @@ exports.updateUserSchema = (0, apollo_server_1.gql) `
     updateUser(input: updateUserInput): updateUserResponse!
   }
 `;
-/* eslint-disable @typescript-eslint/no-unused-vars */
-function default_1(parent, args) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return true;
+const updateUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = args.input;
+    const newData = Object.assign({}, args.input);
+    delete newData.id;
+    yield prismaContext_1.prismaContext.prisma.user.update({
+        where: {
+            id,
+        },
+        data: Object.assign({}, args.input),
     });
-}
-exports.default = default_1;
+    return {
+        message: 'User updated successfully',
+        status: 'success',
+    };
+});
+exports.default = updateUser;
 //# sourceMappingURL=updateUser.js.map

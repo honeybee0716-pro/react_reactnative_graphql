@@ -13,6 +13,7 @@ exports.forgotPasswordSchema = void 0;
 const apollo_server_1 = require("apollo-server");
 const prismaContext_1 = require("../../prismaContext");
 const generateRandomNumber_1 = require("../../../utils/generateRandomNumber");
+const sendgrid_1 = require("../../../utils/sendgrid");
 exports.forgotPasswordSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
@@ -21,7 +22,6 @@ exports.forgotPasswordSchema = (0, apollo_server_1.gql) `
   }
 
   type forgotPasswordResponse {
-    jwt: String!
     message: String!
     status: String!
   }
@@ -32,17 +32,30 @@ exports.forgotPasswordSchema = (0, apollo_server_1.gql) `
 `;
 const forgotPassword = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = args.input;
-    const resetCode = (0, generateRandomNumber_1.generateRandomNumber)();
-    const updatedUser = yield prismaContext_1.prismaContext.prisma.user.update({
+    const passwordResetCode = (0, generateRandomNumber_1.generateRandomNumber)();
+    yield prismaContext_1.prismaContext.prisma.user.update({
         where: {
             email,
         },
         data: {
-            passwordResetCode: resetCode,
+            passwordResetCode,
         },
     });
+    yield (0, sendgrid_1.sendEmail)({
+        to: email,
+        subject: 'Password Reset',
+        text: `You have requested to reset your password. Please click here to reset your password: ${process.env.FRONTEND_URL}/reset-password?code=${passwordResetCode}.`,
+        html: `
+      <p>
+        You have requested to reset your password.
+      </p>
+      <p>
+        <a href="${process.env.FRONTEND_URL}/reset-password?code=${passwordResetCode}">Please here to reset your password</a>
+      </p>
+    `,
+    });
     return {
-        message: 'Reset code was sent',
+        message: 'If there is a user with this email, there will be a link to reset your password in your email inbox.',
         status: 'success',
     };
 });
