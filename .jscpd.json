@@ -17,6 +17,7 @@
         "/**/*/tsconfig.json",
         "/**/*/posts.ts",
         "/**/*/*.svg",
-        "/**/*/formFields.ts"
+        "/**/*/formFields.ts",
+        "/**/*/footerLinks.ts"
     ]
 }
