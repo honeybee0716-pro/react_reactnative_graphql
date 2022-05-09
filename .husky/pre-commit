@@ -1,3 +1,4 @@
-yarn lint-staged
-yarn jscpd
-yarn test --passWithNoTests
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+yarn precommit

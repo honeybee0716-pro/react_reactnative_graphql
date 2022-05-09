@@ -20,6 +20,7 @@ export const getUserByEmailSchema = gql`
   }
 `;
 
+/* jscpd:ignore-start */
 const getUserByEmail = async (parent: any, args: any) => {
   const {email} = args.input;
 
@@ -43,5 +44,6 @@ const getUserByEmail = async (parent: any, args: any) => {
     data: user,
   };
 };
+/* jscpd:ignore-end */
 
 export default getUserByEmail;

@@ -5,6 +5,7 @@
   "repository": "https://github.com/JoeyFenny/saas-starter.git",
   "author": "Joey Fenny <16143306+JoeyFenny@users.noreply.github.com>",
   "license": "MIT",
+  "private": true,
   "devDependencies": {
     "husky": "^8.0.0",
     "jest": "^28.1.0",
@@ -15,12 +16,13 @@
   "scripts": {
     "postinstall": "husky install",
     "prepare": "husky install",
+    "precommit": "yarn lint-staged && yarn jscpd && yarn jest --passWithNoTests",
     "test": "jest"
   },
   "husky": {
     "hooks": {
-        "pre-commit": "lint-staged && jscpd -t 1"
-     }
+      "pre-commit": "yarn precommit --bailOnLintError true"
+    }
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [

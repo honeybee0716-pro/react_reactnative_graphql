@@ -20,6 +20,7 @@ export const getUserByIDSchema = gql`
   }
 `;
 
+/* jscpd:ignore-start */
 const getUserByID = async (parent: any, args: any) => {
   const {id} = args.input;
 
@@ -43,5 +44,6 @@ const getUserByID = async (parent: any, args: any) => {
     data: user,
   };
 };
+/* jscpd:ignore-end */
 
 export default getUserByID;
