@@ -8,6 +8,7 @@ import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 import jwt from 'jsonwebtoken';
 
+import {sendSlackMessage} from './utils/slack';
 import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
 import {AppConfig} from './config/appConfig';

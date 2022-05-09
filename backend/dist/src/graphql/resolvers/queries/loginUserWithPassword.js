@@ -16,7 +16,7 @@ exports.loginUserWithPasswordSchema = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const apollo_server_1 = require("apollo-server");
-const prismaContext_1 = require("../../prismaContext");
+const findUserByEmail_1 = require("../../../utils/findUserByEmail");
 exports.loginUserWithPasswordSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
@@ -25,28 +25,12 @@ exports.loginUserWithPasswordSchema = (0, apollo_server_1.gql) `
     password: String!
   }
 
-  type loginUserWithPasswordResponse {
-    jwt: String!
-    message: String!
-    status: String!
-  }
-
   type Query {
-    loginUserWithPassword(
-      input: loginUserWithPasswordInput
-    ): loginUserWithPasswordResponse!
+    loginUserWithPassword(input: loginUserWithPasswordInput): loginUserResponse!
   }
 `;
 const loginUserWithPassword = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = yield prismaContext_1.prismaContext.prisma.user.findUnique({
-        select: {
-            id: true,
-            password: true,
-        },
-        where: {
-            email: args.input.email,
-        },
-    });
+    const foundUser = yield (0, findUserByEmail_1.findUserByEmail)(args.input.email);
     if (!foundUser) {
         return {
             message: 'There was an issue with your login.',

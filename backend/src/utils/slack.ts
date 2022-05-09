@@ -1,3 +1,8 @@
-// import Slack from 'slack';
+import {IncomingWebhook} from '@slack/webhook';
 
-export const slack = () => null;
+// Initialize
+export const sendSlackMessage = (message: string) => {
+  const webhook = new IncomingWebhook(<string>process.env.SLACK_WEBHOOK_URL);
+
+  webhook.send(message);
+};

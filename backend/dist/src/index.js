@@ -41,6 +41,7 @@ const graphql_shield_1 = require("graphql-shield");
 const Sentry = __importStar(require("@sentry/node"));
 require("@sentry/tracing");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const slack_1 = require("./utils/slack");
 const index_1 = require("./graphql/typeDefs/index");
 const resolvers_1 = require("./graphql/resolvers");
 const appConfig_1 = require("./config/appConfig");
@@ -149,6 +150,7 @@ const setupServer = () => __awaiter(void 0, void 0, void 0, function* () {
     catch (e) {
         console.log(`Prisma not connected: ${e}`);
     }
+    (0, slack_1.sendSlackMessage)('test123');
 });
 exports.setupServer = setupServer;
 (0, exports.setupServer)();

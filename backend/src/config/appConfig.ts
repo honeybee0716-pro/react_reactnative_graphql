@@ -38,6 +38,7 @@ export interface IAppConfig {
   TWILIO_ACCOUNT_SID: string;
   TWILIO_AUTH_TOKEN: string;
   TWILIO_PHONE_NUMBER: string;
+  SLACK_WEBHOOK_URL: string;
 }
 
 export const AppConfig: IAppConfig = {
@@ -55,4 +56,5 @@ export const AppConfig: IAppConfig = {
   TWILIO_ACCOUNT_SID: loadEnvironmentVariable('TWILIO_ACCOUNT_SID'),
   TWILIO_AUTH_TOKEN: loadEnvironmentVariable('TWILIO_AUTH_TOKEN'),
   TWILIO_PHONE_NUMBER: loadEnvironmentVariable('TWILIO_PHONE_NUMBER'),
+  SLACK_WEBHOOK_URL: loadEnvironmentVariable('SLACK_WEBHOOK_URL'),
 };

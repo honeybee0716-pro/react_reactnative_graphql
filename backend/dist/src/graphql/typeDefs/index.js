@@ -12,7 +12,9 @@ const verifyUser_1 = require("../resolvers/queries/verifyUser");
 const loginUserWithMagicLink_1 = require("../resolvers/queries/loginUserWithMagicLink");
 const loginUserWithPassword_1 = require("../resolvers/queries/loginUserWithPassword");
 const banUser_1 = require("../resolvers/mutations/banUser");
+const shared_1 = require("./shared");
 exports.typeDefs = (0, merge_1.mergeTypeDefs)([
+    shared_1.sharedSchema,
     createUser_1.createUserSchema,
     loginUserWithMagicLink_1.loginUserWithMagicLinkSchema,
     loginUserWithPassword_1.loginUserWithPasswordSchema,

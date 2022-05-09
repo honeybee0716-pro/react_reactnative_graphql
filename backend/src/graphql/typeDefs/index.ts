@@ -11,7 +11,10 @@ import {loginUserWithMagicLinkSchema} from '../resolvers/queries/loginUserWithMa
 import {loginUserWithPasswordSchema} from '../resolvers/queries/loginUserWithPassword';
 import {banUserSchema} from '../resolvers/mutations/banUser';
 
+import {sharedSchema} from './shared';
+
 export const typeDefs = mergeTypeDefs([
+  sharedSchema,
   createUserSchema,
   loginUserWithMagicLinkSchema,
   loginUserWithPasswordSchema,

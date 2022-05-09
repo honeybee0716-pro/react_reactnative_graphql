@@ -33,5 +33,6 @@ exports.AppConfig = {
     TWILIO_ACCOUNT_SID: (0, exports.loadEnvironmentVariable)('TWILIO_ACCOUNT_SID'),
     TWILIO_AUTH_TOKEN: (0, exports.loadEnvironmentVariable)('TWILIO_AUTH_TOKEN'),
     TWILIO_PHONE_NUMBER: (0, exports.loadEnvironmentVariable)('TWILIO_PHONE_NUMBER'),
+    SLACK_WEBHOOK_URL: (0, exports.loadEnvironmentVariable)('SLACK_WEBHOOK_URL'),
 };
 //# sourceMappingURL=appConfig.js.map

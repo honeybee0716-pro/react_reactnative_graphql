@@ -1,6 +1,6 @@
 import {gql} from 'apollo-server';
 
-export const forgotPasswordSchema = gql`
+export const sharedSchema = gql`
   scalar JSON
 
   type loginUserResponse {
