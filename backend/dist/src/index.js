@@ -27,6 +27,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupServer = exports.prisma = void 0;
 /* eslint-disable no-console */
@@ -37,9 +40,11 @@ const graphql_middleware_1 = require("graphql-middleware");
 const graphql_shield_1 = require("graphql-shield");
 const Sentry = __importStar(require("@sentry/node"));
 require("@sentry/tracing");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const index_1 = require("./graphql/typeDefs/index");
 const resolvers_1 = require("./graphql/resolvers");
 const appConfig_1 = require("./config/appConfig");
+const getUser_1 = __importDefault(require("./graphql/resolvers/queries/getUser"));
 if (process.env.NODE_ENV !== 'localhost') {
     Sentry.init({
         dsn: process.env.SENTRY_DSN,
@@ -50,31 +55,33 @@ if (process.env.NODE_ENV !== 'localhost') {
     });
 }
 exports.prisma = new client_1.PrismaClient();
-const createContext = ({ req }) => {
+const createContext = ({ req }) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { headers } = req;
-    const auth = headers;
-    // parse Auth header and parse it / check for validity / get auth state from it
-    // put the auth info into context
-    // const currentUser =
-    // (req.headers.authorization &&
-    //   (jwt.verify(
-    //     req.headers.authorization,
-    //     process.env.JWTSIGN
-    //   ) as Context["currentUser"])) ||
-    // null;
+    const providedJWT = (_a = headers === null || headers === void 0 ? void 0 : headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+    let decodedJWT;
+    try {
+        decodedJWT = jsonwebtoken_1.default.verify(providedJWT, process.env.JWT_SECRET);
+        if (!decodedJWT.id) {
+            throw new Error('Invalid JWT');
+        }
+    }
+    catch (err) {
+        throw new Error('Invalid JWT');
+    }
+    const user = yield (0, getUser_1.default)(undefined, { id: decodedJWT.id });
+    if (!user) {
+        throw new Error('Invalid JWT');
+    }
     return {
-        auth,
+        user: user.data,
         ipAddress: req.ip,
         req,
     };
-};
-const isAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () { return context.user !== null; }));
-const isNotAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context, info) => __awaiter(void 0, void 0, void 0, function* () {
-    return true;
-}));
-// const isAdmin = rule({cache: 'contextual'})(
-//   async (parent, args, context, info) => context.user.role === 'admin',
-// );
+});
+const isAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context) => __awaiter(void 0, void 0, void 0, function* () { return !!context.user; }));
+const isNotAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context) => __awaiter(void 0, void 0, void 0, function* () { return !context.user; }));
+const isAdmin = (0, graphql_shield_1.rule)({ cache: 'contextual' })((parent, args, context) => __awaiter(void 0, void 0, void 0, function* () { return context.user.role === 'ADMIN'; }));
 const permissions = (0, graphql_shield_1.shield)({
     Query: {
         getUser: isAuthenticated,
@@ -88,6 +95,7 @@ const permissions = (0, graphql_shield_1.shield)({
         createUser: isNotAuthenticated,
         forgotPassword: isNotAuthenticated,
         updateUser: isAuthenticated,
+        banUser: isAdmin,
     },
 }, {
     fallbackError: 'Not authorized',

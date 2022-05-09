@@ -30,10 +30,10 @@ export const updateUserSchema = gql`
   }
 `;
 
-const updateUser = async (parent: null, args: any) => {
+const updateUser = async (parent: null, args: any, context: any) => {
   await prismaContext.prisma.user.update({
     where: {
-      id: '6e951574-a4bc-467c-b72f-ea269beadc71', // pull user id from auth context, not from args
+      id: context.user.id,
     },
     data: {
       ...args.input, // only graphql input fields will be allowed, so no real security concern here

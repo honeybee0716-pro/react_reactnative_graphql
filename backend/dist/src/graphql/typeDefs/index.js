@@ -11,6 +11,7 @@ const getUser_1 = require("../resolvers/queries/getUser");
 const verifyUser_1 = require("../resolvers/queries/verifyUser");
 const loginUserWithMagicLink_1 = require("../resolvers/queries/loginUserWithMagicLink");
 const loginUserWithPassword_1 = require("../resolvers/queries/loginUserWithPassword");
+const banUser_1 = require("../resolvers/mutations/banUser");
 exports.typeDefs = (0, merge_1.mergeTypeDefs)([
     createUser_1.createUserSchema,
     loginUserWithMagicLink_1.loginUserWithMagicLinkSchema,
@@ -21,5 +22,6 @@ exports.typeDefs = (0, merge_1.mergeTypeDefs)([
     forgotPassword_1.forgotPasswordSchema,
     completeForgotPassword_1.completeForgotPasswordSchema,
     updateUser_1.updateUserSchema,
+    banUser_1.banUserSchema,
 ]);
 //# sourceMappingURL=index.js.map

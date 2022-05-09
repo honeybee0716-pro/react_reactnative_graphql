@@ -9,47 +9,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserSchema = void 0;
+exports.banUserSchema = void 0;
 const apollo_server_1 = require("apollo-server");
 const prismaContext_1 = require("../../prismaContext");
-exports.updateUserSchema = (0, apollo_server_1.gql) `
+exports.banUserSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
-  type updateUserResponse {
+  type banUserResponse {
     message: String!
     status: String!
   }
 
-  input updateUserInput {
-    firstName: String
-    lastName: String
-    email: String
-    phoneNumber: String
-    username: String
-    password: String
-    twitter: String
-    facebook: String
-    google: String
-    github: String
-    linkedin: String
-    instagram: String
+  input banUserInput {
+    userID: String
   }
 
   type Mutation {
-    updateUser(input: updateUserInput): updateUserResponse!
+    banUser(input: banUserInput): banUserResponse!
   }
 `;
-const updateUser = (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+const banUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
     yield prismaContext_1.prismaContext.prisma.user.update({
         where: {
-            id: context.user.id,
+            id: args.input.userID,
         },
-        data: Object.assign({}, args.input),
+        data: {
+            bannedAt: new Date(),
+        },
     });
     return {
-        message: 'User updated successfully',
+        message: 'User banned successfully.',
         status: 'success',
     };
 });
-exports.default = updateUser;
-//# sourceMappingURL=updateUser.js.map
+exports.default = banUser;
+//# sourceMappingURL=banUser.js.map

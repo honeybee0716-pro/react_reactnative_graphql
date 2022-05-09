@@ -6,10 +6,12 @@ import {applyMiddleware} from 'graphql-middleware';
 import {rule, shield, not} from 'graphql-shield';
 import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
+import jwt from 'jsonwebtoken';
 
 import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
 import {AppConfig} from './config/appConfig';
+import getUser from './graphql/resolvers/queries/getUser';
 
 if (process.env.NODE_ENV !== 'localhost') {
   Sentry.init({
@@ -23,40 +25,46 @@ if (process.env.NODE_ENV !== 'localhost') {
 
 export const prisma = new PrismaClient();
 
-const createContext = ({req}: any) => {
+const createContext = async ({req}: any) => {
   const {headers} = req;
-  const auth = headers;
 
-  // parse Auth header and parse it / check for validity / get auth state from it
+  const providedJWT = headers?.authorization?.split('Bearer ')[1];
+  let decodedJWT: any;
 
-  // put the auth info into context
+  try {
+    decodedJWT = jwt.verify(providedJWT, <string>process.env.JWT_SECRET);
 
-  // const currentUser =
-  // (req.headers.authorization &&
-  //   (jwt.verify(
-  //     req.headers.authorization,
-  //     process.env.JWTSIGN
-  //   ) as Context["currentUser"])) ||
-  // null;
+    if (!decodedJWT.id) {
+      throw new Error('Invalid JWT');
+    }
+  } catch (err) {
+    throw new Error('Invalid JWT');
+  }
+
+  const user = await getUser(undefined, {id: decodedJWT.id});
+
+  if (!user) {
+    throw new Error('Invalid JWT');
+  }
 
   return {
-    auth,
+    user: user.data,
     ipAddress: req.ip,
     req,
   };
 };
 
-const isAuthenticated = rule()(
-  async (parent, args, context, info) => context.user !== null,
+// const any = rule()(async (parent, args, context) => true);
+
+const isAuthenticated = rule()(async (parent, args, context) => !!context.user);
+
+const isNotAuthenticated = rule()(
+  async (parent, args, context) => !context.user,
 );
 
-const isNotAuthenticated = rule()(async (parent, args, context, info) => {
-  return true;
-});
-
-// const isAdmin = rule({cache: 'contextual'})(
-//   async (parent, args, context, info) => context.user.role === 'admin',
-// );
+const isAdmin = rule()(
+  async (parent, args, context) => context.user.role === 'ADMIN',
+);
 
 const permissions = shield(
   {
@@ -72,10 +80,11 @@ const permissions = shield(
       createUser: isNotAuthenticated,
       forgotPassword: isNotAuthenticated,
       updateUser: isAuthenticated,
+      banUser: isAdmin,
     },
   },
   {
-    fallbackError: 'Not authorized',
+    fallbackError: 'You are not authorizationd to perform this action.',
     allowExternalErrors: process.env.NODE_ENV === 'localhost',
   },
 );

@@ -16,18 +16,20 @@ model PrismaInfo {
 }
 
 model User {
-  id                   String   @id @default(uuid())
-  idAutoIncrement      Int      @default(autoincrement())
+  id                   String    @id @default(uuid())
+  idAutoIncrement      Int       @default(autoincrement())
   firstName            String
   lastName             String
-  email                String   @unique
-  emailIsVerified      Boolean  @default(false)
+  email                String    @unique
+  emailIsVerified      Boolean   @default(false)
   phoneNumber          String?
-  username             String   @unique
+  username             String    @unique
   password             String
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @default(now())
-  allowMarketingEmails Boolean  @default(true)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @default(now())
+  deletedAt            DateTime?
+  bannedAt             DateTime?
+  allowMarketingEmails Boolean   @default(true)
   createdIPAddress     String
   // authorizedIPAddresses String[]
   twitter              String?
@@ -37,6 +39,12 @@ model User {
   linkedin             String?
   instagram            String?
   passwordResetCode    Int?
+  role                 Role      @default(BASIC)
+}
+
+enum Role {
+  BASIC
+  ADMIN
 }
 
 model Post {
