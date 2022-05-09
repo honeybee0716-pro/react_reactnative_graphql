@@ -21,9 +21,7 @@ export const getUserStripeInfoSchema = gql`
   }
 `;
 
-const getUserStripeInfo = async (parent: any, args: any) => {
-  const {id} = args;
-
+const getUserStripeInfo = async (parent: any, {id}: any) => {
   const foundUser = await getUserByID(id);
 
   if (!foundUser) {

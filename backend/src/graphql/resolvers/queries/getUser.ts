@@ -20,12 +20,11 @@ export const getUserSchema = gql`
   }
 `;
 
-const getUser = async (parent: any, args: any) => {
-  const {id} = args;
-
+const getUser = async (parent: any, {id}: any) => {
   const foundUser = await getUserByID(id);
 
   const user: any = {...foundUser};
+
   delete user.password;
 
   return {
