@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import {gql} from 'apollo-server';
 
-import {prismaContext} from '../../prismaContext';
 import {sendEmail} from '../../../utils/sendgrid';
+import {findUserByEmail} from '../../../utils/findUserByEmail';
 
 export const loginUserWithMagicLinkSchema = gql`
   scalar JSON
@@ -11,29 +11,15 @@ export const loginUserWithMagicLinkSchema = gql`
     email: String!
   }
 
-  type loginUserWithMagicLinkResponse {
-    jwt: String!
-    message: String!
-    status: String!
-  }
-
   type Query {
     loginUserWithMagicLink(
       input: loginUserWithMagicLinkInput
-    ): loginUserWithMagicLinkResponse!
+    ): loginUserResponse!
   }
 `;
 
 const loginUserWithMagicLink = async (parent: null, args: any) => {
-  const foundUser = await prismaContext.prisma.user.findUnique({
-    select: {
-      id: true,
-      password: true,
-    },
-    where: {
-      email: args.input.email,
-    },
-  });
+  const foundUser = await findUserByEmail(args.input.email);
 
   const message =
     'If there is an account with that email, you will receive a login link in your email.';
