@@ -26,6 +26,10 @@ const getUserStripeInfo = async (parent: any, args: any) => {
 
   const foundUser = await getUserByID(id);
 
+  if (!foundUser) {
+    throw new Error('User not found');
+  }
+
   const stripeCustomer = await stripe.customers.retrieve(
     foundUser.stripeCustomerID,
   );

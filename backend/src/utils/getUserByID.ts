@@ -7,7 +7,5 @@ export const getUserByID = async (id: string) => {
     },
   });
 
-  if (!foundUser) {
-    throw new Error('User not found');
-  }
+  return foundUser;
 };
