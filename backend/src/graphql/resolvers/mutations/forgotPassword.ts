@@ -32,6 +32,7 @@ const forgotPassword = async (parent: any, args: any) => {
     },
     data: {
       passwordResetCode,
+      passwordResetTimestamp: new Date(),
     },
   });
 
