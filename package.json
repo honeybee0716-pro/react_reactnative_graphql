@@ -9,7 +9,8 @@
     "husky": "^8.0.0",
     "jest": "^28.1.0",
     "jscpd": "^3.4.5",
-    "lint-staged": "^12.4.1"
+    "lint-staged": "^12.4.1",
+    "prettier": "^2.6.2"
   },
   "scripts": {
     "postinstall": "husky install",
