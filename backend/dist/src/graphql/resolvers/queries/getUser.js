@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserSchema = void 0;
 const apollo_server_1 = require("apollo-server");
-const prismaContext_1 = require("../../prismaContext");
+const getUserByID_1 = require("../../../utils/getUserByID");
 exports.getUserSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
@@ -29,19 +29,10 @@ exports.getUserSchema = (0, apollo_server_1.gql) `
     getUser(input: getUserInput): getUserResponse!
   }
 `;
-const getUser = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = args;
-    const foundUser = yield prismaContext_1.prismaContext.prisma.user.findFirst({
-        where: {
-            id,
-        },
-    });
+const getUser = (parent, { id }) => __awaiter(void 0, void 0, void 0, function* () {
+    const foundUser = yield (0, getUserByID_1.getUserByID)(id);
     if (!foundUser) {
-        return {
-            message: 'User not found',
-            status: 'failed',
-            data: null,
-        };
+        throw new Error('User not found.');
     }
     const user = Object.assign({}, foundUser);
     delete user.password;

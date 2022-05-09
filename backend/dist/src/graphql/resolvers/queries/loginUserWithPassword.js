@@ -16,7 +16,7 @@ exports.loginUserWithPasswordSchema = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const apollo_server_1 = require("apollo-server");
-const findUserByEmail_1 = require("../../../utils/findUserByEmail");
+const getUserByEmail_1 = require("../../../utils/getUserByEmail");
 exports.loginUserWithPasswordSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
@@ -30,7 +30,7 @@ exports.loginUserWithPasswordSchema = (0, apollo_server_1.gql) `
   }
 `;
 const loginUserWithPassword = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = yield (0, findUserByEmail_1.findUserByEmail)(args.input.email);
+    const foundUser = yield (0, getUserByEmail_1.getUserByEmail)(args.input.email);
     if (!foundUser) {
         return {
             message: 'There was an issue with your login.',

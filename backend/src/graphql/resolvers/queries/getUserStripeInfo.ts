@@ -2,6 +2,7 @@ import {gql} from 'apollo-server';
 
 import {stripe} from '../../../utils/stripe';
 import {getUserByID} from '../../../utils/getUserByID';
+import {enUS} from '../../../constants/en_us';
 
 export const getUserStripeInfoSchema = gql`
   scalar JSON
@@ -21,12 +22,12 @@ export const getUserStripeInfoSchema = gql`
   }
 `;
 
-const getUserStripeInfo = async (parent: any, {id}: any) => {
+const getUserStripeInfo = async (parent: any, args: any) => {
+  const {id} = args.input;
   const foundUser = await getUserByID(id);
-  const message = 'Stripe customer was not found.';
 
   if (!foundUser) {
-    throw new Error(message);
+    throw new Error(enUS['error.userNotFound']);
   }
 
   const stripeCustomer = await stripe.customers.retrieve(
@@ -36,13 +37,13 @@ const getUserStripeInfo = async (parent: any, {id}: any) => {
   if (!stripeCustomer) {
     return {
       status: 'failed',
-      message,
+      message: enUS['error.userNotFound'],
       data: null,
     };
   }
 
   return {
-    message: 'Stripe customer was found.',
+    message: enUS['success.userWasFound'],
     status: 'success',
     data: stripeCustomer,
   };

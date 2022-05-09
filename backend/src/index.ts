@@ -3,12 +3,12 @@ import {ApolloServer} from 'apollo-server';
 import {makeExecutableSchema} from '@graphql-tools/schema';
 import {PrismaClient} from '@prisma/client';
 import {applyMiddleware} from 'graphql-middleware';
-import {rule, shield, not} from 'graphql-shield';
+import {rule, shield} from 'graphql-shield';
 import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 import jwt from 'jsonwebtoken';
 
-import {sendSlackMessage} from './utils/slack';
+import {enUS} from './constants/en_us';
 import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
 import {AppConfig} from './config/appConfig';
@@ -43,16 +43,16 @@ const createContext = async ({req}: any) => {
     decodedJWT = jwt.verify(providedJWT, <string>process.env.JWT_SECRET);
 
     if (!decodedJWT.id) {
-      throw new Error('Invalid JWT');
+      throw new Error(enUS['error.invalidJWT']);
     }
   } catch (err) {
-    throw new Error('Invalid JWT');
+    throw new Error(enUS['error.invalidJWT']);
   }
 
   const user = await getUser(undefined, {id: decodedJWT.id});
 
   if (!user) {
-    throw new Error('Invalid JWT');
+    throw new Error(enUS['error.invalidJWT']);
   }
 
   return {
@@ -92,7 +92,7 @@ const permissions = shield(
     },
   },
   {
-    fallbackError: 'You are not authorizationd to perform this action.',
+    fallbackError: enUS['error.notAuthorized'],
     allowExternalErrors: process.env.NODE_ENV === 'localhost',
   },
 );

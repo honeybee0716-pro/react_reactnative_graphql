@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserStripeInfoSchema = void 0;
 const apollo_server_1 = require("apollo-server");
 const stripe_1 = require("../../../utils/stripe");
-const prismaContext_1 = require("../../prismaContext");
+const getUserByID_1 = require("../../../utils/getUserByID");
 exports.getUserStripeInfoSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
@@ -30,25 +30,17 @@ exports.getUserStripeInfoSchema = (0, apollo_server_1.gql) `
     getUserStripeInfo(input: getUserStripeInfoInput): getUserStripeInfoResponse!
   }
 `;
-const getUserStripeInfo = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = args;
-    const foundUser = yield prismaContext_1.prismaContext.prisma.user.findFirst({
-        where: {
-            id,
-        },
-    });
+const getUserStripeInfo = (parent, { id }) => __awaiter(void 0, void 0, void 0, function* () {
+    const foundUser = yield (0, getUserByID_1.getUserByID)(id);
+    const message = 'Stripe customer was not found.';
     if (!foundUser) {
-        return {
-            message: 'Stripe customer was not found.',
-            status: 'failed',
-            data: null,
-        };
+        throw new Error(message);
     }
     const stripeCustomer = yield stripe_1.stripe.customers.retrieve(foundUser.stripeCustomerID);
     if (!stripeCustomer) {
         return {
             status: 'failed',
-            message: 'Stripe customer was not found.',
+            message,
             data: null,
         };
     }
