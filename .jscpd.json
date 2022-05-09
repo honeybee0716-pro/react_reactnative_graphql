@@ -16,6 +16,7 @@
         "/**/*/prisma",
         "/**/*/tsconfig.json",
         "/**/*/posts.ts",
-        "/**/*/*.svg"
+        "/**/*/*.svg",
+        "/**/*/formFields.ts"
     ]
 }
