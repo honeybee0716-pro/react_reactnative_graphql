@@ -16,32 +16,34 @@ model PrismaInfo {
 }
 
 model User {
-  id                     String    @id @default(uuid())
-  idAutoIncrement        Int       @default(autoincrement())
-  firstName              String
-  lastName               String
-  email                  String    @unique
-  emailIsVerified        Boolean   @default(false)
-  phoneNumber            String?
-  username               String    @unique
-  password               String
-  createdAt              DateTime  @default(now())
-  updatedAt              DateTime  @default(now())
-  deletedAt              DateTime?
-  bannedAt               DateTime?
-  allowMarketingEmails   Boolean   @default(true)
-  createdIPAddress       String
+  id                         String    @id @default(uuid())
+  idAutoIncrement            Int       @default(autoincrement())
+  firstName                  String
+  lastName                   String
+  email                      String    @unique
+  emailIsVerified            Boolean   @default(false)
+  phoneNumber                String?
+  username                   String    @unique
+  password                   String
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @default(now())
+  deletedAt                  DateTime?
+  bannedAt                   DateTime?
+  allowMarketingEmails       Boolean   @default(true)
+  createdIPAddress           String
   // authorizedIPAddresses String[]
-  twitter                String?
-  facebook               String?
-  google                 String?
-  github                 String?
-  linkedin               String?
-  instagram              String?
-  passwordResetCode      Int?
-  passwordResetTimestamp DateTime?
-  trialCreatedAt         DateTime?
-  role                   Role      @default(BASIC)
+  twitter                    String?
+  facebook                   String?
+  google                     String?
+  github                     String?
+  linkedin                   String?
+  instagram                  String?
+  passwordResetCode          Int?
+  passwordResetCodeTimestamp DateTime?
+  verifyEmailCode            Int?
+  verifyEmailCodeTimestamp   DateTime?
+  trialCreatedAt             DateTime?
+  role                       Role      @default(BASIC)
 }
 
 enum Role {

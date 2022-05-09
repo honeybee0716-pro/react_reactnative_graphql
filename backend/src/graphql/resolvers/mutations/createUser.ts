@@ -4,6 +4,7 @@ import {gql} from 'apollo-server';
 import {sendEmail} from '../../../utils/sendgrid';
 import {stripe} from '../../../utils/stripe';
 import {prismaContext} from '../../prismaContext';
+import {generateRandomNumber} from '../../../utils/generateRandomNumber';
 
 export const createUserSchema = gql`
   scalar JSON
@@ -73,20 +74,30 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(args.input.password, salt);
 
+  const verifyEmailCode = generateRandomNumber();
+
   const createdUser = await prismaContext.prisma.user.create({
     data: {
       ...args.input,
       password: hashedPassword,
       createdIPAddress: context.ipAddress,
+      verifyEmailCode,
+      verifyEmailCodeTimestamp: new Date(),
     },
   });
 
-  // send sendgrid transactional email
   await sendEmail({
     to: args.input.email,
-    subject: 'Login link',
-    html: `<strong>You have successfully signed up.</strong>`,
-    text: `You have successfully signed up.`,
+    subject: 'Please verify your email.',
+    text: `You've just signed up for an account on ${process.env.PROTOCOL}://${process.env.DOMAIN}. Please click here to verify your email: ${process.env.PROTOCOL}://${process.env.DOMAIN}/verify-email?code=${verifyEmailCode}.`,
+    html: `
+      <p>
+        You've just signed up for an account on ${process.env.PROTOCOL}://${process.env.DOMAIN}.
+      </p>
+      <p>
+        <a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/verify-email?code=${verifyEmailCode}">Please here to verify your email</a>
+      </p>
+    `,
   });
 
   // create stripe customer
