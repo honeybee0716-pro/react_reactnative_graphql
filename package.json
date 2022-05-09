@@ -17,6 +17,9 @@
     "prepare": "husky install",
     "test": "jest"
   },
+  "hooks": {
+    "pre-commit": "lint-staged"
+  },
   "lint-staged": {
     "*.{ts,tsx,js}": [
       "prettier --write",
