@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {gql} from 'apollo-server';
 
-import {getUserByEmail} from '../../../utils/getUserByEmail';
+import getUserByEmail from './getUserByEmail';
 
 export const loginUserWithPasswordSchema = gql`
   scalar JSON
@@ -18,7 +18,7 @@ export const loginUserWithPasswordSchema = gql`
 `;
 
 const loginUserWithPassword = async (parent: null, args: any) => {
-  const foundUser = await getUserByEmail(args.input.email);
+  const foundUser = await getUserByEmail(undefined, {email: args.input.email});
 
   if (!foundUser) {
     return {
@@ -29,13 +29,17 @@ const loginUserWithPassword = async (parent: null, args: any) => {
 
   const passwordMatches = await bcrypt.compare(
     args.input.password,
-    foundUser.password,
+    foundUser.data.password,
   );
 
   if (passwordMatches) {
-    const token = jwt.sign({id: foundUser.id}, <string>process.env.JWT_SECRET, {
-      expiresIn: '1d',
-    });
+    const token = jwt.sign(
+      {id: foundUser.data.id},
+      <string>process.env.JWT_SECRET,
+      {
+        expiresIn: '1d',
+      },
+    );
 
     return {
       jwt: token,

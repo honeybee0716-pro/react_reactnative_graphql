@@ -5,7 +5,8 @@ import {forgotPasswordSchema} from '../resolvers/mutations/forgotPassword';
 import {completeForgotPasswordSchema} from '../resolvers/mutations/completeForgotPassword';
 import {updateUserSchema} from '../resolvers/mutations/updateUser';
 import {changePasswordSchema} from '../resolvers/mutations/changePassword';
-import {getUserSchema} from '../resolvers/queries/getUser';
+import {getUserByIDSchema} from '../resolvers/queries/getUserByID';
+import {getUserByEmailSchema} from '../resolvers/queries/getUserByEmail';
 import {verifyUserSchema} from '../resolvers/queries/verifyUser';
 import {loginUserWithMagicLinkSchema} from '../resolvers/queries/loginUserWithMagicLink';
 import {loginUserWithPasswordSchema} from '../resolvers/queries/loginUserWithPassword';
@@ -19,7 +20,8 @@ export const typeDefs = mergeTypeDefs([
   createUserSchema,
   loginUserWithMagicLinkSchema,
   loginUserWithPasswordSchema,
-  getUserSchema,
+  getUserByIDSchema,
+  getUserByEmailSchema,
   changePasswordSchema,
   verifyUserSchema,
   forgotPasswordSchema,

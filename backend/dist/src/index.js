@@ -41,10 +41,11 @@ const graphql_shield_1 = require("graphql-shield");
 const Sentry = __importStar(require("@sentry/node"));
 require("@sentry/tracing");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const en_us_1 = require("./constants/en_us");
 const index_1 = require("./graphql/typeDefs/index");
 const resolvers_1 = require("./graphql/resolvers");
 const appConfig_1 = require("./config/appConfig");
-const getUser_1 = __importDefault(require("./graphql/resolvers/queries/getUser"));
+const getUserByID_1 = __importDefault(require("./graphql/resolvers/queries/getUserByID"));
 if (process.env.NODE_ENV !== 'localhost') {
     Sentry.init({
         dsn: process.env.SENTRY_DSN,
@@ -69,15 +70,15 @@ const createContext = ({ req }) => __awaiter(void 0, void 0, void 0, function* (
     try {
         decodedJWT = jsonwebtoken_1.default.verify(providedJWT, process.env.JWT_SECRET);
         if (!decodedJWT.id) {
-            throw new Error('Invalid JWT');
+            throw new Error(en_us_1.enUS['error.invalidJWT']);
         }
     }
     catch (err) {
-        throw new Error('Invalid JWT');
+        throw new Error(en_us_1.enUS['error.invalidJWT']);
     }
-    const user = yield (0, getUser_1.default)(undefined, { id: decodedJWT.id });
+    const user = yield (0, getUserByID_1.default)(undefined, { id: decodedJWT.id });
     if (!user) {
-        throw new Error('Invalid JWT');
+        throw new Error(en_us_1.enUS['error.invalidJWT']);
     }
     return {
         user: user.data,
@@ -91,7 +92,8 @@ const isNotAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context) 
 const isAdmin = (0, graphql_shield_1.rule)()((parent, args, context) => __awaiter(void 0, void 0, void 0, function* () { return context.user.role === 'ADMIN'; }));
 const permissions = (0, graphql_shield_1.shield)({
     Query: {
-        getUser: isAuthenticated,
+        getUserByID: isAuthenticated,
+        getUserByEmail: isAuthenticated,
         loginUserWithPassword: isNotAuthenticated,
         loginUserWithMagicLink: isNotAuthenticated,
         verifyUser: isAuthenticated,
@@ -105,7 +107,7 @@ const permissions = (0, graphql_shield_1.shield)({
         banUser: isAdmin,
     },
 }, {
-    fallbackError: 'You are not authorizationd to perform this action.',
+    fallbackError: en_us_1.enUS['error.notAuthorized'],
     allowExternalErrors: process.env.NODE_ENV === 'localhost',
 });
 const schema = (0, graphql_middleware_1.applyMiddleware)((0, schema_1.makeExecutableSchema)({

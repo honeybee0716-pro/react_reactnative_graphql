@@ -16,7 +16,7 @@ exports.loginUserWithMagicLinkSchema = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const apollo_server_1 = require("apollo-server");
 const sendgrid_1 = require("../../../utils/sendgrid");
-const getUserByEmail_1 = require("../../../utils/getUserByEmail");
+const getUserByEmail_1 = __importDefault(require("./getUserByEmail"));
 exports.loginUserWithMagicLinkSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
@@ -31,7 +31,7 @@ exports.loginUserWithMagicLinkSchema = (0, apollo_server_1.gql) `
   }
 `;
 const loginUserWithMagicLink = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = yield (0, getUserByEmail_1.getUserByEmail)(args.input.email);
+    const foundUser = yield (0, getUserByEmail_1.default)(undefined, { email: args.input.email });
     const message = 'If there is an account with that email, you will receive a login link in your email.';
     if (!foundUser) {
         return {
@@ -39,7 +39,7 @@ const loginUserWithMagicLink = (parent, args) => __awaiter(void 0, void 0, void 
             status: 'success',
         };
     }
-    const token = jsonwebtoken_1.default.sign({ id: foundUser.id }, process.env.JWT_SECRET, {
+    const token = jsonwebtoken_1.default.sign({ id: foundUser.data.id }, process.env.JWT_SECRET, {
         expiresIn: '1d',
     });
     yield (0, sendgrid_1.sendEmail)({

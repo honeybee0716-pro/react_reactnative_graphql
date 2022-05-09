@@ -1,8 +1,9 @@
 import {gql} from 'apollo-server';
 
 import {stripe} from '../../../utils/stripe';
-import {getUserByID} from '../../../utils/getUserByID';
 import {enUS} from '../../../constants/en_us';
+
+import getUserByID from './getUserByID';
 
 export const getUserStripeInfoSchema = gql`
   scalar JSON
@@ -24,14 +25,12 @@ export const getUserStripeInfoSchema = gql`
 
 const getUserStripeInfo = async (parent: any, args: any) => {
   const {id} = args.input;
-  const foundUser = await getUserByID(id);
-
-  if (!foundUser) {
-    throw new Error(enUS['error.userNotFound']);
-  }
+  const foundUser = await getUserByID(undefined, {
+    id,
+  });
 
   const stripeCustomer = await stripe.customers.retrieve(
-    foundUser.stripeCustomerID,
+    foundUser.data.stripeCustomerID,
   );
 
   if (!stripeCustomer) {

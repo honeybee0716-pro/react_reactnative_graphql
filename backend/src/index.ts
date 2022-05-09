@@ -12,7 +12,7 @@ import {enUS} from './constants/en_us';
 import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
 import {AppConfig} from './config/appConfig';
-import getUser from './graphql/resolvers/queries/getUser';
+import getUserByID from './graphql/resolvers/queries/getUserByID';
 
 if (process.env.NODE_ENV !== 'localhost') {
   Sentry.init({
@@ -49,7 +49,7 @@ const createContext = async ({req}: any) => {
     throw new Error(enUS['error.invalidJWT']);
   }
 
-  const user = await getUser(undefined, {id: decodedJWT.id});
+  const user = await getUserByID(undefined, {id: decodedJWT.id});
 
   if (!user) {
     throw new Error(enUS['error.invalidJWT']);
@@ -77,7 +77,8 @@ const isAdmin = rule()(
 const permissions = shield(
   {
     Query: {
-      getUser: isAuthenticated,
+      getUserByID: isAuthenticated,
+      getUserByEmail: isAuthenticated,
       loginUserWithPassword: isNotAuthenticated,
       loginUserWithMagicLink: isNotAuthenticated,
       verifyUser: isAuthenticated,

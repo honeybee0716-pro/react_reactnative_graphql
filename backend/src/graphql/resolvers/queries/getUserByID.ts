@@ -1,28 +1,33 @@
 import {gql} from 'apollo-server';
 
-import {getUserByID} from '../../../utils/getUserByID';
+import {prismaContext} from '../../prismaContext';
 
-export const getUserSchema = gql`
+export const getUserByIDSchema = gql`
   scalar JSON
 
-  input getUserInput {
+  input getUserByIDInput {
     id: String!
   }
 
-  type getUserResponse {
+  type getUserByIDResponse {
     message: String!
     status: String!
     data: JSON
   }
 
   type Query {
-    getUser(input: getUserInput): getUserResponse!
+    getUserByID(input: getUserByIDInput): getUserByIDResponse!
   }
 `;
 
-const getUser = async (parent: any, args: any) => {
+const getUserByID = async (parent: any, args: any) => {
   const {id} = args.input;
-  const foundUser = await getUserByID(id);
+
+  const foundUser = await prismaContext.prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
 
   if (!foundUser) {
     throw new Error('User not found.');
@@ -39,4 +44,4 @@ const getUser = async (parent: any, args: any) => {
   };
 };
 
-export default getUser;
+export default getUserByID;

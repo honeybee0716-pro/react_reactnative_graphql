@@ -7,7 +7,8 @@ const forgotPassword_1 = require("../resolvers/mutations/forgotPassword");
 const completeForgotPassword_1 = require("../resolvers/mutations/completeForgotPassword");
 const updateUser_1 = require("../resolvers/mutations/updateUser");
 const changePassword_1 = require("../resolvers/mutations/changePassword");
-const getUser_1 = require("../resolvers/queries/getUser");
+const getUserByID_1 = require("../resolvers/queries/getUserByID");
+const getUserByEmail_1 = require("../resolvers/queries/getUserByEmail");
 const verifyUser_1 = require("../resolvers/queries/verifyUser");
 const loginUserWithMagicLink_1 = require("../resolvers/queries/loginUserWithMagicLink");
 const loginUserWithPassword_1 = require("../resolvers/queries/loginUserWithPassword");
@@ -19,7 +20,8 @@ exports.typeDefs = (0, merge_1.mergeTypeDefs)([
     createUser_1.createUserSchema,
     loginUserWithMagicLink_1.loginUserWithMagicLinkSchema,
     loginUserWithPassword_1.loginUserWithPasswordSchema,
-    getUser_1.getUserSchema,
+    getUserByID_1.getUserByIDSchema,
+    getUserByEmail_1.getUserByEmailSchema,
     changePassword_1.changePasswordSchema,
     verifyUser_1.verifyUserSchema,
     forgotPassword_1.forgotPasswordSchema,

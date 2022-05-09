@@ -2,7 +2,8 @@ import jwt from 'jsonwebtoken';
 import {gql} from 'apollo-server';
 
 import {sendEmail} from '../../../utils/sendgrid';
-import {getUserByEmail} from '../../../utils/getUserByEmail';
+
+import getUserByEmail from './getUserByEmail';
 
 export const loginUserWithMagicLinkSchema = gql`
   scalar JSON
@@ -19,7 +20,7 @@ export const loginUserWithMagicLinkSchema = gql`
 `;
 
 const loginUserWithMagicLink = async (parent: null, args: any) => {
-  const foundUser = await getUserByEmail(args.input.email);
+  const foundUser = await getUserByEmail(undefined, {email: args.input.email});
 
   const message =
     'If there is an account with that email, you will receive a login link in your email.';
@@ -31,9 +32,13 @@ const loginUserWithMagicLink = async (parent: null, args: any) => {
     };
   }
 
-  const token = jwt.sign({id: foundUser.id}, <string>process.env.JWT_SECRET, {
-    expiresIn: '1d',
-  });
+  const token = jwt.sign(
+    {id: foundUser.data.id},
+    <string>process.env.JWT_SECRET,
+    {
+      expiresIn: '1d',
+    },
+  );
 
   await sendEmail({
     to: args.input.email,

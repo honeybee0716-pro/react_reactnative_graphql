@@ -8,11 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserStripeInfoSchema = void 0;
 const apollo_server_1 = require("apollo-server");
 const stripe_1 = require("../../../utils/stripe");
-const getUserByID_1 = require("../../../utils/getUserByID");
+const en_us_1 = require("../../../constants/en_us");
+const getUserByID_1 = __importDefault(require("./getUserByID"));
 exports.getUserStripeInfoSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
@@ -30,22 +34,21 @@ exports.getUserStripeInfoSchema = (0, apollo_server_1.gql) `
     getUserStripeInfo(input: getUserStripeInfoInput): getUserStripeInfoResponse!
   }
 `;
-const getUserStripeInfo = (parent, { id }) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = yield (0, getUserByID_1.getUserByID)(id);
-    const message = 'Stripe customer was not found.';
-    if (!foundUser) {
-        throw new Error(message);
-    }
-    const stripeCustomer = yield stripe_1.stripe.customers.retrieve(foundUser.stripeCustomerID);
+const getUserStripeInfo = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = args.input;
+    const foundUser = yield (0, getUserByID_1.default)(undefined, {
+        id,
+    });
+    const stripeCustomer = yield stripe_1.stripe.customers.retrieve(foundUser.data.stripeCustomerID);
     if (!stripeCustomer) {
         return {
             status: 'failed',
-            message,
+            message: en_us_1.enUS['error.userNotFound'],
             data: null,
         };
     }
     return {
-        message: 'Stripe customer was found.',
+        message: en_us_1.enUS['success.userWasFound'],
         status: 'success',
         data: stripeCustomer,
     };

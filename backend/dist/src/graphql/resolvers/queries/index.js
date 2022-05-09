@@ -4,13 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RootQuery = void 0;
-const getUser_1 = __importDefault(require("./getUser"));
+const getUserByID_1 = __importDefault(require("./getUserByID"));
+const getUserByEmail_1 = __importDefault(require("./getUserByEmail"));
 const verifyUser_1 = __importDefault(require("./verifyUser"));
 const loginUserWithPassword_1 = __importDefault(require("./loginUserWithPassword"));
 const loginUserWithMagicLink_1 = __importDefault(require("./loginUserWithMagicLink"));
 const getUserStripeInfo_1 = __importDefault(require("./getUserStripeInfo"));
 exports.RootQuery = {
-    getUser: getUser_1.default,
+    getUserByID: getUserByID_1.default,
+    getUserByEmail: getUserByEmail_1.default,
     loginUserWithPassword: loginUserWithPassword_1.default,
     loginUserWithMagicLink: loginUserWithMagicLink_1.default,
     verifyUser: verifyUser_1.default,
