@@ -1,3 +1,4 @@
+import { Text } from '../../styles/convertedComponents'
 import { Navbar } from '../../components/Navbar'
 import { Feed } from '../../components/Feed'
 import * as Styled from './styles'
@@ -9,6 +10,7 @@ export const HomeScreen = () => {
       <MainGutter>
         <Navbar />
         <Feed />
+        <Text>Uptime</Text>
       </MainGutter>
     </Styled.Container>
   )
