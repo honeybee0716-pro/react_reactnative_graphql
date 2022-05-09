@@ -11,5 +11,14 @@
   "scripts": {
     "postinstall": "husky install",
     "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js}": [
+      "prettier --write",
+      "eslint"
+    ],
+    "*.{md,css}": [
+      "prettier --write"
+    ]
   }
 }
