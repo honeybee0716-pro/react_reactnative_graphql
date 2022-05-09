@@ -60,6 +60,12 @@ const createContext = ({ req }) => __awaiter(void 0, void 0, void 0, function* (
     const { headers } = req;
     const providedJWT = (_a = headers === null || headers === void 0 ? void 0 : headers.authorization) === null || _a === void 0 ? void 0 : _a.split('Bearer ')[1];
     let decodedJWT;
+    if (!providedJWT) {
+        return {
+            ipAddress: req.ip,
+            req,
+        };
+    }
     try {
         decodedJWT = jsonwebtoken_1.default.verify(providedJWT, process.env.JWT_SECRET);
         if (!decodedJWT.id) {

@@ -1,0 +1,15 @@
+{
+  "name": "saas-starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/JoeyFenny/saas-starter.git",
+  "author": "Joey Fenny <16143306+JoeyFenny@users.noreply.github.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "jscpd": "^3.4.5"
+  },
+  "scripts": {
+    "postinstall": "husky install",
+    "prepare": "husky install"
+  }
+}

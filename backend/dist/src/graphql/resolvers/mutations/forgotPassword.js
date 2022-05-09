@@ -39,18 +39,19 @@ const forgotPassword = (parent, args) => __awaiter(void 0, void 0, void 0, funct
         },
         data: {
             passwordResetCode,
+            passwordResetCodeTimestamp: new Date(),
         },
     });
     yield (0, sendgrid_1.sendEmail)({
         to: email,
         subject: 'Password Reset',
-        text: `You have requested to reset your password. Please click here to reset your password: ${process.env.FRONTEND_URL}/reset-password?code=${passwordResetCode}.`,
+        text: `You have requested to reset your password. Please click here to reset your password: ${process.env.PROTOCOL}://${process.env.DOMAIN}/reset-password?code=${passwordResetCode}.`,
         html: `
       <p>
         You have requested to reset your password.
       </p>
       <p>
-        <a href="${process.env.FRONTEND_URL}/reset-password?code=${passwordResetCode}">Please here to reset your password</a>
+        <a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/reset-password?code=${passwordResetCode}">Please here to reset your password</a>
       </p>
     `,
     });

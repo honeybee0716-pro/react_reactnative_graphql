@@ -18,6 +18,7 @@ const apollo_server_1 = require("apollo-server");
 const sendgrid_1 = require("../../../utils/sendgrid");
 const stripe_1 = require("../../../utils/stripe");
 const prismaContext_1 = require("../../prismaContext");
+const generateRandomNumber_1 = require("../../../utils/generateRandomNumber");
 exports.createUserSchema = (0, apollo_server_1.gql) `
   scalar JSON
 
@@ -78,15 +79,22 @@ const createUser = (parent, args, context, info) => __awaiter(void 0, void 0, vo
     }
     const salt = yield bcrypt_1.default.genSalt(10);
     const hashedPassword = yield bcrypt_1.default.hash(args.input.password, salt);
+    const verifyEmailCode = (0, generateRandomNumber_1.generateRandomNumber)();
     const createdUser = yield prismaContext_1.prismaContext.prisma.user.create({
-        data: Object.assign(Object.assign({}, args.input), { password: hashedPassword, createdIPAddress: context.ipAddress }),
+        data: Object.assign(Object.assign({}, args.input), { password: hashedPassword, createdIPAddress: context.ipAddress, verifyEmailCode, verifyEmailCodeTimestamp: new Date() }),
     });
-    // send sendgrid transactional email
     yield (0, sendgrid_1.sendEmail)({
         to: args.input.email,
-        subject: 'Login link',
-        html: `<strong>You have successfully signed up.</strong>`,
-        text: `You have successfully signed up.`,
+        subject: 'Please verify your email.',
+        text: `You've just signed up for an account on ${process.env.PROTOCOL}://${process.env.DOMAIN}. Please click here to verify your email: ${process.env.PROTOCOL}://${process.env.DOMAIN}/verify-email?code=${verifyEmailCode}.`,
+        html: `
+      <p>
+        You've just signed up for an account on ${process.env.PROTOCOL}://${process.env.DOMAIN}.
+      </p>
+      <p>
+        <a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/verify-email?code=${verifyEmailCode}">Please here to verify your email</a>
+      </p>
+    `,
     });
     // create stripe customer
     yield stripe_1.stripe.customers.create({
