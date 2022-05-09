@@ -58,7 +58,7 @@ exports.prisma = new client_1.PrismaClient();
 const createContext = ({ req }) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { headers } = req;
-    const providedJWT = (_a = headers === null || headers === void 0 ? void 0 : headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+    const providedJWT = (_a = headers === null || headers === void 0 ? void 0 : headers.authorization) === null || _a === void 0 ? void 0 : _a.split('Bearer ')[1];
     let decodedJWT;
     try {
         decodedJWT = jsonwebtoken_1.default.verify(providedJWT, process.env.JWT_SECRET);
@@ -79,9 +79,10 @@ const createContext = ({ req }) => __awaiter(void 0, void 0, void 0, function* (
         req,
     };
 });
+// const any = rule()(async (parent, args, context) => true);
 const isAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context) => __awaiter(void 0, void 0, void 0, function* () { return !!context.user; }));
 const isNotAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context) => __awaiter(void 0, void 0, void 0, function* () { return !context.user; }));
-const isAdmin = (0, graphql_shield_1.rule)({ cache: 'contextual' })((parent, args, context) => __awaiter(void 0, void 0, void 0, function* () { return context.user.role === 'ADMIN'; }));
+const isAdmin = (0, graphql_shield_1.rule)()((parent, args, context) => __awaiter(void 0, void 0, void 0, function* () { return context.user.role === 'ADMIN'; }));
 const permissions = (0, graphql_shield_1.shield)({
     Query: {
         getUser: isAuthenticated,
@@ -98,7 +99,7 @@ const permissions = (0, graphql_shield_1.shield)({
         banUser: isAdmin,
     },
 }, {
-    fallbackError: 'Not authorized',
+    fallbackError: 'You are not authorizationd to perform this action.',
     allowExternalErrors: process.env.NODE_ENV === 'localhost',
 });
 const schema = (0, graphql_middleware_1.applyMiddleware)((0, schema_1.makeExecutableSchema)({

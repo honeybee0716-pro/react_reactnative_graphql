@@ -31,6 +31,13 @@ const createContext = async ({req}: any) => {
   const providedJWT = headers?.authorization?.split('Bearer ')[1];
   let decodedJWT: any;
 
+  if (!providedJWT) {
+    return {
+      ipAddress: req.ip,
+      req,
+    };
+  }
+
   try {
     decodedJWT = jwt.verify(providedJWT, <string>process.env.JWT_SECRET);
 
