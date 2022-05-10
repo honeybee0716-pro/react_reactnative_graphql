@@ -7,6 +7,7 @@ import {rule, shield} from 'graphql-shield';
 import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 import jwt from 'jsonwebtoken';
+import {createClient} from 'redis';
 
 import {enUS} from './constants/en_us';
 import {typeDefs} from './graphql/typeDefs/index';
@@ -23,6 +24,11 @@ if (process.env.NODE_ENV !== 'localhost') {
     tracesSampleRate: 1.0,
   });
 }
+
+export const redis = createClient({
+  url: <string>process.env.REDIS_URL,
+});
+redis.on('error', (err) => console.log('Redis Client Error', err));
 
 export const prisma = new PrismaClient();
 
@@ -149,6 +155,8 @@ export const setupServer = async () => {
     } else {
       throw new Error('prismaIsConnected did not return true.');
     }
+
+    await redis.connect();
   } catch (e) {
     console.log(`Prisma not connected: ${e}`);
   }

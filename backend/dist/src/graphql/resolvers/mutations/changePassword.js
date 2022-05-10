@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.changePasswordSchema = void 0;
-const apollo_server_1 = require("apollo-server");
-exports.changePasswordSchema = (0, apollo_server_1.gql) `
+import { gql } from 'apollo-server';
+export const changePasswordSchema = gql `
   scalar JSON
 
   type changePasswordResponse {
@@ -33,5 +30,5 @@ exports.changePasswordSchema = (0, apollo_server_1.gql) `
 const changePassword = (parent, args) => {
     const { newPassword } = args;
 };
-exports.default = changePassword;
+export default changePassword;
 //# sourceMappingURL=changePassword.js.map

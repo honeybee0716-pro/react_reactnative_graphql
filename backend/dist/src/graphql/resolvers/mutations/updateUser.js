@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,11 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserSchema = void 0;
-const apollo_server_1 = require("apollo-server");
-const prismaContext_1 = require("../../prismaContext");
-exports.updateUserSchema = (0, apollo_server_1.gql) `
+import { gql } from 'apollo-server';
+import { prismaContext } from '../../prismaContext';
+export const updateUserSchema = gql `
   scalar JSON
 
   type updateUserResponse {
@@ -40,7 +37,7 @@ exports.updateUserSchema = (0, apollo_server_1.gql) `
   }
 `;
 const updateUser = (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
-    yield prismaContext_1.prismaContext.prisma.user.update({
+    yield prismaContext.prisma.user.update({
         where: {
             id: context.user.id,
         },
@@ -51,5 +48,5 @@ const updateUser = (parent, args, context) => __awaiter(void 0, void 0, void 0, 
         status: 'success',
     };
 });
-exports.default = updateUser;
+export default updateUser;
 //# sourceMappingURL=updateUser.js.map

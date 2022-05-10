@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,16 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUserWithPasswordSchema = void 0;
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const apollo_server_1 = require("apollo-server");
-const getUserByEmail_1 = __importDefault(require("./getUserByEmail"));
-exports.loginUserWithPasswordSchema = (0, apollo_server_1.gql) `
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { gql } from 'apollo-server';
+import getUserByEmail from './getUserByEmail';
+export const loginUserWithPasswordSchema = gql `
   scalar JSON
 
   input loginUserWithPasswordInput {
@@ -30,16 +24,16 @@ exports.loginUserWithPasswordSchema = (0, apollo_server_1.gql) `
   }
 `;
 const loginUserWithPassword = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = yield (0, getUserByEmail_1.default)(undefined, { email: args.input.email });
+    const foundUser = yield getUserByEmail(undefined, { email: args.input.email });
     if (!foundUser) {
         return {
             message: 'There was an issue with your login.',
             status: 'failed',
         };
     }
-    const passwordMatches = yield bcrypt_1.default.compare(args.input.password, foundUser.data.password);
+    const passwordMatches = yield bcrypt.compare(args.input.password, foundUser.data.password);
     if (passwordMatches) {
-        const token = jsonwebtoken_1.default.sign({ id: foundUser.data.id }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: foundUser.data.id }, process.env.JWT_SECRET, {
             expiresIn: '1d',
         });
         return {
@@ -53,5 +47,5 @@ const loginUserWithPassword = (parent, args) => __awaiter(void 0, void 0, void 0
         status: 'failed',
     };
 });
-exports.default = loginUserWithPassword;
+export default loginUserWithPassword;
 //# sourceMappingURL=loginUserWithPassword.js.map

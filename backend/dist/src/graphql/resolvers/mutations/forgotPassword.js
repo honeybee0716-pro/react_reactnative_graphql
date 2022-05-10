@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,13 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.forgotPasswordSchema = void 0;
-const apollo_server_1 = require("apollo-server");
-const prismaContext_1 = require("../../prismaContext");
-const generateRandomNumber_1 = require("../../../utils/generateRandomNumber");
-const sendgrid_1 = require("../../../utils/sendgrid");
-exports.forgotPasswordSchema = (0, apollo_server_1.gql) `
+import { gql } from 'apollo-server';
+import { prismaContext } from '../../prismaContext';
+import { generateRandomNumber } from '../../../utils/generateRandomNumber';
+import { sendEmail } from '../../../utils/sendgrid';
+export const forgotPasswordSchema = gql `
   scalar JSON
 
   input forgotPasswordInput {
@@ -32,8 +29,8 @@ exports.forgotPasswordSchema = (0, apollo_server_1.gql) `
 `;
 const forgotPassword = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = args.input;
-    const passwordResetCode = (0, generateRandomNumber_1.generateRandomNumber)();
-    yield prismaContext_1.prismaContext.prisma.user.update({
+    const passwordResetCode = generateRandomNumber();
+    yield prismaContext.prisma.user.update({
         where: {
             email,
         },
@@ -42,7 +39,7 @@ const forgotPassword = (parent, args) => __awaiter(void 0, void 0, void 0, funct
             passwordResetCodeTimestamp: new Date(),
         },
     });
-    yield (0, sendgrid_1.sendEmail)({
+    yield sendEmail({
         to: email,
         subject: 'Password Reset',
         text: `You have requested to reset your password. Please click here to reset your password: ${process.env.PROTOCOL}://${process.env.DOMAIN}/reset-password?code=${passwordResetCode}.`,
@@ -60,5 +57,5 @@ const forgotPassword = (parent, args) => __awaiter(void 0, void 0, void 0, funct
         status: 'success',
     };
 });
-exports.default = forgotPassword;
+export default forgotPassword;
 //# sourceMappingURL=forgotPassword.js.map

@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.enUS = void 0;
-exports.enUS = {
+export const enUS = {
     'error.userNotFound': 'Could not find that user.',
     'error.notAuthorized': 'You are not authorized to perform this action.',
     'error.invalidJWT': 'The provided JSON Web Token is not valid.',

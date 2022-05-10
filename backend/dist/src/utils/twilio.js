@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,28 +7,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendRobotCall = exports.exampleTWIML = exports.sendTextMessage = void 0;
-const twilio_1 = __importDefault(require("twilio"));
-const client = (0, twilio_1.default)(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-const sendTextMessage = (to, body) => __awaiter(void 0, void 0, void 0, function* () {
+import twilio from 'twilio';
+const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+export const sendTextMessage = (to, body) => __awaiter(void 0, void 0, void 0, function* () {
     yield client.messages.create({
         body,
         from: process.env.TWILIO_PHONE_NUMBER,
         to,
     });
 });
-exports.sendTextMessage = sendTextMessage;
-exports.exampleTWIML = '<Response><Say>Hello World</Say></Response>';
-const sendRobotCall = (to, twiml = exports.exampleTWIML) => __awaiter(void 0, void 0, void 0, function* () {
+export const exampleTWIML = '<Response><Say>Hello World</Say></Response>';
+export const sendRobotCall = (to, twiml = exampleTWIML) => __awaiter(void 0, void 0, void 0, function* () {
     yield client.calls.create({
         twiml,
         from: process.env.TWILIO_PHONE_NUMBER,
         to,
     });
 });
-exports.sendRobotCall = sendRobotCall;
 //# sourceMappingURL=twilio.js.map

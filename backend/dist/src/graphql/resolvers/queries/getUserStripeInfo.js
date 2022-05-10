@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,16 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserStripeInfoSchema = void 0;
-const apollo_server_1 = require("apollo-server");
-const stripe_1 = require("../../../utils/stripe");
-const en_us_1 = require("../../../constants/en_us");
-const getUserByID_1 = __importDefault(require("./getUserByID"));
-exports.getUserStripeInfoSchema = (0, apollo_server_1.gql) `
+import { gql } from 'apollo-server';
+import { stripe } from '../../../utils/stripe';
+import { enUS } from '../../../constants/en_us';
+import getUserByID from './getUserByID';
+export const getUserStripeInfoSchema = gql `
   scalar JSON
 
   input getUserStripeInfoInput {
@@ -36,22 +30,22 @@ exports.getUserStripeInfoSchema = (0, apollo_server_1.gql) `
 `;
 const getUserStripeInfo = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = args.input;
-    const foundUser = yield (0, getUserByID_1.default)(undefined, {
+    const foundUser = yield getUserByID(undefined, {
         id,
     });
-    const stripeCustomer = yield stripe_1.stripe.customers.retrieve(foundUser.data.stripeCustomerID);
+    const stripeCustomer = yield stripe.customers.retrieve(foundUser.data.stripeCustomerID);
     if (!stripeCustomer) {
         return {
             status: 'failed',
-            message: en_us_1.enUS['error.userNotFound'],
+            message: enUS['error.userNotFound'],
             data: null,
         };
     }
     return {
-        message: en_us_1.enUS['success.userWasFound'],
+        message: enUS['success.userWasFound'],
         status: 'success',
         data: stripeCustomer,
     };
 });
-exports.default = getUserStripeInfo;
+export default getUserStripeInfo;
 //# sourceMappingURL=getUserStripeInfo.js.map

@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,16 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUserWithMagicLinkSchema = void 0;
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const apollo_server_1 = require("apollo-server");
-const sendgrid_1 = require("../../../utils/sendgrid");
-const getUserByEmail_1 = __importDefault(require("./getUserByEmail"));
-exports.loginUserWithMagicLinkSchema = (0, apollo_server_1.gql) `
+import jwt from 'jsonwebtoken';
+import { gql } from 'apollo-server';
+import { sendEmail } from '../../../utils/sendgrid';
+import getUserByEmail from './getUserByEmail';
+export const loginUserWithMagicLinkSchema = gql `
   scalar JSON
 
   input loginUserWithMagicLinkInput {
@@ -31,7 +25,7 @@ exports.loginUserWithMagicLinkSchema = (0, apollo_server_1.gql) `
   }
 `;
 const loginUserWithMagicLink = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = yield (0, getUserByEmail_1.default)(undefined, { email: args.input.email });
+    const foundUser = yield getUserByEmail(undefined, { email: args.input.email });
     const message = 'If there is an account with that email, you will receive a login link in your email.';
     if (!foundUser) {
         return {
@@ -39,10 +33,10 @@ const loginUserWithMagicLink = (parent, args) => __awaiter(void 0, void 0, void 
             status: 'success',
         };
     }
-    const token = jsonwebtoken_1.default.sign({ id: foundUser.data.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: foundUser.data.id }, process.env.JWT_SECRET, {
         expiresIn: '1d',
     });
-    yield (0, sendgrid_1.sendEmail)({
+    yield sendEmail({
         to: args.input.email,
         subject: 'Here is your magic login link.',
         html: `<a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/login?token=${token}">Login</a>`,
@@ -53,5 +47,5 @@ const loginUserWithMagicLink = (parent, args) => __awaiter(void 0, void 0, void 
         status: 'success',
     };
 });
-exports.default = loginUserWithMagicLink;
+export default loginUserWithMagicLink;
 //# sourceMappingURL=loginUserWithMagicLink.js.map
