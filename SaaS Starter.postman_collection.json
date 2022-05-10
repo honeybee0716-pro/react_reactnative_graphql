@@ -1,0 +1,230 @@
+{
+	"info": {
+		"_postman_id": "aaebb303-2f9a-4d5d-b4cb-54797e8ee8fc",
+		"name": "SaaS Starter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "mutations",
+			"item": [
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation UpdateUser($input: updateUserInput) {\n  updateUser(input: $input) {\n    message\n    status\n  }\n}",
+								"variables": "{\n  \"input\": {\n    \"lastName\": \"Fenny\"\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{DOMAIN}}",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{DOMAIN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgotPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{DOMAIN}}",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{DOMAIN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirmEmailValidationCode",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{DOMAIN}}",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{DOMAIN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirmForgotPasswordCode",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{DOMAIN}}",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{DOMAIN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createNewUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateUser($input: createUserInput) {\n  createUser(input: $input) {\n    message\n    status\n  }\n}",
+								"variables": "{\n  \"input\": {\n    \"firstName\": \"Joey\",\n    \"lastName\": \"Fenny\",\n    \"email\": \"joeyfenny+15@gmail.com\",\n    \"phoneNumber\": \"+17864960562\",\n    \"username\": \"joeyfenny12356\",\n    \"password\": \"Password123\",\n    \"createdIPAddress\": \"123.123.123.123\",\n    \"twitter\": \"joeyfenny\",\n    \"facebook\": \"joeyfenny\",\n    \"google\": \"joeyfenny\",\n    \"github\": \"joeyfenny\",\n    \"linkedin\": \"joeyfenny\",\n    \"instagram\": \"joeyfenny\"\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{DOMAIN}}",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{DOMAIN}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "queries",
+			"item": [
+				{
+					"name": "loginUserWithPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query LoginUserWithPassword($input: LoginUserWithPasswordInput) {\n  loginUserWithPassword(input: $input) {\n    status\n    message\n    jwt\n  }\n}",
+								"variables": "{\n  \"input\": {\n    \"email\": \"joeyfenny@gmail.com\",\n    \"password\": \"Password123\"\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{DOMAIN}}",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{DOMAIN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginUserWithMagicLink",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query LoginUserWithMagicLink($input: LoginUserWithMagicLinkInput) {\n  loginUserWithMagicLink(input: $input) {\n    status\n    message\n  }\n}",
+								"variables": "{\n  \"input\": {\n    \"email\": \"joeyfenny@gmail.com\"\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{DOMAIN}}",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{DOMAIN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserStripeInfo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetUserStripeInfo($input: getUserStripeInfoInput) {\n  getUserStripeInfo(input: $input) {\n    message\n    status\n    data\n  }\n}",
+								"variables": "{\n  \"input\": {\n    \"id\": \"e224d741-6968-4e63-be73-3862517df7b2\"\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{DOMAIN}}",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{DOMAIN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getUser($input: getUserInput) {\n  getUser(input: $input) {\n    message\n    status\n    data\n  }\n}",
+								"variables": "{\n  \"input\": {\n    \"id\": \"e224d741-6968-4e63-be73-3862517df7b2\"\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{DOMAIN}}",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{DOMAIN}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "",
+			"type": "any"
+		}
+	]
+}

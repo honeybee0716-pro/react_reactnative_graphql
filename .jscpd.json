@@ -18,6 +18,7 @@
         "/**/*/posts.ts",
         "/**/*/*.svg",
         "/**/*/formFields.ts",
-        "/**/*/footerLinks.ts"
+        "/**/*/footerLinks.ts",
+        "/**/*/SaaS Starter.postman_collection.json"
     ]
 }
