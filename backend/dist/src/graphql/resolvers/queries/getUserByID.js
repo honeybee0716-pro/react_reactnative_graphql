@@ -29,6 +29,7 @@ exports.getUserByIDSchema = (0, apollo_server_1.gql) `
     getUserByID(input: getUserByIDInput): getUserByIDResponse!
   }
 `;
+/* jscpd:ignore-start */
 const getUserByID = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = args.input;
     const foundUser = yield prismaContext_1.prismaContext.prisma.user.findUnique({
@@ -47,5 +48,6 @@ const getUserByID = (parent, args) => __awaiter(void 0, void 0, void 0, function
         data: user,
     };
 });
+/* jscpd:ignore-end */
 exports.default = getUserByID;
 //# sourceMappingURL=getUserByID.js.map

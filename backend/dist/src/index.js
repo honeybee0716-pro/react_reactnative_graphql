@@ -105,6 +105,7 @@ const permissions = (0, graphql_shield_1.shield)({
         forgotPassword: isNotAuthenticated,
         updateUser: isAuthenticated,
         banUser: isAdmin,
+        confirmEmailValidationCode: isNotAuthenticated,
     },
 }, {
     fallbackError: en_us_1.enUS['error.notAuthorized'],

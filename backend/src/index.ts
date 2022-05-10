@@ -90,6 +90,7 @@ const permissions = shield(
       forgotPassword: isNotAuthenticated,
       updateUser: isAuthenticated,
       banUser: isAdmin,
+      confirmEmailValidationCode: isNotAuthenticated,
     },
   },
   {

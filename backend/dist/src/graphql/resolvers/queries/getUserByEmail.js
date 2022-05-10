@@ -29,6 +29,7 @@ exports.getUserByEmailSchema = (0, apollo_server_1.gql) `
     getUserByEmail(input: getUserByEmailInput): getUserByEmailResponse!
   }
 `;
+/* jscpd:ignore-start */
 const getUserByEmail = (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = args.input;
     const foundUser = yield prismaContext_1.prismaContext.prisma.user.findUnique({
@@ -47,5 +48,6 @@ const getUserByEmail = (parent, args) => __awaiter(void 0, void 0, void 0, funct
         data: user,
     };
 });
+/* jscpd:ignore-end */
 exports.default = getUserByEmail;
 //# sourceMappingURL=getUserByEmail.js.map

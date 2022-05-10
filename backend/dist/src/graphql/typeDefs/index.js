@@ -14,6 +14,7 @@ const loginUserWithMagicLink_1 = require("../resolvers/queries/loginUserWithMagi
 const loginUserWithPassword_1 = require("../resolvers/queries/loginUserWithPassword");
 const banUser_1 = require("../resolvers/mutations/banUser");
 const getUserStripeInfo_1 = require("../resolvers/queries/getUserStripeInfo");
+const confirmEmailValidationCode_1 = require("../resolvers/mutations/confirmEmailValidationCode");
 const shared_1 = require("./shared");
 exports.typeDefs = (0, merge_1.mergeTypeDefs)([
     shared_1.sharedSchema,
@@ -29,5 +30,6 @@ exports.typeDefs = (0, merge_1.mergeTypeDefs)([
     updateUser_1.updateUserSchema,
     banUser_1.banUserSchema,
     getUserStripeInfo_1.getUserStripeInfoSchema,
+    confirmEmailValidationCode_1.confirmEmailValidationCodeSchema,
 ]);
 //# sourceMappingURL=index.js.map

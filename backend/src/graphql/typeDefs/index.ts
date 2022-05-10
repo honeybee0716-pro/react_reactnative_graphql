@@ -12,6 +12,7 @@ import {loginUserWithMagicLinkSchema} from '../resolvers/queries/loginUserWithMa
 import {loginUserWithPasswordSchema} from '../resolvers/queries/loginUserWithPassword';
 import {banUserSchema} from '../resolvers/mutations/banUser';
 import {getUserStripeInfoSchema} from '../resolvers/queries/getUserStripeInfo';
+import {confirmEmailValidationCodeSchema} from '../resolvers/mutations/confirmEmailValidationCode';
 
 import {sharedSchema} from './shared';
 
@@ -29,4 +30,5 @@ export const typeDefs = mergeTypeDefs([
   updateUserSchema,
   banUserSchema,
   getUserStripeInfoSchema,
+  confirmEmailValidationCodeSchema,
 ]) as any;

@@ -6,3 +6,4 @@ spmdb
 .env.prod
 coverage
 yarn-error.log
+dist
