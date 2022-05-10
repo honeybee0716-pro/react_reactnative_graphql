@@ -1,6 +1,6 @@
 import createUser from './createUser';
 import forgotPassword from './forgotPassword';
-import completeForgotPassword from './completeForgotPassword';
+import confirmForgotPasswordCode from './confirmForgotPasswordCode';
 import changePassword from './changePassword';
 import updateUser from './updateUser';
 import confirmEmailValidationCode from './confirmEmailValidationCode';
@@ -8,10 +8,10 @@ import confirmEmailValidationCode from './confirmEmailValidationCode';
 const RootMutation = {
   createUser,
   forgotPassword,
-  completeForgotPassword,
   changePassword,
   updateUser,
   confirmEmailValidationCode,
+  confirmForgotPasswordCode,
 };
 
 export default RootMutation;

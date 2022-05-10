@@ -2,7 +2,7 @@ import {mergeTypeDefs} from '@graphql-tools/merge';
 
 import {createUserSchema} from '../resolvers/mutations/createUser';
 import {forgotPasswordSchema} from '../resolvers/mutations/forgotPassword';
-import {completeForgotPasswordSchema} from '../resolvers/mutations/completeForgotPassword';
+import {confirmForgotPasswordCodeSchema} from '../resolvers/mutations/confirmForgotPasswordCode';
 import {updateUserSchema} from '../resolvers/mutations/updateUser';
 import {changePasswordSchema} from '../resolvers/mutations/changePassword';
 import {getUserByIDSchema} from '../resolvers/queries/getUserByID';
@@ -26,7 +26,7 @@ export const typeDefs = mergeTypeDefs([
   changePasswordSchema,
   verifyUserSchema,
   forgotPasswordSchema,
-  completeForgotPasswordSchema,
+  confirmForgotPasswordCodeSchema,
   updateUserSchema,
   banUserSchema,
   getUserStripeInfoSchema,

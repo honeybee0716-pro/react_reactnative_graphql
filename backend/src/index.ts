@@ -85,7 +85,7 @@ const permissions = shield(
     },
     Mutation: {
       changePassword: isAuthenticated,
-      completeForgotPassword: isNotAuthenticated,
+      confirmForgotPasswordCode: isNotAuthenticated,
       createUser: isNotAuthenticated,
       forgotPassword: isNotAuthenticated,
       updateUser: isAuthenticated,

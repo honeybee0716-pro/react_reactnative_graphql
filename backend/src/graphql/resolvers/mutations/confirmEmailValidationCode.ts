@@ -24,6 +24,7 @@ export const confirmEmailValidationCodeSchema = gql`
   }
 `;
 
+/* jscpd:ignore-start */
 const confirmEmailValidationCode = async (parent: null, args: any) => {
   const foundUser = await getUserByID(undefined, {input: {id: args.input.id}});
 
@@ -44,6 +45,8 @@ const confirmEmailValidationCode = async (parent: null, args: any) => {
       },
       data: {
         emailIsVerified: true,
+        verifyEmailCode: null,
+        verifyEmailCodeTimestamp: null,
       },
     });
 
@@ -58,5 +61,6 @@ const confirmEmailValidationCode = async (parent: null, args: any) => {
     status: 'error',
   };
 };
+/* jscpd:ignore-end */
 
 export default confirmEmailValidationCode;

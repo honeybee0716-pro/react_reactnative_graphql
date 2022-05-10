@@ -4,7 +4,7 @@ exports.typeDefs = void 0;
 const merge_1 = require("@graphql-tools/merge");
 const createUser_1 = require("../resolvers/mutations/createUser");
 const forgotPassword_1 = require("../resolvers/mutations/forgotPassword");
-const completeForgotPassword_1 = require("../resolvers/mutations/completeForgotPassword");
+const confirmForgotPasswordCode_1 = require("../resolvers/mutations/confirmForgotPasswordCode");
 const updateUser_1 = require("../resolvers/mutations/updateUser");
 const changePassword_1 = require("../resolvers/mutations/changePassword");
 const getUserByID_1 = require("../resolvers/queries/getUserByID");
@@ -26,7 +26,7 @@ exports.typeDefs = (0, merge_1.mergeTypeDefs)([
     changePassword_1.changePasswordSchema,
     verifyUser_1.verifyUserSchema,
     forgotPassword_1.forgotPasswordSchema,
-    completeForgotPassword_1.completeForgotPasswordSchema,
+    confirmForgotPasswordCode_1.confirmForgotPasswordCodeSchema,
     updateUser_1.updateUserSchema,
     banUser_1.banUserSchema,
     getUserStripeInfo_1.getUserStripeInfoSchema,
