@@ -7,7 +7,7 @@
   "author": "Joey Fenny",
   "license": "MIT",
   "scripts": {
-    "dev": "tsc && nodemon -r dotenv/config --watch 'src/**/*.ts' --exec \"ts-node\" src/index.ts dotenv_config_path=./.env",
+    "dev": "yarn prisma db push && tsc && nodemon -r dotenv/config --watch 'src/**/*.ts' --exec \"ts-node\" src/index.ts dotenv_config_path=./.env",
     "build": "tsc",
     "test": "jest --runInBand --detectOpenHandles",
     "prettier": "prettier --write \"**/*.{tsx,ts,css,md,js,html}\"",
