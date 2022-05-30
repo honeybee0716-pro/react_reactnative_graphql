@@ -1,5 +1,9 @@
+import { Link } from 'solito/link'
+
 export const SignIn = () => {
     return (
-        <div>Sign In</div>
+        <Link href="/">
+            <div>Landing</div>
+        </Link>
     )
 };

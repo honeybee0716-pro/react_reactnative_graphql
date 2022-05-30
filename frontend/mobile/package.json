@@ -58,6 +58,7 @@
     "react-native-screens": "3.8.0",
     "react-native-web": "0.17.1",
     "shared": "*",
+    "solito": "^0.0.26",
     "styled-components": "^5.3.3"
   },
   "devDependencies": {
