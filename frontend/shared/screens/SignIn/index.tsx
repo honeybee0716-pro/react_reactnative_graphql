@@ -1,1 +1,5 @@
-export const SignIn = () => null;
+export const SignIn = () => {
+    return (
+        <div>Sign In</div>
+    )
+};
