@@ -19,7 +19,8 @@
     "precommit": "yarn lint-staged && yarn jscpd && yarn jest --passWithNoTests",
     "test": "jest",
     "build": "cd backend && yarn prisma db push && yarn run tsc",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "prisma": "prisma"
   },
   "husky": {
     "hooks": {
