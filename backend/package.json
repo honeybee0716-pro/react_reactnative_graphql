@@ -12,7 +12,8 @@
     "test": "jest --runInBand --detectOpenHandles",
     "prettier": "prettier --write \"**/*.{tsx,ts,css,md,js,html}\"",
     "eslint": "eslint ./src/**/*.ts --fix",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postinstall": "yarn build"
   },
   "lint-staged": {
     "*.{ts,tsx,js}": [
