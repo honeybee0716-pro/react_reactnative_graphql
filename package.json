@@ -33,5 +33,8 @@
     "*.{md,css}": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "tsc": "^2.0.4"
   }
 }
