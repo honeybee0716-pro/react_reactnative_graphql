@@ -18,7 +18,7 @@
     "prepare": "husky install",
     "precommit": "yarn lint-staged && yarn jscpd && yarn jest --passWithNoTests",
     "test": "jest",
-    "build": "cd backend && yarn tsc",
+    "build": "cd backend && yarn run tsc",
     "tsc": "tsc"
   },
   "husky": {
