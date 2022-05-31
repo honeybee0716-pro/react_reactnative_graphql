@@ -35,6 +35,7 @@
     ]
   },
   "dependencies": {
-    "tsc": "^2.0.4"
+    "tsc": "^2.0.4",
+    "typescript": "^4.7.2"
   }
 }
