@@ -14,11 +14,11 @@
     "prettier": "^2.6.2"
   },
   "scripts": {
-    "postinstall": "husky install",
+    "postinstall": "yarn build && husky install",
     "prepare": "husky install",
     "precommit": "yarn lint-staged && yarn jscpd && yarn jest --passWithNoTests",
     "test": "jest",
-    "build": "cd backend && yarn run tsc",
+    "build": "cd backend && yarn prisma db push && yarn run tsc",
     "tsc": "tsc"
   },
   "husky": {
