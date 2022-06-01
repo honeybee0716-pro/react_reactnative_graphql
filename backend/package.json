@@ -6,7 +6,7 @@
   "repository": "https://github.com/joeyfenny/improve",
   "author": "Joey Fenny",
   "license": "MIT",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "yarn prisma db push && tsc && nodemon -r dotenv/config --watch 'src/**/*.ts' --exec \"ts-node\" src/index.ts dotenv_config_path=./.env",
     "build": "npx prisma db push && tsc",
