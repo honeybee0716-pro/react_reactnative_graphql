@@ -1,7 +1,7 @@
 import {gql} from 'apollo-server';
 import bcrypt from 'bcrypt';
 
-import {enUS} from '../../../constants/enUS';
+import {language} from '../../../constants/language';
 import {prismaContext} from '../../prismaContext';
 import getUserByID from '../queries/getUserByID';
 
@@ -31,7 +31,7 @@ const confirmForgotPasswordCode = async (parent: null, args: any) => {
   const foundUser = await getUserByID(undefined, {input: {id: args.input.id}});
 
   if (!foundUser) {
-    throw new Error(enUS('error.userNotFound'));
+    throw new Error(language('error.userNotFound'));
   }
 
   const {passwordResetCode, passwordResetCodeTimestamp} = foundUser.data;

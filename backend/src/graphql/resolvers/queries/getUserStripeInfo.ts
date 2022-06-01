@@ -1,7 +1,7 @@
 import {gql} from 'apollo-server';
 
 import {stripe} from '../../../utils/stripe';
-import {enUS} from '../../../constants/enUS';
+import {language} from '../../../constants/language';
 
 import getUserByID from './getUserByID';
 
@@ -36,7 +36,7 @@ const getUserStripeInfo = async (parent: any, args: any) => {
   if (!stripeCustomer) {
     return {
       status: 'failed',
-      message: enUS['error.userNotFound'],
+      message: language['error.userNotFound'],
       data: null,
     };
   }
