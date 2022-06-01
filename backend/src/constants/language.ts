@@ -1,4 +1,4 @@
-export const enUS: any = {
+export const language: any = {
   'error.userNotFound': 'Could not find that user.',
   'error.notAuthorized': 'You are not authorized to perform this action.',
   'error.invalidJWT': 'The provided JSON Web Token is not valid.',

@@ -9,7 +9,7 @@ import '@sentry/tracing';
 import jwt from 'jsonwebtoken';
 import {createClient} from 'redis';
 
-import {enUS} from './constants/enUS';
+import {language} from './constants/language';
 import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
 import {AppConfig} from './config/appConfig';
@@ -49,16 +49,16 @@ const createContext = async ({req}: any) => {
     decodedJWT = jwt.verify(providedJWT, <string>process.env.JWT_SECRET);
 
     if (!decodedJWT.id) {
-      throw new Error(enUS['error.invalidJWT']);
+      throw new Error(language['error.invalidJWT']);
     }
   } catch (err) {
-    throw new Error(enUS['error.invalidJWT']);
+    throw new Error(language['error.invalidJWT']);
   }
 
   const user = await getUserByID(undefined, {id: decodedJWT.id});
 
   if (!user) {
-    throw new Error(enUS['error.invalidJWT']);
+    throw new Error(language['error.invalidJWT']);
   }
 
   return {
@@ -100,7 +100,7 @@ const permissions = shield(
     },
   },
   {
-    fallbackError: enUS['error.notAuthorized'],
+    fallbackError: language['error.notAuthorized'],
     allowExternalErrors: process.env.NODE_ENV === 'localhost',
   },
 );
