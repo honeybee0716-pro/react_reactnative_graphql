@@ -1,9 +1,1 @@
 node_modules
-spmdb
-.env
-.env.localhost
-.env.qa
-.env.prod
-coverage
-yarn-error.log
-dist
