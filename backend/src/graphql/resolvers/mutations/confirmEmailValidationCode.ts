@@ -1,6 +1,6 @@
 import {gql} from 'apollo-server';
 
-import {enUS} from '../../../constants/en_us';
+import {enUS} from '../../../constants/enUS';
 import {prismaContext} from '../../prismaContext';
 import getUserByID from '../queries/getUserByID';
 

@@ -1,7 +1,7 @@
 import {gql} from 'apollo-server';
 
 import {stripe} from '../../../utils/stripe';
-import {enUS} from '../../../constants/en_us';
+import {enUS} from '../../../constants/enUS';
 
 import getUserByID from './getUserByID';
 

@@ -9,7 +9,7 @@ import '@sentry/tracing';
 import jwt from 'jsonwebtoken';
 import {createClient} from 'redis';
 
-import {enUS} from './constants/en_us';
+import {enUS} from './constants/enUS';
 import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
 import {AppConfig} from './config/appConfig';
