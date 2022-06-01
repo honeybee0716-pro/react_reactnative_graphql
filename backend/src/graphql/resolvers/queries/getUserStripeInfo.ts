@@ -42,7 +42,7 @@ const getUserStripeInfo = async (parent: any, args: any) => {
   }
 
   return {
-    message: enUS['success.userWasFound'],
+    message: language['success.userWasFound'],
     status: 'success',
     data: stripeCustomer,
   };
