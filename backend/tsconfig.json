@@ -20,7 +20,7 @@
     "allowSyntheticDefaultImports": true
   },
   "lib": ["esnext"],
-  "include": ["src/**/*", "tests"],
+  "include": ["src/**/*", "src/constants/**/*", "tests"],
   "exclude": [
     "node_modules",
     "./node_modules",
