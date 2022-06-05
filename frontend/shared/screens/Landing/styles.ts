@@ -1,4 +1,5 @@
 import * as styled from '../../convertedComponents'
+import { webOnly } from '../../utils/deviceSpecificCSS'
 
 import { theme } from '../../styles/theme'
 
@@ -17,6 +18,16 @@ export const Header = styled.Text`
   font-family: ${theme.font.header};
   font-weight: bold;
   font-size: 24px;
+`
+
+export const Link = styled.Text`
+  color: ${theme.colors.shared.white};
+  font-family: ${theme.font.header};
+  font-size: 18px;
+  margin: 20px 0 20px 0;
+  ${webOnly(`
+    cursor: pointer;
+  `)}
 `
 
 export const Logo = styled.Image`

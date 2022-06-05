@@ -5,8 +5,8 @@ import * as Styled from './styles'
 export const SignIn = () => {
   return (
     <Styled.Container>
-      <Link href="/">
-        <div>Landing</div>
+      <Link href="/home">
+        <Styled.Header>Landing</Styled.Header>
       </Link>
     </Styled.Container>
   )

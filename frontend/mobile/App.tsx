@@ -1,11 +1,10 @@
 import React from 'react'
 import { enableScreens } from 'react-native-screens'
 import { StatusBar } from 'expo-status-bar'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { LogBox } from 'react-native'
 
-import { Landing } from 'shared/screens/Landing'
-
+import { Navigation, NavigationProvider } from './Navigation'
 import * as Styled from './styles'
 
 enableScreens(true)
@@ -20,11 +19,11 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <StatusBar style="dark" />
-      <Styled.MainContainer>
-        <SafeAreaView>
-          <Landing />
-        </SafeAreaView>
-      </Styled.MainContainer>
+      <NavigationProvider>
+        <Styled.MainContainer>
+          <Navigation />
+        </Styled.MainContainer>
+      </NavigationProvider>
     </SafeAreaProvider>
   )
 }

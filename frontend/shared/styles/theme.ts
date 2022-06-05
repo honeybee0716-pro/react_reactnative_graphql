@@ -21,7 +21,7 @@ export const theme = {
       Platform.OS === 'android'
         ? 'Roboto'
         : Platform.OS === 'ios'
-        ? 'Roboto'
+        ? 'Arial'
         : 'Arial'
   }
 }
