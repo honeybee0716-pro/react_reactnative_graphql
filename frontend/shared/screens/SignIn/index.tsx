@@ -6,7 +6,10 @@ export const SignIn = () => {
   return (
     <Styled.Container>
       <Link href="/home">
-        <Styled.Header>Landing</Styled.Header>
+        <Styled.Header>This is the sign in screen</Styled.Header>
+      </Link>
+      <Link href="/home">
+        <Styled.Header>Go to landing screen</Styled.Header>
       </Link>
     </Styled.Container>
   )

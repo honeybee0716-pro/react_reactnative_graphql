@@ -1,19 +1,16 @@
 import { Link } from 'solito/link'
 
 import * as Styled from './styles'
+import { Navbar } from '../../components/Navbar'
 
 export const Landing = () => {
   return (
     <Styled.Container>
-      <Styled.Header>Landing Screen</Styled.Header>
+      <Navbar />
+      <Styled.Header>This is the landing screen</Styled.Header>
       <Link href="/sign-in">
-        <Styled.Link>Sign In</Styled.Link>
+        <Styled.Link>Go to Sign In Screen</Styled.Link>
       </Link>
-      <Styled.Logo
-        src={require('../../assets/images/logo.png')}
-        source={require('../../assets/images/logo.png')}
-        alt="Keep Logo"
-      />
     </Styled.Container>
   )
 }

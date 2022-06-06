@@ -10,7 +10,6 @@ export const Container = styled.View`
   height: 100%;
   width: 100%;
   background-color: ${theme.colors.dark.background};
-  padding: 20px;
 `
 
 export const Header = styled.Text`
@@ -28,10 +27,4 @@ export const Link = styled.Text`
   ${webOnly(`
     cursor: pointer;
   `)}
-`
-
-export const Logo = styled.Image`
-  height: 50px;
-  resize-mode: contain;
-  margin: 20px;
 `
