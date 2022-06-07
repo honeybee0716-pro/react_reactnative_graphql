@@ -144,44 +144,6 @@ export function Header(props: HeaderProps) {
               }
             />
           )}
-
-          <HStack space="2" alignItems="center">
-            <Menu
-              closeOnSelect={false}
-              w="200"
-              placement="bottom right"
-              onOpen={() => console.log('opened')}
-              onClose={() => console.log('closed')}
-              trigger={(triggerProps) => {
-                return (
-                  <IconButton
-                    {...triggerProps}
-                    variant="ghost"
-                    colorScheme="light"
-                    icon={
-                      <Avatar
-                        w="8"
-                        h="8"
-                        _dark={{ bg: 'coolGray.200' }}
-                        source={require('../assets/women.jpg')}
-                      />
-                    }
-                  />
-                )
-              }}
-              //@ts-ignore
-              _dark={{ bg: 'coolGray.800', borderColor: 'coolGray.700' }}
-            >
-              <Menu.Group title="Profile">
-                <Menu.Item>Account</Menu.Item>
-              </Menu.Group>
-              <Divider mt="3" w="100%" _dark={{ bg: 'coolGray.700' }} />
-              <Menu.Group title="Shortcuts">
-                <Menu.Item>Settings</Menu.Item>
-                <Menu.Item>Logout</Menu.Item>
-              </Menu.Group>
-            </Menu>
-          </HStack>
         </HStack>
       </VStack>
     </Box>

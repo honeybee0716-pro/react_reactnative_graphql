@@ -9,15 +9,23 @@ import {
   Button
 } from 'native-base'
 import { MaterialIcons } from '@expo/vector-icons'
+import { Link as SolitoLink } from 'solito/link'
 
 const list = [
   {
     iconName: 'groups',
-    iconText: 'Leads'
+    iconText: 'Leads',
+    route: '/home'
   },
   {
     iconName: 'support-agent',
-    iconText: 'Help & Support'
+    iconText: 'Help & Support',
+    route: '/help'
+  },
+  {
+    iconName: 'logout',
+    iconText: 'Sign out',
+    route: '/sign-out'
   }
 ]
 
@@ -34,31 +42,33 @@ export default function Sidebar() {
         <VStack px="4" py="4">
           {list.map((item, idx) => {
             return (
-              <Button
-                key={idx}
-                variant="ghost"
-                justifyContent="flex-start"
-                py="4"
-                px="5"
-              >
-                <HStack space="4" alignItems="center">
-                  <Icon
-                    size="6"
-                    as={MaterialIcons}
-                    name={item.iconName}
-                    _dark={{ color: 'coolGray.50' }}
-                    _light={{ color: 'coolGray.500' }}
-                  />
-                  <Text
-                    fontSize="md"
-                    fontWeight="medium"
-                    _dark={{ color: 'coolGray.50' }}
-                    _light={{ color: 'coolGray.800' }}
-                  >
-                    {item.iconText}
-                  </Text>
-                </HStack>
-              </Button>
+              <SolitoLink href={item.route}>
+                <Button
+                  key={idx}
+                  variant="ghost"
+                  justifyContent="flex-start"
+                  py="4"
+                  px="5"
+                >
+                  <HStack space="4" alignItems="center">
+                    <Icon
+                      size="6"
+                      as={MaterialIcons}
+                      name={item.iconName}
+                      _dark={{ color: 'coolGray.50' }}
+                      _light={{ color: 'coolGray.500' }}
+                    />
+                    <Text
+                      fontSize="md"
+                      fontWeight="medium"
+                      _dark={{ color: 'coolGray.50' }}
+                      _light={{ color: 'coolGray.800' }}
+                    >
+                      {item.iconText}
+                    </Text>
+                  </HStack>
+                </Button>
+              </SolitoLink>
             )
           })}
         </VStack>

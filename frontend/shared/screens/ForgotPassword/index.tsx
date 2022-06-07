@@ -165,7 +165,7 @@ export default function ForgotPassword() {
             </VStack>
           </Box>
         </VStack>
-        <VStack alignItems="center">
+        {/* <VStack alignItems="center">
           <HStack space="1" position="absolute" bottom="0">
             <Text
               _light={{ color: 'coolGray.800' }}
@@ -197,7 +197,7 @@ export default function ForgotPassword() {
               OTP
             </Link>
           </HStack>
-        </VStack>
+        </VStack> */}
       </Box>
     </GuestLayout>
   )

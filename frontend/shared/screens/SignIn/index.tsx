@@ -115,27 +115,29 @@ export function SignInForm({ props }: any) {
                   }}
                 />
               </VStack>
-              <Link
-                ml="auto"
-                _text={{
-                  fontSize: 'xs',
-                  fontWeight: 'bold',
-                  textDecoration: 'none'
-                }}
-                _light={{
-                  _text: {
-                    color: 'primary.900'
-                  }
-                }}
-                _dark={{
-                  _text: {
-                    color: 'primary.500'
-                  }
-                }}
-              >
-                Forgot password?
-              </Link>
-              <Checkbox
+              <SolitoLink href="/forgot-password">
+                <Link
+                  ml="auto"
+                  _text={{
+                    fontSize: 'xs',
+                    fontWeight: 'bold',
+                    textDecoration: 'none'
+                  }}
+                  _light={{
+                    _text: {
+                      color: 'primary.900'
+                    }
+                  }}
+                  _dark={{
+                    _text: {
+                      color: 'primary.500'
+                    }
+                  }}
+                >
+                  Forgot password?
+                </Link>
+              </SolitoLink>
+              {/* <Checkbox
                 alignItems="flex-start"
                 mt="5"
                 isChecked
@@ -151,7 +153,7 @@ export function SignInForm({ props }: any) {
                 >
                   Remember me and keep me logged in
                 </Text>
-              </Checkbox>
+              </Checkbox> */}
               <Button
                 mt="5"
                 size="md"

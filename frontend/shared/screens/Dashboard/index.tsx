@@ -137,59 +137,62 @@ function ListItem(props: ListItemProps) {
 
 function ListItemDesktop(props: ListItemProps) {
   return (
-    <Pressable p={2} flex={1}>
-      <HStack alignItems="center" flex={1} justifyContent="space-between">
-        <HStack alignItems="center" space={4} w={40}>
-          <Avatar
-            source={{
-              uri: props.item.profileImageUrl
-            }}
-            w={10}
-            h={10}
-          >
-            N/A
-          </Avatar>
+    <>
+      <Pressable p={2} flex={1}>
+        <HStack alignItems="center" flex={1} justifyContent="space-between">
+          <HStack alignItems="center" space={4} w={40}>
+            <Avatar
+              source={{
+                uri: props.item.profileImageUrl
+              }}
+              w={10}
+              h={10}
+            >
+              N/A
+            </Avatar>
+            <Text
+              _light={{ color: 'coolGray.900' }}
+              _dark={{ color: 'coolGray.50' }}
+            >
+              {props.item.firstName + ' ' + props.item.lastName}
+            </Text>
+          </HStack>
+
           <Text
+            w={40}
             _light={{ color: 'coolGray.900' }}
             _dark={{ color: 'coolGray.50' }}
           >
-            {props.item.firstName + ' ' + props.item.lastName}
+            {props.item.Email}
+          </Text>
+
+          <Text
+            w={40}
+            _light={{ color: 'coolGray.900' }}
+            _dark={{ color: 'coolGray.50' }}
+          >
+            {props.item.Phone}
+          </Text>
+
+          <Text
+            w={40}
+            _light={{ color: 'coolGray.900' }}
+            _dark={{ color: 'coolGray.50' }}
+          >
+            {props.item.companyName}
+          </Text>
+
+          <Text
+            w={40}
+            _light={{ color: 'coolGray.900' }}
+            _dark={{ color: 'coolGray.50' }}
+          >
+            {props.item.title}
           </Text>
         </HStack>
-
-        <Text
-          w={40}
-          _light={{ color: 'coolGray.900' }}
-          _dark={{ color: 'coolGray.50' }}
-        >
-          {props.item.Email}
-        </Text>
-
-        <Text
-          w={40}
-          _light={{ color: 'coolGray.900' }}
-          _dark={{ color: 'coolGray.50' }}
-        >
-          {props.item.Phone}
-        </Text>
-
-        <Text
-          w={40}
-          _light={{ color: 'coolGray.900' }}
-          _dark={{ color: 'coolGray.50' }}
-        >
-          {props.item.companyName}
-        </Text>
-
-        <Text
-          w={40}
-          _light={{ color: 'coolGray.900' }}
-          _dark={{ color: 'coolGray.50' }}
-        >
-          {props.item.title}
-        </Text>
-      </HStack>
-    </Pressable>
+      </Pressable>
+      <Divider />
+    </>
   )
 }
 

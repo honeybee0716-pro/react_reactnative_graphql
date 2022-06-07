@@ -16,6 +16,7 @@ import {
   Stack,
   Input
 } from 'native-base'
+import { Link as SolitoLink } from 'solito/link'
 import { AntDesign } from '@expo/vector-icons'
 
 function PinInput() {
@@ -116,21 +117,14 @@ export default function OtpVerification(props: any) {
                     _dark={{ color: 'coolGray.50' }}
                     _light={{ color: 'coolGray.800' }}
                   >
-                    Enter OTP
+                    Enter Security Code
                   </Text>
                   <HStack space="2" alignItems="center">
                     <Text
                       _light={{ color: 'coolGray.800' }}
                       _dark={{ color: 'coolGray.400' }}
                     >
-                      We have sent the OTP code to
-                    </Text>
-                    <Text
-                      fontWeight="bold"
-                      _light={{ color: 'coolGray.800' }}
-                      _dark={{ color: 'coolGray.300' }}
-                    >
-                      87******47
+                      Please check your email for the code.
                     </Text>
                   </HStack>
                 </VStack>
@@ -143,7 +137,7 @@ export default function OtpVerification(props: any) {
                           _light={{ color: 'coolGray.800' }}
                           _dark={{ color: 'coolGray.400' }}
                         >
-                          Didn’t receive the OTP?
+                          Didn’t receive the email?
                         </Text>
                         <Link
                           _text={{
@@ -155,7 +149,7 @@ export default function OtpVerification(props: any) {
                           }}
                         >
                           {' '}
-                          RESEND OTP
+                          Resend Email
                         </Link>
                       </HStack>
                     </FormControl.HelperText>
@@ -172,7 +166,7 @@ export default function OtpVerification(props: any) {
                       props.navigation.navigate('ProductScreen')
                     }}
                   >
-                    PROCEED
+                    Submit Code
                   </Button>
                 </VStack>
               </Box>
@@ -191,27 +185,26 @@ export default function OtpVerification(props: any) {
                   Already have an account?
                 </Text>
                 {/* Opening Link Tag navigateTo:"SignUp" */}
-                <Link
-                  _text={{
-                    fontWeight: 'bold',
-                    textDecoration: 'none'
-                  }}
-                  _light={{
-                    _text: {
-                      color: 'primary.900'
-                    }
-                  }}
-                  _dark={{
-                    _text: {
-                      color: 'violet.500'
-                    }
-                  }}
-                  onPress={() => {
-                    props.navigation.navigate('SignUp')
-                  }}
-                >
-                  Sign up
-                </Link>
+                <SolitoLink href="/sign-up">
+                  <Link
+                    _text={{
+                      fontWeight: 'bold',
+                      textDecoration: 'none'
+                    }}
+                    _light={{
+                      _text: {
+                        color: 'primary.900'
+                      }
+                    }}
+                    _dark={{
+                      _text: {
+                        color: 'violet.500'
+                      }
+                    }}
+                  >
+                    Sign up
+                  </Link>
+                </SolitoLink>
                 {/* Closing Link Tag */}
               </HStack>
             </VStack>
