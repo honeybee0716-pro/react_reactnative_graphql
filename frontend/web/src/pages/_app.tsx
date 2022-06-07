@@ -7,6 +7,7 @@ import 'setimmediate'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import Head from 'next/head'
 import { AppProps } from 'next/app'
+import { NativeBaseProvider } from 'native-base'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -21,7 +22,9 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <SafeAreaProvider>
-        <Component {...pageProps} />
+        <NativeBaseProvider>
+          <Component {...pageProps} />
+        </NativeBaseProvider>
       </SafeAreaProvider>
     </>
   )

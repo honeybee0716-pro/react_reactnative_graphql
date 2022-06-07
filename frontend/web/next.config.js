@@ -11,7 +11,11 @@ const withTM = require('next-transpile-modules')([
   '@gorhom/bottom-sheet',
   '@gorhom/portal',
   'dripsy',
-  '@dripsy/core'
+  '@dripsy/core',
+  'react-native-web',
+  'react-native-svg',
+  'native-base',
+  'react-native-svg'
 ])
 
 const nextConfig = {
@@ -29,7 +33,7 @@ module.exports = withPlugins(
   [
     withTM,
     withBundleAnalyzer,
-    withFonts,
+    [withFonts, { projectRoot: __dirname + '/..' }],
     [
       withImages,
       {

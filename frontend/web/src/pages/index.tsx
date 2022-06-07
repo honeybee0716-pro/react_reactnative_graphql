@@ -1,5 +1,5 @@
-import { Landing } from 'shared/screens/Landing'
+import Splash from 'shared/screens/Splash'
 
 export default function Page() {
-  return <Landing />
+  return <Splash />
 }
