@@ -4,105 +4,105 @@ const formFields: any = {
   join: {
     header: 'Join',
     submit: {
-      label: 'Join',
+      label: 'Join'
       //   color: colors.C116FFF,
     },
     routes: [
       {
         label: 'Already have an account?',
-        path: '/login',
-      },
+        path: '/login'
+      }
     ],
     inputs: [
       {
         type: 'text',
         inputLabel: 'First Name',
-        placeholder: 'First Name',
+        placeholder: 'First Name'
       },
       {
         type: 'text',
         inputLabel: 'Last Name',
-        placeholder: 'Last Name',
+        placeholder: 'Last Name'
       },
       {
         type: 'text',
         inputLabel: 'Username',
-        placeholder: 'Username',
+        placeholder: 'Username'
       },
       {
         type: 'text',
         inputLabel: 'Email',
-        placeholder: 'Email',
+        placeholder: 'Email'
       },
       {
         type: 'password',
         inputLabel: 'Password',
-        placeholder: 'Password',
+        placeholder: 'Password'
       },
       {
         type: 'password',
         inputLabel: 'Confirm Password',
-        placeholder: 'Confirm Password',
-      },
-    ],
+        placeholder: 'Confirm Password'
+      }
+    ]
   },
   login: {
     header: 'Login',
     submit: {
-      label: 'Login',
+      label: 'Login'
       //   color: colors.C116FFF,
     },
     routes: [
       {
         label: `Don't have an account?`,
-        path: '/join',
+        path: '/join'
       },
       {
         label: `Forgot Password`,
-        path: '/forgot-password',
-      },
+        path: '/forgot-password'
+      }
     ],
     inputs: [
       {
         type: 'text',
         inputLabel: 'Email',
-        placeholder: 'Email',
+        placeholder: 'Email'
       },
       {
         type: 'password',
         inputLabel: 'Password',
-        placeholder: 'Password',
-      },
-    ],
+        placeholder: 'Password'
+      }
+    ]
   },
   forgotPassword: {
     header: 'Forgot Password',
     submit: {
-      label: 'Send Reset Code',
+      label: 'Send Reset Code'
       //   color: colors.C116FFF,
     },
     routes: [
       {
         label: `Login`,
-        path: '/login',
+        path: '/login'
       },
       {
         label: `Create an account`,
-        path: '/join',
-      },
+        path: '/join'
+      }
     ],
     inputs: [
       {
         type: 'text',
         inputLabel: 'Email',
-        placeholder: 'you@domain.com',
-      },
-    ],
+        placeholder: 'you@domain.com'
+      }
+    ]
   },
   add: {
     header: 'Add a listing',
     submit: {
-      label: 'Submit to waitlist',
+      label: 'Submit to waitlist'
       //   color: colors.C116FFF,
     },
     routes: [],
@@ -110,19 +110,19 @@ const formFields: any = {
       {
         type: 'text',
         inputLabel: 'Name',
-        placeholder: 'Apple',
+        placeholder: 'Apple'
       },
       {
         type: 'text',
         inputLabel: 'Custom URL Route',
-        placeholder: '/apple',
-      },
-    ],
+        placeholder: '/apple'
+      }
+    ]
   },
   account: {
     header: 'Edit Account',
     submit: {
-      label: 'Submit Edit',
+      label: 'Submit Edit'
       //   color: colors.C116FFF,
     },
     routes: [],
@@ -130,40 +130,40 @@ const formFields: any = {
       {
         type: 'text',
         inputLabel: 'First Name',
-        placeholder: 'First Name',
+        placeholder: 'First Name'
       },
       {
         type: 'text',
         inputLabel: 'Last Name',
-        placeholder: 'Last Name',
+        placeholder: 'Last Name'
       },
       {
         type: 'text',
         inputLabel: 'Username',
-        placeholder: 'Username',
+        placeholder: 'Username'
       },
       {
         type: 'text',
         inputLabel: 'Email',
-        placeholder: 'Email',
+        placeholder: 'Email'
       },
       {
         type: 'password',
         inputLabel: 'Old Password',
-        placeholder: 'Old Password',
+        placeholder: 'Old Password'
       },
       {
         type: 'password',
         inputLabel: 'New Password',
-        placeholder: 'New Password',
+        placeholder: 'New Password'
       },
       {
         type: 'password',
         inputLabel: 'Confirm New Password',
-        placeholder: 'Confirm New Password',
-      },
-    ],
-  },
-};
+        placeholder: 'Confirm New Password'
+      }
+    ]
+  }
+}
 
-export default formFields;
+export default formFields

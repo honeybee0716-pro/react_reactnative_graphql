@@ -1,5 +1,5 @@
-import { Landing } from 'shared/screens/Landing'
+import Dashboard from 'shared/screens/Dashboard'
 
 export default function Page() {
-  return <Landing />
+  return <Dashboard />
 }

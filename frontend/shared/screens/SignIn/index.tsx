@@ -22,6 +22,7 @@ import { AntDesign, Entypo } from '@expo/vector-icons'
 import IconGoogle from './components/IconGoogle'
 import IconFacebook from './components/IconFacebook'
 import FloatingLabelInput from './components/FloatingLabelInput'
+import { Link as SolitoLink } from 'solito/link'
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -170,7 +171,7 @@ export function SignInForm({ props }: any) {
               >
                 SIGN IN
               </Button>
-              <HStack
+              {/* <HStack
                 mt="5"
                 space="2"
                 mb={{ base: 6, md: 7 }}
@@ -194,9 +195,9 @@ export function SignInForm({ props }: any) {
                   _light={{ bg: 'coolGray.200' }}
                   _dark={{ bg: 'coolGray.700' }}
                 ></Divider>
-              </HStack>
+              </HStack> */}
             </VStack>
-            <Center>
+            {/* <Center>
               <HStack space="4">
                 <Pressable>
                   <IconFacebook />
@@ -205,7 +206,7 @@ export function SignInForm({ props }: any) {
                   <IconGoogle />
                 </Pressable>
               </HStack>
-            </Center>
+            </Center> */}
           </VStack>
         </VStack>
         <HStack
@@ -223,27 +224,26 @@ export function SignInForm({ props }: any) {
             Don't have an account?
           </Text>
           {/* Opening Link Tag navigateTo:"SignUp" */}
-          <Link
-            _text={{
-              fontWeight: 'bold',
-              textDecoration: 'none'
-            }}
-            _light={{
-              _text: {
-                color: 'primary.900'
-              }
-            }}
-            _dark={{
-              _text: {
-                color: 'primary.500'
-              }
-            }}
-            onPress={() => {
-              props.navigation.navigate('SignUp')
-            }}
-          >
-            Sign up
-          </Link>
+          <SolitoLink href="/sign-up">
+            <Link
+              _text={{
+                fontWeight: 'bold',
+                textDecoration: 'none'
+              }}
+              _light={{
+                _text: {
+                  color: 'primary.900'
+                }
+              }}
+              _dark={{
+                _text: {
+                  color: 'primary.500'
+                }
+              }}
+            >
+              Sign up
+            </Link>
+          </SolitoLink>
           {/* Closing Link Tag */}
         </HStack>
       </VStack>

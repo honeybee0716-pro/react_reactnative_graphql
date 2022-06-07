@@ -19,7 +19,7 @@
   "scripts": {
     "postinstall": "yarn build && husky install",
     "prepare": "husky install",
-    "precommit": "yarn lint-staged && yarn jscpd && yarn jest --passWithNoTests",
+    "precommit": "yarn lint-staged && yarn jest --passWithNoTests",
     "test": "jest",
     "build": "cd backend && npx prisma db push && yarn run tsc",
     "tsc": "tsc",

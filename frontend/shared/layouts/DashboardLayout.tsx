@@ -146,23 +146,6 @@ export function Header(props: HeaderProps) {
           )}
 
           <HStack space="2" alignItems="center">
-            <IconButton
-              variant="ghost"
-              colorScheme="light"
-              icon={
-                <Icon
-                  size="6"
-                  name="bell"
-                  as={FontAwesome}
-                  _dark={{
-                    color: 'coolGray.200'
-                  }}
-                  _light={{
-                    color: 'coolGray.400'
-                  }}
-                />
-              }
-            />
             <Menu
               closeOnSelect={false}
               w="200"

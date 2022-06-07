@@ -8,6 +8,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import Head from 'next/head'
 import { AppProps } from 'next/app'
 import { NativeBaseProvider } from 'native-base'
+import { ApolloProvider } from '@apollo/client'
+import apolloClient from '../lib/apolloClient'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -21,11 +23,13 @@ export default function App({ Component, pageProps }: AppProps) {
           name="viewport"
         />
       </Head>
-      <SafeAreaProvider>
-        <NativeBaseProvider>
-          <Component {...pageProps} />
-        </NativeBaseProvider>
-      </SafeAreaProvider>
+      <ApolloProvider client={apolloClient}>
+        <SafeAreaProvider>
+          <NativeBaseProvider>
+            <Component {...pageProps} />
+          </NativeBaseProvider>
+        </SafeAreaProvider>
+      </ApolloProvider>
     </>
   )
 }

@@ -18,6 +18,7 @@ import {
   Box,
   Stack
 } from 'native-base'
+import { Link as SolitoLink } from 'solito/link'
 import { AntDesign, Entypo } from '@expo/vector-icons'
 import IconGoogle from './components/IconGoogle'
 import IconFacebook from './components/IconFacebook'
@@ -59,6 +60,44 @@ function SignUpForm({ props }: any) {
           <VStack>
             <VStack space="8">
               <VStack space={{ base: '7', md: '4' }}>
+                <FloatingLabelInput
+                  isRequired
+                  label="First Name"
+                  labelColor="#9ca3af"
+                  labelBGColor={useColorModeValue('#fff', '#1f2937')}
+                  borderRadius="4"
+                  defaultValue={text}
+                  onChangeText={(txt: any) => setText(txt)}
+                  _text={{
+                    fontSize: 'sm',
+                    fontWeight: 'medium'
+                  }}
+                  _dark={{
+                    borderColor: 'coolGray.700'
+                  }}
+                  _light={{
+                    borderColor: 'coolGray.300'
+                  }}
+                />
+                <FloatingLabelInput
+                  isRequired
+                  label="Last Name"
+                  labelColor="#9ca3af"
+                  labelBGColor={useColorModeValue('#fff', '#1f2937')}
+                  borderRadius="4"
+                  defaultValue={text}
+                  onChangeText={(txt: any) => setText(txt)}
+                  _text={{
+                    fontSize: 'sm',
+                    fontWeight: 'medium'
+                  }}
+                  _dark={{
+                    borderColor: 'coolGray.700'
+                  }}
+                  _light={{
+                    borderColor: 'coolGray.300'
+                  }}
+                />
                 <FloatingLabelInput
                   isRequired
                   label="Email"
@@ -163,46 +202,54 @@ function SignUpForm({ props }: any) {
                   <Text fontSize="sm" color="coolGray.400" pl="2">
                     I accept the{' '}
                   </Text>
-                  <Link
-                    _text={{
-                      fontSize: 'sm',
-                      fontWeight: 'semibold',
-                      textDecoration: 'none'
-                    }}
-                    _light={{
-                      _text: {
-                        color: 'primary.900'
-                      }
-                    }}
-                    _dark={{
-                      _text: {
-                        color: 'primary.500'
-                      }
-                    }}
-                  >
-                    Terms of Use
-                  </Link>
+
+                  <SolitoLink href="/terms-of-use">
+                    <Link
+                      _text={{
+                        fontSize: 'sm',
+                        fontWeight: 'semibold',
+                        textDecoration: 'none'
+                      }}
+                      _light={{
+                        _text: {
+                          color: 'primary.900'
+                        }
+                      }}
+                      _dark={{
+                        _text: {
+                          color: 'primary.500'
+                        }
+                      }}
+                      // onPress={(e) => e.preventDefault()}
+                    >
+                      Terms of Use
+                    </Link>
+                  </SolitoLink>
+
                   <Text fontSize="sm"> & </Text>
 
-                  <Link
-                    _text={{
-                      fontSize: 'sm',
-                      fontWeight: 'semibold',
-                      textDecoration: 'none'
-                    }}
-                    _light={{
-                      _text: {
-                        color: 'primary.900'
-                      }
-                    }}
-                    _dark={{
-                      _text: {
-                        color: 'primary.500'
-                      }
-                    }}
-                  >
-                    Privacy Policy
-                  </Link>
+                  <SolitoLink href="/privacy-policy">
+                    <Link
+                      _text={{
+                        fontSize: 'sm',
+                        fontWeight: 'semibold',
+                        textDecoration: 'none'
+                      }}
+                      _light={{
+                        _text: {
+                          color: 'primary.900'
+                        }
+                      }}
+                      _dark={{
+                        _text: {
+                          color: 'primary.500'
+                        }
+                      }}
+                      // onPress={(e) => e.preventDefault()}
+                    >
+                      Privacy Policy
+                    </Link>
+                  </SolitoLink>
                 </HStack>
               </Checkbox>
               <Button
@@ -224,7 +271,7 @@ function SignUpForm({ props }: any) {
               >
                 SIGN UP
               </Button>
-              <HStack
+              {/* <HStack
                 space="2"
                 mb={{ base: '6', md: '7' }}
                 alignItems="center"
@@ -248,9 +295,9 @@ function SignUpForm({ props }: any) {
                   _light={{ bg: 'coolGray.200' }}
                   _dark={{ bg: 'coolGray.700' }}
                 ></Divider>
-              </HStack>
+              </HStack> */}
             </VStack>
-            <Center>
+            {/* <Center>
               <HStack space="4">
                 <Pressable>
                   <IconFacebook />
@@ -259,7 +306,7 @@ function SignUpForm({ props }: any) {
                   <IconGoogle />
                 </Pressable>
               </HStack>
-            </Center>
+            </Center> */}
           </VStack>
         </VStack>
         <HStack
@@ -277,28 +324,27 @@ function SignUpForm({ props }: any) {
             Already have an account?
           </Text>
           {/* Opening Link Tag navigateTo:"SignIn" */}
-          <Link
-            _text={{
-              fontSize: 'sm',
-              fontWeight: 'bold',
-              textDecoration: 'none'
-            }}
-            _light={{
-              _text: {
-                color: 'primary.900'
-              }
-            }}
-            _dark={{
-              _text: {
-                color: 'primary.500'
-              }
-            }}
-            onPress={() => {
-              props.navigation.navigate('SignIn')
-            }}
-          >
-            Sign in
-          </Link>
+          <SolitoLink href="/sign-in">
+            <Link
+              _text={{
+                fontSize: 'sm',
+                fontWeight: 'bold',
+                textDecoration: 'none'
+              }}
+              _light={{
+                _text: {
+                  color: 'primary.900'
+                }
+              }}
+              _dark={{
+                _text: {
+                  color: 'primary.500'
+                }
+              }}
+            >
+              Sign in
+            </Link>
+          </SolitoLink>
           {/* Closing Link Tag */}
         </HStack>
       </VStack>
