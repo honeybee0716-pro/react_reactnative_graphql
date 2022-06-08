@@ -25,8 +25,14 @@ export const confirmEmailValidationCodeSchema = gql`
 `;
 
 /* jscpd:ignore-start */
-const confirmEmailValidationCode = async (parent: null, args: any) => {
-  const foundUser = await getUserByID(undefined, {input: {id: args.input.id}});
+const confirmEmailValidationCode = async (
+  parent: null,
+  args: any,
+  context: any,
+) => {
+  const foundUser = await getUserByID(undefined, {
+    input: {id: context.user.id},
+  });
 
   if (!foundUser) {
     throw new Error(language('error.userNotFound'));
@@ -36,12 +42,12 @@ const confirmEmailValidationCode = async (parent: null, args: any) => {
 
   const timestampInMilliseconds = Date.parse(verifyEmailCodeTimestamp);
 
-  const isExpired = Date.now() - timestampInMilliseconds > 1000 * 60 * 10;
+  const isExpired = Date.now() - timestampInMilliseconds > 1000 * 60 * 100;
 
   if (args.input.code === verifyEmailCode && !isExpired) {
     await prismaContext.prisma.user.update({
       where: {
-        id: args.input.id,
+        id: context.user.id,
       },
       data: {
         emailIsVerified: true,

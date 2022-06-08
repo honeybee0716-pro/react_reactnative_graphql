@@ -55,7 +55,7 @@ const createContext = async ({req}: any) => {
     throw new Error(language['error.invalidJWT']);
   }
 
-  const user = await getUserByID(undefined, {id: decodedJWT.id});
+  const user = await getUserByID(undefined, {input: {id: decodedJWT.id}});
 
   if (!user) {
     throw new Error(language['error.invalidJWT']);
@@ -96,7 +96,7 @@ const permissions = shield(
       forgotPassword: isNotAuthenticated,
       updateUser: isAuthenticated,
       banUser: isAdmin,
-      confirmEmailValidationCode: isNotAuthenticated,
+      confirmEmailValidationCode: isAuthenticated,
     },
   },
   {

@@ -18,6 +18,7 @@ import {
   Box,
   Stack
 } from 'native-base'
+import AsyncStorage from '@react-native-community/async-storage'
 import { Link as SolitoLink } from 'solito/link'
 import { useRouter } from 'solito/router'
 import { AntDesign, Entypo } from '@expo/vector-icons'
@@ -32,6 +33,7 @@ const CREATE_USER = gql`
     createUser(input: $input) {
       message
       status
+      jwt
     }
   }
 `
@@ -55,12 +57,12 @@ function SignUpForm() {
           firstName,
           lastName,
           email,
-          password,
-          createdIPAddress: '111.111.111.111'
+          password
         }
       },
-      onCompleted: ({ createUser }) => {
-        if (createUser?.status === 'success') {
+      onCompleted: async ({ createUser }) => {
+        if (createUser?.status === 'success' && createUser?.jwt) {
+          await AsyncStorage.setItem('jwt', createUser.jwt)
           push('/otp')
           return
         }

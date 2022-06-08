@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import {gql} from 'apollo-server';
+import jwt from 'jsonwebtoken';
 
 import {sendEmail} from '../../../utils/sendgrid';
 import {stripe} from '../../../utils/stripe';
@@ -12,6 +13,7 @@ export const createUserSchema = gql`
   type createUserResponse {
     message: String!
     status: String!
+    jwt: String!
   }
 
   input createUserInput {
@@ -19,7 +21,6 @@ export const createUserSchema = gql`
     lastName: String!
     email: String!
     password: String!
-    createdIPAddress: String!
   }
 
   type Mutation {
@@ -60,7 +61,6 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
       firstName: args.input.firstName,
       lastName: args.input.lastName,
       phoneNumber: args.input.phoneNumber,
-      createdIPAddress: context.ipAddress,
     },
   });
 
@@ -69,10 +69,10 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
     data: {
       ...args.input,
       password: hashedPassword,
-      createdIPAddress: context.ipAddress,
       verifyEmailCode,
       verifyEmailCodeTimestamp: new Date(),
       stripeCustomerID: stripeCustomer.id,
+      createdIPAddress: '111.111.111.111',
     },
   });
 
@@ -95,7 +95,12 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
     `,
   });
 
+  const token = jwt.sign({id: createdUser.id}, <string>process.env.JWT_SECRET, {
+    expiresIn: '1d',
+  });
+
   return {
+    jwt: token,
     message: 'User created successfully',
     status: 'success',
   };

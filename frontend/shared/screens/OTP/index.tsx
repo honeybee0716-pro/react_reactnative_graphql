@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   VStack,
   Box,
@@ -14,29 +14,75 @@ import {
   FormControl,
   StatusBar,
   Stack,
-  Input
+  Input,
+  useColorModeValue
 } from 'native-base'
+import AsyncStorage from '@react-native-community/async-storage'
 import { Link as SolitoLink } from 'solito/link'
+import { useRouter } from 'solito/router'
 import { AntDesign } from '@expo/vector-icons'
+import { gql, useMutation } from '@apollo/client'
+import FloatingLabelInput from '../signup/components/FloatingLabelInput'
 
-function PinInput() {
-  return (
-    <HStack space="2">
-      {[1, 2, 3, 4, 5, 6].map((e, i) => (
-        <Input
-          key={i}
-          variant="underlined"
-          boxSize="12"
-          textAlign="center"
-          borderBottomWidth="2"
-          fontSize="lg"
-        />
-      ))}
-    </HStack>
+const CONFIRM_EMAIL_VALIDATION_CODE = gql`
+  mutation ConfirmEmailValidationCode($input: confirmEmailValidationCodeInput) {
+    confirmEmailValidationCode(input: $input) {
+      message
+      status
+    }
+  }
+`
+
+export default function OtpVerification() {
+  const { push } = useRouter()
+  const [confirmEmailValidationCode, { loading }] = useMutation(
+    CONFIRM_EMAIL_VALIDATION_CODE
   )
-}
-export default function OtpVerification(props: any) {
-  // const router = useRouter(); //use incase of Nextjs
+  const [code, setCode] = useState('')
+
+  const handleSubmitOTP = async () => {
+    if (!code) {
+      alert('Please enter a code.')
+      return
+    }
+    try {
+      Number(code)
+    } catch (e) {
+      alert('Please enter a valid code.')
+      return
+    }
+
+    const jwt = await AsyncStorage.getItem('jwt')
+    if (!jwt) {
+      alert('There was an error. Please try again.')
+      return
+    }
+
+    console.log({ code })
+    confirmEmailValidationCode({
+      variables: {
+        input: {
+          code: Number(code)
+        }
+      },
+      onCompleted: ({ confirmEmailValidationCode }) => {
+        if (confirmEmailValidationCode?.status === 'success') {
+          push('/sign-in')
+          return
+        }
+        if (confirmEmailValidationCode?.message) {
+          alert(confirmEmailValidationCode.message)
+          return
+        }
+        alert('There was an error')
+        return
+      },
+      onError: (error) => {
+        alert(error)
+      }
+    })
+  }
+
   return (
     <>
       <StatusBar
@@ -130,7 +176,27 @@ export default function OtpVerification(props: any) {
                 </VStack>
                 <VStack space="12" mt="6">
                   <FormControl>
-                    <PinInput />
+                    <HStack space="2">
+                      <FloatingLabelInput
+                        isRequired
+                        label="Code"
+                        labelColor="#9ca3af"
+                        labelBGColor={useColorModeValue('#fff', '#1f2937')}
+                        borderRadius="4"
+                        defaultValue={code}
+                        onChangeText={(txt: any) => setCode(txt)}
+                        _text={{
+                          fontSize: 'sm',
+                          fontWeight: 'medium'
+                        }}
+                        _dark={{
+                          borderColor: 'coolGray.700'
+                        }}
+                        _light={{
+                          borderColor: 'coolGray.300'
+                        }}
+                      />
+                    </HStack>
                     <FormControl.HelperText mt="7">
                       <HStack>
                         <Text
@@ -162,11 +228,9 @@ export default function OtpVerification(props: any) {
                     _dark={{
                       bg: 'primary.700'
                     }}
-                    onPress={() => {
-                      props.navigation.navigate('ProductScreen')
-                    }}
+                    onPress={handleSubmitOTP}
                   >
-                    Submit Code
+                    {loading ? 'Loading...' : 'Submit Code'}
                   </Button>
                 </VStack>
               </Box>
