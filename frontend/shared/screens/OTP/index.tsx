@@ -67,7 +67,7 @@ export default function OtpVerification() {
       },
       onCompleted: ({ confirmEmailValidationCode }) => {
         if (confirmEmailValidationCode?.status === 'success') {
-          push('/sign-in')
+          push('/home')
           return
         }
         if (confirmEmailValidationCode?.message) {

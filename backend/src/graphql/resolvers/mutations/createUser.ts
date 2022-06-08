@@ -13,7 +13,7 @@ export const createUserSchema = gql`
   type createUserResponse {
     message: String!
     status: String!
-    jwt: String!
+    jwt: String
   }
 
   input createUserInput {
@@ -84,13 +84,13 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
   await sendEmail({
     to: args.input.email,
     subject: 'Please verify your email.',
-    text: `You've just signed up for an account on ${process.env.PROTOCOL}://${process.env.DOMAIN}. Please click here to verify your email: ${process.env.PROTOCOL}://${process.env.DOMAIN}/verify-email?code=${verifyEmailCode}.`,
+    text: `Please use this code to verify your account: ${verifyEmailCode}`,
     html: `
       <p>
         You've just signed up for an account on ${process.env.PROTOCOL}://${process.env.DOMAIN}.
       </p>
       <p>
-        <a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/verify-email?code=${verifyEmailCode}">Please here to verify your email</a>
+        Please use this code to verify your account: ${verifyEmailCode}
       </p>
     `,
   });
