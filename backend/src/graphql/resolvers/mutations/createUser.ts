@@ -18,16 +18,8 @@ export const createUserSchema = gql`
     firstName: String!
     lastName: String!
     email: String!
-    phoneNumber: String!
-    username: String!
     password: String!
     createdIPAddress: String!
-    twitter: String
-    facebook: String
-    google: String
-    github: String
-    linkedin: String
-    instagram: String
   }
 
   type Mutation {
@@ -54,23 +46,6 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
     };
   }
 
-  const foundUsername = await prismaContext.prisma.user.findUnique({
-    select: {
-      id: true,
-    },
-    where: {
-      username: args.input.username.toLowerCase().trim(),
-    },
-  });
-
-  if (foundUsername) {
-    return {
-      message:
-        'An account with this username already exists. Please sign in instead.',
-      status: 'failed',
-    };
-  }
-
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(args.input.password, salt);
 
@@ -85,7 +60,6 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
       firstName: args.input.firstName,
       lastName: args.input.lastName,
       phoneNumber: args.input.phoneNumber,
-      username: args.input.username,
       createdIPAddress: context.ipAddress,
     },
   });

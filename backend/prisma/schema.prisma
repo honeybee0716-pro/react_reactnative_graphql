@@ -11,19 +11,19 @@ datasource db {
 }
 
 model PrismaInfo {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
   prismaIsConnected Boolean @default(true)
 }
 
 model User {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  id                         String    @id @default(auto()) @map("_id") @db.ObjectId
   stripeCustomerID           String    @unique
   firstName                  String
   lastName                   String
   email                      String    @unique
   emailIsVerified            Boolean   @default(false)
-  phoneNumber                String?
-  username                   String    @unique
+  // phoneNumber                String?
+  // username                   String    @unique
   password                   String
   createdAt                  DateTime  @default(now())
   updatedAt                  DateTime  @default(now())
@@ -32,12 +32,12 @@ model User {
   allowMarketingEmails       Boolean   @default(true)
   createdIPAddress           String
   // authorizedIPAddresses String[]
-  twitter                    String?
-  facebook                   String?
-  google                     String?
-  github                     String?
-  linkedin                   String?
-  instagram                  String?
+  // twitter                    String?
+  // facebook                   String?
+  // google                     String?
+  // github                     String?
+  // linkedin                   String?
+  // instagram                  String?
   passwordResetCode          Int?
   passwordResetCodeTimestamp DateTime?
   verifyEmailCode            Int?
@@ -52,7 +52,7 @@ enum Role {
 }
 
 model Post {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   body      String
   // authorId  Int      @relation(fields: [authorId], references: [id])
@@ -61,7 +61,7 @@ model Post {
 }
 
 model Page {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   username     String
   createdAt    DateTime @default(now())
