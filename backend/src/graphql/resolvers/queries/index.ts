@@ -4,6 +4,7 @@ import verifyUser from './verifyUser';
 import loginUserWithPassword from './loginUserWithPassword';
 import loginUserWithMagicLink from './loginUserWithMagicLink';
 import getUserStripeInfo from './getUserStripeInfo';
+import getUserLeads from './getUserLeads';
 
 export const RootQuery = {
   getUserByID,
@@ -12,6 +13,7 @@ export const RootQuery = {
   loginUserWithMagicLink,
   verifyUser,
   getUserStripeInfo,
+  getUserLeads,
 };
 
 export default RootQuery;

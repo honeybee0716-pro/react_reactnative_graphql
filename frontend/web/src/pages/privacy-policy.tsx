@@ -1,5 +1,5 @@
-import Splash from 'shared/screens/Splash'
+import PrivacyPolicy from 'shared/screens/PrivacyPolicy'
 
 export default function Page() {
-  return <Splash />
+  return <PrivacyPolicy />
 }

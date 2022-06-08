@@ -22,8 +22,6 @@ model User {
   lastName                   String
   email                      String    @unique
   emailIsVerified            Boolean   @default(false)
-  // phoneNumber                String?
-  // username                   String    @unique
   password                   String
   createdAt                  DateTime  @default(now())
   updatedAt                  DateTime  @default(now())
@@ -31,19 +29,13 @@ model User {
   bannedAt                   DateTime?
   allowMarketingEmails       Boolean   @default(true)
   createdIPAddress           String
-  // authorizedIPAddresses String[]
-  // twitter                    String?
-  // facebook                   String?
-  // google                     String?
-  // github                     String?
-  // linkedin                   String?
-  // instagram                  String?
   passwordResetCode          Int?
   passwordResetCodeTimestamp DateTime?
   verifyEmailCode            Int?
   verifyEmailCodeTimestamp   DateTime?
   trialCreatedAt             DateTime?
   role                       Role      @default(BASIC)
+  leads                      Lead[]
 }
 
 enum Role {
@@ -51,27 +43,29 @@ enum Role {
   ADMIN
 }
 
-model Post {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  body      String
-  // authorId  Int      @relation(fields: [authorId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-}
-
-model Page {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  username     String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
-  phoneNumber  String
-  website      String
-  supportEmail String
-  twitter      String
-  instagram    String
-  facebook     String
-  linkedIn     String
-  youtube      String
+model Lead {
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  user               User?   @relation(fields: [userID], references: [id])
+  userID             String? @db.ObjectId
+  code               String?
+  firstName          String?
+  lastName           String?
+  companyName        String?
+  title              String?
+  email              String?
+  phone              String?
+  verificationStatus String?
+  website            String?
+  dbID               String?
+  companyID          String?
+  companyURL         String?
+  durationInCompany  String?
+  durationInRole     String?
+  industry           String?
+  isPremium          String?
+  linkedInProfileURL String?
+  location           String?
+  profileImageURL    String?
+  query              String?
+  leadSource         String?
 }

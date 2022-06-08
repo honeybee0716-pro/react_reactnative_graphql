@@ -156,15 +156,17 @@ function MainContent(props: MainContentProps) {
       {props.displayScreenTitle && (
         <Hidden till="md">
           <HStack mb="4" space={2} alignItems="center">
-            <Pressable>
-              <Icon
-                size="6"
-                as={AntDesign}
-                name={'arrowleft'}
-                _light={{ color: 'coolGray.800' }}
-                _dark={{ color: 'coolGray.50' }}
-              />
-            </Pressable>
+            {props.displayBackButton ? (
+              <Pressable>
+                <Icon
+                  size="6"
+                  as={AntDesign}
+                  name={'arrowleft'}
+                  _light={{ color: 'coolGray.800' }}
+                  _dark={{ color: 'coolGray.50' }}
+                />
+              </Pressable>
+            ) : null}
             <Text
               fontSize="lg"
               _dark={{ color: 'coolGray.50' }}

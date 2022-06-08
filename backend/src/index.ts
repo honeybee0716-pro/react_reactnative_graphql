@@ -88,6 +88,7 @@ const permissions = shield(
       loginUserWithPassword: any,
       loginUserWithMagicLink: any,
       verifyUser: isAuthenticated,
+      getUserLeads: isAuthenticated,
     },
     Mutation: {
       changePassword: isAuthenticated,

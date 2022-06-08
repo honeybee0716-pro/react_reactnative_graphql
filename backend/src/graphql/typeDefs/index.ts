@@ -13,6 +13,7 @@ import {loginUserWithPasswordSchema} from '../resolvers/queries/loginUserWithPas
 import {banUserSchema} from '../resolvers/mutations/banUser';
 import {getUserStripeInfoSchema} from '../resolvers/queries/getUserStripeInfo';
 import {confirmEmailValidationCodeSchema} from '../resolvers/mutations/confirmEmailValidationCode';
+import {getUserLeadsSchema} from '../resolvers/queries/getUserLeads';
 
 import {sharedSchema} from './shared';
 
@@ -31,4 +32,5 @@ export const typeDefs = mergeTypeDefs([
   banUserSchema,
   getUserStripeInfoSchema,
   confirmEmailValidationCodeSchema,
+  getUserLeadsSchema,
 ]) as any;
