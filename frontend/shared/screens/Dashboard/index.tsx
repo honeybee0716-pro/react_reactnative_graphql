@@ -140,18 +140,20 @@ function ListItemDesktop(props: ListItemProps) {
           <HStack alignItems="center" space={4} w={40}>
             <Avatar
               source={{
-                uri: props.item.profileImageURL
+                uri: props?.item?.profileImageURL
               }}
               w={10}
               h={10}
             >
-              N/A
+              {`${props?.item?.firstName?.charAt(0) || ''}${
+                props?.item?.lastName?.charAt(0) || ''
+              }`}
             </Avatar>
             <Text
               _light={{ color: 'coolGray.700' }}
               _dark={{ color: 'coolGray.50' }}
             >
-              {props.item.firstName + ' ' + props.item.lastName}
+              {props?.item?.fullName || 'unknown'}
             </Text>
           </HStack>
 
@@ -160,7 +162,7 @@ function ListItemDesktop(props: ListItemProps) {
             _light={{ color: 'coolGray.700' }}
             _dark={{ color: 'coolGray.50' }}
           >
-            {props.item.email}
+            {props?.item?.email || 'unknown'}
           </Text>
 
           <Text
@@ -168,7 +170,7 @@ function ListItemDesktop(props: ListItemProps) {
             _light={{ color: 'coolGray.700' }}
             _dark={{ color: 'coolGray.50' }}
           >
-            {props.item.phone}
+            {props?.item?.phone || 'unknown'}
           </Text>
 
           <Text
@@ -176,7 +178,7 @@ function ListItemDesktop(props: ListItemProps) {
             _light={{ color: 'coolGray.700' }}
             _dark={{ color: 'coolGray.50' }}
           >
-            {props.item.companyName}
+            {props?.item?.companyName || 'unknown'}
           </Text>
 
           <Text
@@ -184,7 +186,7 @@ function ListItemDesktop(props: ListItemProps) {
             _light={{ color: 'coolGray.700' }}
             _dark={{ color: 'coolGray.50' }}
           >
-            {props.item.title}
+            {props?.item?.title || 'unknown'}
           </Text>
         </HStack>
       </Pressable>
@@ -197,6 +199,48 @@ export default function ContactList() {
   const { data, error, loading } = useQuery(GET_USER_LEADS, {
     fetchPolicy: 'cache-first'
   })
+  const [search, setSearch] = React.useState('')
+
+  const [leads, setLeads] = React.useState([])
+
+  React.useEffect(() => {
+    if (data?.getUserLeads?.leads) {
+      setLeads(
+        data.getUserLeads.leads.map((l) => ({
+          ...l,
+          display: true,
+          fullName: `${l.firstName} ${l.lastName}`
+        }))
+      )
+    }
+  }, [data])
+
+  React.useEffect(() => {
+    console.log({ search })
+    if (!!search) {
+      setLeads(
+        data?.getUserLeads?.leads
+          .map((l) => ({
+            ...l,
+            display: true,
+            fullName: `${l.firstName} ${l.lastName}`
+          }))
+          .filter((l) => {
+            const string = JSON.stringify(l).toLowerCase().trim()
+            console.log(string)
+            return string.includes(search.toLowerCase().trim())
+          }) || []
+      )
+    } else {
+      setLeads(
+        data?.getUserLeads?.leads.map((l) => ({
+          ...l,
+          display: true,
+          fullName: `${l.firstName} ${l.lastName}`
+        })) || []
+      )
+    }
+  }, [search])
 
   return (
     <>
@@ -241,8 +285,10 @@ export default function ContactList() {
                     }}
                   />
                 }
-                color="coolGray.200"
+                color="coolGray.700"
                 placeholder="Search here"
+                onChangeText={(text) => setSearch(text)}
+                value={search}
               />
             </HStack>
             <VStack
@@ -328,12 +374,18 @@ export default function ContactList() {
                       _light={{ color: 'coolGray.600' }}
                       _dark={{ color: 'coolGray.300' }}
                     >
-                      Contacts ({data?.getUserLeads?.leads?.length})
+                      Contacts (
+                      {leads?.filter((l) => l.display === true).length} shown
+                      out of {data?.getUserLeads?.leads?.length})
                     </Text>
                     <VStack space={4}>
-                      {data?.getUserLeads?.leads?.map((item, index) => {
-                        return <ListItemDesktop item={item} key={index} />
-                      })}
+                      {leads
+                        ?.filter((l) => {
+                          return l.display === true
+                        })
+                        .map((item, index) => {
+                          return <ListItemDesktop item={item} key={item.id} />
+                        })}
                     </VStack>
                   </Box>
                 </ScrollView>
