@@ -68,7 +68,7 @@ const createContext = async ({req}: any) => {
   };
 };
 
-// const any = rule()(async (parent, args, context) => true);
+const any = rule()(async () => true);
 
 const isAuthenticated = rule()(async (parent, args, context) => !!context.user);
 
@@ -85,8 +85,8 @@ const permissions = shield(
     Query: {
       getUserByID: isAuthenticated,
       getUserByEmail: isAuthenticated,
-      loginUserWithPassword: isNotAuthenticated,
-      loginUserWithMagicLink: isNotAuthenticated,
+      loginUserWithPassword: any,
+      loginUserWithMagicLink: any,
       verifyUser: isAuthenticated,
     },
     Mutation: {
