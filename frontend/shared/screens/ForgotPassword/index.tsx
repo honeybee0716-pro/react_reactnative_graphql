@@ -14,13 +14,105 @@ import {
   useColorModeValue,
   useColorMode
 } from 'native-base'
-import { AntDesign } from '@expo/vector-icons'
+import { AntDesign, Entypo } from '@expo/vector-icons'
 import FloatingLabelInput from '../../components/FloatingLabelInput'
 import GuestLayout from '../../layouts/GuestLayout'
+import { gql, useMutation } from '@apollo/client'
+import { useRouter } from 'solito/router'
+import AsyncStorage from '@react-native-community/async-storage'
+
+const FORGOT_PASSWORD = gql`
+  mutation ForgotPassword($input: forgotPasswordInput) {
+    forgotPassword(input: $input) {
+      message
+      status
+    }
+  }
+`
+
+const CONFIRM_FORGOT_PASSWORD = gql`
+  mutation ConfirmForgotPasswordCode($input: confirmForgotPasscodeCodeInput) {
+    confirmForgotPasswordCode(input: $input) {
+      message
+      status
+    }
+  }
+`
 
 export default function ForgotPassword() {
-  const [text, setText] = React.useState('')
+  const { push } = useRouter()
+  const [email, setEmail] = React.useState('')
+  const [newPassword, setNewPassword] = React.useState('')
+  const [code, setCode] = React.useState('')
+  const [showPass, setShowPass] = React.useState(false)
+  const [step, setStep] = React.useState(1)
   const { colorMode } = useColorMode()
+  const [step1, { loading: loadingStep1 }] = useMutation(FORGOT_PASSWORD)
+  const [step2, { loading: loadingStep2 }] = useMutation(
+    CONFIRM_FORGOT_PASSWORD
+  )
+
+  const handleSubmit = async (e) => {
+    if (step === 1) {
+      step1({
+        variables: {
+          input: {
+            email
+          }
+        },
+        onCompleted: async ({ forgotPassword }) => {
+          if (forgotPassword?.status === 'success') {
+            setStep(2)
+            return
+          }
+          if (forgotPassword?.message) {
+            alert(forgotPassword.message)
+            return
+          }
+          alert('There was an error')
+          return
+        },
+        onError: (error) => {
+          alert(`There was an error: ${error}`)
+        }
+      })
+    }
+    if (step === 2) {
+      if (!code) {
+        alert('Please enter a code.')
+        return
+      }
+      try {
+        Number(code)
+      } catch (e) {
+        alert('Please enter a valid code.')
+        return
+      }
+      step2({
+        variables: {
+          input: {
+            email,
+            code: Number(code),
+            newPassword
+          }
+        },
+        onCompleted: async ({ confirmForgotPasswordCode }) => {
+          if (confirmForgotPasswordCode?.status === 'success') {
+            if (confirmForgotPasswordCode?.message) {
+              alert(confirmForgotPasswordCode.message)
+            }
+            push('/sign-in')
+            return
+          }
+          alert('There was an error')
+          return
+        },
+        onError: (error) => {
+          alert(`There was an error: ${error}`)
+        }
+      })
+    }
+  }
 
   return (
     <GuestLayout>
@@ -128,26 +220,89 @@ export default function ForgotPassword() {
               </Text>
             </VStack>
             <VStack space="6" mt="10">
-              <FloatingLabelInput
-                py={{ base: '17px', md: '14px' }}
-                isRequired
-                label="Email"
-                labelColor="#9CA3AF"
-                borderRadius="4"
-                defaultValue={text}
-                onChangeText={(txt: string) => setText(txt)}
-                labelBGColor={useColorModeValue('#fff', '#1F2937')}
-                _text={{
-                  fontSize: 'md',
-                  fontWeight: 'semibold'
-                }}
-                _dark={{
-                  borderColor: 'coolGray.700'
-                }}
-                _light={{
-                  borderColor: 'coolGray.300'
-                }}
-              />
+              {step === 1 ? (
+                <FloatingLabelInput
+                  py={{ base: '17px', md: '14px' }}
+                  isRequired
+                  label="Email"
+                  labelColor="#9CA3AF"
+                  borderRadius="4"
+                  defaultValue={email}
+                  onChangeText={(txt: string) => setEmail(txt)}
+                  labelBGColor={useColorModeValue('#fff', '#1F2937')}
+                  _text={{
+                    fontSize: 'md',
+                    fontWeight: 'semibold'
+                  }}
+                  _dark={{
+                    borderColor: 'coolGray.700'
+                  }}
+                  _light={{
+                    borderColor: 'coolGray.300'
+                  }}
+                />
+              ) : null}
+              {step === 2 ? (
+                <>
+                  `{' '}
+                  <FloatingLabelInput
+                    py={{ base: '17px', md: '14px' }}
+                    isRequired
+                    label="Code"
+                    labelColor="#9CA3AF"
+                    borderRadius="4"
+                    defaultValue={code}
+                    onChangeText={(txt: string) => setCode(txt)}
+                    labelBGColor={useColorModeValue('#fff', '#1F2937')}
+                    _text={{
+                      fontSize: 'md',
+                      fontWeight: 'semibold'
+                    }}
+                    _dark={{
+                      borderColor: 'coolGray.700'
+                    }}
+                    _light={{
+                      borderColor: 'coolGray.300'
+                    }}
+                  />
+                  <FloatingLabelInput
+                    isRequired
+                    type={showPass ? '' : 'password'}
+                    label="Password"
+                    borderRadius="4"
+                    labelColor="#9ca3af"
+                    labelBGColor={useColorModeValue('#fff', '#1f2937')}
+                    defaultValue={newPassword}
+                    onChangeText={(txt: any) => setNewPassword(txt)}
+                    InputRightElement={
+                      <IconButton
+                        variant="unstyled"
+                        icon={
+                          <Icon
+                            size="4"
+                            color="coolGray.400"
+                            as={Entypo}
+                            name={showPass ? 'eye-with-line' : 'eye'}
+                          />
+                        }
+                        onPress={() => {
+                          setShowPass(!showPass)
+                        }}
+                      />
+                    }
+                    _text={{
+                      fontSize: 'sm',
+                      fontWeight: 'medium'
+                    }}
+                    _dark={{
+                      borderColor: 'coolGray.700'
+                    }}
+                    _light={{
+                      borderColor: 'coolGray.300'
+                    }}
+                  />
+                </>
+              ) : null}
               <Button
                 py="13px"
                 size="md"
@@ -163,8 +318,9 @@ export default function ForgotPassword() {
                   bg: 'coolGray.700',
                   _pressed: { bg: 'coolGray.4000' }
                 }}
+                onPress={handleSubmit}
               >
-                SUBMIT
+                {loadingStep1 || loadingStep2 ? 'Loading...' : 'SUBMIT'}
               </Button>
             </VStack>
           </Box>

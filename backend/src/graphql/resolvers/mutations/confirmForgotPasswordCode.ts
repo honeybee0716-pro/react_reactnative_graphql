@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 import {language} from '../../../constants/language';
 import {prismaContext} from '../../prismaContext';
-import getUserByID from '../queries/getUserByID';
+import getUserByEmail from '../queries/getUserByEmail';
 
 export const confirmForgotPasswordCodeSchema = gql`
   scalar JSON
@@ -14,7 +14,7 @@ export const confirmForgotPasswordCodeSchema = gql`
   }
 
   input confirmForgotPasscodeCodeInput {
-    id: String
+    email: String
     code: Int
     newPassword: String
   }
@@ -28,7 +28,9 @@ export const confirmForgotPasswordCodeSchema = gql`
 
 /* jscpd:ignore-start */
 const confirmForgotPasswordCode = async (parent: null, args: any) => {
-  const foundUser = await getUserByID(undefined, {input: {id: args.input.id}});
+  const foundUser = await getUserByEmail(undefined, {
+    input: {email: args.input.email},
+  });
 
   if (!foundUser) {
     throw new Error(language('error.userNotFound'));
@@ -47,7 +49,7 @@ const confirmForgotPasswordCode = async (parent: null, args: any) => {
   if (args.input.code === passwordResetCode && !isExpired) {
     await prismaContext.prisma.user.update({
       where: {
-        id: args.input.id,
+        email: args.input.email,
       },
       data: {
         password: hashedPassword,

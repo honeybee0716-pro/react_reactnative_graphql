@@ -26,29 +26,34 @@ const forgotPassword = async (parent: any, args: any) => {
 
   const passwordResetCode = generateRandomNumber();
 
-  await prismaContext.prisma.user.update({
+  const user = await prismaContext.prisma.user.findFirst({
     where: {
       email,
     },
-    data: {
-      passwordResetCode,
-      passwordResetCodeTimestamp: new Date(),
-    },
   });
 
-  await sendEmail({
-    to: email,
-    subject: 'Password Reset',
-    text: `You have requested to reset your password. Please click here to reset your password: ${process.env.PROTOCOL}://${process.env.DOMAIN}/reset-password?code=${passwordResetCode}.`,
-    html: `
-      <p>
-        You have requested to reset your password.
-      </p>
-      <p>
-        <a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/reset-password?code=${passwordResetCode}">Please here to reset your password</a>
-      </p>
-    `,
-  });
+  if (user) {
+    await prismaContext.prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        passwordResetCode,
+        passwordResetCodeTimestamp: new Date(),
+      },
+    });
+
+    await sendEmail({
+      to: email,
+      subject: 'Password Reset',
+      text: `Please use this code to reset your password: ${passwordResetCode}`,
+      html: `
+        <p>
+          Please use this code to reset your password: ${passwordResetCode}
+        </p>
+      `,
+    });
+  }
 
   return {
     message:
