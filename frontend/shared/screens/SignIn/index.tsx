@@ -19,18 +19,63 @@ import {
   Box
 } from 'native-base'
 import { AntDesign, Entypo } from '@expo/vector-icons'
-import IconGoogle from './components/IconGoogle'
-import IconFacebook from './components/IconFacebook'
+// import IconGoogle from './components/IconGoogle'
+// import IconFacebook from './components/IconFacebook'
 import FloatingLabelInput from './components/FloatingLabelInput'
 import { Link as SolitoLink } from 'solito/link'
+import { gql, useLazyQuery } from '@apollo/client'
+import { useRouter } from 'solito/router'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-export function SignInForm({ props }: any) {
-  // const router = useRouter(); //use incase of Nextjs
-  const [text, setText] = useState('')
-  const [pass, setPass] = useState('')
+const LOGIN_USER = gql`
+  query LoginUserWithPassword($input: loginUserWithPasswordInput) {
+    loginUserWithPassword(input: $input) {
+      jwt
+      message
+      status
+    }
+  }
+`
+
+export function SignInForm() {
+  const { push } = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [showPass, setShowPass] = React.useState(false)
+  const [loginUser, { loading }] = useLazyQuery(LOGIN_USER)
+
+  const handleSignIn = async () => {
+    loginUser({
+      variables: {
+        input: {
+          email,
+          password
+        }
+      },
+      onCompleted: async ({ loginUserWithPassword }) => {
+        if (
+          loginUserWithPassword?.status === 'success' &&
+          loginUserWithPassword?.jwt
+        ) {
+          await AsyncStorage.setItem('jwt', loginUserWithPassword.jwt)
+          push('/home')
+          return
+        }
+        if (loginUserWithPassword?.message) {
+          alert(loginUserWithPassword.message)
+          return
+        }
+        alert('There was an error')
+        return
+      },
+      onError: (error) => {
+        alert(`There was an error: ${error}`)
+      }
+    })
+  }
+
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{
@@ -65,8 +110,8 @@ export function SignInForm({ props }: any) {
                   labelColor="#9ca3af"
                   labelBGColor={useColorModeValue('#fff', '#1f2937')}
                   borderRadius="4"
-                  defaultValue={text}
-                  onChangeText={(txt: any) => setText(txt)}
+                  defaultValue={email}
+                  onChangeText={(txt: any) => setEmail(txt)}
                   _text={{
                     fontSize: 'sm',
                     fontWeight: 'medium'
@@ -85,8 +130,8 @@ export function SignInForm({ props }: any) {
                   borderRadius="4"
                   labelColor="#9ca3af"
                   labelBGColor={useColorModeValue('#fff', '#1f2937')}
-                  defaultValue={pass}
-                  onChangeText={(txt: any) => setPass(txt)}
+                  defaultValue={password}
+                  onChangeText={(txt: any) => setPassword(txt)}
                   InputRightElement={
                     <IconButton
                       variant="unstyled"
@@ -167,11 +212,9 @@ export function SignInForm({ props }: any) {
                 _dark={{
                   bg: 'primary.700'
                 }}
-                onPress={() => {
-                  props.navigation.navigate('OTP')
-                }}
+                onPress={handleSignIn}
               >
-                SIGN IN
+                {loading ? 'Loading...' : 'SIGN IN'}
               </Button>
               {/* <HStack
                 mt="5"

@@ -36,8 +36,6 @@ const getUserByEmail = async (parent: any, args: any) => {
 
   const user: any = {...foundUser};
 
-  delete user.password;
-
   return {
     message: 'User found',
     status: 'success',
