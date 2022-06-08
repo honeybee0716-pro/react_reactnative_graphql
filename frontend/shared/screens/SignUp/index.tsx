@@ -19,19 +19,64 @@ import {
   Stack
 } from 'native-base'
 import { Link as SolitoLink } from 'solito/link'
+import { useRouter } from 'solito/router'
 import { AntDesign, Entypo } from '@expo/vector-icons'
-import IconGoogle from './components/IconGoogle'
-import IconFacebook from './components/IconFacebook'
+// import IconGoogle from './components/IconGoogle'
+// import IconFacebook from './components/IconFacebook'
 import FloatingLabelInput from './components/FloatingLabelInput'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { gql, useMutation } from '@apollo/client'
 
-function SignUpForm({ props }: any) {
-  // const router = useRouter(); //use incase of Nextjs
-  const [text, setText] = useState('')
-  const [pass, setPass] = useState('')
-  const [confirm_pass, setConfirmPass] = useState('')
+const CREATE_USER = gql`
+  mutation CreateUser($input: createUserInput!) {
+    createUser(input: $input) {
+      message
+      status
+    }
+  }
+`
+
+function SignUpForm() {
+  const { push } = useRouter()
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [showPass, setShowPass] = React.useState(false)
   const [showConfirmPass, setShowConfirmPass] = React.useState(false)
+
+  const [createUser, { loading }] = useMutation(CREATE_USER)
+
+  const handleSignUp = async (e) => {
+    createUser({
+      variables: {
+        input: {
+          firstName,
+          lastName,
+          email,
+          password,
+          createdIPAddress: '111.111.111.111'
+        }
+      },
+      onCompleted: ({ createUser }) => {
+        if (createUser?.status === 'success') {
+          push('/otp')
+          return
+        }
+        if (createUser?.message) {
+          alert(createUser.message)
+          return
+        }
+        alert('There was an error')
+        return
+      },
+      onError: (error) => {
+        alert(`There was an error: ${error}`)
+      }
+    })
+  }
+
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{
@@ -66,8 +111,8 @@ function SignUpForm({ props }: any) {
                   labelColor="#9ca3af"
                   labelBGColor={useColorModeValue('#fff', '#1f2937')}
                   borderRadius="4"
-                  defaultValue={text}
-                  onChangeText={(txt: any) => setText(txt)}
+                  defaultValue={firstName}
+                  onChangeText={(txt: any) => setFirstName(txt)}
                   _text={{
                     fontSize: 'sm',
                     fontWeight: 'medium'
@@ -85,8 +130,8 @@ function SignUpForm({ props }: any) {
                   labelColor="#9ca3af"
                   labelBGColor={useColorModeValue('#fff', '#1f2937')}
                   borderRadius="4"
-                  defaultValue={text}
-                  onChangeText={(txt: any) => setText(txt)}
+                  defaultValue={lastName}
+                  onChangeText={(txt: any) => setLastName(txt)}
                   _text={{
                     fontSize: 'sm',
                     fontWeight: 'medium'
@@ -104,8 +149,8 @@ function SignUpForm({ props }: any) {
                   labelColor="#9ca3af"
                   labelBGColor={useColorModeValue('#fff', '#1f2937')}
                   borderRadius="4"
-                  defaultValue={text}
-                  onChangeText={(txt: any) => setText(txt)}
+                  defaultValue={email}
+                  onChangeText={(txt: any) => setEmail(txt)}
                   _text={{
                     fontSize: 'sm',
                     fontWeight: 'medium'
@@ -124,8 +169,8 @@ function SignUpForm({ props }: any) {
                   borderRadius="4"
                   labelColor="#9ca3af"
                   labelBGColor={useColorModeValue('#fff', '#1f2937')}
-                  defaultValue={pass}
-                  onChangeText={(txt: any) => setPass(txt)}
+                  defaultValue={password}
+                  onChangeText={(txt: any) => setPassword(txt)}
                   InputRightElement={
                     <IconButton
                       variant="unstyled"
@@ -161,8 +206,8 @@ function SignUpForm({ props }: any) {
                   borderRadius="4"
                   labelColor="#9ca3af"
                   labelBGColor={useColorModeValue('#fff', '#1f2937')}
-                  defaultValue={confirm_pass}
-                  onChangeText={(txt: any) => setConfirmPass(txt)}
+                  defaultValue={confirmPassword}
+                  onChangeText={(txt: any) => setConfirmPassword(txt)}
                   InputRightElement={
                     <IconButton
                       variant="unstyled"
@@ -265,11 +310,9 @@ function SignUpForm({ props }: any) {
                 _dark={{
                   bg: 'primary.700'
                 }}
-                onPress={() => {
-                  props.navigation.navigate('OTP')
-                }}
+                onPress={handleSignUp}
               >
-                SIGN UP
+                {loading ? 'Loading...' : 'SIGN UP'}
               </Button>
               {/* <HStack
                 space="2"
