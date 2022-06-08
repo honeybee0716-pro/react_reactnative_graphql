@@ -20,13 +20,13 @@ export default function Splash(props: any) {
       />
       <Box
         safeAreaTop
-        _light={{ bg: 'primary.900' }}
-        _dark={{ bg: 'coolGray.900' }}
+        _light={{ bg: 'coolGray.400' }}
+        _dark={{ bg: 'coolGray.400' }}
       />
       <Center
         my="auto"
-        _dark={{ bg: 'coolGray.900' }}
-        _light={{ bg: 'primary.900' }}
+        _dark={{ bg: 'coolGray.400' }}
+        _light={{ bg: 'coolGray.400' }}
         flex="1"
         p={{ md: 8 }}
       >
@@ -49,7 +49,7 @@ export default function Splash(props: any) {
                 md: '32'
               }}
               rounded={{ md: 'xl' }}
-              _light={{ bg: { md: 'primary.700' } }}
+              _light={{ bg: { md: 'coolGray.700' } }}
               _dark={{ bg: { md: 'coolGray.800' } }}
             >
               <Box
@@ -65,21 +65,11 @@ export default function Splash(props: any) {
                 justifyContent="center"
               >
                 <Image
-                  size={{ base: '24', md: '16' }}
-                  resizeMode={'contain'}
-                  alt="NativeBase Logo"
-                  source={require('./components/logo-nb.png')}
-                  mb={{
-                    base: '24',
-                    md: '0'
-                  }}
-                />
-                <Image
                   h="8"
                   w={{ base: '64', md: '72' }}
                   resizeMode="contain"
                   alt="NativeBase Startup plus"
-                  source={require('./components/logo-startup-plus.png')}
+                  source={require('../../assets/clientEyeLogo.jpeg')}
                 />
               </Box>
               <VStack space="4">
@@ -87,9 +77,9 @@ export default function Splash(props: any) {
                   <Button
                     size="lg"
                     _text={{
-                      color: 'primary.900'
+                      color: 'coolGray.900'
                     }}
-                    _hover={{ bg: 'coolGray.200' }}
+                    _hover={{ bg: 'white' }}
                     bg="coolGray.100"
                   >
                     LOGIN
@@ -101,6 +91,7 @@ export default function Splash(props: any) {
                     _text={{
                       color: 'coolGray.50'
                     }}
+                    _hover={{ bg: 'coolGray.800' }}
                     variant="outline"
                     colorScheme="coolGray"
                     borderColor="coolGray.50"

@@ -259,12 +259,12 @@ function SignUpForm() {
                       }}
                       _light={{
                         _text: {
-                          color: 'primary.900'
+                          color: 'coolGray.700'
                         }
                       }}
                       _dark={{
                         _text: {
-                          color: 'primary.500'
+                          color: 'coolGray.4000'
                         }
                       }}
                       // onPress={(e) => e.preventDefault()}
@@ -284,12 +284,12 @@ function SignUpForm() {
                       }}
                       _light={{
                         _text: {
-                          color: 'primary.900'
+                          color: 'coolGray.700'
                         }
                       }}
                       _dark={{
                         _text: {
-                          color: 'primary.500'
+                          color: 'coolGray.4000'
                         }
                       }}
                       // onPress={(e) => e.preventDefault()}
@@ -306,11 +306,12 @@ function SignUpForm() {
                   fontSize: 'sm',
                   fontWeight: 'medium'
                 }}
+                _hover={{ bg: 'coolGray.600' }}
                 _light={{
-                  bg: 'primary.900'
+                  bg: 'coolGray.700'
                 }}
                 _dark={{
-                  bg: 'primary.700'
+                  bg: 'coolGray.700'
                 }}
                 onPress={handleSignUp}
               >
@@ -324,7 +325,7 @@ function SignUpForm() {
               >
                 <Divider
                   w="30%"
-                  _light={{ bg: 'coolGray.200' }}
+                  _light={{ bg: 'coolGray.400' }}
                   _dark={{ bg: 'coolGray.700' }}
                 ></Divider>
                 <Text
@@ -337,7 +338,7 @@ function SignUpForm() {
                 </Text>
                 <Divider
                   w="30%"
-                  _light={{ bg: 'coolGray.200' }}
+                  _light={{ bg: 'coolGray.400' }}
                   _dark={{ bg: 'coolGray.700' }}
                 ></Divider>
               </HStack> */}
@@ -378,12 +379,12 @@ function SignUpForm() {
               }}
               _light={{
                 _text: {
-                  color: 'primary.900'
+                  color: 'coolGray.700'
                 }
               }}
               _dark={{
                 _text: {
-                  color: 'primary.500'
+                  color: 'coolGray.4000'
                 }
               }}
             >
@@ -407,13 +408,13 @@ export default function SignUp(props: any) {
       />
       <Box
         safeAreaTop
-        _light={{ bg: 'primary.900' }}
-        _dark={{ bg: 'coolGray.900' }}
+        _light={{ bg: 'coolGray.400' }}
+        _dark={{ bg: 'coolGray.400' }}
       />
       <Center
         my="auto"
-        _dark={{ bg: 'coolGray.900' }}
-        _light={{ bg: 'primary.900' }}
+        _dark={{ bg: 'coolGray.400' }}
+        _light={{ bg: 'coolGray.400' }}
         flex="1"
       >
         <Stack
@@ -464,7 +465,7 @@ export default function SignUp(props: any) {
           <Hidden till="md">
             <Center
               flex="1"
-              bg="primary.700"
+              bg="coolGray.700"
               borderTopLeftRadius={{ base: '0', md: 'xl' }}
               borderBottomLeftRadius={{ base: '0', md: 'xl' }}
             >
@@ -473,7 +474,7 @@ export default function SignUp(props: any) {
                 size="80"
                 alt="NativeBase Startup+ "
                 resizeMode={'contain'}
-                source={require('./components/logo.png')}
+                source={require('../../assets/clientEyeLogo.jpeg')}
               />
             </Center>
           </Hidden>

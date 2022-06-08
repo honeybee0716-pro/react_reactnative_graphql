@@ -170,12 +170,12 @@ export function SignInForm() {
                   }}
                   _light={{
                     _text: {
-                      color: 'primary.900'
+                      color: 'coolGray.700'
                     }
                   }}
                   _dark={{
                     _text: {
-                      color: 'primary.500'
+                      color: 'coolGray.4000'
                     }
                   }}
                 >
@@ -204,13 +204,14 @@ export function SignInForm() {
                 size="md"
                 borderRadius="4"
                 _text={{
-                  fontWeight: 'medium'
+                  color: 'white'
                 }}
+                _hover={{ bg: 'coolGray.600' }}
                 _light={{
-                  bg: 'primary.900'
+                  bg: 'coolGray.700'
                 }}
                 _dark={{
-                  bg: 'primary.700'
+                  bg: 'coolGray.700'
                 }}
                 onPress={handleSignIn}
               >
@@ -225,7 +226,7 @@ export function SignInForm() {
               >
                 <Divider
                   w="30%"
-                  _light={{ bg: 'coolGray.200' }}
+                  _light={{ bg: 'coolGray.400' }}
                   _dark={{ bg: 'coolGray.700' }}
                 ></Divider>
                 <Text
@@ -237,7 +238,7 @@ export function SignInForm() {
                 </Text>
                 <Divider
                   w="30%"
-                  _light={{ bg: 'coolGray.200' }}
+                  _light={{ bg: 'coolGray.400' }}
                   _dark={{ bg: 'coolGray.700' }}
                 ></Divider>
               </HStack> */}
@@ -277,12 +278,12 @@ export function SignInForm() {
               }}
               _light={{
                 _text: {
-                  color: 'primary.900'
+                  color: 'coolGray.700'
                 }
               }}
               _dark={{
                 _text: {
-                  color: 'primary.500'
+                  color: 'coolGray.4000'
                 }
               }}
             >
@@ -305,13 +306,13 @@ export default function SignIn(props: any) {
       />
       <Box
         safeAreaTop
-        _light={{ bg: 'primary.900' }}
-        _dark={{ bg: 'coolGray.900' }}
+        _light={{ bg: 'coolGray.400' }}
+        _dark={{ bg: 'coolGray.400' }}
       />
       <Center
         my="auto"
-        _dark={{ bg: 'coolGray.900' }}
-        _light={{ bg: 'primary.900' }}
+        _dark={{ bg: 'coolGray.400' }}
+        _light={{ bg: 'coolGray.400' }}
         flex="1"
         p={{ md: 8 }}
       >
@@ -363,7 +364,7 @@ export default function SignIn(props: any) {
           <Hidden till="md">
             <Center
               flex="1"
-              bg="primary.700"
+              bg="coolGray.700"
               borderTopLeftRadius={{ base: '0', md: 'xl' }}
               borderBottomLeftRadius={{ base: '0', md: 'xl' }}
             >
@@ -372,7 +373,7 @@ export default function SignIn(props: any) {
                 size="80"
                 alt="NativeBase Startup+ "
                 resizeMode={'contain'}
-                source={require('./components/logo.png')}
+                source={require('../../assets/clientEyeLogo.jpeg')}
               />
             </Center>
           </Hidden>

@@ -14,7 +14,7 @@ export default function TermsAndCondition() {
         borderRadius={{ md: '8' }}
         _light={{
           bg: { base: 'white' },
-          borderColor: 'coolGray.200'
+          borderColor: 'coolGray.400'
         }}
         _dark={{
           bg: 'coolGray.800',
@@ -27,7 +27,7 @@ export default function TermsAndCondition() {
         <Text
           fontSize="md"
           fontWeight="semibold"
-          _dark={{ color: 'coolGray.200' }}
+          _dark={{ color: 'coolGray.400' }}
           _light={{ color: 'coolGray.800' }}
         >
           1. Terms
@@ -50,7 +50,7 @@ export default function TermsAndCondition() {
           mt="3"
           fontSize="md"
           fontWeight="semibold"
-          _dark={{ color: 'coolGray.200' }}
+          _dark={{ color: 'coolGray.400' }}
           _light={{ color: 'coolGray.800' }}
         >
           2. Conditions

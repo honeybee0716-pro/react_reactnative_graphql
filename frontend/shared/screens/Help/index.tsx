@@ -53,12 +53,12 @@ function UploadFile() {
   return (
     <Box
       _light={{ bg: 'white' }}
-      _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.900' } }}
+      _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.400' } }}
       p={{ base: '4', md: '0' }}
     >
       <Text
         _light={{ color: 'coolGray.800' }}
-        _dark={{ color: 'coolGray.200' }}
+        _dark={{ color: 'coolGray.400' }}
         fontWeight="bold"
       >
         Add Photo or Video
@@ -127,13 +127,13 @@ function RatingStars() {
   return (
     <Box
       _light={{ bg: 'white' }}
-      _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.900' } }}
+      _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.400' } }}
       py={{ base: '2', md: '0' }}
       px={{ base: 4, md: 0 }}
     >
       <Text
         _light={{ color: 'coolGray.800' }}
-        _dark={{ color: 'coolGray.200' }}
+        _dark={{ color: 'coolGray.400' }}
         fontWeight="bold"
       >
         Rate your experience
@@ -236,13 +236,13 @@ function FeedbackInput() {
   return (
     <Box
       _light={{ bg: 'white' }}
-      _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.900' } }}
+      _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.400' } }}
       p={{ base: '4', md: '0' }}
       flex={1}
     >
       <Text
         _light={{ color: 'coolGray.800' }}
-        _dark={{ color: 'coolGray.200' }}
+        _dark={{ color: 'coolGray.400' }}
         fontWeight="bold"
         fontSize="md"
       >
@@ -259,7 +259,7 @@ function FeedbackInput() {
         _light={{ color: 'coolGray.500' }}
         _dark={{
           color: 'coolGray.300',
-          bg: { md: 'coolGray.900' }
+          bg: { md: 'coolGray.400' }
         }}
         placeholder="Would you like to write anything about the product?"
       />
@@ -273,10 +273,10 @@ export default function () {
         <VStack
           _light={{
             bg: { md: 'white', base: 'white' },
-            borderColor: 'coolGray.200'
+            borderColor: 'coolGray.400'
           }}
           _dark={{
-            bg: { base: 'coolGray.800', md: 'coolGray.900' },
+            bg: { base: 'coolGray.800', md: 'coolGray.400' },
             borderColor: 'coolGray.700'
           }}
           px={{ base: 0, md: 16, lg: 32 }}
@@ -292,7 +292,7 @@ export default function () {
               height={4}
               mb={1}
               _dark={{ bg: 'customGray' }}
-              _light={{ bg: 'primary.50' }}
+              _light={{ bg: 'coolGray.400' }}
             />
           </Hidden>
           <RatingStars />
@@ -301,7 +301,7 @@ export default function () {
               height={4}
               mb={1}
               _dark={{ bg: 'customGray' }}
-              _light={{ bg: 'primary.50' }}
+              _light={{ bg: 'coolGray.400' }}
             />
           </Hidden>
           <UploadFile />
@@ -310,13 +310,14 @@ export default function () {
               height={4}
               mb={1}
               _dark={{ bg: 'customGray' }}
-              _light={{ bg: 'primary.50' }}
+              _light={{ bg: 'coolGray.400' }}
             />
           </Hidden>
           <FeedbackInput />
           <Button
             mt={{ md: '8' }}
-            _light={{ bg: 'primary.900' }}
+            _light={{ bg: 'coolGray.700' }}
+            _hover={{ bg: 'coolGray.600' }}
             _dark={{ bg: 'primary.800' }}
             py="4"
             mx={{ base: '4', md: '0' }}

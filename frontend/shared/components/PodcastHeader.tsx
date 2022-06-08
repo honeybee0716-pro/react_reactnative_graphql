@@ -31,10 +31,10 @@ export default function PodcastHeader(props: PodcastHeaderProps) {
       pt={{ base: 12, md: 4 }}
       pb={{ base: 5, md: 4 }}
       borderBottomWidth={{ md: '1' }}
-      _dark={{ bg: 'coolGray.900', borderColor: 'coolGray.800' }}
+      _dark={{ bg: 'coolGray.400', borderColor: 'coolGray.800' }}
       _light={{
-        bg: { base: 'primary.900', md: 'white' },
-        borderColor: 'coolGray.200'
+        bg: { base: 'coolGray.400', md: 'white' },
+        borderColor: 'coolGray.400'
       }}
     >
       {/* Mobile header */}
@@ -152,7 +152,7 @@ export default function PodcastHeader(props: PodcastHeaderProps) {
             source={require('../assets/women.jpg')}
             borderWidth="2"
             _dark={{
-              borderColor: 'primary.700'
+              borderColor: 'coolGray.700'
             }}
             w="8"
             h="8"

@@ -74,10 +74,10 @@ export function Header(props: HeaderProps) {
       pt="3"
       pb="3"
       borderBottomWidth="1"
-      _dark={{ bg: 'coolGray.900', borderColor: 'coolGray.800' }}
+      _dark={{ bg: 'coolGray.400', borderColor: 'coolGray.800' }}
       _light={{
-        bg: { base: 'primary.900', md: 'white' },
-        borderColor: 'coolGray.200'
+        bg: { base: 'coolGray.400', md: 'white' },
+        borderColor: 'coolGray.400'
       }}
     >
       <VStack
@@ -110,7 +110,7 @@ export function Header(props: HeaderProps) {
                 w="56"
                 alt="NativeBase Startup+"
                 resizeMode="contain"
-                source={require('../assets/header_logo_light.png')}
+                source={require('../assets/clientEyeLogo.jpeg')}
               />
             ) : (
               <Image
@@ -118,7 +118,7 @@ export function Header(props: HeaderProps) {
                 w="56"
                 alt="NativeBase Startup+"
                 resizeMode="contain"
-                source={require('../assets/header_logo_dark.png')}
+                source={require('../assets/clientEyeLogo.jpeg')}
               />
             )}
           </HStack>
@@ -188,10 +188,10 @@ export function MobileHeader(props: MobileHeaderProps) {
       px="1"
       pt="4"
       pb="4"
-      _dark={{ bg: 'coolGray.900', borderColor: 'coolGray.800' }}
+      _dark={{ bg: 'coolGray.400', borderColor: 'coolGray.800' }}
       _light={{
-        bg: { base: 'primary.900', md: 'white' },
-        borderColor: 'coolGray.200'
+        bg: { base: 'coolGray.400', md: 'white' },
+        borderColor: 'coolGray.400'
       }}
     >
       <HStack space="2" justifyContent="space-between">
@@ -232,7 +232,7 @@ export function MobileHeader(props: MobileHeaderProps) {
                     name="bell"
                     as={FontAwesome}
                     _dark={{
-                      color: 'coolGray.200'
+                      color: 'coolGray.400'
                     }}
                     _light={{
                       color: 'coolGray.50'
@@ -302,12 +302,12 @@ export default function DashboardLayout({
       />
       <Box
         safeAreaTop
-        _light={{ bg: 'primary.900' }}
-        _dark={{ bg: 'coolGray.900' }}
+        _light={{ bg: 'coolGray.200' }}
+        _dark={{ bg: 'coolGray.200' }}
       />
       <VStack
         flex={1}
-        _light={{ bg: 'primary.50' }}
+        _light={{ bg: 'coolGray.200' }}
         _dark={{ bg: 'customGray' }}
       >
         <KeyboardAwareScrollView
@@ -333,7 +333,7 @@ export default function DashboardLayout({
             safeAreaBottom
             flexDirection={{ base: 'column', md: 'row' }}
             _light={{
-              borderTopColor: 'coolGray.200'
+              borderTopColor: 'coolGray.400'
             }}
             _dark={{
               bg: 'coolGray.700',

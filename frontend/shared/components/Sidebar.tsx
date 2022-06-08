@@ -35,8 +35,8 @@ export default function Sidebar() {
       w="80"
       borderRightWidth="1"
       display="flex"
-      _light={{ bg: 'white', borderRightColor: 'coolGray.200' }}
-      _dark={{ bg: 'coolGray.900', borderRightColor: 'coolGray.800' }}
+      _light={{ bg: 'white', borderRightColor: 'coolGray.400' }}
+      _dark={{ bg: 'coolGray.400', borderRightColor: 'coolGray.800' }}
     >
       <ScrollView>
         <VStack px="4" py="4">

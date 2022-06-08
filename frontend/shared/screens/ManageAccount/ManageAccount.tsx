@@ -49,15 +49,15 @@ function Dropdown() {
               _light={{
                 // @ts-ignore
                 _checked: {
-                  _icon: { color: 'primary.900' },
-                  borderColor: 'primary.900'
+                  _icon: { color: 'coolGray.400' },
+                  borderColor: 'coolGray.400'
                 }
               }}
               _dark={{
                 // @ts-ignore
                 _checked: {
-                  _icon: { color: 'primary.700' },
-                  borderColor: 'primary.700'
+                  _icon: { color: 'coolGray.700' },
+                  borderColor: 'coolGray.700'
                 }
               }}
               value="one"
@@ -96,15 +96,15 @@ function Dropdown() {
               _light={{
                 // @ts-ignore
                 _checked: {
-                  _icon: { color: 'primary.900' },
-                  borderColor: 'primary.900'
+                  _icon: { color: 'coolGray.400' },
+                  borderColor: 'coolGray.400'
                 }
               }}
               _dark={{
                 // @ts-ignore
                 _checked: {
-                  _icon: { color: 'primary.700' },
-                  borderColor: 'primary.700'
+                  _icon: { color: 'coolGray.700' },
+                  borderColor: 'coolGray.700'
                 }
               }}
               value="two"
@@ -126,12 +126,12 @@ export default function ManageAccount() {
         py={{ base: 4, md: 8 }}
         borderRadius={{ md: '8' }}
         _light={{
-          borderColor: 'coolGray.200',
+          borderColor: 'coolGray.400',
           bg: { base: 'white' }
         }}
         _dark={{
           borderColor: 'coolGray.800',
-          bg: { md: 'coolGray.900', base: 'coolGray.800' }
+          bg: { md: 'coolGray.400', base: 'coolGray.800' }
         }}
         borderWidth={{ md: '1' }}
         borderBottomWidth={{ base: '1', md: '0' }}
@@ -142,7 +142,7 @@ export default function ManageAccount() {
           alignItems="center"
           borderBottomWidth="1"
           justifyContent="space-between"
-          _light={{ borderColor: 'coolGray.200' }}
+          _light={{ borderColor: 'coolGray.400' }}
           _dark={{ borderColor: 'coolGray.500' }}
         >
           <HStack space="4" alignItems="center">

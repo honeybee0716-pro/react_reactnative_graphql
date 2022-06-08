@@ -35,10 +35,10 @@ export default function Header({ ...props }: HeaderProps) {
       pt={{ base: '4', md: '4' }}
       pb={{ base: '4', md: '4' }}
       borderBottomWidth={{ md: '1' }}
-      _dark={{ bg: 'coolGray.900', borderColor: 'coolGray.800' }}
+      _dark={{ bg: 'coolGray.400', borderColor: 'coolGray.800' }}
       _light={{
-        bg: { base: 'primary.900', md: 'white' },
-        borderColor: 'coolGray.200'
+        bg: { base: 'coolGray.400', md: 'white' },
+        borderColor: 'coolGray.400'
       }}
     >
       {/* Mobile header */}
@@ -109,7 +109,7 @@ export default function Header({ ...props }: HeaderProps) {
                 w="56"
                 alt="NativeBase Startup+"
                 resizeMode="contain"
-                source={require('../assets/header_logo_light.png')}
+                source={require('../../assets/clientEyeLogo.jpeg')}
               />
             ) : (
               <Image
@@ -117,7 +117,7 @@ export default function Header({ ...props }: HeaderProps) {
                 w="56"
                 alt="NativeBase Startup+"
                 resizeMode="contain"
-                source={require('../assets/header_logo_dark.png')}
+                source={require('../../assets/clientEyeLogo.jpeg')}
               />
             )}
           </HStack>
@@ -134,7 +134,7 @@ export default function Header({ ...props }: HeaderProps) {
                       name="search1"
                       as={AntDesign}
                       _dark={{
-                        color: 'coolGray.200'
+                        color: 'coolGray.400'
                       }}
                       _light={{
                         color: 'coolGray.400'
@@ -151,7 +151,7 @@ export default function Header({ ...props }: HeaderProps) {
                       name="bell"
                       as={FontAwesome}
                       _dark={{
-                        color: 'coolGray.200'
+                        color: 'coolGray.400'
                       }}
                       _light={{
                         color: 'coolGray.400'
@@ -166,7 +166,7 @@ export default function Header({ ...props }: HeaderProps) {
                       name={'heart'}
                       as={FontAwesome}
                       _dark={{
-                        color: 'coolGray.200'
+                        color: 'coolGray.400'
                       }}
                       _light={{
                         color: 'coolGray.400'
@@ -179,7 +179,7 @@ export default function Header({ ...props }: HeaderProps) {
                     <Icon
                       size="6"
                       _dark={{
-                        color: 'coolGray.200'
+                        color: 'coolGray.400'
                       }}
                       _light={{
                         color: 'coolGray.400'

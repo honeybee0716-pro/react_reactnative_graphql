@@ -52,8 +52,8 @@ export default function ForgotPassword() {
         pt={{ base: 9, md: '190px' }}
         pb={{ base: '52px', md: '190px' }}
         px={{ base: 4, md: '50px' }}
-        _light={{ bg: { base: 'white', md: 'primary.900' } }}
-        _dark={{ bg: { base: 'coolGray.800', md: 'primary.900' } }}
+        _light={{ bg: { base: 'white', md: 'coolGray.300' } }}
+        _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.400' } }}
         borderTopLeftRadius={{ md: 'xl' }}
         borderBottomLeftRadius={{ md: 'xl' }}
       >
@@ -64,7 +64,7 @@ export default function ForgotPassword() {
               h={{ base: '160px' }}
               alt="NativeBase Startup+ "
               resizeMode={'contain'}
-              source={require('./components/forgot_password.png')}
+              source={require('../../assets/clientEyeLogo.jpeg')}
             />
           ) : (
             <Image
@@ -72,7 +72,7 @@ export default function ForgotPassword() {
               h={{ base: '160px' }}
               alt="NativeBase Startup+ "
               resizeMode={'contain'}
-              source={require('./components/forgot_password.png')}
+              source={require('../../assets/clientEyeLogo.jpeg')}
             />
           )}
         </Hidden>
@@ -151,13 +151,17 @@ export default function ForgotPassword() {
               <Button
                 py="13px"
                 size="md"
+                _hover={{
+                  bg: 'coolGray.600',
+                  _pressed: { bg: 'coolGray.700' }
+                }}
                 _light={{
-                  bg: 'primary.900',
-                  _pressed: { bg: 'primary.700' }
+                  bg: 'coolGray.700',
+                  _pressed: { bg: 'coolGray.700' }
                 }}
                 _dark={{
-                  bg: 'primary.700',
-                  _pressed: { bg: 'primary.500' }
+                  bg: 'coolGray.700',
+                  _pressed: { bg: 'coolGray.4000' }
                 }}
               >
                 SUBMIT
@@ -180,17 +184,17 @@ export default function ForgotPassword() {
               }}
               _hover={{
                 _text: {
-                  color: 'primary.500'
+                  color: 'coolGray.4000'
                 }
               }}
               _light={{
                 _text: {
-                  color: 'primary.900'
+                  color: 'coolGray.400'
                 }
               }}
               _dark={{
                 _text: {
-                  color: 'primary.700'
+                  color: 'coolGray.700'
                 }
               }}
             >

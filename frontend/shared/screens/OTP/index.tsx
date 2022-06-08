@@ -92,13 +92,13 @@ export default function OtpVerification() {
       />
       <Box
         safeAreaTop
-        _light={{ bg: 'primary.900' }}
-        _dark={{ bg: 'coolGray.900' }}
+        _light={{ bg: 'coolGray.400' }}
+        _dark={{ bg: 'coolGray.400' }}
       />
       <Center
         my="auto"
-        _dark={{ bg: 'coolGray.900' }}
-        _light={{ bg: 'primary.900' }}
+        _dark={{ bg: 'coolGray.400' }}
+        _light={{ bg: 'coolGray.400' }}
         flex="1"
       >
         <Stack
@@ -131,7 +131,7 @@ export default function OtpVerification() {
           <Hidden till="md">
             <Center
               flex="1"
-              bg="primary.700"
+              bg="coolGray.700"
               px={{ base: '4', md: '8' }}
               borderTopLeftRadius={{ md: 'xl' }}
               borderBottomLeftRadius={{ md: 'xl' }}
@@ -207,7 +207,7 @@ export default function OtpVerification() {
                         </Text>
                         <Link
                           _text={{
-                            _light: { color: 'primary.900' },
+                            _light: { color: 'coolGray.400' },
                             _dark: { color: 'violet.500' },
                             fontWeight: 'bold',
                             color: 'violet.700',
@@ -222,11 +222,14 @@ export default function OtpVerification() {
                   </FormControl>
                   <Button
                     size="md"
+                    _hover={{
+                      bg: 'coolGray.600'
+                    }}
                     _light={{
-                      bg: 'primary.900'
+                      bg: 'coolGray.700'
                     }}
                     _dark={{
-                      bg: 'primary.700'
+                      bg: 'coolGray.700'
                     }}
                     onPress={handleSubmitOTP}
                   >
@@ -257,7 +260,7 @@ export default function OtpVerification() {
                     }}
                     _light={{
                       _text: {
-                        color: 'primary.900'
+                        color: 'coolGray.700'
                       }
                     }}
                     _dark={{

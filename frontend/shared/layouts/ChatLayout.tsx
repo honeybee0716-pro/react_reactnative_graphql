@@ -67,10 +67,10 @@ export function Header(props: HeaderProps) {
       pt="3"
       pb="3"
       borderBottomWidth="1"
-      _dark={{ bg: 'coolGray.900', borderColor: 'coolGray.800' }}
+      _dark={{ bg: 'coolGray.400', borderColor: 'coolGray.800' }}
       _light={{
-        bg: { base: 'primary.900', md: 'white' },
-        borderColor: 'coolGray.200'
+        bg: { base: 'coolGray.400', md: 'white' },
+        borderColor: 'coolGray.400'
       }}
     >
       <VStack
@@ -147,7 +147,7 @@ export function Header(props: HeaderProps) {
                   name="bell"
                   as={FontAwesome}
                   _dark={{
-                    color: 'coolGray.200'
+                    color: 'coolGray.400'
                   }}
                   _light={{
                     color: 'coolGray.400'
@@ -171,8 +171,8 @@ export function Header(props: HeaderProps) {
                         w="8"
                         h="8"
                         // borderWidth="1"
-                        _dark={{ bg: 'coolGray.200' }}
-                        // _dark={{ borderColor: 'primary.700' }}
+                        _dark={{ bg: 'coolGray.400' }}
+                        // _dark={{ borderColor: 'coolGray.700' }}
                         source={{
                           uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
                         }}
@@ -214,10 +214,10 @@ export function MobileHeader(props: MobileHeaderProps) {
       px="1"
       pt="4"
       pb="4"
-      _dark={{ bg: 'coolGray.900', borderColor: 'coolGray.800' }}
+      _dark={{ bg: 'coolGray.400', borderColor: 'coolGray.800' }}
       _light={{
-        bg: { base: 'primary.900', md: 'white' },
-        borderColor: 'coolGray.200'
+        bg: { base: 'coolGray.400', md: 'white' },
+        borderColor: 'coolGray.400'
       }}
     >
       <HStack space="2" alignItems="center">
@@ -238,7 +238,7 @@ export function MobileHeader(props: MobileHeaderProps) {
             uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
           }}
           _dark={{
-            borderColor: 'primary.700'
+            borderColor: 'coolGray.700'
           }}
           w="12"
           h="12"
@@ -249,7 +249,7 @@ export function MobileHeader(props: MobileHeaderProps) {
               <Text color="coolGray.50" fontSize="sm" fontWeight="bold">
                 {props.title}
               </Text>
-              <Text color="coolGray.200" fontSize="xs">
+              <Text color="coolGray.400" fontSize="xs">
                 {props.subTitle}
               </Text>
             </>
@@ -294,9 +294,9 @@ export function MobileHeader(props: MobileHeaderProps) {
             }}
             placement="bottom right"
           >
-            <Menu.Item _dark={{ bg: 'coolGray.900' }}>New group</Menu.Item>
-            <Menu.Item _dark={{ bg: 'coolGray.900' }}>New broadcast</Menu.Item>
-            <Menu.Item _dark={{ bg: 'coolGray.900' }}>Settings</Menu.Item>
+            <Menu.Item _dark={{ bg: 'coolGray.400' }}>New group</Menu.Item>
+            <Menu.Item _dark={{ bg: 'coolGray.400' }}>New broadcast</Menu.Item>
+            <Menu.Item _dark={{ bg: 'coolGray.400' }}>Settings</Menu.Item>
           </Menu>
         </HStack>
       </HStack>
@@ -329,12 +329,12 @@ export default function ChatLayout({
       />
       <Box
         safeAreaTop
-        _light={{ bg: 'primary.900' }}
-        _dark={{ bg: 'coolGray.900' }}
+        _light={{ bg: 'coolGray.400' }}
+        _dark={{ bg: 'coolGray.400' }}
       />
       <VStack
         flex={1}
-        _light={{ bg: 'primary.50' }}
+        _light={{ bg: 'coolGray.400' }}
         _dark={{ bg: 'customGray' }}
       >
         <KeyboardAwareScrollView
@@ -360,7 +360,7 @@ export default function ChatLayout({
             safeAreaBottom
             flexDirection={{ base: 'column', md: 'row' }}
             _light={{
-              borderTopColor: 'coolGray.200'
+              borderTopColor: 'coolGray.400'
             }}
             _dark={{
               bg: 'coolGray.700',

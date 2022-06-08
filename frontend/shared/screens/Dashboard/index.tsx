@@ -57,7 +57,7 @@ const GET_USER_LEADS = gql`
 //       <HStack alignItems="center">
 //         <Text
 //           fontSize="xs"
-//           _light={{ color: 'coolGray.900' }}
+//           _light={{ color: 'coolGray.400' }}
 //           _dark={{ color: 'coolGray.50' }}
 //           mt={5}
 //           mb={2}
@@ -85,7 +85,7 @@ const GET_USER_LEADS = gql`
 //               <VStack>
 //                 <Text
 //                   fontSize="sm"
-//                   _light={{ color: 'coolGray.900' }}
+//                   _light={{ color: 'coolGray.400' }}
 //                   _dark={{ color: 'coolGray.50' }}
 //                 >
 //                   {item.contactName.charAt(0).toUpperCase() +
@@ -120,7 +120,7 @@ function ListItem(props: ListItemProps) {
         <VStack>
           <Text
             fontSize="sm"
-            _light={{ color: 'coolGray.900' }}
+            _light={{ color: 'coolGray.400' }}
             _dark={{ color: 'coolGray.50' }}
           >
             {props.item.contactName.charAt(0).toUpperCase() +
@@ -148,7 +148,7 @@ function ListItemDesktop(props: ListItemProps) {
               N/A
             </Avatar>
             <Text
-              _light={{ color: 'coolGray.900' }}
+              _light={{ color: 'coolGray.700' }}
               _dark={{ color: 'coolGray.50' }}
             >
               {props.item.firstName + ' ' + props.item.lastName}
@@ -157,7 +157,7 @@ function ListItemDesktop(props: ListItemProps) {
 
           <Text
             w={40}
-            _light={{ color: 'coolGray.900' }}
+            _light={{ color: 'coolGray.700' }}
             _dark={{ color: 'coolGray.50' }}
           >
             {props.item.email}
@@ -165,7 +165,7 @@ function ListItemDesktop(props: ListItemProps) {
 
           <Text
             w={40}
-            _light={{ color: 'coolGray.900' }}
+            _light={{ color: 'coolGray.700' }}
             _dark={{ color: 'coolGray.50' }}
           >
             {props.item.phone}
@@ -173,7 +173,7 @@ function ListItemDesktop(props: ListItemProps) {
 
           <Text
             w={40}
-            _light={{ color: 'coolGray.900' }}
+            _light={{ color: 'coolGray.700' }}
             _dark={{ color: 'coolGray.50' }}
           >
             {props.item.companyName}
@@ -181,7 +181,7 @@ function ListItemDesktop(props: ListItemProps) {
 
           <Text
             w={40}
-            _light={{ color: 'coolGray.900' }}
+            _light={{ color: 'coolGray.700' }}
             _dark={{ color: 'coolGray.50' }}
           >
             {props.item.title}
@@ -214,7 +214,7 @@ export default function ContactList() {
               mb={{ md: 5, base: 0 }}
               w="100%"
               justifyContent="space-between"
-              _light={{ bg: { base: 'white', md: 'primary.50' } }}
+              _light={{ bg: { base: 'white', md: 'coolGray.200' } }}
               _dark={{
                 bg: { base: 'coolGray.800', md: 'coolGray.700' }
               }}
@@ -226,7 +226,7 @@ export default function ContactList() {
                 mx={{ base: 4, md: 0 }}
                 mr={{ base: 4, md: 4, lg: 30, xl: 40 }}
                 _light={{ bg: 'white' }}
-                _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.900' } }}
+                _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.400' } }}
                 InputLeftElement={
                   <Icon
                     as={<AntDesign name="search1" />}
@@ -241,7 +241,7 @@ export default function ContactList() {
                     }}
                   />
                 }
-                color="coolGray.400"
+                color="coolGray.200"
                 placeholder="Search here"
               />
             </HStack>
@@ -250,12 +250,12 @@ export default function ContactList() {
               py={{ base: 2, md: 8 }}
               borderRadius={{ md: '8' }}
               _light={{
-                borderColor: 'coolGray.200',
+                borderColor: 'coolGray.400',
                 bg: { base: 'white' }
               }}
               _dark={{
                 borderColor: 'coolGray.700',
-                bg: { md: 'coolGray.900', base: 'coolGray.800' }
+                bg: { md: 'coolGray.400', base: 'coolGray.800' }
               }}
               borderWidth={{ md: '1' }}
               borderBottomWidth="1"
@@ -268,7 +268,7 @@ export default function ContactList() {
                       alignItems="center"
                       justifyContent="space-between"
                       borderBottomWidth={1}
-                      _light={{ borderColor: 'coolGray.200' }}
+                      _light={{ borderColor: 'coolGray.400' }}
                       _dark={{ borderColor: 'coolGray.600' }}
                     >
                       <Text
@@ -286,7 +286,7 @@ export default function ContactList() {
                         textAlign="left"
                         w={40}
                         mb={3}
-                        _light={{ color: 'coolGray.900' }}
+                        _light={{ color: 'coolGray.800' }}
                         _dark={{ color: 'coolGray.50' }}
                       >
                         Email
@@ -296,7 +296,7 @@ export default function ContactList() {
                         textAlign="left"
                         w={40}
                         mb={3}
-                        _light={{ color: 'coolGray.900' }}
+                        _light={{ color: 'coolGray.800' }}
                         _dark={{ color: 'coolGray.50' }}
                       >
                         Phone
@@ -305,7 +305,7 @@ export default function ContactList() {
                         fontWeight="bold"
                         w={40}
                         mb={3}
-                        _light={{ color: 'coolGray.900' }}
+                        _light={{ color: 'coolGray.800' }}
                         _dark={{ color: 'coolGray.50' }}
                       >
                         Company
@@ -314,7 +314,7 @@ export default function ContactList() {
                         fontWeight="bold"
                         w={40}
                         mb={3}
-                        _light={{ color: 'coolGray.900' }}
+                        _light={{ color: 'coolGray.800' }}
                         _dark={{ color: 'coolGray.50' }}
                       >
                         Job Title
@@ -347,7 +347,7 @@ export default function ContactList() {
                 >
                   <Icon
                     size={3}
-                    _light={{ color: 'primary.900' }}
+                    _light={{ color: 'coolGray.400' }}
                     _dark={{ color: 'violet.500' }}
                     as={AntDesign}
                     name="heart"
@@ -360,7 +360,7 @@ export default function ContactList() {
                 </VStack>
                 <Fab
                   display={{ md: 'none', base: 'flex' }}
-                  bg="primary.900"
+                  bg="coolGray.400"
                   placement="bottom-right"
                   mb={10}
                   borderRadius="full"

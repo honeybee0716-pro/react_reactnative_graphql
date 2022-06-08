@@ -44,10 +44,10 @@ function Header({ ...props }: HeaderProps) {
       pt={{ base: '4', md: '4' }}
       pb={{ base: '4', md: '4' }}
       borderBottomWidth={{ md: '1' }}
-      _dark={{ bg: 'coolGray.900', borderColor: 'coolGray.800' }}
+      _dark={{ bg: 'coolGray.400', borderColor: 'coolGray.800' }}
       _light={{
-        bg: { base: 'primary.900', md: 'white' },
-        borderColor: 'coolGray.200'
+        bg: { base: 'coolGray.400', md: 'white' },
+        borderColor: 'coolGray.400'
       }}
     >
       {/* Mobile header */}
@@ -143,7 +143,7 @@ function Header({ ...props }: HeaderProps) {
                       name="search1"
                       as={AntDesign}
                       _dark={{
-                        color: 'coolGray.200'
+                        color: 'coolGray.400'
                       }}
                       _light={{
                         color: 'coolGray.400'
@@ -160,7 +160,7 @@ function Header({ ...props }: HeaderProps) {
                       name="bell"
                       as={FontAwesome}
                       _dark={{
-                        color: 'coolGray.200'
+                        color: 'coolGray.400'
                       }}
                       _light={{
                         color: 'coolGray.400'
@@ -175,7 +175,7 @@ function Header({ ...props }: HeaderProps) {
                       name={'heart'}
                       as={FontAwesome}
                       _dark={{
-                        color: 'coolGray.200'
+                        color: 'coolGray.400'
                       }}
                       _light={{
                         color: 'coolGray.400'
@@ -188,7 +188,7 @@ function Header({ ...props }: HeaderProps) {
                     <Icon
                       size="6"
                       _dark={{
-                        color: 'coolGray.200'
+                        color: 'coolGray.400'
                       }}
                       _light={{
                         color: 'coolGray.400'
@@ -261,8 +261,8 @@ export default function PlaylistLayout(props: PlaylistLayoutProps) {
       />
       <Box
         safeAreaTop
-        _light={{ bg: 'primary.900' }}
-        _dark={{ bg: 'coolGray.900' }}
+        _light={{ bg: 'coolGray.400' }}
+        _dark={{ bg: 'coolGray.400' }}
       />
       <KeyboardAwareScrollView
         contentContainerStyle={{ width: '100%', height: '100%' }}
@@ -277,10 +277,10 @@ export default function PlaylistLayout(props: PlaylistLayoutProps) {
             flex={1}
             px={{ md: 40 }}
             _light={{
-              bg: { base: 'white', md: 'primary.50' }
+              bg: { base: 'white', md: 'coolGray.400' }
             }}
             _dark={{
-              bg: { base: 'coolGray.900', md: 'customGray' }
+              bg: { base: 'coolGray.400', md: 'customGray' }
             }}
           >
             {props.children}
