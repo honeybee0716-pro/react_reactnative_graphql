@@ -17,7 +17,7 @@ import {
   Avatar,
   Input
 } from 'native-base'
-
+import { useRouter } from 'solito/router'
 import {
   AntDesign,
   FontAwesome,
@@ -151,13 +151,15 @@ export function Header(props: HeaderProps) {
 }
 
 function MainContent(props: MainContentProps) {
+  const { back } = useRouter()
+
   return (
     <VStack maxW="1016px" flex={1} width="100%">
       {props.displayScreenTitle && (
         <Hidden till="md">
           <HStack mb="4" space={2} alignItems="center">
             {props.displayBackButton ? (
-              <Pressable>
+              <Pressable onPress={() => back()}>
                 <Icon
                   size="6"
                   as={AntDesign}

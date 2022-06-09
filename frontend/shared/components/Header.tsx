@@ -10,8 +10,10 @@ import {
   IconButton,
   Divider,
   Hidden,
-  Menu
+  Menu,
+  Pressable
 } from 'native-base'
+import { useRouter } from 'solito/router'
 
 import {
   AntDesign,
@@ -28,7 +30,15 @@ type HeaderProps = {
 }
 
 export default function Header({ ...props }: HeaderProps) {
+  const { push } = useRouter()
+
   const { colorMode } = useColorMode()
+
+  const handleLogoPress = () => {
+    alert('test')
+    push('/home')
+  }
+
   return (
     <Box
       px={{ base: '4', md: '8' }}

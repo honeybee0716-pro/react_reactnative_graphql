@@ -16,6 +16,7 @@ import {
   Button,
   Heading
 } from 'native-base'
+import { Link as SolitoLink } from 'solito/link'
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { gql, useQuery } from '@apollo/client'
 
@@ -134,7 +135,7 @@ function ListItem(props: ListItemProps) {
 
 function ListItemDesktop(props: ListItemProps) {
   return (
-    <>
+    <SolitoLink href={`/lead/${props?.item?.id}`}>
       <Pressable p={2} flex={1}>
         <HStack alignItems="center" flex={1} justifyContent="space-between">
           <HStack alignItems="center" space={4} w={40}>
@@ -191,7 +192,7 @@ function ListItemDesktop(props: ListItemProps) {
         </HStack>
       </Pressable>
       <Divider />
-    </>
+    </SolitoLink>
   )
 }
 
@@ -200,7 +201,6 @@ export default function ContactList() {
     fetchPolicy: 'cache-first'
   })
   const [search, setSearch] = React.useState('')
-
   const [leads, setLeads] = React.useState([])
 
   React.useEffect(() => {

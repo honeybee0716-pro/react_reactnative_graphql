@@ -83,6 +83,7 @@ const isAdmin = rule()(
 const permissions = shield(
   {
     Query: {
+      getLeadByID: isAuthenticated,
       getUserByID: isAuthenticated,
       getUserByEmail: isAuthenticated,
       loginUserWithPassword: any,
