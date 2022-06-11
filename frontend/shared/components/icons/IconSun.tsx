@@ -4,16 +4,13 @@ import { theme } from 'shared/styles/theme'
 
 interface MyProps {
   color?: string
-  sizeScale?: number
 }
-
 
 const IconSun: React.FC<MyProps> = ({
   color = theme.colors.shared.soft2Gray,
-  sizeScale = 1,
 }) => {
   return (
-    <Svg width={24 * sizeScale} height={25 * sizeScale} viewBox='0 0 24 25' fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Svg width='100%' height='100%' preserveAspectRatio="none" viewBox='0 0 24 25' fill="none" xmlns="http://www.w3.org/2000/svg">
       <G clip-path="url(#clip0_1_283)">
         <Path d="M12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17Z" stroke={color} stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" />
         <Path d="M12 1V3" stroke={color} stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" />
