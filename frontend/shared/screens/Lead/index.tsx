@@ -72,26 +72,28 @@ function TopSection({ lead }) {
             alignItems="center"
             justifyContent="space-evenly"
           >
-            <Pressable>
-              <VStack alignItems="center" justifyContent="center" space="2">
-                <Icon
-                  size="6"
-                  name="call"
-                  as={Ionicons}
-                  _light={{
-                    color: { base: 'coolGray.50', md: 'coolGray.500' }
-                  }}
-                />
-                <Text
-                  _light={{
-                    color: { base: 'coolGray.50', md: 'coolGray.500' }
-                  }}
-                  fontSize="md"
-                >
-                  Call
-                </Text>
-              </VStack>
-            </Pressable>
+            {lead.phone ? (
+              <a href={`tel:${lead.phone}`} style={{ textDecoration: 'none' }}>
+                <VStack alignItems="center" justifyContent="center" space="2">
+                  <Icon
+                    size="6"
+                    name="call"
+                    as={Ionicons}
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                  />
+                  <Text
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                    fontSize="md"
+                  >
+                    Call
+                  </Text>
+                </VStack>
+              </a>
+            ) : null}
             {/* <VStack alignItems="center" justifyContent="center" space="2">
               <Icon
                 as={Foundation}
@@ -110,42 +112,57 @@ function TopSection({ lead }) {
                 Video
               </Text>
             </VStack> */}
-            <VStack alignItems="center" justifyContent="center" space="2">
-              <Icon
-                as={MaterialCommunityIcons}
-                name="email"
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.500' }
-                }}
-                size="6"
-              />
-              <Text
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.500' }
-                }}
-                fontSize="md"
+            {lead.email ? (
+              <a
+                href={`mailto:${lead.email}`}
+                style={{ textDecoration: 'none' }}
               >
-                Email
-              </Text>
-            </VStack>
-            <VStack alignItems="center" justifyContent="center" space="2">
-              <Icon
-                as={MaterialCommunityIcons}
-                name="linkedin"
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.500' }
-                }}
-                size="6"
-              />
-              <Text
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.500' }
-                }}
-                fontSize="md"
+                <VStack alignItems="center" justifyContent="center" space="2">
+                  <Icon
+                    as={MaterialCommunityIcons}
+                    name="email"
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                    size="6"
+                  />
+                  <Text
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                    fontSize="md"
+                  >
+                    Email
+                  </Text>
+                </VStack>
+              </a>
+            ) : null}
+            {lead.linkedInProfileURL ? (
+              <a
+                target="_blank"
+                href={lead.linkedInProfileURL}
+                style={{ textDecoration: 'none' }}
               >
-                LinkedIn
-              </Text>
-            </VStack>
+                <VStack alignItems="center" justifyContent="center" space="2">
+                  <Icon
+                    as={MaterialCommunityIcons}
+                    name="linkedin"
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                    size="6"
+                  />
+                  <Text
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                    fontSize="md"
+                  >
+                    LinkedIn
+                  </Text>
+                </VStack>
+              </a>
+            ) : null}
           </HStack>
         </VStack>
       </VStack>
