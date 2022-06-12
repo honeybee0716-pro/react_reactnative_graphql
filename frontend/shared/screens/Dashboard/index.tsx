@@ -17,6 +17,7 @@ import {
   Heading
 } from 'native-base'
 import { Link as SolitoLink } from 'solito/link'
+import { useRouter } from 'solito/router'
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { gql, useQuery } from '@apollo/client'
 
@@ -28,6 +29,16 @@ const GET_USER_LEADS = gql`
       message
       status
       leads
+    }
+  }
+`
+
+const GET_USER_SUBSCRIPTION_DATA = gql`
+  query GetUserSubscriptionData {
+    getUserSubscriptionData {
+      stripeCustomer
+      status
+      message
     }
   }
 `
@@ -197,29 +208,52 @@ function ListItemDesktop(props: ListItemProps) {
 }
 
 export default function ContactList() {
-  const { data, error, loading } = useQuery(GET_USER_LEADS, {
+  const {
+    data: getUserLeadsData,
+    error: getUserLeadsError,
+    loading: getUserLeadsLoading
+  } = useQuery(GET_USER_LEADS, {
+    fetchPolicy: 'cache-first'
+  })
+  const {
+    data: getUserSubscriptionDataResult,
+    error: getUserSubscriptionDataError,
+    loading: getUserSubscriptionDataLoading
+  } = useQuery(GET_USER_SUBSCRIPTION_DATA, {
     fetchPolicy: 'cache-first'
   })
   const [search, setSearch] = React.useState('')
   const [leads, setLeads] = React.useState([])
+  const { push } = useRouter()
 
   React.useEffect(() => {
-    if (data?.getUserLeads?.leads) {
+    if (getUserLeadsData?.getUserLeads?.leads) {
       setLeads(
-        data.getUserLeads.leads.map((l) => ({
+        getUserLeadsData.getUserLeads.leads.map((l) => ({
           ...l,
           display: true,
           fullName: `${l.firstName} ${l.lastName}`
         }))
       )
     }
-  }, [data])
+  }, [getUserLeadsData])
+
+  React.useEffect(() => {
+    if (getUserSubscriptionDataResult) {
+      if (
+        !getUserSubscriptionDataResult?.getUserSubscriptionData?.stripeCustomer
+          ?.activePlanLevel
+      ) {
+        push('/pricing')
+      }
+    }
+  }, [getUserSubscriptionDataResult])
 
   React.useEffect(() => {
     console.log({ search })
     if (!!search) {
       setLeads(
-        data?.getUserLeads?.leads
+        getUserLeadsData?.getUserLeads?.leads
           .map((l) => ({
             ...l,
             display: true,
@@ -233,7 +267,7 @@ export default function ContactList() {
       )
     } else {
       setLeads(
-        data?.getUserLeads?.leads.map((l) => ({
+        getUserLeadsData?.getUserLeads?.leads.map((l) => ({
           ...l,
           display: true,
           fullName: `${l.firstName} ${l.lastName}`
@@ -246,12 +280,18 @@ export default function ContactList() {
     <>
       <DashboardLayout
         displaySidebar
-        displayScreenTitle={!!data}
+        displayScreenTitle={
+          !!getUserLeadsData && !getUserSubscriptionDataLoading
+        }
         title={'Leads'}
       >
-        {loading ? <Heading>Loading...</Heading> : null}
-        {error ? <Heading>Error. Please try again.</Heading> : null}
-        {data ? (
+        {getUserLeadsLoading || getUserSubscriptionDataLoading ? (
+          <Heading>Loading...</Heading>
+        ) : null}
+        {getUserLeadsError && !getUserSubscriptionDataLoading ? (
+          <Heading>Error. Please try again.</Heading>
+        ) : null}
+        {getUserLeadsData && !getUserSubscriptionDataLoading ? (
           <>
             <HStack
               pt={{ md: 5, base: 2 }}
@@ -376,7 +416,7 @@ export default function ContactList() {
                     >
                       Contacts (
                       {leads?.filter((l) => l.display === true).length} shown
-                      out of {data?.getUserLeads?.leads?.length})
+                      out of {getUserLeadsData?.getUserLeads?.leads?.length})
                     </Text>
                     <VStack space={4}>
                       {leads

@@ -15,6 +15,9 @@ import {getUserStripeInfoSchema} from '../resolvers/queries/getUserStripeInfo';
 import {confirmEmailValidationCodeSchema} from '../resolvers/mutations/confirmEmailValidationCode';
 import {getUserLeadsSchema} from '../resolvers/queries/getUserLeads';
 import {getLeadByIDSchema} from '../resolvers/queries/getLeadByID';
+import {createStripeCheckoutPageSchema} from '../resolvers/queries/createStripeCheckoutPage';
+import {cancelSubscriptionSchema} from '../resolvers/queries/cancelSubscription';
+import {getUserSubscriptionDataSchema} from '../resolvers/queries/getUserSubscriptionData';
 
 import {sharedSchema} from './shared';
 
@@ -35,4 +38,7 @@ export const typeDefs = mergeTypeDefs([
   confirmEmailValidationCodeSchema,
   getUserLeadsSchema,
   getLeadByIDSchema,
+  createStripeCheckoutPageSchema,
+  getUserSubscriptionDataSchema,
+  cancelSubscriptionSchema,
 ]) as any;

@@ -90,6 +90,9 @@ const permissions = shield(
       loginUserWithMagicLink: any,
       verifyUser: isAuthenticated,
       getUserLeads: isAuthenticated,
+      createStripeCheckoutPage: isAuthenticated,
+      getUserSubscriptionData: isAuthenticated,
+      cancelSubscription: isAuthenticated,
     },
     Mutation: {
       changePassword: isAuthenticated,

@@ -67,7 +67,13 @@ type HeaderProps = {
 }
 
 export function Header(props: HeaderProps) {
+  const { push } = useRouter()
   const { colorMode } = useColorMode()
+
+  const handleLogoPress = () => {
+    push('/home')
+  }
+
   return (
     <Box
       px="6"
@@ -104,23 +110,25 @@ export function Header(props: HeaderProps) {
               />
             )}
 
-            {colorMode === 'light' ? (
-              <Image
-                h="10"
-                w="56"
-                alt="NativeBase Startup+"
-                resizeMode="contain"
-                source={require('../assets/clientEyeLogo.jpeg')}
-              />
-            ) : (
-              <Image
-                h="10"
-                w="56"
-                alt="NativeBase Startup+"
-                resizeMode="contain"
-                source={require('../assets/clientEyeLogo.jpeg')}
-              />
-            )}
+            <Pressable onPress={handleLogoPress}>
+              {colorMode === 'light' ? (
+                <Image
+                  h="10"
+                  w="56"
+                  alt="NativeBase Startup+"
+                  resizeMode="contain"
+                  source={require('../assets/clientEyeLogo.jpeg')}
+                />
+              ) : (
+                <Image
+                  h="10"
+                  w="56"
+                  alt="NativeBase Startup+"
+                  resizeMode="contain"
+                  source={require('../assets/clientEyeLogo.jpeg')}
+                />
+              )}
+            </Pressable>
           </HStack>
           {props.searchbar && (
             <Input

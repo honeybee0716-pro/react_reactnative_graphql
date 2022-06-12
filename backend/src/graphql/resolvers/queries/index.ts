@@ -6,6 +6,9 @@ import loginUserWithMagicLink from './loginUserWithMagicLink';
 import getUserStripeInfo from './getUserStripeInfo';
 import getUserLeads from './getUserLeads';
 import getLeadByID from './getLeadByID';
+import createStripeCheckoutPage from './createStripeCheckoutPage';
+import getUserSubscriptionData from './getUserSubscriptionData';
+import cancelSubscription from './cancelSubscription';
 
 export const RootQuery = {
   getUserByID,
@@ -16,6 +19,9 @@ export const RootQuery = {
   getUserStripeInfo,
   getUserLeads,
   getLeadByID,
+  createStripeCheckoutPage,
+  getUserSubscriptionData,
+  cancelSubscription,
 };
 
 export default RootQuery;

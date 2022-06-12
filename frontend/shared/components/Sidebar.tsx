@@ -23,6 +23,11 @@ const list = [
     route: '/help'
   },
   {
+    iconName: 'credit-card',
+    iconText: 'Billing',
+    route: '/billing'
+  },
+  {
     iconName: 'logout',
     iconText: 'Sign out',
     route: '/sign-out'
