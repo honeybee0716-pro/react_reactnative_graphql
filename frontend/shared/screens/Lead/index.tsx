@@ -175,26 +175,38 @@ function BottomSection({ lead }) {
   const contactList = [
     {
       iconName: 'mobile1',
-      contactDetail: lead?.phone || 'unknown',
-      contactTye: 'Mobile',
+      contactDetail: lead?.phone || 'Unknown',
+      contactType: 'Phone',
       as: AntDesign
     },
     {
-      iconName: 'phone',
-      contactDetail: 'unknown',
-      contactTye: 'Home',
-      as: FontAwesome
-    },
-    {
       iconName: 'mail',
-      contactDetail: lead?.email || 'unknown',
-      contactTye: 'Email',
+      contactDetail: lead?.email || 'Unknown',
+      contactType: 'Email',
       as: Entypo
     },
     {
       iconName: 'map-marker',
-      contactDetail: lead?.location || 'unknown',
-      contactTye: 'Location',
+      contactDetail: lead?.location || 'Unknown',
+      contactType: 'Location',
+      as: MaterialCommunityIcons
+    },
+    {
+      iconName: 'clock',
+      contactDetail: lead?.durationInCompany || 'Unknown',
+      contactType: 'Duration in company',
+      as: MaterialCommunityIcons
+    },
+    {
+      iconName: 'clock',
+      contactDetail: lead?.durationInRole || 'Unknown',
+      contactType: 'Duration in role',
+      as: MaterialCommunityIcons
+    },
+    {
+      iconName: 'shield',
+      contactDetail: lead?.isPremium ? 'True' : 'false' || 'Unknown',
+      contactType: 'Is Premium',
       as: MaterialCommunityIcons
     }
   ]
@@ -244,7 +256,7 @@ function BottomSection({ lead }) {
                   _dark={{ color: 'coolGray.300' }}
                   _light={{ color: 'coolGray.500' }}
                 >
-                  {item.contactTye}
+                  {item.contactType}
                 </Text>
               </VStack>
             </HStack>
