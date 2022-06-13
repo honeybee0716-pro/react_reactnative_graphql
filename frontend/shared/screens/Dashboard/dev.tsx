@@ -218,10 +218,11 @@ export default function DashBoard() {
                   paddingX='0.375rem'
                   borderRadius='lg'
                 >
-                  <IconCredits
-                    sizeScale={0.95}
-                    color={theme.colors.shared.brightBlue}
-                  />
+                  <Box w='20px'>
+                    <IconCredits
+                      color={theme.colors.shared.brightBlue}
+                    />
+                  </Box>
                 </Center>
                 <Text
                   flex='1'
@@ -333,9 +334,9 @@ export default function DashBoard() {
                         paddingX='0.35rem'
                         borderRadius='lg'
                       >
-                        <IconCornerUpRight
-                          sizeScale={1}
-                        />
+                        <Box w='21px'>
+                          <IconCornerUpRight />
+                        </Box>
                       </Center>
                       <Text
                         fontWeight='medium'
@@ -392,7 +393,9 @@ export default function DashBoard() {
                     borderWidth='1'
                     borderColor={theme.colors.shared.soft4Gray}
                   >
-                    <IconDollarSign />
+                    <Box w='24px'>
+                      <IconDollarSign />
+                    </Box>
                     <Box flex='1'>
                       <Text
                         marginLeft='3'
@@ -542,13 +545,23 @@ export default function DashBoard() {
                 <Hidden till='sm'>
                   <Hidden from='lg'>
                     <HStack>
-                      <Pressable borderWidth='1' borderColor={theme.colors.shared.soft4Gray} borderLeftRadius='lg' p='2'>
+                      <Pressable
+                        borderWidth='1' borderColor={theme.colors.shared.soft4Gray} borderLeftRadius='lg' p='2'
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softerGray,
+                        }}
+                      >
                         <Box w='16px'>
                           <IconChevronDown rotation={270} />
                         </Box>
                       </Pressable>
 
-                      <Pressable borderWidth='1' borderColor={theme.colors.shared.soft4Gray} borderRightRadius='lg' p='2'>
+                      <Pressable
+                        borderWidth='1' borderColor={theme.colors.shared.soft4Gray} borderRightRadius='lg' p='2'
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softerGray,
+                        }}
+                      >
                         <Box w='16px'>
                           <IconChevronDown rotation={90} />
                         </Box>
@@ -609,8 +622,10 @@ export default function DashBoard() {
                       <HStack
                         alignItems='center'
                       >
-                        <IconClock />
-                        <Text fontWeight='medium' fontSize='xs'>
+                        <Box w='19px'>
+                          <IconClock />
+                        </Box>
+                        <Text fontWeight='medium' fontSize='xs' marginLeft='1'>
                           Apr 9, 2021 at 3:55 PM
                         </Text>
                       </HStack>

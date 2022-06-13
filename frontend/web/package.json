@@ -24,7 +24,8 @@
     "resize-observer-polyfill": "1.5.1",
     "sass": "1.38.0",
     "setimmediate": "1.0.5",
-    "shared": "*"
+    "shared": "*",
+    "swiper": "^8.2.3"
   },
   "devDependencies": {
     "@expo/next-adapter": "^4.0.5",

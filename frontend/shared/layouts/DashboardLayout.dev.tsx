@@ -161,7 +161,9 @@ const DashboardLayout: React.FC = ({
                 paddingX='6'
                 rounded='full'
               >
-                <IconCredits />
+                <Box w='21px'>
+                  <IconCredits />
+                </Box>
                 <Text
                   color='white'
                   fontWeight='semibold'
@@ -187,7 +189,9 @@ const DashboardLayout: React.FC = ({
             marginLeft={{ base: '0', sm: '6' }}
           >
             <Pressable>
-              <IconNotificationBell />
+              <Box w='19px'>
+                <IconNotificationBell />
+              </Box>
             </Pressable>
           </Center>
           <Center
@@ -203,15 +207,17 @@ const DashboardLayout: React.FC = ({
 
             </Box>
           </Center>
-          <Center
-            marginLeft={{ base: '4', sm: '8' }}
-          >
-            <Box p='1'>
-              <Box w='24px'>
-                <IconMenu />
+          <Hidden from='sm'>
+            <Center
+              marginLeft={{ base: '4', sm: '8' }}
+            >
+              <Box p='1'>
+                <Box w='24px'>
+                  <IconMenu />
+                </Box>
               </Box>
-            </Box>
-          </Center>
+            </Center>
+          </Hidden>
         </HStack>
       </HStack>
       {/* Left Navbar */}
