@@ -85,6 +85,7 @@ const permissions = shield(
     Query: {
       getLeadByID: isAuthenticated,
       getUserByID: isAuthenticated,
+      getUsersRemainingCredits: isAuthenticated,
       getUserByEmail: isAuthenticated,
       loginUserWithPassword: any,
       loginUserWithMagicLink: any,

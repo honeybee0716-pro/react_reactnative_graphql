@@ -15,9 +15,12 @@ import {
   Divider,
   Menu,
   Avatar,
-  Input
+  Input,
+  Heading,
+  Tooltip
 } from 'native-base'
 import { useRouter } from 'solito/router'
+import { gql, useQuery } from '@apollo/client'
 import {
   AntDesign,
   FontAwesome,
@@ -66,9 +69,24 @@ type HeaderProps = {
   searchbar: boolean
 }
 
+const GET_USERS_REMAINING_CREDITS = gql`
+  query GetUsersRemainingCredits {
+    getUsersRemainingCredits {
+      message
+      status
+      remainingCredits
+    }
+  }
+`
+
 export function Header(props: HeaderProps) {
   const { push } = useRouter()
   const { colorMode } = useColorMode()
+  const { data, error, loading } = useQuery(GET_USERS_REMAINING_CREDITS, {
+    fetchPolicy: 'network-only'
+  })
+
+  console.log({ data })
 
   const handleLogoPress = () => {
     push('/home')
@@ -130,28 +148,19 @@ export function Header(props: HeaderProps) {
               )}
             </Pressable>
           </HStack>
-          {props.searchbar && (
-            <Input
-              px="4"
-              w="30%"
-              size="sm"
-              placeholder="Search"
-              InputLeftElement={
-                <Icon
-                  px="2"
-                  size="4"
-                  name={'search'}
-                  as={FontAwesome}
-                  _light={{
-                    color: 'coolGray.400'
-                  }}
-                  _dark={{
-                    color: 'coolGray.100'
-                  }}
-                />
-              }
-            />
-          )}
+          <Tooltip
+            label="Your credits will reset at the start of your billing cycle"
+            openDelay={500}
+          >
+            <Heading size="sm">
+              Credits Remaining:{' '}
+              {loading
+                ? ''
+                : error
+                ? 'Error'
+                : data?.getUsersRemainingCredits?.remainingCredits || 0}
+            </Heading>
+          </Tooltip>
         </HStack>
       </VStack>
     </Box>

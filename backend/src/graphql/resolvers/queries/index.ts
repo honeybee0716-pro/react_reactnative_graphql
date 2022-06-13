@@ -9,6 +9,7 @@ import getLeadByID from './getLeadByID';
 import createStripeCheckoutPage from './createStripeCheckoutPage';
 import getUserSubscriptionData from './getUserSubscriptionData';
 import cancelSubscription from './cancelSubscription';
+import getUsersRemainingCredits from './getUsersRemainingCredits';
 
 export const RootQuery = {
   getUserByID,
@@ -22,6 +23,7 @@ export const RootQuery = {
   createStripeCheckoutPage,
   getUserSubscriptionData,
   cancelSubscription,
+  getUsersRemainingCredits,
 };
 
 export default RootQuery;

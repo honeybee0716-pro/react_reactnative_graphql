@@ -18,6 +18,7 @@ import {getLeadByIDSchema} from '../resolvers/queries/getLeadByID';
 import {createStripeCheckoutPageSchema} from '../resolvers/queries/createStripeCheckoutPage';
 import {cancelSubscriptionSchema} from '../resolvers/queries/cancelSubscription';
 import {getUserSubscriptionDataSchema} from '../resolvers/queries/getUserSubscriptionData';
+import {getUsersRemainingCreditsSchema} from '../resolvers/queries/getUsersRemainingCredits';
 
 import {sharedSchema} from './shared';
 
@@ -41,4 +42,5 @@ export const typeDefs = mergeTypeDefs([
   createStripeCheckoutPageSchema,
   getUserSubscriptionDataSchema,
   cancelSubscriptionSchema,
+  getUsersRemainingCreditsSchema,
 ]) as any;

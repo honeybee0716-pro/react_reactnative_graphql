@@ -47,12 +47,13 @@ const getUserSubscriptionData = async (
     prod_LrRwWBSaXy5leE: 'Professional',
   };
 
-  const activePlanLevel =
-    plans[
-      stripeCustomer?.subscriptions?.data?.find(
-        (d: any) => d.status === 'active',
-      )?.plan?.product
-    ];
+  const activePlan = stripeCustomer?.subscriptions?.data?.find(
+    (d: any) => d.status === 'active',
+  );
+
+  const activePlanLevel = plans[activePlan?.plan?.product];
+  const activePlanPeriodStart = activePlan.current_period_start;
+  const activePlanPeriodEnd = activePlan.current_period_end;
 
   return {
     message: 'Subscription data retrieved.',
@@ -60,6 +61,8 @@ const getUserSubscriptionData = async (
     stripeCustomer: {
       ...stripeCustomer,
       activePlanLevel,
+      activePlanPeriodStart,
+      activePlanPeriodEnd,
     },
   };
 };
