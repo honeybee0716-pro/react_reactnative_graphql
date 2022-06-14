@@ -56,8 +56,8 @@ export default function Credits() {
               paddingX={{ base: '0', sm: '5' }}
               paddingTop={{ base: '0', sm: '5' }}
               paddingBottom={{ base: 'none', sm: '4' }}
-              borderTopRadius={{ base: 'none', sm: '3xl' }}
-              borderBottomRadius={{ base: 'none', sm: '3xl', lg: 'none' }}
+              borderTopRadius={{ base: 'none', sm: '2xl' }}
+              borderBottomRadius={{ base: 'none', sm: '2xl', lg: 'none' }}
               backgroundColor={{ base: 'none', sm: 'white' }}
               borderWidth={{ base: 'none', sm: '1' }}
               borderTopWidth={{ base: 'none', sm: '1', lg: '0' }}
@@ -90,8 +90,7 @@ export default function Credits() {
                 </HStack>
               </Hidden>
               <Box
-                flexDirection={{ base: 'none', sm: 'row' }}
-                justifyContent='space-between'
+                flexDirection={{ base: 'unset', sm: 'row' }}
               >
                 {/* Get more credits */}
                 <Box
@@ -438,8 +437,8 @@ export default function Credits() {
               paddingX={{ base: '4', sm: '5' }}
               paddingTop={{ base: '4', sm: '5' }}
               paddingBottom='4'
-              borderBottomRadius='3xl'
-              borderTopRadius={{ base: '3xl', lg: 'none' }}
+              borderBottomRadius='2xl'
+              borderTopRadius={{ base: '2xl', lg: 'none' }}
               backgroundColor='white'
               borderWidth='1'
               borderTopWidth={{ base: '1', lg: '0' }}
@@ -797,7 +796,7 @@ export default function Credits() {
                   right='0'
                   paddingY='6'
                   paddingX='6'
-                  flexDirection='col'
+                  flexDirection='column'
                 >
                   <Text
                     color='white'
@@ -903,7 +902,7 @@ export default function Credits() {
                             paddingTop='6'
                             paddingBottom='3'
                             paddingX='5'
-                            flexDirection='col'
+                            flexDirection='column'
                           >
                             <Box flex='1'>
                               <Box

@@ -241,7 +241,7 @@ export default function DashBoard() {
                 </Hidden>
               </HStack>
               <Box
-                flexDirection={{ base: 'none', sm: 'row', lg: 'none' }}
+                flexDirection={{ base: 'unset', sm: 'row', lg: 'unset' }}
               >
                 <Box w={{ base: 'full', sm: '1/2', lg: 'full' }} paddingRight={{ base: '0', sm: '8', lg: '0' }}>
                   <Hidden till='lg'>
@@ -250,19 +250,19 @@ export default function DashBoard() {
                     </Text>
                   </Hidden>
                   <Box
-                    flexDirection={{ base: 'col', lg: 'row' }}
+                    flexDirection={{ base: 'column', lg: 'row' }}
                     height={{ base: 'full', lg: 'auto' }}
                   >
                     <Box
                       flex='1'
-                      flexDirection={{ base: 'row', lg: 'none' }}
+                      flexDirection={{ base: 'row', lg: 'unset' }}
                       justifyContent='center'
                       alignItems='center'
                       paddingTop={{ base: '6', sm: '0' }}
                       paddingBottom={{ base: '4', sm: '0' }}
                     >
                       <Box>
-                        <Text fontSize={{ base: '32px', sm: '40px' }} fontWeight='semibold' textAlign={{ base: 'center', lg: 'normal' }}>
+                        <Text fontSize={{ base: '32px', sm: '40px' }} fontWeight='semibold' textAlign={{ base: 'center', lg: 'unset' }}>
                           8,752
                         </Text>
                         <Hidden from='lg'>

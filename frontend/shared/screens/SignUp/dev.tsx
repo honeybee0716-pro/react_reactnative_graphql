@@ -9,6 +9,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
 import { useState } from 'react'
+import IconLink from 'shared/components/icons/IconLink'
 
 export default function SignUp(props: any) {
   const [showPass, setShowPass] = useState(false)
@@ -420,11 +421,9 @@ export default function SignUp(props: any) {
                             alignItems='center'
                             space='1'
                           >
-                            <Image
-                              w='4'
-                              h='4'
-                              source={require("shared/assets/icons/link-2 1.png")}
-                            />
+                            <Box w='18px'>
+                              <IconLink />
+                            </Box>
                             <Text
                               fontSize={{ base: 'xs', sm: 'md' }}
                               fontWeight='medium'

@@ -25,6 +25,8 @@
     "sass": "1.38.0",
     "setimmediate": "1.0.5",
     "shared": "*",
+    "slate": "^0.81.0",
+    "slate-react": "^0.81.0",
     "swiper": "^8.2.3"
   },
   "devDependencies": {

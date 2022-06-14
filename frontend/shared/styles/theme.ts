@@ -9,8 +9,13 @@ export const theme = {
       yellow: '#FFB21A',
       pink: '#EF466F',
 
+      black_3: '#00000008',
+      black_4: '#0000000A',
       black_6: '#0000000F',
+      black_9: '#00000017',
+      black_18: '#0000002E',
       brightBlue: '#3972F9',
+      brightBlue_15: '#3772FF26',
       brightBlue_20: '#3972F933',
       blueLink: '#004CFF',
       blueGentianFlower: '#355DFF',
@@ -28,6 +33,8 @@ export const theme = {
       softer2Gray: '#E6E8EC',
       softer3Gray: '#E3E3E3',
       softer4Gray: '#E6E6E6',
+      softer5Gray: '#F5F5F5',
+      lightAliceBlue: '#FAFAFA',
       aliceBlue: '#F4F7FE',
       softViolet: '#c6c4dc',
       lavenderBlue: '#CABDFF',
@@ -48,7 +55,10 @@ export const theme = {
       lightGreen: '#B5E4CA',
 
       tosca: '#00F1B7',
-      tosca_10: '#00F1B71A'
+      tosca_10: '#00F1B71A',
+
+      darkPink: '#F00073',
+      darkPink_15: '#F0007326'
     },
     light: {
       background: '#999999'
