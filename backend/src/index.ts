@@ -9,7 +9,6 @@ import '@sentry/tracing';
 import jwt from 'jsonwebtoken';
 import {createClient} from 'redis';
 
-import {language} from './constants/language';
 import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
 import {AppConfig} from './config/appConfig';
@@ -49,16 +48,16 @@ const createContext = async ({req}: any) => {
     decodedJWT = jwt.verify(providedJWT, <string>process.env.JWT_SECRET);
 
     if (!decodedJWT.id) {
-      throw new Error(language['error.invalidJWT']);
+      throw new Error('The provided JSON Web Token is not valid.');
     }
   } catch (err) {
-    throw new Error(language['error.invalidJWT']);
+    throw new Error('The provided JSON Web Token is not valid.');
   }
 
   const user = await getUserByID(undefined, {input: {id: decodedJWT.id}});
 
   if (!user) {
-    throw new Error(language['error.invalidJWT']);
+    throw new Error('The provided JSON Web Token is not valid.');
   }
 
   return {
@@ -107,7 +106,7 @@ const permissions = shield(
     },
   },
   {
-    fallbackError: language['error.notAuthorized'],
+    fallbackError: 'You are not authorized to perform this action.',
     allowExternalErrors: process.env.NODE_ENV === 'localhost',
   },
 );
