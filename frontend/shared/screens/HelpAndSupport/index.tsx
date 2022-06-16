@@ -569,7 +569,7 @@ export default function Credits() {
                   <Pressable
                     backgroundColor='white'
                     borderWidth='1' borderColor={theme.colors.shared.softer3Gray} borderLeftRadius='lg' p='2' _hover={{
-                      backgroundColor: 'theme.colors.shared.softerGray',
+                      backgroundColor: theme.colors.shared.softerGray,
                     }}
                   >
                     <Box w='16px'>
@@ -581,7 +581,7 @@ export default function Credits() {
                     backgroundColor='white'
                     borderWidth='1' borderColor={theme.colors.shared.softer3Gray} borderRightRadius='lg' p='2'
                     _hover={{
-                      backgroundColor: 'theme.colors.shared.softerGray',
+                      backgroundColor: theme.colors.shared.softerGray,
                     }}
                   >
                     <Box w='16px'>
@@ -659,7 +659,7 @@ export default function Credits() {
                       paddingY='0.3rem'
                       paddingX='0.35rem'
                       _hover={{
-                        backgroundColor: 'theme.colors.shared.softerGray',
+                        backgroundColor: theme.colors.shared.softerGray,
                       }}
                     >
                       <Box w='16px'>
@@ -694,7 +694,7 @@ export default function Credits() {
                       paddingY='0.3rem'
                       paddingX='0.35rem'
                       _hover={{
-                        backgroundColor: 'theme.colors.shared.softerGray',
+                        backgroundColor: theme.colors.shared.softerGray,
                       }}
                     >
                       <Box w='16px'>
@@ -729,7 +729,7 @@ export default function Credits() {
                       paddingY='0.3rem'
                       paddingX='0.35rem'
                       _hover={{
-                        backgroundColor: 'theme.colors.shared.softerGray',
+                        backgroundColor: theme.colors.shared.softerGray,
                       }}
                     >
                       <Box w='16px'>
@@ -764,7 +764,7 @@ export default function Credits() {
                       paddingY='0.3rem'
                       paddingX='0.35rem'
                       _hover={{
-                        backgroundColor: 'theme.colors.shared.softerGray',
+                        backgroundColor: theme.colors.shared.softerGray,
                       }}
                     >
                       <Box w='16px'>
@@ -799,7 +799,7 @@ export default function Credits() {
                       paddingY='0.3rem'
                       paddingX='0.35rem'
                       _hover={{
-                        backgroundColor: 'theme.colors.shared.softerGray',
+                        backgroundColor: theme.colors.shared.softerGray,
                       }}
                     >
                       <Box w='16px'>

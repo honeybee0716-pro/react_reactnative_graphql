@@ -28,15 +28,15 @@ import IconClock from 'shared/components/icons/IconClock'
 import IconCalendar from 'shared/components/icons/IconCalendar'
 import IconShoppingCart from 'shared/components/icons/IconShoppingCart'
 import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
-import IconChevronDown from '../../components/icons/IconChevronDown'
-import IconPlayCircle from '../../components/icons/IconPlayCircle'
-import IconCreditCard from '../../components/icons/IconCreditCard'
-import IconLightcoin from '../../components/icons/IconLightcoin'
-import IconNFC from '../../components/icons/IconNFC'
-import IconEdit from '../../components/icons/IconEdit'
-import IconCornerLeftDown from '../../components/icons/IconCornerLeftDown'
-import IconMasterCard from '../../components/icons/IconMasterCard'
-import IconVISA from '../../components/icons/IconVISA'
+import IconChevronDown from 'shared/components/icons/IconChevronDown'
+import IconPlayCircle from 'shared/components/icons/IconPlayCircle'
+import IconCreditCard from 'shared/components/icons/IconCreditCard'
+import IconLightcoin from 'shared/components/icons/IconLightcoin'
+import IconNFC from 'shared/components/icons/IconNFC'
+import IconEdit from 'shared/components/icons/IconEdit'
+import IconCornerLeftDown from 'shared/components/icons/IconCornerLeftDown'
+import IconMasterCard from 'shared/components/icons/IconMasterCard'
+import IconVISA from 'shared/components/icons/IconVISA'
 
 export default function Credits() {
   const [selectPayUsing, setSelectPayUsing] = useState('mastercard')
@@ -60,7 +60,7 @@ export default function Credits() {
               borderBottomRadius={{ base: 'none', sm: '2xl', lg: 'none' }}
               backgroundColor={{ base: 'none', sm: 'white' }}
               borderWidth={{ base: 'none', sm: '1' }}
-              borderTopWidth={{ base: 'none', sm: '1', lg: '0' }}
+              borderBottomWidth={{ base: 'none', sm: '1', lg: '0' }}
               borderColor={theme.colors.shared.softer3Gray}
             >
               <Hidden till='sm'>
@@ -751,7 +751,7 @@ export default function Credits() {
                   <Pressable
                     backgroundColor='white'
                     borderWidth='1' borderColor={theme.colors.shared.softer3Gray} borderLeftRadius='lg' p='2' _hover={{
-                      backgroundColor: 'theme.colors.shared.softerGray',
+                      backgroundColor: theme.colors.shared.softerGray,
                     }}
                   >
                     <Box w='16px'>
@@ -763,7 +763,7 @@ export default function Credits() {
                     backgroundColor='white'
                     borderWidth='1' borderColor={theme.colors.shared.softer3Gray} borderRightRadius='lg' p='2'
                     _hover={{
-                      backgroundColor: 'theme.colors.shared.softerGray',
+                      backgroundColor: theme.colors.shared.softerGray,
                     }}
                   >
                     <Box w='16px'>
