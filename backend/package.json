@@ -7,7 +7,6 @@
   "author": "Joey Fenny",
   "license": "MIT",
   "heroku-run-build-script": true,
-  "type": "module",
   "engines": {
     "node": "16.15.1"
   },
