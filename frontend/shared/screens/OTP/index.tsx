@@ -22,7 +22,7 @@ import { Link as SolitoLink } from 'solito/link'
 import { useRouter } from 'solito/router'
 import { AntDesign } from '@expo/vector-icons'
 import { gql, useMutation } from '@apollo/client'
-import FloatingLabelInput from '../signup/components/FloatingLabelInput'
+import FloatingLabelInput from './components/FloatingLabelInput'
 
 const CONFIRM_EMAIL_VALIDATION_CODE = gql`
   mutation ConfirmEmailValidationCode($input: confirmEmailValidationCodeInput) {
