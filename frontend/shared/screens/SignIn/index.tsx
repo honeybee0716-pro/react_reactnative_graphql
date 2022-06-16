@@ -39,7 +39,7 @@ const LOGIN_USER = gql`
   }
 `
 
-export function SignInForm() {
+export function SignInForm(props: any) {
   const { push } = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
