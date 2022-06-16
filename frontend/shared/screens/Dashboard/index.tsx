@@ -12,14 +12,20 @@ import {
   Input,
   Fab,
   IconButton,
+  useColorModeValue,
   Divider,
   Button,
-  Heading
+  Heading,
+  Stack,
+  InputGroup,
+  InputLeftAddon,
+  InputRightAddon
 } from 'native-base'
+import FloatingLabelInput from './components/FloatingLabelInput'
 import { Link as SolitoLink } from 'solito/link'
 import { useRouter } from 'solito/router'
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery, useLazyQuery } from '@apollo/client'
 
 import DashboardLayout from '../../layouts/DashboardLayout'
 
@@ -37,6 +43,16 @@ const GET_USER_SUBSCRIPTION_DATA = gql`
   query GetUserSubscriptionData {
     getUserSubscriptionData {
       stripeCustomer
+      status
+      message
+    }
+  }
+`
+
+const SEARCH_FOR_LEADS = gql`
+  query SearchForLeads {
+    searchForLeads {
+      leads
       status
       message
     }
@@ -208,13 +224,19 @@ function ListItemDesktop(props: ListItemProps) {
 }
 
 export default function ContactList() {
-  const {
-    data: getUserLeadsData,
-    error: getUserLeadsError,
-    loading: getUserLeadsLoading
-  } = useQuery(GET_USER_LEADS, {
-    fetchPolicy: 'cache-first'
+  const { data, loading, error } = useQuery(SEARCH_FOR_LEADS, {
+    variables: {
+      input: {
+        joey: 'fenny'
+      }
+    }
   })
+  const [searchFirstName, setSearchFirstName] = React.useState('joey')
+  const [searchLastName, setSearchLastName] = React.useState('fenny')
+  const [searchCompanyName, setSearchCompanyName] = React.useState('kwri')
+  const [searchJobTitle, setSearchJobTitle] = React.useState('sre')
+  const [leads, setLeads] = React.useState([])
+  const { push } = useRouter()
   const {
     data: getUserSubscriptionDataResult,
     error: getUserSubscriptionDataError,
@@ -222,21 +244,38 @@ export default function ContactList() {
   } = useQuery(GET_USER_SUBSCRIPTION_DATA, {
     fetchPolicy: 'cache-first'
   })
-  const [search, setSearch] = React.useState('')
-  const [leads, setLeads] = React.useState([])
-  const { push } = useRouter()
 
-  React.useEffect(() => {
-    if (getUserLeadsData?.getUserLeads?.leads) {
-      setLeads(
-        getUserLeadsData.getUserLeads.leads.map((l) => ({
-          ...l,
-          display: true,
-          fullName: `${l.firstName} ${l.lastName}`
-        }))
-      )
-    }
-  }, [getUserLeadsData])
+  const handleSearch = async () => {
+    // searchForLeads({
+    //   fetchPolicy: 'network-only',
+    //   variables: {
+    //     input: {
+    //       firstName: searchFirstName,
+    //       lastName: searchLastName,
+    //       companyName: searchCompanyName,
+    //       jobTitle: searchJobTitle
+    //     }
+    //   }
+    // });
+    // {
+    //   variables: {
+    //     input: {
+    //       firstName: searchFirstName !== 'jf' ? searchFirstName : null,
+    //       lastName: searchLastName !== 'jf' ? searchLastName : null,
+    //       companyName: searchCompanyName !== 'jf' ? searchCompanyName : null,
+    //       jobTitle: searchJobTitle !== 'jf' ? searchJobTitle : null
+    //     }
+    //   },
+    //   fetchPolicy: 'network-only',
+    //   onCompleted: data => {
+    //     // console.log({leads});
+    //     // setLeads(data.searchForLeads)
+    //   },
+    //   onError: error => {
+    //     console.log(error)
+    //   }
+    // }
+  }
 
   React.useEffect(() => {
     if (getUserSubscriptionDataResult) {
@@ -250,48 +289,21 @@ export default function ContactList() {
   }, [getUserSubscriptionDataResult])
 
   React.useEffect(() => {
-    console.log({ search })
-    if (!!search) {
-      setLeads(
-        getUserLeadsData?.getUserLeads?.leads
-          .map((l) => ({
-            ...l,
-            display: true,
-            fullName: `${l.firstName} ${l.lastName}`
-          }))
-          .filter((l) => {
-            const string = JSON.stringify(l).toLowerCase().trim()
-            console.log(string)
-            return string.includes(search.toLowerCase().trim())
-          }) || []
-      )
-    } else {
-      setLeads(
-        getUserLeadsData?.getUserLeads?.leads.map((l) => ({
-          ...l,
-          display: true,
-          fullName: `${l.firstName} ${l.lastName}`
-        })) || []
-      )
-    }
-  }, [search])
+    ;(async () => {
+      handleSearch()
+    })()
+  }, [])
 
   return (
     <>
       <DashboardLayout
         displaySidebar
-        displayScreenTitle={
-          !!getUserLeadsData && !getUserSubscriptionDataLoading
-        }
+        displayScreenTitle={!!data?.searchForLeads?.leads && !loading}
         title={'Leads'}
       >
-        {getUserLeadsLoading || getUserSubscriptionDataLoading ? (
-          <Heading>Loading...</Heading>
-        ) : null}
-        {getUserLeadsError && !getUserSubscriptionDataLoading ? (
-          <Heading>Error. Please try again.</Heading>
-        ) : null}
-        {getUserLeadsData && !getUserSubscriptionDataLoading ? (
+        {loading ? <Heading>Loading...</Heading> : null}
+        {error ? <Heading>Error. Please try again.</Heading> : null}
+        {data?.searchForLeads?.leads && !getUserSubscriptionDataLoading ? (
           <>
             <HStack
               pt={{ md: 5, base: 2 }}
@@ -304,32 +316,53 @@ export default function ContactList() {
               }}
             >
               <Input
-                flex={{ md: undefined, lg: undefined, base: 1 }}
-                w={{ md: '100%', lg: '100%', base: '90%' }}
-                py={3}
-                mx={{ base: 4, md: 0 }}
-                mr={{ base: 4, md: 4, lg: 30, xl: 40 }}
-                _light={{ bg: 'white' }}
-                _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.400' } }}
-                InputLeftElement={
-                  <Icon
-                    as={<AntDesign name="search1" />}
-                    size={{ base: '4', md: '4' }}
-                    my={2}
-                    ml={2}
-                    _light={{
-                      color: 'coolGray.400'
-                    }}
-                    _dark={{
-                      color: 'coolGray.300'
-                    }}
-                  />
-                }
-                color="coolGray.700"
-                placeholder="Search here"
-                onChangeText={(text) => setSearch(text)}
-                value={search}
+                onChangeText={(txt) => setSearchFirstName(txt)}
+                value={searchFirstName}
+                size="xl"
+                placeholder="First Name"
+                color="muted.900"
+                placeholderTextColor="muted.500"
+                bg="coolGray.100"
+                borderColor="coolGray.400"
               />
+              <Input
+                onChangeText={(txt) => setSearchLastName(txt)}
+                value={searchLastName}
+                size="xl"
+                placeholder="Last Name"
+                color="muted.900"
+                placeholderTextColor="muted.500"
+                bg="coolGray.100"
+                borderColor="coolGray.400"
+              />
+              <Input
+                onChangeText={(txt) => setSearchCompanyName(txt)}
+                value={searchCompanyName}
+                size="xl"
+                placeholder="Company Name"
+                color="muted.900"
+                placeholderTextColor="muted.500"
+                bg="coolGray.100"
+                borderColor="coolGray.400"
+              />
+              <Input
+                onChangeText={(txt) => setSearchJobTitle(txt)}
+                value={searchJobTitle}
+                size="xl"
+                placeholder="Job Title"
+                color="muted.900"
+                placeholderTextColor="muted.500"
+                bg="coolGray.100"
+                borderColor="coolGray.400"
+              />
+              <Button
+                onPress={handleSearch}
+                bg="primary.700"
+                color="muted.200"
+                leftIcon={<Icon as={Ionicons} name="search" size="sm" />}
+              >
+                Search
+              </Button>
             </HStack>
             <VStack
               px={{ base: 4, md: 8 }}
@@ -415,15 +448,19 @@ export default function ContactList() {
                       _dark={{ color: 'coolGray.300' }}
                     >
                       Contacts (
-                      {leads?.filter((l) => l.display === true).length} shown
-                      out of {getUserLeadsData?.getUserLeads?.leads?.length})
+                      {
+                        data?.searchForLeads?.leads?.filter(
+                          (l: any) => l.display === true
+                        ).length
+                      }{' '}
+                      shown out of {data?.searchForLeads?.leads.length})
                     </Text>
                     <VStack space={4}>
-                      {leads
-                        ?.filter((l) => {
+                      {data?.searchForLeads?.leads
+                        ?.filter((l: any) => {
                           return l.display === true
                         })
-                        .map((item, index) => {
+                        .map((item: any, index) => {
                           return <ListItemDesktop item={item} key={item.id} />
                         })}
                     </VStack>
