@@ -26,7 +26,7 @@ if (process.env.NODE_ENV !== 'localhost') {
 }
 
 export const redis = createClient({
-  url: <string>process.env.REDIS_URL,
+  url: <string>process.env.REDISCLOUD_URL,
 });
 redis.on('error', (err) => console.log('Redis Client Error', err));
 
