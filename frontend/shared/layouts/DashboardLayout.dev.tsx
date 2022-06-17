@@ -85,64 +85,14 @@ const DashboardLayout: React.FC = ({ children }) => {
                 fontWeight="semibold"
                 marginLeft={'2'}
               >
-                Contact Blaster
+                ClientEye
               </Text>
             </Box>
           </Center>
         </Hidden>
         {/* Search here */}
         <Hidden till="sm">
-          <Center flex="1" paddingLeft="6">
-            <Input
-              borderRadius="lg"
-              flex={{ md: undefined, lg: undefined, base: 1 }}
-              w="full"
-              h={{ base: '2.5rem', sm: '2.9rem' }}
-              backgroundColor={theme.colors.shared.softer2Gray}
-              py={3}
-              _light={{ bg: 'white' }}
-              _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.900' } }}
-              InputLeftElement={
-                <Icon
-                  as={<AntDesign name="search1" />}
-                  size={{ base: '4', md: '7' }}
-                  paddingLeft="1"
-                  my={2}
-                  ml={2}
-                  _light={{
-                    color: 'coolGray.800'
-                  }}
-                  _dark={{
-                    color: 'coolGray.300'
-                  }}
-                />
-              }
-              InputRightElement={
-                <Hidden till="lg">
-                  <Box
-                    flexDirection="row"
-                    alignItems="center"
-                    borderWidth="1"
-                    paddingY="4px"
-                    paddingX="8px"
-                    borderColor={theme.colors.shared.soft4Gray_50}
-                    borderRadius="md"
-                    backgroundColor={theme.colors.shared.white}
-                    marginRight="2"
-                  >
-                    <Box w="12px">
-                      <IconMacCommand />
-                    </Box>
-                    <Text marginLeft="1" fontSize="sm">
-                      F
-                    </Text>
-                  </Box>
-                </Hidden>
-              }
-              color="coolGray.800"
-              placeholder="Search here"
-            />
-          </Center>
+          <Center flex="1" paddingLeft="6"></Center>
         </Hidden>
         <HStack
           marginLeft={{ base: '5', lg: '0' }}
@@ -241,7 +191,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                     fontWeight="semibold"
                     marginLeft={'4'}
                   >
-                    Contact Blaster
+                    ClientEye
                   </Text>
                 </Hidden>
               </Center>
@@ -274,189 +224,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                           fontWeight="semibold"
                           paddingLeft="4"
                         >
-                          Home
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconLists />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={theme.colors.shared.soft2Gray}
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Lists
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box flexDirection="row" alignItems="center">
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <IconMessages />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Messages
-                          </Text>
-                        </Hidden>
-                      </Box>
-                      <Hidden till="lg">
-                        <Center>
-                          <Box
-                            paddingX="2"
-                            paddingY="  0.125rem"
-                            borderRadius="lg"
-                            backgroundColor={theme.colors.shared.lavenderBlue}
-                          >
-                            <Text fontWeight="semibold">6</Text>
-                          </Box>
-                        </Center>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box flexDirection="row" alignItems="center">
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <IconFlag />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Campaigns
-                          </Text>
-                        </Hidden>
-                      </Box>
-                      <Hidden till="lg">
-                        <Center>
-                          <Box w="20px">
-                            <IconChevronDown rotation={180} />
-                          </Box>
-                        </Center>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                  <Hidden till="lg">
-                    <Box marginLeft="33px">
-                      <Box
-                        marginLeft="2px"
-                        w="1px"
-                        h="5"
-                        backgroundColor={theme.colors.shared.soft4Gray}
-                      ></Box>
-                      <HStack h="1px">
-                        <Box
-                          backgroundColor={theme.colors.shared.soft4Gray}
-                          w="5px"
-                          h="5px"
-                          borderRadius="full"
-                        ></Box>
-                        <Box position="relative" w="full" marginLeft="7">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            position="absolute"
-                            top="-5px"
-                          >
-                            SEO Agencies
-                          </Text>
-                        </Box>
-                      </HStack>
-                      <Box
-                        marginLeft="2px"
-                        w="1px"
-                        h="10"
-                        backgroundColor={theme.colors.shared.soft4Gray}
-                      ></Box>
-                      <HStack h="1px">
-                        <Box
-                          backgroundColor={theme.colors.shared.soft4Gray}
-                          w="5px"
-                          h="5px"
-                          borderRadius="full"
-                        ></Box>
-                        <Box position="relative" w="full" marginLeft="7">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            position="absolute"
-                            top="-5px"
-                          >
-                            Advertising
-                          </Text>
-                        </Box>
-                      </HStack>
-                      <Box marginLeft="2px" w="1px" h="7"></Box>
-                    </Box>
-                  </Hidden>
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconTrashBin />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={theme.colors.shared.soft2Gray}
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Recycle Bin
+                          Leads
                         </Text>
                       </Hidden>
                     </Pressable>

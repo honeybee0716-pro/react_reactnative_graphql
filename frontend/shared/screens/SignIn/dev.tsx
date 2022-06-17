@@ -101,7 +101,7 @@ export default function SignUp(props: any) {
                       marginTop={{ base: '1', sm: '9', lg: '0' }}
                       fontFamily="body"
                     >
-                      Create an account
+                      Sign in
                     </Text>
                     {/* <HStack
                       justifyContent="center"
@@ -190,73 +190,6 @@ export default function SignUp(props: any) {
                       </Box>
                     </Box> */}
                     <Box>
-                      {/* input first last name */}
-                      <HStack
-                        position="relative"
-                        justifyContent="center"
-                        mt="7"
-                        space={{ base: '5', sm: '7' }}
-                      >
-                        <Box position="relative" w="47%">
-                          <Input
-                            paddingLeft="12"
-                            paddingTop="3"
-                            paddingRight="3"
-                            paddingBottom="3"
-                            w="full"
-                            borderRadius="xl"
-                            borderWidth="2"
-                            borderColor={theme.colors.shared.softerGray}
-                            fontSize={{ base: 'xs', sm: 'md' }}
-                            fontWeight="medium"
-                            backgroundColor={theme.colors.shared.aliceBlue}
-                            placeholder="Firstname"
-                          />
-                          <Box
-                            position="absolute"
-                            left="4"
-                            h="full"
-                            flexDir="row"
-                            alignItems="center"
-                          >
-                            <Image
-                              w="6"
-                              h="6"
-                              source={require('shared/assets/icons/user (1) 1.png')}
-                            />
-                          </Box>
-                        </Box>
-                        <Box position="relative" w="47%">
-                          <Input
-                            paddingLeft="12"
-                            paddingTop="3"
-                            paddingRight="3"
-                            paddingBottom="3"
-                            w="full"
-                            borderRadius="xl"
-                            borderWidth="2"
-                            borderColor={theme.colors.shared.softerGray}
-                            fontSize={{ base: 'xs', sm: 'md' }}
-                            fontWeight="medium"
-                            backgroundColor={theme.colors.shared.aliceBlue}
-                            placeholder="Lastname"
-                          />
-                          <Box
-                            position="absolute"
-                            left="4"
-                            h="full"
-                            flexDir="row"
-                            alignItems="center"
-                          >
-                            <Image
-                              w="6"
-                              h="6"
-                              source={require('shared/assets/icons/user (1) 1.png')}
-                            />
-                          </Box>
-                        </Box>
-                      </HStack>
-                      {/* input email */}
                       <Box position="relative" w="full" marginTop="5">
                         <Input
                           paddingLeft="12"
@@ -345,31 +278,6 @@ export default function SignUp(props: any) {
                         </Box>
                       </Box>
 
-                      {/* terms_condition */}
-                      <Hidden till="lg">
-                        <Box position="relative" marginTop="5" marginLeft="1">
-                          <Checkbox
-                            alignItems="center"
-                            defaultIsChecked={false}
-                            value="demo"
-                            colorScheme="primary"
-                            accessibilityLabel="Terms and Conditions"
-                          >
-                            <HStack alignItems="center">
-                              <Text fontSize="md" fontWeight="medium">
-                                I agree to the{' '}
-                                <SolitoLink href="/terms-and-conditions">
-                                  <Text fontSize="md" fontWeight="bold">
-                                    Terms and Conditions
-                                  </Text>
-                                </SolitoLink>
-                                .
-                              </Text>
-                            </HStack>
-                          </Checkbox>
-                        </Box>
-                      </Hidden>
-
                       {/* remember_me_forgot_pass */}
                       <Hidden from="lg">
                         <HStack
@@ -423,7 +331,7 @@ export default function SignUp(props: any) {
                             fontSize={{ base: 'sm', sm: 'md' }}
                           >
                             <Hidden till="lg">
-                              <>Create an account</>
+                              <>Sign in to your account</>
                             </Hidden>
                             <Hidden from="lg">
                               <>Create a new account</>
@@ -441,8 +349,8 @@ export default function SignUp(props: any) {
                           textAlign="center"
                           fontSize={{ base: 'sm', sm: 'md' }}
                         >
-                          Already have an account ?{' '}
-                          <SolitoLink href="/sign-in">
+                          Don't have an account yet?{' '}
+                          <SolitoLink href="/sign-up">
                             <Link
                               _text={{
                                 fontSize: 'md'
@@ -450,10 +358,10 @@ export default function SignUp(props: any) {
                               fontWeight="semibold"
                             >
                               <Hidden till="lg">
-                                <>Sign in</>
+                                <>Sign up</>
                               </Hidden>
                               <Hidden from="lg">
-                                <>Sign in now</>
+                                <>Sign up now</>
                               </Hidden>
                             </Link>
                           </SolitoLink>
