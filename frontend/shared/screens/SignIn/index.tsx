@@ -39,7 +39,7 @@ const LOGIN_USER = gql`
   }
 `
 
-export function SignInForm() {
+export function SignInForm(props: any) {
   const { push } = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -47,6 +47,7 @@ export function SignInForm() {
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER)
 
   const handleSignIn = async () => {
+    await AsyncStorage.removeItem('jwt')
     loginUser({
       variables: {
         input: {
@@ -71,7 +72,7 @@ export function SignInForm() {
         return
       },
       onError: (error) => {
-        alert(`There was an error: ${error}`)
+        alert(`${error.message}`)
       }
     })
   }

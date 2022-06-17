@@ -7,9 +7,8 @@ import {rule, shield} from 'graphql-shield';
 import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 import jwt from 'jsonwebtoken';
-import {createClient} from 'redis';
+// import {createClient} from 'redis';
 
-import {language} from './constants/language';
 import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
 import {AppConfig} from './config/appConfig';
@@ -25,10 +24,10 @@ if (process.env.NODE_ENV !== 'localhost') {
   });
 }
 
-export const redis = createClient({
-  url: <string>process.env.REDIS_URL,
-});
-redis.on('error', (err) => console.log('Redis Client Error', err));
+// export const redis = createClient({
+//   url: <string>process.env.REDISCLOUD_URL,
+// });
+// redis.on('error', (err) => console.log('Redis Client Error', err));
 
 export const prisma = new PrismaClient();
 
@@ -49,16 +48,16 @@ const createContext = async ({req}: any) => {
     decodedJWT = jwt.verify(providedJWT, <string>process.env.JWT_SECRET);
 
     if (!decodedJWT.id) {
-      throw new Error(language['error.invalidJWT']);
+      throw new Error('The provided JSON Web Token is not valid.');
     }
   } catch (err) {
-    throw new Error(language['error.invalidJWT']);
+    throw new Error('The provided JSON Web Token is not valid.');
   }
 
   const user = await getUserByID(undefined, {input: {id: decodedJWT.id}});
 
   if (!user) {
-    throw new Error(language['error.invalidJWT']);
+    throw new Error('The provided JSON Web Token is not valid.');
   }
 
   return {
@@ -85,6 +84,7 @@ const permissions = shield(
     Query: {
       getLeadByID: isAuthenticated,
       getUserByID: isAuthenticated,
+      getUsersRemainingCredits: isAuthenticated,
       getUserByEmail: isAuthenticated,
       loginUserWithPassword: any,
       loginUserWithMagicLink: any,
@@ -93,6 +93,7 @@ const permissions = shield(
       createStripeCheckoutPage: isAuthenticated,
       getUserSubscriptionData: isAuthenticated,
       cancelSubscription: isAuthenticated,
+      searchForLeads: isAuthenticated,
     },
     Mutation: {
       changePassword: isAuthenticated,
@@ -105,7 +106,7 @@ const permissions = shield(
     },
   },
   {
-    fallbackError: language['error.notAuthorized'],
+    fallbackError: 'You are not authorized to perform this action.',
     allowExternalErrors: process.env.NODE_ENV === 'localhost',
   },
 );
@@ -161,7 +162,7 @@ export const setupServer = async () => {
       throw new Error('prismaIsConnected did not return true.');
     }
 
-    await redis.connect();
+    // await redis.connect();
   } catch (e) {
     console.log(`Prisma not connected: ${e}`);
   }

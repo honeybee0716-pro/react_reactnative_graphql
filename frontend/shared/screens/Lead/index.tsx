@@ -72,26 +72,28 @@ function TopSection({ lead }) {
             alignItems="center"
             justifyContent="space-evenly"
           >
-            <Pressable>
-              <VStack alignItems="center" justifyContent="center" space="2">
-                <Icon
-                  size="6"
-                  name="call"
-                  as={Ionicons}
-                  _light={{
-                    color: { base: 'coolGray.50', md: 'coolGray.500' }
-                  }}
-                />
-                <Text
-                  _light={{
-                    color: { base: 'coolGray.50', md: 'coolGray.500' }
-                  }}
-                  fontSize="md"
-                >
-                  Call
-                </Text>
-              </VStack>
-            </Pressable>
+            {lead.phone ? (
+              <a href={`tel:${lead.phone}`} style={{ textDecoration: 'none' }}>
+                <VStack alignItems="center" justifyContent="center" space="2">
+                  <Icon
+                    size="6"
+                    name="call"
+                    as={Ionicons}
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                  />
+                  <Text
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                    fontSize="md"
+                  >
+                    Call
+                  </Text>
+                </VStack>
+              </a>
+            ) : null}
             {/* <VStack alignItems="center" justifyContent="center" space="2">
               <Icon
                 as={Foundation}
@@ -110,42 +112,57 @@ function TopSection({ lead }) {
                 Video
               </Text>
             </VStack> */}
-            <VStack alignItems="center" justifyContent="center" space="2">
-              <Icon
-                as={MaterialCommunityIcons}
-                name="email"
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.500' }
-                }}
-                size="6"
-              />
-              <Text
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.500' }
-                }}
-                fontSize="md"
+            {lead.email ? (
+              <a
+                href={`mailto:${lead.email}`}
+                style={{ textDecoration: 'none' }}
               >
-                Email
-              </Text>
-            </VStack>
-            <VStack alignItems="center" justifyContent="center" space="2">
-              <Icon
-                as={MaterialCommunityIcons}
-                name="linkedin"
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.500' }
-                }}
-                size="6"
-              />
-              <Text
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.500' }
-                }}
-                fontSize="md"
+                <VStack alignItems="center" justifyContent="center" space="2">
+                  <Icon
+                    as={MaterialCommunityIcons}
+                    name="email"
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                    size="6"
+                  />
+                  <Text
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                    fontSize="md"
+                  >
+                    Email
+                  </Text>
+                </VStack>
+              </a>
+            ) : null}
+            {lead.linkedInProfileURL ? (
+              <a
+                target="_blank"
+                href={lead.linkedInProfileURL}
+                style={{ textDecoration: 'none' }}
               >
-                LinkedIn
-              </Text>
-            </VStack>
+                <VStack alignItems="center" justifyContent="center" space="2">
+                  <Icon
+                    as={MaterialCommunityIcons}
+                    name="linkedin"
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                    size="6"
+                  />
+                  <Text
+                    _light={{
+                      color: { base: 'coolGray.50', md: 'coolGray.500' }
+                    }}
+                    fontSize="md"
+                  >
+                    LinkedIn
+                  </Text>
+                </VStack>
+              </a>
+            ) : null}
           </HStack>
         </VStack>
       </VStack>
@@ -158,26 +175,38 @@ function BottomSection({ lead }) {
   const contactList = [
     {
       iconName: 'mobile1',
-      contactDetail: lead?.phone || 'unknown',
-      contactTye: 'Mobile',
+      contactDetail: lead?.phone || 'Unknown',
+      contactType: 'Phone',
       as: AntDesign
     },
     {
-      iconName: 'phone',
-      contactDetail: 'unknown',
-      contactTye: 'Home',
-      as: FontAwesome
-    },
-    {
       iconName: 'mail',
-      contactDetail: lead?.email || 'unknown',
-      contactTye: 'Email',
+      contactDetail: lead?.email || 'Unknown',
+      contactType: 'Email',
       as: Entypo
     },
     {
       iconName: 'map-marker',
-      contactDetail: lead?.location || 'unknown',
-      contactTye: 'Location',
+      contactDetail: lead?.location || 'Unknown',
+      contactType: 'Location',
+      as: MaterialCommunityIcons
+    },
+    {
+      iconName: 'clock',
+      contactDetail: lead?.durationInCompany || 'Unknown',
+      contactType: 'Duration in company',
+      as: MaterialCommunityIcons
+    },
+    {
+      iconName: 'clock',
+      contactDetail: lead?.durationInRole || 'Unknown',
+      contactType: 'Duration in role',
+      as: MaterialCommunityIcons
+    },
+    {
+      iconName: 'shield',
+      contactDetail: lead?.isPremium ? 'True' : 'false' || 'Unknown',
+      contactType: 'Is Premium',
       as: MaterialCommunityIcons
     }
   ]
@@ -227,7 +256,7 @@ function BottomSection({ lead }) {
                   _dark={{ color: 'coolGray.300' }}
                   _light={{ color: 'coolGray.500' }}
                 >
-                  {item.contactTye}
+                  {item.contactType}
                 </Text>
               </VStack>
             </HStack>

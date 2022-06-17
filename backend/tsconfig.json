@@ -17,7 +17,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "module": "CommonJS"
   },
   "lib": ["esnext"],
   "include": ["src/**/*", "src/constants/**/*", "tests"],

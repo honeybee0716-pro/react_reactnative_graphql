@@ -26,6 +26,13 @@ const nextConfig = {
     // taken from: https://github.com/axeldelafosse/expo-next-monorepo-example/issues/18
     // but still need to confirm that this doesn't prevent us from displaying a favicon
     disableStaticImages: true
+  },
+  typescript: {
+    ignoreDevErrors: true,
+    ignoreBuildErrors: true
+  },
+  future: {
+    webpack5: true
   }
 }
 

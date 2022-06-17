@@ -8,7 +8,7 @@
   "license": "MIT",
   "heroku-run-build-script": true,
   "engines": {
-    "node": "16.15.0"
+    "node": "16.15.1"
   },
   "scripts": {
     "dev": "yarn prisma db push && tsc && nodemon -r dotenv/config --watch 'src/**/*.ts' --exec \"ts-node\" src/index.ts dotenv_config_path=./.env",
@@ -66,7 +66,7 @@
     "@types/faker": "^5.5.7",
     "@types/jest": "^26.0.23",
     "@types/jsonwebtoken": "^8.5.8",
-    "@types/node": "^17.0.31",
+    "@types/node": "^18.0.0",
     "@types/rosie": "^0.0.39",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^4.28.0",

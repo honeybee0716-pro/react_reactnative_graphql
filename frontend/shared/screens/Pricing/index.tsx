@@ -288,7 +288,7 @@ export default function () {
 
   const handlePress = () => {
     if (tabName === 'Enterprise') {
-      alert('redirect to calendar page here')
+      window.open('https://interview.joeyfenny.com')
     } else {
       createStripeCheckoutPage({
         variables: {
@@ -373,7 +373,11 @@ export default function () {
               fontWeight: 'semibold'
             }}
           >
-            {tabName === 'Enterprise' ? 'CONTACT US' : 'UPGRADE NOW'}
+            {loading
+              ? 'LOADING...'
+              : tabName === 'Enterprise'
+              ? 'CONTACT US'
+              : 'UPGRADE NOW'}
           </Button>
         </Center>
       </VStack>

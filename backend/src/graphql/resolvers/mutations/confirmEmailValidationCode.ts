@@ -1,6 +1,5 @@
 import {gql} from 'apollo-server';
 
-import {language} from '../../../constants/language';
 import {prismaContext} from '../../prismaContext';
 import getUserByID from '../queries/getUserByID';
 
@@ -35,7 +34,7 @@ const confirmEmailValidationCode = async (
   });
 
   if (!foundUser) {
-    throw new Error(language('error.userNotFound'));
+    throw new Error('Could not find that user.');
   }
 
   const {verifyEmailCode, verifyEmailCodeTimestamp} = foundUser.data;
