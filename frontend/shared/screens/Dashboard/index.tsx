@@ -214,10 +214,10 @@ function ListItemDesktop(props: ListItemProps) {
 }
 
 export default function ContactList() {
-  const [searchFirstName, setSearchFirstName] = React.useState('')
-  const [searchLastName, setSearchLastName] = React.useState('')
-  const [searchCompanyName, setSearchCompanyName] = React.useState('')
-  const [searchJobTitle, setSearchJobTitle] = React.useState('')
+  const firstName = React.useRef<any>()
+  const lastName = React.useRef<any>()
+  const companyName = React.useRef<any>()
+  const jobTitle = React.useRef<any>()
   const { push } = useRouter()
   const {
     data: getUserSubscriptionDataResult,
@@ -234,10 +234,10 @@ export default function ContactList() {
       fetchPolicy: 'network-only',
       variables: {
         input: {
-          firstName: searchFirstName,
-          lastName: searchLastName,
-          companyName: searchCompanyName,
-          jobTitle: searchJobTitle
+          firstName: firstName?.current?.value,
+          lastName: lastName?.current?.value,
+          companyName: companyName?.current?.value,
+          jobTitle: jobTitle?.current?.value
         }
       }
     })
@@ -280,44 +280,40 @@ export default function ContactList() {
               }}
             >
               <Input
-                onChangeText={(txt) => setSearchFirstName(txt)}
-                defaultValue={searchFirstName}
                 size="xl"
                 placeholder="First Name"
                 color="muted.900"
                 placeholderTextColor="muted.500"
                 bg="coolGray.100"
                 borderColor="coolGray.400"
+                ref={firstName}
               />
               <Input
-                onChangeText={(txt) => setSearchLastName(txt)}
-                defaultValue={searchLastName}
                 size="xl"
                 placeholder="Last Name"
                 color="muted.900"
                 placeholderTextColor="muted.500"
                 bg="coolGray.100"
                 borderColor="coolGray.400"
+                ref={lastName}
               />
               <Input
-                onChangeText={(txt) => setSearchCompanyName(txt)}
-                defaultValue={searchCompanyName}
                 size="xl"
                 placeholder="Company Name"
                 color="muted.900"
                 placeholderTextColor="muted.500"
                 bg="coolGray.100"
                 borderColor="coolGray.400"
+                ref={companyName}
               />
               <Input
-                onChangeText={(txt) => setSearchJobTitle(txt)}
-                defaultValue={searchJobTitle}
                 size="xl"
                 placeholder="Job Title"
                 color="muted.900"
                 placeholderTextColor="muted.500"
                 bg="coolGray.100"
                 borderColor="coolGray.400"
+                ref={jobTitle}
               />
               <Button
                 onPress={handleSearch}
