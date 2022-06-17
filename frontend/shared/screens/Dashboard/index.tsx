@@ -262,7 +262,7 @@ export default function ContactList() {
     <>
       <DashboardLayout
         displaySidebar
-        displayScreenTitle={!!data?.searchForLeads?.leads && !loading}
+        displayScreenTitle={false}
         title={'Leads'}
       >
         {loading ? <Heading>Loading...</Heading> : null}
@@ -281,7 +281,7 @@ export default function ContactList() {
             >
               <Input
                 onChangeText={(txt) => setSearchFirstName(txt)}
-                value={searchFirstName}
+                defaultValue={searchFirstName}
                 size="xl"
                 placeholder="First Name"
                 color="muted.900"
@@ -291,7 +291,7 @@ export default function ContactList() {
               />
               <Input
                 onChangeText={(txt) => setSearchLastName(txt)}
-                value={searchLastName}
+                defaultValue={searchLastName}
                 size="xl"
                 placeholder="Last Name"
                 color="muted.900"
@@ -301,7 +301,7 @@ export default function ContactList() {
               />
               <Input
                 onChangeText={(txt) => setSearchCompanyName(txt)}
-                value={searchCompanyName}
+                defaultValue={searchCompanyName}
                 size="xl"
                 placeholder="Company Name"
                 color="muted.900"
@@ -311,7 +311,7 @@ export default function ContactList() {
               />
               <Input
                 onChangeText={(txt) => setSearchJobTitle(txt)}
-                value={searchJobTitle}
+                defaultValue={searchJobTitle}
                 size="xl"
                 placeholder="Job Title"
                 color="muted.900"
