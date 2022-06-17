@@ -12,16 +12,69 @@ import {
   InputGroup,
   Button,
   Checkbox,
-  Link
+  Link,
+  Pressable
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
-import { Link as SolitoLink } from 'solito/link'
 import { useState } from 'react'
 import IconLink from 'shared/components/icons/IconLink'
+import { gql, useMutation } from '@apollo/client'
+import AsyncStorage from '@react-native-community/async-storage'
+import { Link as SolitoLink } from 'solito/link'
+import { useRouter } from 'solito/router'
+
+const CREATE_USER = gql`
+  mutation CreateUser($input: createUserInput!) {
+    createUser(input: $input) {
+      message
+      status
+      jwt
+    }
+  }
+`
 
 export default function SignUp(props: any) {
+  const { push } = useRouter()
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [showPass, setShowPass] = useState(false)
+  const [showConfirmPass, setShowConfirmPass] = useState(false)
+
+  const [createUser, { loading }] = useMutation(CREATE_USER)
+
+  const handleSignUp = async (e) => {
+    await AsyncStorage.removeItem('jwt')
+    createUser({
+      variables: {
+        input: {
+          firstName,
+          lastName,
+          email,
+          password
+        }
+      },
+      onCompleted: async ({ createUser }) => {
+        if (createUser?.status === 'success' && createUser?.jwt) {
+          await AsyncStorage.setItem('jwt', createUser.jwt)
+          push('/otp')
+          return
+        }
+        if (createUser?.message) {
+          alert(createUser.message)
+          return
+        }
+        alert('There was an error')
+        return
+      },
+      onError: (error) => {
+        alert(`There was an error: ${error}`)
+      }
+    })
+  }
 
   return (
     <>
@@ -210,7 +263,8 @@ export default function SignUp(props: any) {
                             fontSize={{ base: 'xs', sm: 'md' }}
                             fontWeight="medium"
                             backgroundColor={theme.colors.shared.aliceBlue}
-                            placeholder="Firstname"
+                            placeholder="First Name"
+                            onChangeText={(text) => setFirstName(text)}
                           />
                           <Box
                             position="absolute"
@@ -239,7 +293,8 @@ export default function SignUp(props: any) {
                             fontSize={{ base: 'xs', sm: 'md' }}
                             fontWeight="medium"
                             backgroundColor={theme.colors.shared.aliceBlue}
-                            placeholder="Lastname"
+                            placeholder="Last Name"
+                            onChangeText={(text) => setLastName(text)}
                           />
                           <Box
                             position="absolute"
@@ -271,6 +326,7 @@ export default function SignUp(props: any) {
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
                           placeholder="eg: johndoe@gmail.com"
+                          onChangeText={(text) => setEmail(text)}
                         />
                         <Box
                           position="absolute"
@@ -302,6 +358,7 @@ export default function SignUp(props: any) {
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
                           placeholder="Enter your password"
+                          onChangeText={(text) => setPassword(text)}
                         />
                         <Box
                           position="absolute"
@@ -422,12 +479,18 @@ export default function SignUp(props: any) {
                             color="white"
                             fontSize={{ base: 'sm', sm: 'md' }}
                           >
-                            <Hidden till="lg">
-                              <>Create an account</>
-                            </Hidden>
-                            <Hidden from="lg">
-                              <>Create a new account</>
-                            </Hidden>
+                            <Pressable onPress={handleSignUp}>
+                              <Hidden till="lg">
+                                <>
+                                  {loading ? 'Loading...' : 'Create an account'}
+                                </>
+                              </Hidden>
+                              <Hidden from="lg">
+                                <>
+                                  {loading ? 'Loading...' : 'Create an account'}
+                                </>
+                              </Hidden>
+                            </Pressable>
                           </Text>
                         </Box>
                       </Box>

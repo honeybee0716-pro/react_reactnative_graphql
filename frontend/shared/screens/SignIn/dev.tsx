@@ -12,16 +12,65 @@ import {
   InputGroup,
   Button,
   Checkbox,
-  Link
+  Link,
+  Pressable
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
 import { useState } from 'react'
 import IconLink from 'shared/components/icons/IconLink'
+import { gql, useLazyQuery } from '@apollo/client'
+import { useRouter } from 'solito/router'
+import AsyncStorage from '@react-native-community/async-storage'
+
+const LOGIN_USER = gql`
+  query LoginUserWithPassword($input: loginUserWithPasswordInput) {
+    loginUserWithPassword(input: $input) {
+      jwt
+      message
+      status
+    }
+  }
+`
 
 export default function SignUp(props: any) {
+  const { push } = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [showPass, setShowPass] = useState(false)
+  const [loginUser, { loading }] = useLazyQuery(LOGIN_USER)
+
+  const handleSignIn = async () => {
+    await AsyncStorage.removeItem('jwt')
+    loginUser({
+      variables: {
+        input: {
+          email,
+          password
+        }
+      },
+      onCompleted: async ({ loginUserWithPassword }) => {
+        if (
+          loginUserWithPassword?.status === 'success' &&
+          loginUserWithPassword?.jwt
+        ) {
+          await AsyncStorage.setItem('jwt', loginUserWithPassword.jwt)
+          push('/home')
+          return
+        }
+        if (loginUserWithPassword?.message) {
+          alert(loginUserWithPassword.message)
+          return
+        }
+        alert('There was an error')
+        return
+      },
+      onError: (error) => {
+        alert(`${error.message}`)
+      }
+    })
+  }
 
   return (
     <>
@@ -204,6 +253,7 @@ export default function SignUp(props: any) {
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
                           placeholder="eg: johndoe@gmail.com"
+                          onChangeText={(text) => setEmail(text)}
                         />
                         <Box
                           position="absolute"
@@ -235,6 +285,7 @@ export default function SignUp(props: any) {
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
                           placeholder="Enter your password"
+                          onChangeText={(text) => setPassword(text)}
                         />
                         <Box
                           position="absolute"
@@ -324,19 +375,29 @@ export default function SignUp(props: any) {
                           paddingX="2"
                           borderRadius="xl"
                         >
-                          <Text
-                            textAlign="center"
-                            fontWeight="semibold"
-                            color="white"
-                            fontSize={{ base: 'sm', sm: 'md' }}
-                          >
-                            <Hidden till="lg">
-                              <>Sign in to your account</>
-                            </Hidden>
-                            <Hidden from="lg">
-                              <>Create a new account</>
-                            </Hidden>
-                          </Text>
+                          <Pressable onPress={handleSignIn}>
+                            <Text
+                              textAlign="center"
+                              fontWeight="semibold"
+                              color="white"
+                              fontSize={{ base: 'sm', sm: 'md' }}
+                            >
+                              <Hidden till="lg">
+                                <>
+                                  {loading
+                                    ? 'Loading...'
+                                    : 'Sign in to your account'}
+                                </>
+                              </Hidden>
+                              <Hidden from="lg">
+                                <>
+                                  {loading
+                                    ? 'Loading...'
+                                    : 'Sign in to your account'}
+                                </>
+                              </Hidden>
+                            </Text>
+                          </Pressable>
                         </Box>
                       </Box>
 
