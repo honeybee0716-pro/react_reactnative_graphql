@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
   Box,
   HStack,
@@ -231,7 +231,7 @@ export default function ContactList() {
 
   const handleSearch = async () => {
     await searchForLeads({
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-first',
       variables: {
         input: {
           firstName: firstName?.current?.value,
