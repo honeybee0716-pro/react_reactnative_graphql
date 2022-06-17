@@ -27,8 +27,6 @@ export const searchForLeadsSchema = gql`
 const searchForLeads = async (parent: any, args: any, context: any) => {
   const {id: userID} = context.user;
 
-  console.log({args});
-
   const {firstName, lastName, companyName, jobTitle} = args.input;
 
   const query: any = {
@@ -38,22 +36,39 @@ const searchForLeads = async (parent: any, args: any, context: any) => {
   };
 
   if (firstName) {
-    query.where.firstName = firstName;
+    query.where.firstName = {
+      contains: firstName,
+      mode: 'insensitive',
+    };
   }
 
   if (lastName) {
-    query.where.lastName = lastName;
+    query.where.lastName = {
+      contains: lastName,
+      mode: 'insensitive',
+    };
   }
 
   if (companyName) {
-    query.where.companyName = companyName;
+    query.where.companyName = {
+      contains: companyName,
+      mode: 'insensitive',
+    };
   }
 
   if (jobTitle) {
-    query.where.jobTitle = jobTitle;
+    query.where.title = {
+      contains: jobTitle,
+      mode: 'insensitive',
+    };
   }
 
-  const leads = await prismaContext.prisma.lead.findMany(query);
+  let leads = await prismaContext.prisma.lead.findMany(query);
+
+  leads = leads.map((l) => ({
+    ...l,
+    fullName: `${l.firstName} ${l.lastName}`,
+  }));
 
   return {
     message: 'Retrieved user leads.',

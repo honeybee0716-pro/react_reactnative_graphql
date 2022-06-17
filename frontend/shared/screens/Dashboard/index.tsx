@@ -29,16 +29,6 @@ import { gql, useQuery, useLazyQuery } from '@apollo/client'
 
 import DashboardLayout from '../../layouts/DashboardLayout'
 
-const GET_USER_LEADS = gql`
-  query GetUserLeads {
-    getUserLeads {
-      message
-      status
-      leads
-    }
-  }
-`
-
 const GET_USER_SUBSCRIPTION_DATA = gql`
   query GetUserSubscriptionData {
     getUserSubscriptionData {
@@ -50,11 +40,11 @@ const GET_USER_SUBSCRIPTION_DATA = gql`
 `
 
 const SEARCH_FOR_LEADS = gql`
-  query SearchForLeads {
-    searchForLeads {
-      leads
-      status
+  query SearchForLeads($input: searchForLeadsInput) {
+    searchForLeads(input: $input) {
       message
+      status
+      leads
     }
   }
 `
@@ -224,18 +214,10 @@ function ListItemDesktop(props: ListItemProps) {
 }
 
 export default function ContactList() {
-  const { data, loading, error } = useQuery(SEARCH_FOR_LEADS, {
-    variables: {
-      input: {
-        joey: 'fenny'
-      }
-    }
-  })
-  const [searchFirstName, setSearchFirstName] = React.useState('joey')
-  const [searchLastName, setSearchLastName] = React.useState('fenny')
-  const [searchCompanyName, setSearchCompanyName] = React.useState('kwri')
-  const [searchJobTitle, setSearchJobTitle] = React.useState('sre')
-  const [leads, setLeads] = React.useState([])
+  const [searchFirstName, setSearchFirstName] = React.useState('')
+  const [searchLastName, setSearchLastName] = React.useState('')
+  const [searchCompanyName, setSearchCompanyName] = React.useState('')
+  const [searchJobTitle, setSearchJobTitle] = React.useState('')
   const { push } = useRouter()
   const {
     data: getUserSubscriptionDataResult,
@@ -244,37 +226,21 @@ export default function ContactList() {
   } = useQuery(GET_USER_SUBSCRIPTION_DATA, {
     fetchPolicy: 'cache-first'
   })
+  const [searchForLeads, { data, loading, error }] =
+    useLazyQuery(SEARCH_FOR_LEADS)
 
   const handleSearch = async () => {
-    // searchForLeads({
-    //   fetchPolicy: 'network-only',
-    //   variables: {
-    //     input: {
-    //       firstName: searchFirstName,
-    //       lastName: searchLastName,
-    //       companyName: searchCompanyName,
-    //       jobTitle: searchJobTitle
-    //     }
-    //   }
-    // });
-    // {
-    //   variables: {
-    //     input: {
-    //       firstName: searchFirstName !== 'jf' ? searchFirstName : null,
-    //       lastName: searchLastName !== 'jf' ? searchLastName : null,
-    //       companyName: searchCompanyName !== 'jf' ? searchCompanyName : null,
-    //       jobTitle: searchJobTitle !== 'jf' ? searchJobTitle : null
-    //     }
-    //   },
-    //   fetchPolicy: 'network-only',
-    //   onCompleted: data => {
-    //     // console.log({leads});
-    //     // setLeads(data.searchForLeads)
-    //   },
-    //   onError: error => {
-    //     console.log(error)
-    //   }
-    // }
+    await searchForLeads({
+      fetchPolicy: 'network-only',
+      variables: {
+        input: {
+          firstName: searchFirstName,
+          lastName: searchLastName,
+          companyName: searchCompanyName,
+          jobTitle: searchJobTitle
+        }
+      }
+    })
   }
 
   React.useEffect(() => {
@@ -289,9 +255,7 @@ export default function ContactList() {
   }, [getUserSubscriptionDataResult])
 
   React.useEffect(() => {
-    ;(async () => {
-      handleSearch()
-    })()
+    handleSearch()
   }, [])
 
   return (
@@ -447,22 +411,13 @@ export default function ContactList() {
                       _light={{ color: 'coolGray.600' }}
                       _dark={{ color: 'coolGray.300' }}
                     >
-                      Contacts (
-                      {
-                        data?.searchForLeads?.leads?.filter(
-                          (l: any) => l.display === true
-                        ).length
-                      }{' '}
-                      shown out of {data?.searchForLeads?.leads.length})
+                      Contacts ({data?.searchForLeads?.leads?.length} shown out
+                      of {data?.searchForLeads?.leads.length})
                     </Text>
                     <VStack space={4}>
-                      {data?.searchForLeads?.leads
-                        ?.filter((l: any) => {
-                          return l.display === true
-                        })
-                        .map((item: any, index) => {
-                          return <ListItemDesktop item={item} key={item.id} />
-                        })}
+                      {data?.searchForLeads?.leads?.map((item: any, index) => {
+                        return <ListItemDesktop item={item} key={item.id} />
+                      })}
                     </VStack>
                   </Box>
                 </ScrollView>
