@@ -14,8 +14,14 @@ import {
   Checkbox,
   Link,
   Icon,
-  Pressable
+  Pressable,
+  Avatar,
+  Menu,
+  CheckIcon,
+  Select,
+  Tooltip
 } from 'native-base'
+import React from 'react'
 import { Dimensions, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
@@ -38,6 +44,46 @@ import IconArrowRight from 'shared/components/icons/IconArrowRight'
 import IconMenu from 'shared/components/icons/IconMenu'
 
 const { width, height } = Dimensions.get('window')
+
+function MenuComponent() {
+  const [shouldOverlapWithTrigger] = React.useState(false)
+  const [position, setPosition] = React.useState('auto')
+
+  return (
+    <VStack space={6} alignSelf="flex-start" w="100%">
+      <Menu
+        w="160"
+        shouldOverlapWithTrigger={shouldOverlapWithTrigger} // @ts-ignore
+        placement={position == 'auto' ? undefined : position}
+        trigger={(triggerProps) => {
+          return (
+            <Button variant="unstyled" {...triggerProps}>
+              <Box
+                w={{ base: '35px', sm: '12' }}
+                h={{ base: '35px', sm: '12' }}
+              >
+                <Avatar
+                  source={{
+                    uri: undefined
+                    // uri: "https://media-exp1.licdn.com/dms/image/C5603AQH7LFIlwjId2g/profile-displayphoto-shrink_100_100/0/1517410056178?e=1655942400&v=beta&t=h6GNGaSXOzOrdXoMyBVV906rm7NtIFS-MtPEgLWqWQ8"
+                  }}
+                  w="100%"
+                  h="100%"
+                >
+                  {`${'J' || ''}${'F' || ''}`}
+                </Avatar>
+              </Box>
+            </Button>
+          )
+        }}
+      >
+        <SolitoLink href="/sign-out">
+          <Menu.Item>Sign out</Menu.Item>
+        </SolitoLink>
+      </Menu>
+    </VStack>
+  )
+}
 
 const DashboardLayout: React.FC = ({ children }) => {
   return (
@@ -101,25 +147,30 @@ const DashboardLayout: React.FC = ({ children }) => {
           paddingRight={{ base: '4', sm: '12' }}
         >
           <Hidden till="sm">
-            <Center>
-              <HStack
-                alignItems="center"
-                space="1"
-                backgroundColor={theme.colors.shared.blueGentianFlower}
-                paddingY="2"
-                paddingX="6"
-                rounded="full"
-              >
-                <Box w="21px">
-                  <IconCredits />
-                </Box>
-                <Text color="white" fontWeight="semibold">
-                  8,752
-                </Text>
-              </HStack>
-            </Center>
+            <Tooltip
+              label="Your credits will reset at the start of your billing cycle"
+              openDelay={100}
+            >
+              <Center>
+                <HStack
+                  alignItems="center"
+                  space="1"
+                  backgroundColor={theme.colors.shared.blueGentianFlower}
+                  paddingY="2"
+                  paddingX="6"
+                  rounded="full"
+                >
+                  <Box w="21px">
+                    <IconCredits />
+                  </Box>
+                  <Text color="white" fontWeight="semibold">
+                    300
+                  </Text>
+                </HStack>
+              </Center>
+            </Tooltip>
           </Hidden>
-          <Hidden till="lg">
+          {/* <Hidden till="lg">
             <Center marginLeft="6">
               <Pressable>
                 <Box w="24px">
@@ -127,22 +178,16 @@ const DashboardLayout: React.FC = ({ children }) => {
                 </Box>
               </Pressable>
             </Center>
-          </Hidden>
-          <Center marginLeft={{ base: '0', sm: '6' }}>
+          </Hidden> */}
+          {/* <Center marginLeft={{ base: '0', sm: '6' }}>
             <Pressable>
               <Box w="19px">
                 <IconNotificationBell />
               </Box>
             </Pressable>
-          </Center>
+          </Center> */}
           <Center marginLeft={{ base: '4', sm: '8' }}>
-            <Box
-              w={{ base: '35px', sm: '12' }}
-              h={{ base: '35px', sm: '12' }}
-              borderRadius="full"
-              borderWidth="1"
-              borderColor={theme.colors.shared.darkerGray}
-            ></Box>
+            <MenuComponent />
           </Center>
           <Hidden from="sm">
             <Center marginLeft={{ base: '4', sm: '8' }}>
