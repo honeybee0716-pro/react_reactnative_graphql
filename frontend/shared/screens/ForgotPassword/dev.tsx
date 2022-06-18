@@ -13,21 +13,33 @@ import {
   Button,
   Checkbox,
   Link,
-  Pressable
+  Pressable,
+  IconButton,
+  Icon,
+  useColorMode
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { AntDesign, Entypo } from '@expo/vector-icons'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
-import { useState } from 'react'
 import IconLink from 'shared/components/icons/IconLink'
-import { gql, useLazyQuery } from '@apollo/client'
 import { useRouter } from 'solito/router'
+import { gql, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
+import { useState } from 'react'
 
-const LOGIN_USER = gql`
-  query LoginUserWithPassword($input: loginUserWithPasswordInput) {
-    loginUserWithPassword(input: $input) {
-      jwt
+const FORGOT_PASSWORD = gql`
+  mutation ForgotPassword($input: forgotPasswordInput) {
+    forgotPassword(input: $input) {
+      message
+      status
+    }
+  }
+`
+
+const CONFIRM_FORGOT_PASSWORD = gql`
+  mutation ConfirmForgotPasswordCode($input: confirmForgotPasscodeCodeInput) {
+    confirmForgotPasswordCode(input: $input) {
       message
       status
     }
@@ -37,39 +49,76 @@ const LOGIN_USER = gql`
 export default function SignUp(props: any) {
   const { push } = useRouter()
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [code, setCode] = useState('')
   const [showPass, setShowPass] = useState(false)
-  const [loginUser, { loading }] = useLazyQuery(LOGIN_USER)
+  const [step, setStep] = useState(1)
+  const { colorMode } = useColorMode()
+  const [step1, { loading: loadingStep1 }] = useMutation(FORGOT_PASSWORD)
+  const [step2, { loading: loadingStep2 }] = useMutation(
+    CONFIRM_FORGOT_PASSWORD
+  )
 
-  const handleSignIn = async () => {
-    await AsyncStorage.removeItem('jwt')
-    loginUser({
-      variables: {
-        input: {
-          email,
-          password
-        }
-      },
-      onCompleted: async ({ loginUserWithPassword }) => {
-        if (
-          loginUserWithPassword?.status === 'success' &&
-          loginUserWithPassword?.jwt
-        ) {
-          await AsyncStorage.setItem('jwt', loginUserWithPassword.jwt)
-          push('/home')
+  const handleSubmit = async (e) => {
+    if (step === 1) {
+      step1({
+        variables: {
+          input: {
+            email
+          }
+        },
+        onCompleted: async ({ forgotPassword }) => {
+          if (forgotPassword?.status === 'success') {
+            setStep(2)
+            return
+          }
+          if (forgotPassword?.message) {
+            alert(forgotPassword.message)
+            return
+          }
+          alert('There was an error')
           return
+        },
+        onError: (error) => {
+          alert(`There was an error: ${error}`)
         }
-        if (loginUserWithPassword?.message) {
-          alert(loginUserWithPassword.message)
-          return
-        }
-        alert('There was an error')
+      })
+    }
+    if (step === 2) {
+      if (!code) {
+        alert('Please enter a code.')
         return
-      },
-      onError: (error) => {
-        alert(`${error.message}`)
       }
-    })
+      try {
+        Number(code)
+      } catch (e) {
+        alert('Please enter a valid code.')
+        return
+      }
+      step2({
+        variables: {
+          input: {
+            email,
+            code: Number(code),
+            newPassword
+          }
+        },
+        onCompleted: async ({ confirmForgotPasswordCode }) => {
+          if (confirmForgotPasswordCode?.status === 'success') {
+            if (confirmForgotPasswordCode?.message) {
+              alert(confirmForgotPasswordCode.message)
+            }
+            push('/sign-in')
+            return
+          }
+          alert('There was an error')
+          return
+        },
+        onError: (error) => {
+          alert(`There was an error: ${error}`)
+        }
+      })
+    }
   }
 
   return (
@@ -130,7 +179,7 @@ export default function SignUp(props: any) {
                         fontWeight="semibold"
                         marginLeft={'4'}
                       >
-                        Contact Blaster
+                        ClientEye
                       </Text>
                     </Center>
                   </Hidden>
@@ -150,7 +199,7 @@ export default function SignUp(props: any) {
                       marginTop={{ base: '1', sm: '9', lg: '0' }}
                       fontFamily="body"
                     >
-                      Sign in
+                      {step === 1 ? 'Forgot password' : 'Confirm code'}
                     </Text>
                     {/* <HStack
                       justifyContent="center"
@@ -239,96 +288,121 @@ export default function SignUp(props: any) {
                       </Box>
                     </Box> */}
                     <Box>
-                      <Box position="relative" w="full" marginTop="5">
-                        <Input
-                          paddingLeft="12"
-                          paddingTop="3"
-                          paddingRight="3"
-                          paddingBottom="3"
-                          w="full"
-                          borderRadius="xl"
-                          borderWidth="2"
-                          borderColor={theme.colors.shared.softerGray}
-                          fontSize={{ base: 'xs', sm: 'md' }}
-                          fontWeight="medium"
-                          backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="eg: johndoe@gmail.com"
-                          onChangeText={(text) => setEmail(text)}
-                        />
-                        <Box
-                          position="absolute"
-                          left="4"
-                          h="full"
-                          flexDir="row"
-                          alignItems="center"
-                        >
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/assets/icons/mail 1.png')}
-                          />
-                        </Box>
-                      </Box>
-                      {/* input password */}
-                      <Box position="relative" w="full" marginTop="5">
-                        <Input
-                          type={showPass ? 'text' : 'password'}
-                          paddingLeft="12"
-                          paddingTop="3"
-                          paddingRight="3"
-                          paddingBottom="3"
-                          w="full"
-                          borderRadius="xl"
-                          borderWidth="2"
-                          borderColor={theme.colors.shared.softerGray}
-                          fontSize={{ base: 'xs', sm: 'md' }}
-                          fontWeight="medium"
-                          backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="Enter your password"
-                          onChangeText={(text) => setPassword(text)}
-                        />
-                        <Box
-                          position="absolute"
-                          left="4"
-                          h="full"
-                          flexDir="row"
-                          alignItems="center"
-                        >
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/assets/icons/lock 1.png')}
-                          />
-                        </Box>
-                        <Box
-                          position="absolute"
-                          right="2"
-                          h="full"
-                          flexDirection="row"
-                          alignItems="center"
-                        >
-                          <Button
-                            backgroundColor="white"
-                            _hover={{
-                              backgroundColor: 'gray.100'
-                            }}
+                      {step === 1 ? (
+                        <Box position="relative" w="full" marginTop="5">
+                          <Input
+                            paddingLeft="12"
+                            paddingTop="3"
+                            paddingRight="3"
+                            paddingBottom="3"
+                            w="full"
+                            borderRadius="xl"
                             borderWidth="2"
-                            borderColor={theme.colors.shared.softGray}
-                            borderRadius="lg"
-                            padding="2"
-                            onPress={() => {
-                              setShowPass(!showPass)
-                            }}
+                            borderColor={theme.colors.shared.softerGray}
+                            fontSize={{ base: 'xs', sm: 'md' }}
+                            fontWeight="medium"
+                            backgroundColor={theme.colors.shared.aliceBlue}
+                            placeholder="eg: johndoe@gmail.com"
+                            onChangeText={(text) => setEmail(text)}
+                            value={email}
+                          />
+                          <Box
+                            position="absolute"
+                            left="4"
+                            h="full"
+                            flexDir="row"
+                            alignItems="center"
                           >
                             <Image
-                              w="4"
-                              h="4"
-                              source={require('shared/assets/icons/eye (1) 1.png')}
+                              w="6"
+                              h="6"
+                              source={require('shared/assets/icons/mail 1.png')}
                             />
-                          </Button>
+                          </Box>
                         </Box>
-                      </Box>
-
+                      ) : (
+                        <>
+                          <Box position="relative" w="full" marginTop="5">
+                            <Input
+                              paddingLeft="12"
+                              paddingTop="3"
+                              paddingRight="3"
+                              paddingBottom="3"
+                              w="full"
+                              borderRadius="xl"
+                              borderWidth="2"
+                              borderColor={theme.colors.shared.softerGray}
+                              fontSize={{ base: 'xs', sm: 'md' }}
+                              fontWeight="medium"
+                              backgroundColor={theme.colors.shared.aliceBlue}
+                              placeholder="eg: 123456"
+                              onChangeText={(text) => setCode(text)}
+                              value={code}
+                            />
+                            <Box
+                              position="absolute"
+                              left="4"
+                              h="full"
+                              flexDir="row"
+                              alignItems="center"
+                            >
+                              <Image
+                                w="6"
+                                h="6"
+                                source={require('shared/assets/icons/mail 1.png')}
+                              />
+                            </Box>
+                          </Box>
+                          <Box position="relative" w="full" marginTop="5">
+                            <Input
+                              paddingLeft="12"
+                              type={showPass ? 'text' : 'password'}
+                              paddingTop="3"
+                              paddingRight="3"
+                              paddingBottom="3"
+                              w="full"
+                              borderRadius="xl"
+                              borderWidth="2"
+                              borderColor={theme.colors.shared.softerGray}
+                              fontSize={{ base: 'xs', sm: 'md' }}
+                              fontWeight="medium"
+                              backgroundColor={theme.colors.shared.aliceBlue}
+                              placeholder="New password"
+                              onChangeText={(text) => setNewPassword(text)}
+                              value={newPassword}
+                              InputRightElement={
+                                <IconButton
+                                  variant="unstyled"
+                                  icon={
+                                    <Icon
+                                      size="4"
+                                      color="coolGray.400"
+                                      as={Entypo}
+                                      name={showPass ? 'eye-with-line' : 'eye'}
+                                    />
+                                  }
+                                  onPress={() => {
+                                    setShowPass(!showPass)
+                                  }}
+                                />
+                              }
+                            />
+                            <Box
+                              position="absolute"
+                              left="4"
+                              h="full"
+                              flexDir="row"
+                              alignItems="center"
+                            >
+                              <Image
+                                w="6"
+                                h="6"
+                                source={require('shared/assets/icons/lock 1.png')}
+                              />
+                            </Box>
+                          </Box>
+                        </>
+                      )}
                       {/* remember_me_forgot_pass */}
                       <Hidden from="lg">
                         <HStack
@@ -375,7 +449,7 @@ export default function SignUp(props: any) {
                           paddingX="2"
                           borderRadius="xl"
                         >
-                          <Pressable onPress={handleSignIn}>
+                          <Pressable onPress={handleSubmit}>
                             <Text
                               textAlign="center"
                               fontWeight="semibold"
@@ -384,77 +458,25 @@ export default function SignUp(props: any) {
                             >
                               <Hidden till="lg">
                                 <>
-                                  {loading
+                                  {loadingStep1 || loadingStep2
                                     ? 'Loading...'
-                                    : 'Sign in to your account'}
+                                    : step === 1
+                                    ? 'Sent reset code'
+                                    : 'Submit'}
                                 </>
                               </Hidden>
                               <Hidden from="lg">
                                 <>
-                                  {loading
+                                  {loadingStep1 || loadingStep2
                                     ? 'Loading...'
-                                    : 'Sign in to your account'}
+                                    : step === 1
+                                    ? 'Sent reset code'
+                                    : 'Submit'}
                                 </>
                               </Hidden>
                             </Text>
                           </Pressable>
                         </Box>
-                      </Box>
-
-                      {/* already have account */}
-                      <Box
-                        marginTop={{ base: '5', sm: '7' }}
-                        marginBottom={{ base: '1', sm: '7', lg: '0' }}
-                      >
-                        <Text
-                          textAlign="center"
-                          fontSize={{ base: 'sm', sm: 'md' }}
-                        >
-                          Don't have an account yet?{' '}
-                          <SolitoLink href="/sign-up">
-                            <Link
-                              _text={{
-                                fontSize: 'md'
-                              }}
-                              fontWeight="semibold"
-                            >
-                              <Hidden till="lg">
-                                <>Sign up</>
-                              </Hidden>
-                              <Hidden from="lg">
-                                <>Sign up now</>
-                              </Hidden>
-                            </Link>
-                          </SolitoLink>
-                        </Text>
-                      </Box>
-
-                      {/* forgot password */}
-                      <Box
-                        marginTop={{ base: '2', sm: '2' }}
-                        marginBottom={{ base: '1', sm: '7', lg: '0' }}
-                      >
-                        <Text
-                          textAlign="center"
-                          fontSize={{ base: 'sm', sm: 'md' }}
-                        >
-                          Forgot your password?{' '}
-                          <SolitoLink href="/forgot-password">
-                            <Link
-                              _text={{
-                                fontSize: 'md'
-                              }}
-                              fontWeight="semibold"
-                            >
-                              <Hidden till="lg">
-                                <>Reset it</>
-                              </Hidden>
-                              <Hidden from="lg">
-                                <>Reset</>
-                              </Hidden>
-                            </Link>
-                          </SolitoLink>
-                        </Text>
                       </Box>
                     </Box>
                   </Box>
