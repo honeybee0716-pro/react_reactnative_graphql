@@ -8,7 +8,7 @@ export const SignOut = () => {
   useEffect(() => {
     ;(async () => {
       await AsyncStorage.removeItem('jwt')
-      push('/')
+      push('/sign-in')
     })()
   }, [])
 

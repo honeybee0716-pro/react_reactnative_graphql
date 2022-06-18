@@ -17,61 +17,57 @@ import {
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
+import { Link as SolitoLink } from 'solito/link'
 import { useState } from 'react'
 import IconLink from 'shared/components/icons/IconLink'
-import { gql, useMutation } from '@apollo/client'
-import AsyncStorage from '@react-native-community/async-storage'
-import { Link as SolitoLink } from 'solito/link'
+import { gql, useLazyQuery } from '@apollo/client'
 import { useRouter } from 'solito/router'
+import AsyncStorage from '@react-native-community/async-storage'
 
-const CREATE_USER = gql`
-  mutation CreateUser($input: createUserInput!) {
-    createUser(input: $input) {
+const LOGIN_USER = gql`
+  query LoginUserWithPassword($input: loginUserWithPasswordInput) {
+    loginUserWithPassword(input: $input) {
+      jwt
       message
       status
-      jwt
     }
   }
 `
 
 export default function SignUp(props: any) {
   const { push } = useRouter()
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
   const [showPass, setShowPass] = useState(false)
-  const [showConfirmPass, setShowConfirmPass] = useState(false)
+  const [loginUser, { loading }] = useLazyQuery(LOGIN_USER)
 
-  const [createUser, { loading }] = useMutation(CREATE_USER)
-
-  const handleSignUp = async (e) => {
+  const handleSignIn = async () => {
     await AsyncStorage.removeItem('jwt')
-    createUser({
+    loginUser({
       variables: {
         input: {
-          firstName,
-          lastName,
           email,
           password
         }
       },
-      onCompleted: async ({ createUser }) => {
-        if (createUser?.status === 'success' && createUser?.jwt) {
-          await AsyncStorage.setItem('jwt', createUser.jwt)
-          push('/otp')
+      onCompleted: async ({ loginUserWithPassword }) => {
+        if (
+          loginUserWithPassword?.status === 'success' &&
+          loginUserWithPassword?.jwt
+        ) {
+          await AsyncStorage.setItem('jwt', loginUserWithPassword.jwt)
+          push('/home')
           return
         }
-        if (createUser?.message) {
-          alert(createUser.message)
+        if (loginUserWithPassword?.message) {
+          alert(loginUserWithPassword.message)
           return
         }
         alert('There was an error')
         return
       },
       onError: (error) => {
-        alert(`There was an error: ${error}`)
+        alert(`${error.message}`)
       }
     })
   }
@@ -154,7 +150,7 @@ export default function SignUp(props: any) {
                       marginTop={{ base: '1', sm: '9', lg: '0' }}
                       fontFamily="body"
                     >
-                      Create an account
+                      Sign in
                     </Text>
                     {/* <HStack
                       justifyContent="center"
@@ -243,75 +239,6 @@ export default function SignUp(props: any) {
                       </Box>
                     </Box> */}
                     <Box>
-                      {/* input first last name */}
-                      <HStack
-                        position="relative"
-                        justifyContent="center"
-                        mt="7"
-                        space={{ base: '5', sm: '7' }}
-                      >
-                        <Box position="relative" w="47%">
-                          <Input
-                            paddingLeft="12"
-                            paddingTop="3"
-                            paddingRight="3"
-                            paddingBottom="3"
-                            w="full"
-                            borderRadius="xl"
-                            borderWidth="2"
-                            borderColor={theme.colors.shared.softerGray}
-                            fontSize={{ base: 'xs', sm: 'md' }}
-                            fontWeight="medium"
-                            backgroundColor={theme.colors.shared.aliceBlue}
-                            placeholder="First Name"
-                            onChangeText={(text) => setFirstName(text)}
-                          />
-                          <Box
-                            position="absolute"
-                            left="4"
-                            h="full"
-                            flexDir="row"
-                            alignItems="center"
-                          >
-                            <Image
-                              w="6"
-                              h="6"
-                              source={require('shared/assets/icons/user (1) 1.png')}
-                            />
-                          </Box>
-                        </Box>
-                        <Box position="relative" w="47%">
-                          <Input
-                            paddingLeft="12"
-                            paddingTop="3"
-                            paddingRight="3"
-                            paddingBottom="3"
-                            w="full"
-                            borderRadius="xl"
-                            borderWidth="2"
-                            borderColor={theme.colors.shared.softerGray}
-                            fontSize={{ base: 'xs', sm: 'md' }}
-                            fontWeight="medium"
-                            backgroundColor={theme.colors.shared.aliceBlue}
-                            placeholder="Last Name"
-                            onChangeText={(text) => setLastName(text)}
-                          />
-                          <Box
-                            position="absolute"
-                            left="4"
-                            h="full"
-                            flexDir="row"
-                            alignItems="center"
-                          >
-                            <Image
-                              w="6"
-                              h="6"
-                              source={require('shared/assets/icons/user (1) 1.png')}
-                            />
-                          </Box>
-                        </Box>
-                      </HStack>
-                      {/* input email */}
                       <Box position="relative" w="full" marginTop="5">
                         <Input
                           paddingLeft="12"
@@ -402,31 +329,6 @@ export default function SignUp(props: any) {
                         </Box>
                       </Box>
 
-                      {/* terms_condition */}
-                      <Hidden till="lg">
-                        <Box position="relative" marginTop="5" marginLeft="1">
-                          <Checkbox
-                            alignItems="center"
-                            defaultIsChecked={false}
-                            value="demo"
-                            colorScheme="primary"
-                            accessibilityLabel="Terms and Conditions"
-                          >
-                            <HStack alignItems="center">
-                              <Text fontSize="md" fontWeight="medium">
-                                I agree to the{' '}
-                                <SolitoLink href="/terms-and-conditions">
-                                  <Text fontSize="md" fontWeight="bold">
-                                    Terms and Conditions
-                                  </Text>
-                                </SolitoLink>
-                                .
-                              </Text>
-                            </HStack>
-                          </Checkbox>
-                        </Box>
-                      </Hidden>
-
                       {/* remember_me_forgot_pass */}
                       <Hidden from="lg">
                         <HStack
@@ -473,25 +375,29 @@ export default function SignUp(props: any) {
                           paddingX="2"
                           borderRadius="xl"
                         >
-                          <Text
-                            textAlign="center"
-                            fontWeight="semibold"
-                            color="white"
-                            fontSize={{ base: 'sm', sm: 'md' }}
-                          >
-                            <Pressable onPress={handleSignUp}>
+                          <Pressable onPress={handleSignIn}>
+                            <Text
+                              textAlign="center"
+                              fontWeight="semibold"
+                              color="white"
+                              fontSize={{ base: 'sm', sm: 'md' }}
+                            >
                               <Hidden till="lg">
                                 <>
-                                  {loading ? 'Loading...' : 'Create an account'}
+                                  {loading
+                                    ? 'Loading...'
+                                    : 'Sign in to your account'}
                                 </>
                               </Hidden>
                               <Hidden from="lg">
                                 <>
-                                  {loading ? 'Loading...' : 'Create an account'}
+                                  {loading
+                                    ? 'Loading...'
+                                    : 'Sign in to your account'}
                                 </>
                               </Hidden>
-                            </Pressable>
-                          </Text>
+                            </Text>
+                          </Pressable>
                         </Box>
                       </Box>
 
@@ -504,8 +410,8 @@ export default function SignUp(props: any) {
                           textAlign="center"
                           fontSize={{ base: 'sm', sm: 'md' }}
                         >
-                          Already have an account ?{' '}
-                          <SolitoLink href="/sign-in">
+                          Don't have an account yet?{' '}
+                          <SolitoLink href="/sign-up">
                             <Link
                               _text={{
                                 fontSize: 'md'
@@ -513,10 +419,38 @@ export default function SignUp(props: any) {
                               fontWeight="semibold"
                             >
                               <Hidden till="lg">
-                                <>Sign in</>
+                                <>Sign up</>
                               </Hidden>
                               <Hidden from="lg">
-                                <>Sign in now</>
+                                <>Sign up now</>
+                              </Hidden>
+                            </Link>
+                          </SolitoLink>
+                        </Text>
+                      </Box>
+
+                      {/* forgot password */}
+                      <Box
+                        marginTop={{ base: '2', sm: '2' }}
+                        marginBottom={{ base: '1', sm: '7', lg: '0' }}
+                      >
+                        <Text
+                          textAlign="center"
+                          fontSize={{ base: 'sm', sm: 'md' }}
+                        >
+                          Forgot your password?{' '}
+                          <SolitoLink href="/forgot-password">
+                            <Link
+                              _text={{
+                                fontSize: 'md'
+                              }}
+                              fontWeight="semibold"
+                            >
+                              <Hidden till="lg">
+                                <>Reset it</>
+                              </Hidden>
+                              <Hidden from="lg">
+                                <>Reset</>
                               </Hidden>
                             </Link>
                           </SolitoLink>
