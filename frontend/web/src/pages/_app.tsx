@@ -17,8 +17,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Example</title>
-        <meta key="title" name="title" content="Example" />
+        <title>ClientEye Dashboard</title>
+        <meta key="title" name="title" content="ClientEye Dashboard" />
         <link rel="shortcut icon" type="image/x-icon" href="/favicon.png" />
         <meta
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
