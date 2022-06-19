@@ -1,271 +1,90 @@
-import React from 'react'
 import {
-  HStack,
-  Icon,
-  Text,
-  VStack,
-  Avatar,
+  StatusBar,
+  Box,
   Center,
-  Fab,
+  Stack,
+  Hidden,
+  Text,
+  Image,
+  HStack,
+  VStack,
+  Input,
+  InputGroup,
+  Button,
+  Checkbox,
+  Link,
+  Icon,
   Pressable,
-  Heading
+  Flex,
+  Select,
+  CheckIcon,
+  Slider,
+  Switch,
+  AspectRatio,
+  Spinner,
+  Heading,
+  Avatar
 } from 'native-base'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   AntDesign,
-  Entypo,
-  FontAwesome,
-  Foundation,
   Ionicons,
   MaterialCommunityIcons,
-  MaterialIcons
+  Entypo,
+  Feather
 } from '@expo/vector-icons'
+import { theme } from 'shared/styles/theme'
+import { Link as SolitoLink } from 'solito/link'
+import { Dimensions, View } from 'react-native'
+import { Fragment, useState } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination } from 'swiper'
+import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
+import IconCredits from 'shared/components/icons/IconCredits'
+import IconCornerUpRight from 'shared/components/icons/IconCornerUpRight'
+import IconZap from 'shared/components/icons/IconZap'
+import IconDollarSign from 'shared/components/icons/IconDollarSign'
+import IconUploadCloud from 'shared/components/icons/IconUploadCloud'
+import IconBarChart from 'shared/components/icons/IconBarChart'
+import IconCompass from 'shared/components/icons/IconCompass'
+import IconDownload from 'shared/components/icons/IconDownload'
+import IconEye from 'shared/components/icons/IconEye'
+import IconClock from 'shared/components/icons/IconClock'
+import IconCalendar from 'shared/components/icons/IconCalendar'
+import IconShoppingCart from 'shared/components/icons/IconShoppingCart'
+import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
+import IconChevronDown from 'shared/components/icons/IconChevronDown'
+import IconPlayCircle from 'shared/components/icons/IconPlayCircle'
+import IconCreditCard from 'shared/components/icons/IconCreditCard'
+import IconLightcoin from 'shared/components/icons/IconLightcoin'
+import IconNFC from 'shared/components/icons/IconNFC'
+import IconEdit from 'shared/components/icons/IconEdit'
+import IconCornerLeftDown from 'shared/components/icons/IconCornerLeftDown'
+import IconMasterCard from 'shared/components/icons/IconMasterCard'
+import IconVISA from 'shared/components/icons/IconVISA'
+import IconHome from 'shared/components/icons/IconHome'
+import IconGlobe from 'shared/components/icons/IconGlobe'
+import IconPlus from 'shared/components/icons/IconPlus'
+import IconFileText from 'shared/components/icons/IconFileText'
+import IconSliders from 'shared/components/icons/IconSliders'
+import IconTrashBin from 'shared/components/icons/IconTrashBin'
+import IconUpload from 'shared/components/icons/IconUpload'
+import IconTag from 'shared/components/icons/IconTag'
+import IconX from 'shared/components/icons/IconX'
+import IconFilter from 'shared/components/icons/IconFilter'
+import IconList from 'shared/components/icons/IconList'
+import IconGroup from 'shared/components/icons/IconGroup'
+import IconSearch from 'shared/components/icons/IconSearch'
+import IconUsers from 'shared/components/icons/IconUsers'
+import IconLock from 'shared/components/icons/IconLock'
+import IconShield from 'shared/components/icons/IconShield'
+import IconMail from 'shared/components/icons/IconMail'
+import IconUser from 'shared/components/icons/IconUser'
+import IconAtSign from 'shared/components/icons/IconAtSign'
+import IconPhoneCall from 'shared/components/icons/IconPhoneCall'
+import IconSave from 'shared/components/icons/IconSave'
 import { useRouter } from 'solito/router'
 import { gql, useQuery } from '@apollo/client'
-
-import DashboardLayout from '../../layouts/DashboardLayout'
-
-function TopSection({ lead }) {
-  if (!lead) return null
-
-  return (
-    <>
-      <VStack
-        _light={{
-          borderBottomColor: 'coolGray.200',
-          bg: { base: 'primary.900', md: 'white' }
-        }}
-        _dark={{
-          borderBottomColor: 'coolGray.800',
-          bg: 'coolGray.900'
-        }}
-        borderBottomWidth={{ md: '1' }}
-      >
-        <VStack px={{ md: '8' }} py={{ base: 4, md: 8 }} alignItems="center">
-          <VStack alignItems="center" space="2">
-            <Avatar width="20" height="20" source={lead?.profileImageURL} />
-            <VStack alignItems="center">
-              <Text
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.800' }
-                }}
-                fontSize="2xl"
-                fontWeight="medium"
-              >
-                {`${lead?.firstName} ${lead?.lastName}`}
-              </Text>
-              <Text
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.400' }
-                }}
-                _dark={{
-                  color: 'coolGray.500'
-                }}
-                fontSize="sm"
-              >
-                {lead?.title} at {lead?.companyName}
-              </Text>
-            </VStack>
-          </VStack>
-          <HStack
-            mt="5"
-            space="12"
-            alignItems="center"
-            justifyContent="space-evenly"
-          >
-            {lead.phone ? (
-              <a href={`tel:${lead.phone}`} style={{ textDecoration: 'none' }}>
-                <VStack alignItems="center" justifyContent="center" space="2">
-                  <Icon
-                    size="6"
-                    name="call"
-                    as={Ionicons}
-                    _light={{
-                      color: { base: 'coolGray.50', md: 'coolGray.500' }
-                    }}
-                  />
-                  <Text
-                    _light={{
-                      color: { base: 'coolGray.50', md: 'coolGray.500' }
-                    }}
-                    fontSize="md"
-                  >
-                    Call
-                  </Text>
-                </VStack>
-              </a>
-            ) : null}
-            {/* <VStack alignItems="center" justifyContent="center" space="2">
-              <Icon
-                as={Foundation}
-                name="video"
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.500' },
-                }}
-                size="6"
-              />
-              <Text
-                _light={{
-                  color: { base: 'coolGray.50', md: 'coolGray.500' },
-                }}
-                fontSize="md"
-              >
-                Video
-              </Text>
-            </VStack> */}
-            {lead.email ? (
-              <a
-                href={`mailto:${lead.email}`}
-                style={{ textDecoration: 'none' }}
-              >
-                <VStack alignItems="center" justifyContent="center" space="2">
-                  <Icon
-                    as={MaterialCommunityIcons}
-                    name="email"
-                    _light={{
-                      color: { base: 'coolGray.50', md: 'coolGray.500' }
-                    }}
-                    size="6"
-                  />
-                  <Text
-                    _light={{
-                      color: { base: 'coolGray.50', md: 'coolGray.500' }
-                    }}
-                    fontSize="md"
-                  >
-                    Email
-                  </Text>
-                </VStack>
-              </a>
-            ) : null}
-            {lead.linkedInProfileURL ? (
-              <a
-                target="_blank"
-                href={lead.linkedInProfileURL}
-                style={{ textDecoration: 'none' }}
-              >
-                <VStack alignItems="center" justifyContent="center" space="2">
-                  <Icon
-                    as={MaterialCommunityIcons}
-                    name="linkedin"
-                    _light={{
-                      color: { base: 'coolGray.50', md: 'coolGray.500' }
-                    }}
-                    size="6"
-                  />
-                  <Text
-                    _light={{
-                      color: { base: 'coolGray.50', md: 'coolGray.500' }
-                    }}
-                    fontSize="md"
-                  >
-                    LinkedIn
-                  </Text>
-                </VStack>
-              </a>
-            ) : null}
-          </HStack>
-        </VStack>
-      </VStack>
-    </>
-  )
-}
-
-function BottomSection({ lead }) {
-  if (!lead) return null
-  const contactList = [
-    {
-      iconName: 'mobile1',
-      contactDetail: lead?.phone || 'Unknown',
-      contactType: 'Phone',
-      as: AntDesign
-    },
-    {
-      iconName: 'mail',
-      contactDetail: lead?.email || 'Unknown',
-      contactType: 'Email',
-      as: Entypo
-    },
-    {
-      iconName: 'map-marker',
-      contactDetail: lead?.location || 'Unknown',
-      contactType: 'Location',
-      as: MaterialCommunityIcons
-    },
-    {
-      iconName: 'clock',
-      contactDetail: lead?.durationInCompany || 'Unknown',
-      contactType: 'Duration in company',
-      as: MaterialCommunityIcons
-    },
-    {
-      iconName: 'clock',
-      contactDetail: lead?.durationInRole || 'Unknown',
-      contactType: 'Duration in role',
-      as: MaterialCommunityIcons
-    },
-    {
-      iconName: 'shield',
-      contactDetail: lead?.isPremium ? 'True' : 'false' || 'Unknown',
-      contactType: 'Is Premium',
-      as: MaterialCommunityIcons
-    }
-  ]
-
-  return (
-    <>
-      <VStack
-        flex={1}
-        py={{ base: 6, md: 8 }}
-        flexWrap={{ md: 'wrap' }}
-        space={{ base: 6, md: 1 }}
-        flexDirection={{ md: 'row' }}
-        _light={{ bg: 'white' }}
-        _dark={{ bg: { md: 'coolGray.900', base: 'coolGray.800' } }}
-      >
-        {contactList.map((item, index) => {
-          return (
-            <HStack
-              width={{ md: '100%', lg: '50%' }}
-              key={index}
-              px={{ base: 4, md: 4, lg: '12%' }}
-              py={{ md: 0 }}
-              space={{ base: 2 }}
-            >
-              <Icon
-                size="6"
-                as={item.as}
-                name={item.iconName}
-                _dark={{ color: 'primary.700' }}
-                _light={{ color: 'primary.900' }}
-                mt="1"
-                mr="2"
-              />
-
-              <VStack space="1">
-                <Text
-                  fontSize="md"
-                  fontWeight="medium"
-                  _dark={{ color: 'coolGray.50' }}
-                  _light={{ color: 'coolGray.800' }}
-                >
-                  {item.contactDetail}
-                </Text>
-                <Text
-                  fontSize="md"
-                  fontWeight="medium"
-                  _dark={{ color: 'coolGray.300' }}
-                  _light={{ color: 'coolGray.500' }}
-                >
-                  {item.contactType}
-                </Text>
-              </VStack>
-            </HStack>
-          )
-        })}
-      </VStack>
-    </>
-  )
-}
 
 const GET_LEAD = gql`
   query GetLeadByID($input: getLeadByIDInput) {
@@ -277,7 +96,15 @@ const GET_LEAD = gql`
   }
 `
 
-export default function ({ id }: any) {
+const LoadingSpinner = () => {
+  return (
+    <HStack space={8} flex="1" justifyContent="center" alignItems="center">
+      <Spinner size="lg" color={theme.colors.shared.brightBlue} />
+    </HStack>
+  )
+}
+
+export default function ProfileScreen({ id }: any) {
   const { push } = useRouter()
 
   const { data, error, loading } = useQuery(GET_LEAD, {
@@ -289,8 +116,6 @@ export default function ({ id }: any) {
     }
   })
 
-  console.log('789', { data })
-
   // if (error || data && !data?.getLeadByID?.lead?.id) {
   //   return (
   //     <>
@@ -301,27 +126,624 @@ export default function ({ id }: any) {
   //   )
   // }
 
+  const lead = data?.getLeadByID?.lead
+
   return (
     <>
-      <DashboardLayout title="Lead Profile" displayBackButton>
-        <Heading>{loading ? 'Loading...' : ''}</Heading>
-        <Heading>{error ? 'Error' : ''}</Heading>
-        <VStack
-          _light={{
-            borderColor: 'coolGray.200'
-          }}
-          _dark={{
-            borderColor: 'coolGray.800'
-          }}
-          borderWidth={{ md: '1' }}
-          borderBottomWidth="1"
-          borderRadius={{ md: '8' }}
-          overflow="hidden"
-          flex={1}
-        >
-          <TopSection lead={data?.getLeadByID?.lead} />
-          <BottomSection lead={data?.getLeadByID?.lead} />
-        </VStack>
+      <DashboardLayout>
+        {loading ? <LoadingSpinner /> : null}
+        {error ? <Heading>Error. Please try again.</Heading> : null}
+        {lead && !loading ? (
+          <Box flexDirection={{ base: 'column', lg: 'row' }}>
+            <Box w={{ base: 'full' }}>
+              <Box
+                marginTop={{ base: '3', sm: '5' }}
+                marginLeft={{ base: '3', sm: '5' }}
+                marginRight={{ base: '3', sm: '5', lg: '5' }}
+                marginBottom={{ base: '5', lg: '8' }}
+                paddingX={{ base: '4', sm: '6' }}
+                paddingTop={{ base: '4', sm: '6' }}
+                paddingBottom={{ base: '4', sm: '8' }}
+                borderTopRadius="2xl"
+                borderBottomRadius="2xl"
+                backgroundColor="white"
+                borderWidth="1"
+                borderColor={theme.colors.shared.softGray}
+              >
+                <Box
+                  position="relative"
+                  marginBottom={{ base: '12', sm: '16' }}
+                >
+                  <Box
+                    borderRadius="xl"
+                    height={{ base: '94px', sm: '81px' }}
+                  />
+                  <Pressable
+                    position="absolute"
+                    bottom="2"
+                    right="2"
+                    backgroundColor="#FFFFFF78"
+                    borderRadius="lg"
+                    paddingY="2"
+                    paddingX="4"
+                    flexDirection="row"
+                    alignItems="center"
+                    _hover={{
+                      backgroundColor: 'white'
+                    }}
+                  ></Pressable>
+                  <Box
+                    position="absolute"
+                    bottom={{ base: '-40px', sm: '-60px' }}
+                    left="0"
+                    right="0"
+                    flexDirection="row"
+                    justifyContent="center"
+                  >
+                    <Box
+                      w={{ base: '85px', sm: '130px' }}
+                      h={{ base: '85px', sm: '130px' }}
+                      borderRadius="full"
+                      borderWidth="1"
+                      borderColor={theme.colors.shared.darkerGray}
+                      backgroundColor="white"
+                    >
+                      <Avatar
+                        source={{
+                          uri: lead.profileImageURL
+                        }}
+                        height="100%"
+                        width="100%"
+                      />
+                    </Box>
+                  </Box>
+                </Box>
+                <Text
+                  fontSize={{ base: '24px', sm: '28px' }}
+                  fontWeight="semibold"
+                  textAlign="center"
+                >
+                  {`${lead.firstName} ${lead.lastName}`}
+                </Text>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  {!lead.phone ? (
+                    <SolitoLink href={`tel:${lead.phone}`}>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        margin="4"
+                        width="50px"
+                      >
+                        <Box paddingY="6">
+                          <Box w="28px">
+                            <IconPhoneCall color="black" />
+                          </Box>
+                        </Box>
+                        <Text
+                          color="gray.500"
+                          fontSize={{ base: '13px', sm: '15px' }}
+                          fontWeight="medium"
+                          textAlign="center"
+                        >
+                          Call
+                        </Text>
+                      </Box>
+                    </SolitoLink>
+                  ) : null}
+                  {!lead.email ? (
+                    <SolitoLink href={`mailto:${lead.email}`}>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        margin="4"
+                        width="50px"
+                      >
+                        <Box paddingY="6">
+                          <Box w="28px">
+                            <IconMail color="black" />
+                          </Box>
+                        </Box>
+                        <Text
+                          color="gray.500"
+                          fontSize={{ base: '13px', sm: '15px' }}
+                          fontWeight="medium"
+                          textAlign="center"
+                        >
+                          Email
+                        </Text>
+                      </Box>
+                    </SolitoLink>
+                  ) : null}
+                  {lead.linkedInProfileURL ? (
+                    <Pressable
+                      onPress={() => window.open(lead.linkedInProfileURL)}
+                    >
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        margin="4"
+                        width="50px"
+                      >
+                        <Box paddingY="6">
+                          <Box w="28px">
+                            <Icon
+                              as={Feather}
+                              name="linkedin"
+                              _light={{
+                                color: 'black'
+                              }}
+                              size="7"
+                            />
+                          </Box>
+                        </Box>
+                        <Text
+                          color="gray.500"
+                          fontSize={{ base: '13px', sm: '15px' }}
+                          fontWeight="medium"
+                          textAlign="center"
+                        >
+                          LinkedIn
+                        </Text>
+                      </Box>
+                    </Pressable>
+                  ) : null}
+                </Box>
+              </Box>
+              <Box
+                marginLeft={{ base: '3', sm: '5' }}
+                marginRight={{ base: '3', sm: '5', lg: '0' }}
+                marginBottom={{ base: '0', lg: '5' }}
+                paddingX={{ base: '4', sm: '6' }}
+                paddingTop={{ base: '4', sm: '6' }}
+                paddingBottom="6"
+                borderTopRadius="2xl"
+                borderBottomRadius="2xl"
+                backgroundColor="white"
+                borderWidth="1"
+                borderColor={theme.colors.shared.softGray}
+              >
+                <HStack alignItems="center" marginBottom="6">
+                  <Center
+                    backgroundColor={theme.colors.shared.masterCardYellow_15}
+                    paddingY="2"
+                    paddingX="2"
+                    borderRadius="lg"
+                  >
+                    <Box w="18px">
+                      <IconUsers color={theme.colors.shared.masterCardYellow} />
+                    </Box>
+                  </Center>
+                  <Text
+                    flex="1"
+                    marginLeft="3"
+                    fontWeight="medium"
+                    fontSize={{ base: 'lg', sm: 'xl' }}
+                  >
+                    Information
+                  </Text>
+                </HStack>
+                <VStack space="4">
+                  <Box
+                    flexDirection="row"
+                    alignItems="center"
+                    backgroundColor={theme.colors.shared.softer6Gray}
+                    borderWidth="1"
+                    borderColor={theme.colors.shared.softer7Gray_25}
+                    borderRadius="lg"
+                    paddingLeft="4"
+                    paddingRight="5"
+                  >
+                    <Box paddingY="4">
+                      <Box w="18px" marginRight="3">
+                        <IconUser />
+                      </Box>
+                    </Box>
+                    <HStack flex="1" h="full">
+                      <Hidden till="sm">
+                        <Box
+                          w="1/4"
+                          h="full"
+                          borderRightWidth="1"
+                          borderRightColor={theme.colors.shared.softer7Gray_25}
+                          flexDirection="row"
+                          alignItems="center"
+                        >
+                          <Text fontSize="15px" fontWeight="medium">
+                            First Name
+                          </Text>
+                        </Box>
+                      </Hidden>
+                      <Box
+                        w={{ base: 'full', sm: '3/4' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingLeft={{ base: '0', sm: '4' }}
+                      >
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                        >
+                          {lead.firstName}
+                        </Text>
+                      </Box>
+                    </HStack>
+                  </Box>
+                  <Box
+                    flexDirection="row"
+                    alignItems="center"
+                    backgroundColor={theme.colors.shared.softer6Gray}
+                    borderWidth="1"
+                    borderColor={theme.colors.shared.softer7Gray_25}
+                    borderRadius="lg"
+                    paddingLeft="4"
+                    paddingRight="5"
+                  >
+                    <Box paddingY="4">
+                      <Box w="18px" marginRight="3">
+                        <IconUser />
+                      </Box>
+                    </Box>
+                    <HStack flex="1" h="full">
+                      <Hidden till="sm">
+                        <Box
+                          w="1/4"
+                          h="full"
+                          borderRightWidth="1"
+                          borderRightColor={theme.colors.shared.softer7Gray_25}
+                          flexDirection="row"
+                          alignItems="center"
+                        >
+                          <Text fontSize="15px" fontWeight="medium">
+                            Last Name
+                          </Text>
+                        </Box>
+                      </Hidden>
+                      <Box
+                        w={{ base: 'full', sm: '3/4' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingLeft={{ base: '0', sm: '4' }}
+                      >
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                        >
+                          {lead.lastName}
+                        </Text>
+                      </Box>
+                    </HStack>
+                  </Box>
+                  <Box
+                    flexDirection="row"
+                    alignItems="center"
+                    backgroundColor={theme.colors.shared.softer6Gray}
+                    borderWidth="1"
+                    borderColor={theme.colors.shared.softer7Gray_25}
+                    borderRadius="lg"
+                    paddingLeft="4"
+                    paddingRight="5"
+                  >
+                    <Box paddingY="4">
+                      <Box w="18px" marginRight="3">
+                        <IconAtSign />
+                      </Box>
+                    </Box>
+                    <HStack flex="1" h="full">
+                      <Hidden till="sm">
+                        <Box
+                          w="1/4"
+                          h="full"
+                          borderRightWidth="1"
+                          borderRightColor={theme.colors.shared.softer7Gray_25}
+                          flexDirection="row"
+                          alignItems="center"
+                        >
+                          <Text fontSize="15px" fontWeight="medium">
+                            Company Name
+                          </Text>
+                        </Box>
+                      </Hidden>
+                      <Box
+                        w={{ base: 'full', sm: '3/4' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingLeft={{ base: '0', sm: '4' }}
+                      >
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                        >
+                          {lead.companyName || 'Unkown'}
+                        </Text>
+                      </Box>
+                    </HStack>
+                  </Box>
+                  <Box
+                    flexDirection="row"
+                    alignItems="center"
+                    backgroundColor={theme.colors.shared.softer6Gray}
+                    borderWidth="1"
+                    borderColor={theme.colors.shared.softer7Gray_25}
+                    borderRadius="lg"
+                    paddingLeft="4"
+                    paddingRight="5"
+                  >
+                    <Box paddingY="4">
+                      <Box w="18px" marginRight="3">
+                        <IconAtSign />
+                      </Box>
+                    </Box>
+                    <HStack flex="1" h="full">
+                      <Hidden till="sm">
+                        <Box
+                          w="1/4"
+                          h="full"
+                          borderRightWidth="1"
+                          borderRightColor={theme.colors.shared.softer7Gray_25}
+                          flexDirection="row"
+                          alignItems="center"
+                        >
+                          <Text fontSize="15px" fontWeight="medium">
+                            Job Title
+                          </Text>
+                        </Box>
+                      </Hidden>
+                      <Box
+                        w={{ base: 'full', sm: '3/4' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingLeft={{ base: '0', sm: '4' }}
+                      >
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                        >
+                          {lead.title || 'Unkown'}
+                        </Text>
+                      </Box>
+                    </HStack>
+                  </Box>
+                  <Box
+                    flexDirection="row"
+                    alignItems="center"
+                    backgroundColor={theme.colors.shared.softer6Gray}
+                    borderWidth="1"
+                    borderColor={theme.colors.shared.softer7Gray_25}
+                    borderRadius="lg"
+                    paddingLeft="4"
+                    paddingRight="5"
+                  >
+                    <Box paddingY="4">
+                      <Box w="18px" marginRight="3">
+                        <IconMail />
+                      </Box>
+                    </Box>
+                    <HStack flex="1" h="full">
+                      <Hidden till="sm">
+                        <Box
+                          w="1/4"
+                          h="full"
+                          borderRightWidth="1"
+                          borderRightColor={theme.colors.shared.softer7Gray_25}
+                          flexDirection="row"
+                          alignItems="center"
+                        >
+                          <Text fontSize="15px" fontWeight="medium">
+                            Email Address
+                          </Text>
+                        </Box>
+                      </Hidden>
+                      <Box
+                        w={{ base: 'full', sm: '3/4' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingLeft={{ base: '0', sm: '4' }}
+                      >
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                        >
+                          {lead.email || 'Unkown'}
+                        </Text>
+                      </Box>
+                    </HStack>
+                  </Box>
+                  <Box
+                    flexDirection="row"
+                    alignItems="center"
+                    backgroundColor={theme.colors.shared.softer6Gray}
+                    borderWidth="1"
+                    borderColor={theme.colors.shared.softer7Gray_25}
+                    borderRadius="lg"
+                    paddingLeft="4"
+                    paddingRight="5"
+                  >
+                    <Box paddingY="4">
+                      <Box w="18px" marginRight="3">
+                        <IconPhoneCall />
+                      </Box>
+                    </Box>
+                    <HStack flex="1" h="full">
+                      <Hidden till="sm">
+                        <Box
+                          w="1/4"
+                          h="full"
+                          borderRightWidth="1"
+                          borderRightColor={theme.colors.shared.softer7Gray_25}
+                          flexDirection="row"
+                          alignItems="center"
+                        >
+                          <Text fontSize="15px" fontWeight="medium">
+                            Phone
+                          </Text>
+                        </Box>
+                      </Hidden>
+                      <Box
+                        w={{ base: 'full', sm: '3/4' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingLeft={{ base: '0', sm: '4' }}
+                      >
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                        >
+                          {lead.phone || 'Unknown'}
+                        </Text>
+                      </Box>
+                    </HStack>
+                  </Box>
+                  <Box
+                    flexDirection="row"
+                    alignItems="center"
+                    backgroundColor={theme.colors.shared.softer6Gray}
+                    borderWidth="1"
+                    borderColor={theme.colors.shared.softer7Gray_25}
+                    borderRadius="lg"
+                    paddingLeft="4"
+                    paddingRight="5"
+                  >
+                    <Box paddingY="4">
+                      <Box w="18px" marginRight="3">
+                        <IconClock />
+                      </Box>
+                    </Box>
+                    <HStack flex="1" h="full">
+                      <Hidden till="sm">
+                        <Box
+                          w="1/4"
+                          h="full"
+                          borderRightWidth="1"
+                          borderRightColor={theme.colors.shared.softer7Gray_25}
+                          flexDirection="row"
+                          alignItems="center"
+                        >
+                          <Text fontSize="15px" fontWeight="medium">
+                            Duration in company
+                          </Text>
+                        </Box>
+                      </Hidden>
+                      <Box
+                        w={{ base: 'full', sm: '3/4' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingLeft={{ base: '0', sm: '4' }}
+                      >
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                        >
+                          {lead.durationInCompany || 'Unkown'}
+                        </Text>
+                      </Box>
+                    </HStack>
+                  </Box>
+                  <Box
+                    flexDirection="row"
+                    alignItems="center"
+                    backgroundColor={theme.colors.shared.softer6Gray}
+                    borderWidth="1"
+                    borderColor={theme.colors.shared.softer7Gray_25}
+                    borderRadius="lg"
+                    paddingLeft="4"
+                    paddingRight="5"
+                  >
+                    <Box paddingY="4">
+                      <Box w="18px" marginRight="3">
+                        <IconClock />
+                      </Box>
+                    </Box>
+                    <HStack flex="1" h="full">
+                      <Hidden till="sm">
+                        <Box
+                          w="1/4"
+                          h="full"
+                          borderRightWidth="1"
+                          borderRightColor={theme.colors.shared.softer7Gray_25}
+                          flexDirection="row"
+                          alignItems="center"
+                        >
+                          <Text fontSize="15px" fontWeight="medium">
+                            Duration in role
+                          </Text>
+                        </Box>
+                      </Hidden>
+                      <Box
+                        w={{ base: 'full', sm: '3/4' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingLeft={{ base: '0', sm: '4' }}
+                      >
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                        >
+                          {lead.durationInRole || 'Unkown'}
+                        </Text>
+                      </Box>
+                    </HStack>
+                  </Box>
+                  <Box
+                    flexDirection="row"
+                    alignItems="center"
+                    backgroundColor={theme.colors.shared.softer6Gray}
+                    borderWidth="1"
+                    borderColor={theme.colors.shared.softer7Gray_25}
+                    borderRadius="lg"
+                    paddingLeft="4"
+                    paddingRight="5"
+                  >
+                    <Box paddingY="4">
+                      <Box w="18px" marginRight="3">
+                        <IconShield />
+                      </Box>
+                    </Box>
+                    <HStack flex="1" h="full">
+                      <Hidden till="sm">
+                        <Box
+                          w="1/4"
+                          h="full"
+                          borderRightWidth="1"
+                          borderRightColor={theme.colors.shared.softer7Gray_25}
+                          flexDirection="row"
+                          alignItems="center"
+                        >
+                          <Text fontSize="15px" fontWeight="medium">
+                            Is Premium
+                          </Text>
+                        </Box>
+                      </Hidden>
+                      <Box
+                        w={{ base: 'full', sm: '3/4' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingLeft={{ base: '0', sm: '4' }}
+                      >
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                        >
+                          {lead.isPremium === 1 ? 'Yes' : 'No'}
+                        </Text>
+                      </Box>
+                    </HStack>
+                  </Box>
+                </VStack>
+              </Box>
+            </Box>
+          </Box>
+        ) : null}
       </DashboardLayout>
     </>
   )
