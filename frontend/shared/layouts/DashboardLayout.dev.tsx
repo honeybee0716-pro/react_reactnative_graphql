@@ -154,7 +154,7 @@ const DashboardLayout: React.FC = ({ children }) => {
           marginLeft={{ base: '5', lg: '0' }}
           width={{ lg: '430px' }}
           justifyContent="end"
-          paddingRight={{ base: '4', sm: '12' }}
+          paddingRight={{ base: '0', sm: '5' }}
         >
           <Hidden till="sm">
             <Tooltip
