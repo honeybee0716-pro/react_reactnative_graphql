@@ -6,25 +6,18 @@ interface MyProps {
   color?: string
 }
 
-const IconMail: React.FC<MyProps> = ({ color = '#545658' }) => {
+const IconShield: React.FC<MyProps> = ({ color = '#3A3E43' }) => {
   return (
     <Svg
       width="100%"
       height="100%"
       preserveAspectRatio="none"
-      viewBox="0 0 18 18"
+      viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <Path
-        d="M3 3H15C15.825 3 16.5 3.675 16.5 4.5V13.5C16.5 14.325 15.825 15 15 15H3C2.175 15 1.5 14.325 1.5 13.5V4.5C1.5 3.675 2.175 3 3 3Z"
-        stroke={color}
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <Path
-        d="M16.5 4.5L9 9.75L1.5 4.5"
+        d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z"
         stroke={color}
         stroke-width="1.5"
         stroke-linecap="round"
@@ -34,4 +27,4 @@ const IconMail: React.FC<MyProps> = ({ color = '#545658' }) => {
   )
 }
 
-export default IconMail
+export default IconShield

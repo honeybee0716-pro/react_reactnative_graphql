@@ -126,7 +126,7 @@ export default function Credits() {
                   borderRadius="lg"
                 >
                   <Box w="18px">
-                    <IconMail />
+                    <IconMail color={theme.colors.shared.green} />
                   </Box>
                 </Center>
                 <Text
