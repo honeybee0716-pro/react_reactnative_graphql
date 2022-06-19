@@ -149,7 +149,7 @@ export function Header(props: HeaderProps) {
             </Pressable>
           </HStack>
           <Tooltip
-            label="Your credits will reset at the start of your billing cycle"
+            label="Your credits will reset at the start of your billing cycle."
             openDelay={500}
           >
             <Heading size="sm">

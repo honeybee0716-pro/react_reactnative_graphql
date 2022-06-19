@@ -42,6 +42,7 @@ import IconHelpCircle from 'shared/components/icons/IconHelpCircle'
 import IconChevronDown from 'shared/components/icons/IconChevronDown'
 import IconArrowRight from 'shared/components/icons/IconArrowRight'
 import IconMenu from 'shared/components/icons/IconMenu'
+import IconX from 'shared/components/icons/IconX'
 import { useRouter } from 'solito/router'
 
 const { width, height } = Dimensions.get('window')
@@ -157,7 +158,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         >
           <Hidden till="sm">
             <Tooltip
-              label="Your credits will reset at the start of your billing cycle"
+              label="Your credits will reset at the start of your billing cycle."
               openDelay={100}
             >
               <Center>
@@ -195,7 +196,7 @@ const DashboardLayout: React.FC = ({ children }) => {
               </Box>
             </Pressable>
           </Center> */}
-          <Center marginLeft={{ base: '4', sm: '8' }}>
+          {/* <Center marginLeft={{ base: '4', sm: '8' }}>
             <MenuComponent />
           </Center>
           <Hidden from="sm">
@@ -206,7 +207,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                 </Box>
               </Box>
             </Center>
-          </Hidden>
+          </Hidden> */}
         </HStack>
       </HStack>
       {/* Left Navbar */}
@@ -463,7 +464,53 @@ const DashboardLayout: React.FC = ({ children }) => {
                           fontWeight="semibold"
                           paddingLeft="4"
                         >
-                          {`Help & Support`}
+                          Help
+                        </Text>
+                      </Hidden>
+                    </Pressable>
+                  </Center>
+                  <Center marginY={{ base: '2', lg: '0' }}>
+                    <Pressable
+                      backgroundColor={
+                        route === '/sign-out'
+                          ? theme.colors.shared.brightBlue
+                          : undefined
+                      }
+                      w={{ lg: 'full' }}
+                      flexDirection="row"
+                      alignItems="center"
+                      paddingX={{ base: '3', lg: '6' }}
+                      paddingY="3"
+                      borderRadius="lg"
+                      _hover={{
+                        ...(route !== '/sign-out'
+                          ? {
+                              backgroundColor: theme.colors.shared.softer2Gray
+                            }
+                          : {})
+                      }}
+                      onPress={() => push('/sign-out')}
+                    >
+                      <Box w={{ base: '20px', lg: '24px' }}>
+                        <IconX
+                          color={
+                            route === '/sign-out'
+                              ? 'white'
+                              : theme.colors.shared.soft2Gray
+                          }
+                        />
+                      </Box>
+                      <Hidden till="lg">
+                        <Text
+                          color={
+                            route === '/sign-out'
+                              ? 'white'
+                              : theme.colors.shared.soft2Gray
+                          }
+                          fontWeight="semibold"
+                          paddingLeft="4"
+                        >
+                          Sign out
                         </Text>
                       </Hidden>
                     </Pressable>

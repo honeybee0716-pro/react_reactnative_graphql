@@ -56,8 +56,43 @@ import IconHome from 'shared/components/icons/IconHome'
 import IconGlobe from 'shared/components/icons/IconGlobe'
 import IconPlus from 'shared/components/icons/IconPlus'
 import IconX from 'shared/components/icons/IconX'
+import { gql, useLazyQuery } from '@apollo/client'
+import { useRouter } from 'solito/router'
+
+const CANCEL_SUBSCRIPTION = gql`
+  query CancelSubscription {
+    cancelSubscription {
+      message
+      status
+    }
+  }
+`
 
 export default function Billing() {
+  const { push } = useRouter()
+  const [cancelSubscription, { loading }] = useLazyQuery(CANCEL_SUBSCRIPTION)
+
+  const handleCancelSubscription = () => {
+    const confirm = window.confirm(
+      'Are you sure you want to cancel your subscription?'
+    )
+
+    if (confirm) {
+      cancelSubscription({
+        onCompleted: async ({ cancelSubscription }) => {
+          if (cancelSubscription.status === 'success') {
+            push('/goodbye')
+
+            return
+          }
+        },
+        onError: (error) => {
+          alert(`There was an error: ${error}`)
+        }
+      })
+    }
+  }
+
   return (
     <>
       <DashboardLayout>
@@ -323,20 +358,15 @@ export default function Billing() {
                 </Box>
               </Box>
             </Hidden>
-            {/* Transaction History */}
-            <Pressable
-              onPress={() => {
-                alert('cancel subscription')
-              }}
-            >
+            <Pressable onPress={handleCancelSubscription}>
               <Box
-                marginBottom={{ base: '3', lg: '5' }}
+                marginBottom={{ base: '1', lg: '5' }}
                 marginLeft={{ base: '3', lg: '5' }}
-                marginTop={{ base: '3', lg: '0' }}
+                marginTop={{ base: '1', lg: '0' }}
                 marginRight={{ base: '3', lg: '0' }}
                 paddingX={{ base: '4', sm: '5' }}
-                paddingTop={{ base: '4', sm: '5' }}
-                paddingBottom="4"
+                paddingTop={{ base: '1', sm: '1' }}
+                paddingBottom={{ base: '1', sm: '1' }}
                 borderBottomRadius="2xl"
                 borderTopRadius={{ base: '2xl', lg: 'none' }}
                 backgroundColor="white"
