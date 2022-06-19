@@ -42,6 +42,7 @@ import IconHelpCircle from 'shared/components/icons/IconHelpCircle'
 import IconChevronDown from 'shared/components/icons/IconChevronDown'
 import IconArrowRight from 'shared/components/icons/IconArrowRight'
 import IconMenu from 'shared/components/icons/IconMenu'
+import { useRouter } from 'solito/router'
 
 const { width, height } = Dimensions.get('window')
 
@@ -86,6 +87,14 @@ function MenuComponent() {
 }
 
 const DashboardLayout: React.FC = ({ children }) => {
+  const { push } = useRouter()
+  const [route, setRoute] = React.useState<string | undefined>()
+
+  React.useEffect(() => {
+    // alert(document.location.pathname)
+    setRoute(document.location.pathname)
+  }, [])
+
   return (
     <>
       <StatusBar
@@ -254,18 +263,40 @@ const DashboardLayout: React.FC = ({ children }) => {
                     <Pressable
                       w={{ lg: 'full' }}
                       flexDirection="row"
-                      backgroundColor={theme.colors.shared.brightBlue}
+                      backgroundColor={
+                        route === '/home'
+                          ? theme.colors.shared.brightBlue
+                          : undefined
+                      }
                       alignItems="center"
                       paddingX={{ base: '3', lg: '6' }}
                       paddingY="3"
                       borderRadius="lg"
+                      onPress={() => push('/home')}
+                      _hover={{
+                        ...(route !== '/home'
+                          ? {
+                              backgroundColor: theme.colors.shared.softer2Gray
+                            }
+                          : {})
+                      }}
                     >
                       <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconHome color="white" />
+                        <IconHome
+                          color={
+                            route === '/home'
+                              ? 'white'
+                              : theme.colors.shared.soft2Gray
+                          }
+                        />
                       </Box>
                       <Hidden till="lg">
                         <Text
-                          color="white"
+                          color={
+                            route === '/home'
+                              ? 'white'
+                              : theme.colors.shared.soft2Gray
+                          }
                           fontWeight="semibold"
                           paddingLeft="4"
                         >
@@ -321,6 +352,11 @@ const DashboardLayout: React.FC = ({ children }) => {
                   </Hidden>
                   <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
+                      backgroundColor={
+                        route === '/billing'
+                          ? theme.colors.shared.brightBlue
+                          : undefined
+                      }
                       w={{ lg: 'full' }}
                       flexDirection="row"
                       alignItems="center"
@@ -328,15 +364,30 @@ const DashboardLayout: React.FC = ({ children }) => {
                       paddingY="3"
                       borderRadius="lg"
                       _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
+                        ...(route !== '/billing'
+                          ? {
+                              backgroundColor: theme.colors.shared.softer2Gray
+                            }
+                          : {})
                       }}
+                      onPress={() => push('/billing')}
                     >
                       <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconCreditCard />
+                        <IconCreditCard
+                          color={
+                            route === '/billing'
+                              ? 'white'
+                              : theme.colors.shared.soft2Gray
+                          }
+                        />
                       </Box>
                       <Hidden till="lg">
                         <Text
-                          color={theme.colors.shared.soft2Gray}
+                          color={
+                            route === '/billing'
+                              ? 'white'
+                              : theme.colors.shared.soft2Gray
+                          }
                           fontWeight="semibold"
                           paddingLeft="4"
                         >
@@ -345,7 +396,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                       </Hidden>
                     </Pressable>
                   </Center>
-                  <Center marginY={{ base: '2', lg: '0' }}>
+                  {/* <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
                       w={{ lg: 'full' }}
                       flexDirection="row"
@@ -370,9 +421,14 @@ const DashboardLayout: React.FC = ({ children }) => {
                         </Text>
                       </Hidden>
                     </Pressable>
-                  </Center>
+                  </Center> */}
                   <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
+                      backgroundColor={
+                        route === '/help'
+                          ? theme.colors.shared.brightBlue
+                          : undefined
+                      }
                       w={{ lg: 'full' }}
                       flexDirection="row"
                       alignItems="center"
@@ -380,15 +436,30 @@ const DashboardLayout: React.FC = ({ children }) => {
                       paddingY="3"
                       borderRadius="lg"
                       _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
+                        ...(route !== '/help'
+                          ? {
+                              backgroundColor: theme.colors.shared.softer2Gray
+                            }
+                          : {})
                       }}
+                      onPress={() => push('/help')}
                     >
                       <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconHelpCircle />
+                        <IconHelpCircle
+                          color={
+                            route === '/help'
+                              ? 'white'
+                              : theme.colors.shared.soft2Gray
+                          }
+                        />
                       </Box>
                       <Hidden till="lg">
                         <Text
-                          color={theme.colors.shared.soft2Gray}
+                          color={
+                            route === '/help'
+                              ? 'white'
+                              : theme.colors.shared.soft2Gray
+                          }
                           fontWeight="semibold"
                           paddingLeft="4"
                         >

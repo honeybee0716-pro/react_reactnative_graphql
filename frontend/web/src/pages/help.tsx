@@ -1,5 +1,5 @@
-import Help from 'shared/screens/Help'
+import HelpAndSupport from 'shared/screens/HelpAndSupport'
 
 export default function Page() {
-  return <Help />
+  return <HelpAndSupport />
 }
