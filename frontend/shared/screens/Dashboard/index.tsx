@@ -8,11 +8,12 @@ import {
   Input,
   Checkbox,
   Pressable,
-  Avatar
+  Avatar,
+  Heading,
+  Spinner
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
-import { Link as SolitoLink } from 'solito/link'
-import { Fragment, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Pagination } from 'swiper'
 import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
 import IconDownload from 'shared/components/icons/IconDownload'
@@ -30,458 +31,435 @@ import IconList from 'shared/components/icons/IconList'
 import IconGroup from 'shared/components/icons/IconGroup'
 import IconSearch from 'shared/components/icons/IconSearch'
 import { useRouter } from 'solito/router'
+import { Link as SolitoLink } from 'solito/link'
+import { gql, useQuery, useLazyQuery } from '@apollo/client'
+
+const GET_USER_SUBSCRIPTION_DATA = gql`
+  query GetUserSubscriptionData {
+    getUserSubscriptionData {
+      stripeCustomer
+      status
+      message
+    }
+  }
+`
+
+const SEARCH_FOR_LEADS = gql`
+  query SearchForLeads($input: searchForLeadsInput) {
+    searchForLeads(input: $input) {
+      message
+      status
+      leads
+    }
+  }
+`
+
+const LoadingSpinner = () => {
+  return (
+    <HStack space={8} flex="1" justifyContent="center" alignItems="center">
+      <Spinner size="lg" color={theme.colors.shared.brightBlue} />
+    </HStack>
+  )
+}
 
 export default function ManageLists() {
+  const firstName = React.useRef<any>()
+  const lastName = React.useRef<any>()
+  const companyName = React.useRef<any>()
+  const jobTitle = React.useRef<any>()
   const { push } = useRouter()
+  const {
+    data: getUserSubscriptionDataResult,
+    error: getUserSubscriptionDataError,
+    loading: getUserSubscriptionDataLoading
+  } = useQuery(GET_USER_SUBSCRIPTION_DATA, {
+    fetchPolicy: 'cache-first'
+  })
+  const [searchForLeads, { data, loading, error }] =
+    useLazyQuery(SEARCH_FOR_LEADS)
+
+  const handleSearch = async () => {
+    await searchForLeads({
+      fetchPolicy: 'cache-first',
+      variables: {
+        input: {
+          firstName: firstName?.current?.value,
+          lastName: lastName?.current?.value,
+          companyName: companyName?.current?.value,
+          jobTitle: jobTitle?.current?.value
+        }
+      }
+    })
+  }
+
+  const resetFilters = () => {
+    firstName.current.value = ''
+    lastName.current.value = ''
+    companyName.current.value = ''
+    jobTitle.current.value = ''
+    handleSearch()
+  }
+
+  React.useEffect(() => {
+    if (getUserSubscriptionDataResult) {
+      if (
+        !getUserSubscriptionDataResult?.getUserSubscriptionData?.stripeCustomer
+          ?.activePlanLevel
+      ) {
+        push('/pricing')
+      }
+    }
+  }, [getUserSubscriptionDataResult])
+
+  React.useEffect(() => {
+    handleSearch()
+  }, [])
 
   return (
     <>
       <DashboardLayout>
-        <Box flexDirection={{ base: 'column', lg: 'column' }}>
-          <Hidden till="lg">
-            <Box>
-              <Box
-                marginX="5"
-                marginTop="5"
-                marginBottom={{ base: '0', lg: '5' }}
-                paddingX={{ base: '4', sm: '6' }}
-                paddingTop={{ base: '4', sm: '6' }}
-                paddingBottom="4"
-                borderRadius="2xl"
-                backgroundColor="white"
-                borderWidth="1"
-                borderColor={theme.colors.shared.softGray}
-              >
-                <HStack alignItems="center" marginBottom="6">
-                  <Center
-                    backgroundColor={theme.colors.shared.fireOrange_20}
-                    paddingY="2"
-                    paddingX="2"
-                    borderRadius="lg"
+        {loading ? <LoadingSpinner /> : null}
+        {error ? <Heading>Error. Please try again.</Heading> : null}
+        {data?.searchForLeads?.leads && !getUserSubscriptionDataLoading ? (
+          <Box flexDirection={{ base: 'column', lg: 'column' }}>
+            <Hidden till="lg">
+              <Box>
+                <Box
+                  marginX="5"
+                  marginTop="5"
+                  marginBottom={{ base: '0', lg: '5' }}
+                  paddingX={{ base: '4', sm: '6' }}
+                  paddingTop={{ base: '4', sm: '6' }}
+                  paddingBottom="4"
+                  borderRadius="2xl"
+                  backgroundColor="white"
+                  borderWidth="1"
+                  borderColor={theme.colors.shared.softGray}
+                >
+                  <HStack alignItems="center" marginBottom="6">
+                    <Center
+                      backgroundColor={theme.colors.shared.fireOrange_20}
+                      paddingY="2"
+                      paddingX="2"
+                      borderRadius="lg"
+                    >
+                      <Box w="18px">
+                        <IconSliders color={theme.colors.shared.fireOrange} />
+                      </Box>
+                    </Center>
+                    <HStack justifyContent="center" alignItems="center">
+                      <Text
+                        marginLeft="3"
+                        fontWeight="medium"
+                        fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
+                      >
+                        Filters
+                      </Text>
+                      <Text
+                        flex="1"
+                        fontWeight="light"
+                        fontSize="sm"
+                        width="300px"
+                        marginLeft="3"
+                      >
+                        (Showing {data?.searchForLeads?.leads?.length} of{' '}
+                        {data?.searchForLeads?.leads.length})
+                      </Text>
+                    </HStack>
+                  </HStack>
+                  <Text fontSize="sm" fontWeight="500" marginBottom="4">
+                    Sort By:
+                  </Text>
+                  <HStack marginBottom="6">
+                    <Pressable
+                      flex="1"
+                      borderWidth="1"
+                      borderColor={theme.colors.shared.softGray}
+                      borderLeftRadius="lg"
+                      borderRightRadius="lg"
+                      marginRight="2"
+                      paddingY="0.35rem"
+                      backgroundColor={theme.colors.shared.brightBlue}
+                      _hover={{
+                        backgroundColor: theme.colors.shared.blueGentianFlower
+                      }}
+                      onPress={() => alert('This feature is not active yet.')}
+                    >
+                      <Text
+                        fontSize="13px"
+                        fontWeight="medium"
+                        textAlign="center"
+                        color="white"
+                      >
+                        Date
+                      </Text>
+                    </Pressable>
+                    {/* <Box
+                      flex="1"
+                      borderTopWidth="1"
+                      borderBottomWidth="1"
+                      borderRightWidth="1"
+                      borderColor={theme.colors.shared.softGray}
+                      paddingY="0.35rem"
+                    >
+                      <Text
+                        fontSize="13px"
+                        fontWeight="medium"
+                        textAlign="center"
+                      >
+                        Name
+                      </Text>
+                    </Box> */}
+                    <Pressable
+                      flex="1"
+                      borderWidth="1"
+                      borderColor={theme.colors.shared.softGray}
+                      borderRightRadius="lg"
+                      borderLeftRadius="lg"
+                      marginLeft="2"
+                      paddingY="0.35rem"
+                      backgroundColor={theme.colors.shared.aliceBlue}
+                      _hover={{
+                        backgroundColor: theme.colors.shared.softerGray
+                      }}
+                      onPress={() => alert('This feature is not active yet.')}
+                    >
+                      <Text
+                        fontSize="13px"
+                        fontWeight="medium"
+                        textAlign="center"
+                      >
+                        Name
+                      </Text>
+                    </Pressable>
+                  </HStack>
+                  {/* <Text fontSize="sm" fontWeight="500" marginBottom="3">
+                    Size :
+                  </Text>
+                  <HStack justifyContent="space-between">
+                    <Text fontSize="xs" fontWeight="medium">
+                      10 MB
+                    </Text>
+                    <Text fontSize="xs" fontWeight="medium">
+                      2TB
+                    </Text>
+                  </HStack> */}
+                  {/* <Slider
+                    w="full"
+                    marginBottom="5"
+                    defaultValue={70}
+                    minValue={0}
+                    maxValue={100}
+                    accessibilityLabel="hello world"
+                    step={1}
                   >
-                    <Box w="18px">
-                      <IconSliders color={theme.colors.shared.fireOrange} />
+                    <Slider.Track>
+                      <Slider.FilledTrack
+                        backgroundColor={theme.colors.shared.brightBlue}
+                      />
+                    </Slider.Track>
+                    <Slider.Thumb
+                      backgroundColor={theme.colors.shared.brightBlue}
+                    />
+                  </Slider> */}
+                  <Text fontSize="sm" fontWeight="500" marginBottom="3">
+                    Search for:
+                  </Text>
+                  <Box flexDirection="row" justifyContent="space-between">
+                    <Box
+                      flex="1"
+                      position="relative"
+                      marginBottom="3"
+                      marginRight="2"
+                    >
+                      <Input
+                        paddingLeft="3"
+                        paddingRight="10"
+                        paddingTop="0.6rem"
+                        paddingBottom="0.6rem"
+                        w="full"
+                        borderRadius="lg"
+                        borderWidth="1"
+                        borderColor={theme.colors.shared.black_20}
+                        backgroundColor={theme.colors.shared.soft6Gray}
+                        fontSize="13px"
+                        placeholder="First Name"
+                        ref={firstName}
+                      />
                     </Box>
-                  </Center>
-                  <HStack justifyContent="center" alignItems="center">
+                    <Box
+                      flex="1"
+                      position="relative"
+                      marginBottom="3"
+                      marginLeft="2"
+                    >
+                      <Input
+                        paddingLeft="3"
+                        paddingRight="10"
+                        paddingTop="0.6rem"
+                        paddingBottom="0.6rem"
+                        w="full"
+                        borderRadius="lg"
+                        borderWidth="1"
+                        borderColor={theme.colors.shared.black_20}
+                        backgroundColor={theme.colors.shared.soft6Gray}
+                        fontSize="13px"
+                        placeholder="Last Name"
+                        ref={lastName}
+                      />
+                    </Box>
+                  </Box>
+                  <Box flexDirection="row" justifyContent="space-between">
+                    <Box
+                      flex="1"
+                      position="relative"
+                      marginBottom="3"
+                      marginRight="2"
+                    >
+                      <Input
+                        paddingLeft="3"
+                        paddingRight="10"
+                        paddingTop="0.6rem"
+                        paddingBottom="0.6rem"
+                        w="full"
+                        borderRadius="lg"
+                        borderWidth="1"
+                        borderColor={theme.colors.shared.black_20}
+                        backgroundColor={theme.colors.shared.soft6Gray}
+                        fontSize="13px"
+                        placeholder="Company Name"
+                        ref={companyName}
+                      />
+                    </Box>
+                    <Box
+                      flex="1"
+                      position="relative"
+                      marginBottom="3"
+                      marginLeft="2"
+                    >
+                      <Input
+                        paddingLeft="3"
+                        paddingRight="10"
+                        paddingTop="0.6rem"
+                        paddingBottom="0.6rem"
+                        w="full"
+                        borderRadius="lg"
+                        borderWidth="1"
+                        borderColor={theme.colors.shared.black_20}
+                        backgroundColor={theme.colors.shared.soft6Gray}
+                        fontSize="13px"
+                        placeholder="Job Title"
+                        ref={jobTitle}
+                      />
+                    </Box>
+                  </Box>
+                  {/* <HStack flexWrap="wrap" marginBottom="5">
+                    {[...Array(8)].map((_, i) => (
+                      <Fragment key={i}>
+                        <HStack
+                          marginRight="3"
+                          marginBottom="3"
+                          paddingY="2"
+                          paddingLeft="3"
+                          paddingRight="2"
+                          alignItems="center"
+                          borderRadius="full"
+                          borderWidth="1"
+                          borderColor={theme.colors.shared.softGray}
+                          backgroundColor={theme.colors.shared.aliceBlue}
+                        >
+                          <Text
+                            fontSize="13px"
+                            fontWeight="medium"
+                            marginRight="2"
+                          >
+                            SEO {i}
+                          </Text>
+                          <Pressable>
+                            <Box w="18px">
+                              <IconX color="#545658" />
+                            </Box>
+                          </Pressable>
+                        </HStack>
+                      </Fragment>
+                    ))}
+                  </HStack> */}
+                  <Box flexDirection="row" justifyContent="space-between">
+                    <Pressable
+                      borderRadius="lg"
+                      flex="1"
+                      marginRight="2"
+                      paddingY="2"
+                      backgroundColor={theme.colors.shared.brightBlue}
+                      _hover={{
+                        backgroundColor: theme.colors.shared.blueGentianFlower
+                      }}
+                      onPress={handleSearch}
+                    >
+                      <Text
+                        color="white"
+                        fontSize="sm"
+                        fontWeight="medium"
+                        textAlign="center"
+                      >
+                        Apply Filters
+                      </Text>
+                    </Pressable>
+                    <Pressable
+                      backgroundColor={theme.colors.shared.aliceBlue}
+                      borderWidth="1"
+                      borderColor={theme.colors.shared.softGray}
+                      borderRadius="lg"
+                      flex="1"
+                      marginLeft="2"
+                      paddingY="2"
+                      _hover={{
+                        backgroundColor: theme.colors.shared.softerGray
+                      }}
+                      onPress={resetFilters}
+                    >
+                      <Text
+                        color={theme.colors.shared.soft2Gray}
+                        fontSize="sm"
+                        fontWeight="medium"
+                        textAlign="center"
+                      >
+                        Reset All
+                      </Text>
+                    </Pressable>
+                  </Box>
+                </Box>
+                {/* <Box
+                  marginX="5"
+                  marginBottom="5"
+                  marginTop="0"
+                  paddingX={{ base: '4', sm: '6' }}
+                  paddingTop={{ base: '4', sm: '6' }}
+                  paddingBottom="4"
+                  borderRadius="2xl"
+                  backgroundColor="white"
+                  borderWidth="1"
+                  borderColor={theme.colors.shared.softGray}
+                >
+                  <HStack alignItems="center" marginBottom="6">
+                    <Center
+                      backgroundColor={theme.colors.shared.green3_15}
+                      paddingY="2"
+                      paddingX="2"
+                      borderRadius="lg"
+                    >
+                      <Box w="18px">
+                        <IconClock color={theme.colors.shared.green2} />
+                      </Box>
+                    </Center>
                     <Text
+                      flex="1"
                       marginLeft="3"
                       fontWeight="medium"
                       fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
                     >
-                      Filters
+                      Recently Added
                     </Text>
-                    <Text
-                      flex="1"
-                      fontWeight="light"
-                      fontSize="sm"
-                      width="300px"
-                      marginLeft="3"
-                    >
-                      (Showing 37 of 37)
-                    </Text>
-                  </HStack>
-                </HStack>
-                <Text fontSize="sm" fontWeight="500" marginBottom="4">
-                  Sort By:
-                </Text>
-                <HStack marginBottom="6">
-                  <Pressable
-                    flex="1"
-                    borderWidth="1"
-                    borderColor={theme.colors.shared.softGray}
-                    borderLeftRadius="lg"
-                    borderRightRadius="lg"
-                    marginRight="2"
-                    paddingY="0.35rem"
-                    backgroundColor={theme.colors.shared.brightBlue}
-                    _hover={{
-                      backgroundColor: theme.colors.shared.blueGentianFlower
-                    }}
-                    onPress={() => alert('This feature is not active yet.')}
-                  >
-                    <Text
-                      fontSize="13px"
-                      fontWeight="medium"
-                      textAlign="center"
-                      color="white"
-                    >
-                      Date
-                    </Text>
-                  </Pressable>
-                  {/* <Box
-                    flex="1"
-                    borderTopWidth="1"
-                    borderBottomWidth="1"
-                    borderRightWidth="1"
-                    borderColor={theme.colors.shared.softGray}
-                    paddingY="0.35rem"
-                  >
-                    <Text
-                      fontSize="13px"
-                      fontWeight="medium"
-                      textAlign="center"
-                    >
-                      Name
-                    </Text>
-                  </Box> */}
-                  <Pressable
-                    flex="1"
-                    borderWidth="1"
-                    borderColor={theme.colors.shared.softGray}
-                    borderRightRadius="lg"
-                    borderLeftRadius="lg"
-                    marginLeft="2"
-                    paddingY="0.35rem"
-                    backgroundColor={theme.colors.shared.aliceBlue}
-                    _hover={{
-                      backgroundColor: theme.colors.shared.softerGray
-                    }}
-                    onPress={() => alert('This feature is not active yet.')}
-                  >
-                    <Text
-                      fontSize="13px"
-                      fontWeight="medium"
-                      textAlign="center"
-                    >
-                      Name
-                    </Text>
-                  </Pressable>
-                </HStack>
-                {/* <Text fontSize="sm" fontWeight="500" marginBottom="3">
-                  Size :
-                </Text>
-                <HStack justifyContent="space-between">
-                  <Text fontSize="xs" fontWeight="medium">
-                    10 MB
-                  </Text>
-                  <Text fontSize="xs" fontWeight="medium">
-                    2TB
-                  </Text>
-                </HStack> */}
-                {/* <Slider
-                  w="full"
-                  marginBottom="5"
-                  defaultValue={70}
-                  minValue={0}
-                  maxValue={100}
-                  accessibilityLabel="hello world"
-                  step={1}
-                >
-                  <Slider.Track>
-                    <Slider.FilledTrack
-                      backgroundColor={theme.colors.shared.brightBlue}
-                    />
-                  </Slider.Track>
-                  <Slider.Thumb
-                    backgroundColor={theme.colors.shared.brightBlue}
-                  />
-                </Slider> */}
-                <Text fontSize="sm" fontWeight="500" marginBottom="3">
-                  Search for:
-                </Text>
-                <Box flexDirection="row" justifyContent="space-between">
-                  <Box
-                    flex="1"
-                    position="relative"
-                    marginBottom="3"
-                    marginRight="2"
-                  >
-                    <Input
-                      paddingLeft="3"
-                      paddingRight="10"
-                      paddingTop="0.6rem"
-                      paddingBottom="0.6rem"
-                      w="full"
-                      borderRadius="lg"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.black_20}
-                      backgroundColor={theme.colors.shared.soft6Gray}
-                      fontSize="13px"
-                      placeholder="First Name"
-                    />
-                  </Box>
-                  <Box
-                    flex="1"
-                    position="relative"
-                    marginBottom="3"
-                    marginLeft="2"
-                  >
-                    <Input
-                      paddingLeft="3"
-                      paddingRight="10"
-                      paddingTop="0.6rem"
-                      paddingBottom="0.6rem"
-                      w="full"
-                      borderRadius="lg"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.black_20}
-                      backgroundColor={theme.colors.shared.soft6Gray}
-                      fontSize="13px"
-                      placeholder="Last Name"
-                    />
-                  </Box>
-                </Box>
-                <Box flexDirection="row" justifyContent="space-between">
-                  <Box
-                    flex="1"
-                    position="relative"
-                    marginBottom="3"
-                    marginRight="2"
-                  >
-                    <Input
-                      paddingLeft="3"
-                      paddingRight="10"
-                      paddingTop="0.6rem"
-                      paddingBottom="0.6rem"
-                      w="full"
-                      borderRadius="lg"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.black_20}
-                      backgroundColor={theme.colors.shared.soft6Gray}
-                      fontSize="13px"
-                      placeholder="Company Name"
-                    />
-                  </Box>
-                  <Box
-                    flex="1"
-                    position="relative"
-                    marginBottom="3"
-                    marginLeft="2"
-                  >
-                    <Input
-                      paddingLeft="3"
-                      paddingRight="10"
-                      paddingTop="0.6rem"
-                      paddingBottom="0.6rem"
-                      w="full"
-                      borderRadius="lg"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.black_20}
-                      backgroundColor={theme.colors.shared.soft6Gray}
-                      fontSize="13px"
-                      placeholder="Job Title"
-                    />
-                  </Box>
-                </Box>
-                {/* <HStack flexWrap="wrap" marginBottom="5">
-                  {[...Array(8)].map((_, i) => (
-                    <Fragment key={i}>
-                      <HStack
-                        marginRight="3"
-                        marginBottom="3"
-                        paddingY="2"
-                        paddingLeft="3"
-                        paddingRight="2"
-                        alignItems="center"
-                        borderRadius="full"
-                        borderWidth="1"
-                        borderColor={theme.colors.shared.softGray}
-                        backgroundColor={theme.colors.shared.aliceBlue}
-                      >
-                        <Text
-                          fontSize="13px"
-                          fontWeight="medium"
-                          marginRight="2"
-                        >
-                          SEO {i}
-                        </Text>
-                        <Pressable>
-                          <Box w="18px">
-                            <IconX color="#545658" />
-                          </Box>
-                        </Pressable>
-                      </HStack>
-                    </Fragment>
-                  ))}
-                </HStack> */}
-                <Box flexDirection="row" justifyContent="space-between">
-                  <Pressable
-                    borderRadius="lg"
-                    flex="1"
-                    marginRight="2"
-                    paddingY="2"
-                    backgroundColor={theme.colors.shared.brightBlue}
-                    _hover={{
-                      backgroundColor: theme.colors.shared.blueGentianFlower
-                    }}
-                  >
-                    <Text
-                      color="white"
-                      fontSize="sm"
-                      fontWeight="medium"
-                      textAlign="center"
-                    >
-                      Apply Filters
-                    </Text>
-                  </Pressable>
-                  <Pressable
-                    backgroundColor={theme.colors.shared.aliceBlue}
-                    borderWidth="1"
-                    borderColor={theme.colors.shared.softGray}
-                    borderRadius="lg"
-                    flex="1"
-                    marginLeft="2"
-                    paddingY="2"
-                    _hover={{
-                      backgroundColor: theme.colors.shared.softerGray
-                    }}
-                  >
-                    <Text
-                      color={theme.colors.shared.soft2Gray}
-                      fontSize="sm"
-                      fontWeight="medium"
-                      textAlign="center"
-                    >
-                      Reset All
-                    </Text>
-                  </Pressable>
-                </Box>
-              </Box>
-              {/* <Box
-                marginX="5"
-                marginBottom="5"
-                marginTop="0"
-                paddingX={{ base: '4', sm: '6' }}
-                paddingTop={{ base: '4', sm: '6' }}
-                paddingBottom="4"
-                borderRadius="2xl"
-                backgroundColor="white"
-                borderWidth="1"
-                borderColor={theme.colors.shared.softGray}
-              >
-                <HStack alignItems="center" marginBottom="6">
-                  <Center
-                    backgroundColor={theme.colors.shared.green3_15}
-                    paddingY="2"
-                    paddingX="2"
-                    borderRadius="lg"
-                  >
-                    <Box w="18px">
-                      <IconClock color={theme.colors.shared.green2} />
-                    </Box>
-                  </Center>
-                  <Text
-                    flex="1"
-                    marginLeft="3"
-                    fontWeight="medium"
-                    fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
-                  >
-                    Recently Added
-                  </Text>
-                  <Pressable
-                    borderWidth="1"
-                    borderColor={theme.colors.shared.soft4Gray}
-                    borderRadius="md"
-                    p={{ base: '6px', sm: '0.4rem' }}
-                  >
-                    <Box w="16px">
-                      <IconMoreVertical />
-                    </Box>
-                  </Pressable>
-                </HStack>
-                <HStack
-                  marginBottom="3"
-                  paddingY="2"
-                  paddingLeft="3"
-                  paddingRight="2"
-                  alignItems="center"
-                  borderRadius="lg"
-                  borderWidth="1"
-                  borderColor={theme.colors.shared.softGray}
-                  backgroundColor={theme.colors.shared.aliceBlue}
-                >
-                  <Text
-                    flex="1"
-                    fontSize="13px"
-                    fontWeight="medium"
-                    marginRight="2"
-                  >
-                    SEO Agencies
-                  </Text>
-                  <Box
-                    backgroundColor="white"
-                    borderRadius="lg"
-                    borderWidth="1"
-                    borderColor={theme.colors.shared.softGray}
-                    paddingX="2"
-                    paddingY="1"
-                  >
-                    <Text fontSize="11px" fontWeight="medium">
-                      4.0GB
-                    </Text>
-                  </Box>
-                </HStack>
-                <HStack
-                  marginBottom="3"
-                  paddingY="2"
-                  paddingLeft="3"
-                  paddingRight="2"
-                  alignItems="center"
-                  borderRadius="lg"
-                  borderWidth="1"
-                  borderColor={theme.colors.shared.softGray}
-                  backgroundColor={theme.colors.shared.aliceBlue}
-                >
-                  <Text
-                    flex="1"
-                    fontSize="13px"
-                    fontWeight="medium"
-                    marginRight="2"
-                  >
-                    Advertisement Agencies
-                  </Text>
-                  <Box
-                    backgroundColor="white"
-                    borderRadius="lg"
-                    borderWidth="1"
-                    borderColor={theme.colors.shared.softGray}
-                    paddingX="2"
-                    paddingY="1"
-                  >
-                    <Text fontSize="11px" fontWeight="medium">
-                      4.0GB
-                    </Text>
-                  </Box>
-                </HStack>
-              </Box> */}
-            </Box>
-          </Hidden>
-          <Hidden from="lg">
-            <Box width="full">
-              <Box
-                marginX={{ base: '3', sm: '5' }}
-                marginTop={{ base: '3', sm: '5' }}
-                marginBottom="0"
-                paddingX={{ base: '4', sm: '5' }}
-                paddingTop={{ base: '4', sm: '5' }}
-                paddingBottom="4"
-                borderTopRadius="2xl"
-                backgroundColor="white"
-                borderWidth="1"
-                borderBottomWidth={{ base: '0', sm: '1' }}
-                borderColor={theme.colors.shared.softGray}
-              >
-                <HStack alignItems="center" marginBottom="6">
-                  <Center
-                    backgroundColor={theme.colors.shared.fireOrange_20}
-                    paddingY="2"
-                    paddingX="2"
-                    borderRadius="lg"
-                  >
-                    <Box w="18px">
-                      <IconFilter color={theme.colors.shared.fireOrange} />
-                    </Box>
-                  </Center>
-                  <Text
-                    flex="1"
-                    marginLeft="3"
-                    fontWeight="medium"
-                    fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
-                  >
-                    Filter Lists
-                  </Text>
-                  <Hidden from="lg">
                     <Pressable
                       borderWidth="1"
                       borderColor={theme.colors.shared.soft4Gray}
@@ -492,502 +470,622 @@ export default function ManageLists() {
                         <IconMoreVertical />
                       </Box>
                     </Pressable>
-                  </Hidden>
-                </HStack>
-                <HStack>
-                  <HStack
-                    flex="1"
-                    space={{ base: '2', sm: '4' }}
-                    justifyContent={{ base: 'space-between', sm: 'unset' }}
-                    flexWrap="wrap"
-                  >
-                    <Pressable
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingY="2"
-                      paddingX="2"
-                      marginBottom={{ base: '2', sm: '0' }}
-                      backgroundColor={{
-                        base: 'white',
-                        sm: theme.colors.shared.aliceBlue
-                      }}
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.softGray}
-                      borderRadius="lg"
-                    >
-                      <Box w="18px" marginRight={{ base: '1', sm: '2' }}>
-                        <IconSliders />
-                      </Box>
-                      <Text fontSize="13px" fontWeight="medium">
-                        Name
-                      </Text>
-                      <Box w="18px" marginLeft={{ base: '1', sm: '2' }}>
-                        <IconChevronDown rotation={180} />
-                      </Box>
-                    </Pressable>
-                    <Pressable
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingY="2"
-                      paddingX="2"
-                      marginBottom={{ base: '2', sm: '0' }}
-                      backgroundColor={{
-                        base: 'white',
-                        sm: theme.colors.shared.aliceBlue
-                      }}
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.softGray}
-                      borderRadius="lg"
-                    >
-                      <Box w="20px" marginRight={{ base: '1', sm: '2' }}>
-                        <IconCalendar />
-                      </Box>
-                      <Text fontSize="13px" fontWeight="medium">
-                        This Month
-                      </Text>
-                      <Box w="18px" marginLeft={{ base: '1', sm: '2' }}>
-                        <IconChevronDown rotation={180} />
-                      </Box>
-                    </Pressable>
-                    <Pressable
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingY="2"
-                      paddingX="2"
-                      marginBottom={{ base: '2', sm: '0' }}
-                      backgroundColor={{
-                        base: 'white',
-                        sm: theme.colors.shared.aliceBlue
-                      }}
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.softGray}
-                      borderRadius="lg"
-                    >
-                      <Box w="18px" marginRight={{ base: '1', sm: '2' }}>
-                        <IconTag />
-                      </Box>
-                      <Hidden till="sm">
-                        <Text fontSize="13px" fontWeight="medium">
-                          Add Tags
-                        </Text>
-                      </Hidden>
-                      <Hidden from="sm">
-                        <Text fontSize="13px" fontWeight="medium">
-                          Tags
-                        </Text>
-                      </Hidden>
-                    </Pressable>
                   </HStack>
-                  <Hidden till="sm">
-                    <HStack space="2">
+                  <HStack
+                    marginBottom="3"
+                    paddingY="2"
+                    paddingLeft="3"
+                    paddingRight="2"
+                    alignItems="center"
+                    borderRadius="lg"
+                    borderWidth="1"
+                    borderColor={theme.colors.shared.softGray}
+                    backgroundColor={theme.colors.shared.aliceBlue}
+                  >
+                    <Text
+                      flex="1"
+                      fontSize="13px"
+                      fontWeight="medium"
+                      marginRight="2"
+                    >
+                      SEO Agencies
+                    </Text>
+                    <Box
+                      backgroundColor="white"
+                      borderRadius="lg"
+                      borderWidth="1"
+                      borderColor={theme.colors.shared.softGray}
+                      paddingX="2"
+                      paddingY="1"
+                    >
+                      <Text fontSize="11px" fontWeight="medium">
+                        4.0GB
+                      </Text>
+                    </Box>
+                  </HStack>
+                  <HStack
+                    marginBottom="3"
+                    paddingY="2"
+                    paddingLeft="3"
+                    paddingRight="2"
+                    alignItems="center"
+                    borderRadius="lg"
+                    borderWidth="1"
+                    borderColor={theme.colors.shared.softGray}
+                    backgroundColor={theme.colors.shared.aliceBlue}
+                  >
+                    <Text
+                      flex="1"
+                      fontSize="13px"
+                      fontWeight="medium"
+                      marginRight="2"
+                    >
+                      Advertisement Agencies
+                    </Text>
+                    <Box
+                      backgroundColor="white"
+                      borderRadius="lg"
+                      borderWidth="1"
+                      borderColor={theme.colors.shared.softGray}
+                      paddingX="2"
+                      paddingY="1"
+                    >
+                      <Text fontSize="11px" fontWeight="medium">
+                        4.0GB
+                      </Text>
+                    </Box>
+                  </HStack>
+                </Box> */}
+              </Box>
+            </Hidden>
+            <Hidden from="lg">
+              <Box width="full">
+                <Box
+                  marginX={{ base: '3', sm: '5' }}
+                  marginTop={{ base: '3', sm: '5' }}
+                  marginBottom="0"
+                  paddingX={{ base: '4', sm: '5' }}
+                  paddingTop={{ base: '4', sm: '5' }}
+                  paddingBottom="4"
+                  borderTopRadius="2xl"
+                  backgroundColor="white"
+                  borderWidth="1"
+                  borderBottomWidth={{ base: '0', sm: '1' }}
+                  borderColor={theme.colors.shared.softGray}
+                >
+                  <HStack alignItems="center" marginBottom="6">
+                    <Center
+                      backgroundColor={theme.colors.shared.fireOrange_20}
+                      paddingY="2"
+                      paddingX="2"
+                      borderRadius="lg"
+                    >
+                      <Box w="18px">
+                        <IconFilter color={theme.colors.shared.fireOrange} />
+                      </Box>
+                    </Center>
+                    <Text
+                      flex="1"
+                      marginLeft="3"
+                      fontWeight="medium"
+                      fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
+                    >
+                      Filter Lists
+                    </Text>
+                    <Hidden from="lg">
+                      <Pressable
+                        borderWidth="1"
+                        borderColor={theme.colors.shared.soft4Gray}
+                        borderRadius="md"
+                        p={{ base: '6px', sm: '0.4rem' }}
+                      >
+                        <Box w="16px">
+                          <IconMoreVertical />
+                        </Box>
+                      </Pressable>
+                    </Hidden>
+                  </HStack>
+                  <HStack>
+                    <HStack
+                      flex="1"
+                      space={{ base: '2', sm: '4' }}
+                      justifyContent={{ base: 'space-between', sm: 'unset' }}
+                      flexWrap="wrap"
+                    >
                       <Pressable
                         flexDirection="row"
                         alignItems="center"
                         paddingY="2"
-                        paddingX="0.7rem"
-                        backgroundColor={theme.colors.shared.aliceBlue}
+                        paddingX="2"
+                        marginBottom={{ base: '2', sm: '0' }}
+                        backgroundColor={{
+                          base: 'white',
+                          sm: theme.colors.shared.aliceBlue
+                        }}
                         borderWidth="1"
                         borderColor={theme.colors.shared.softGray}
                         borderRadius="lg"
                       >
-                        <Box w="16px">
-                          <IconList />
+                        <Box w="18px" marginRight={{ base: '1', sm: '2' }}>
+                          <IconSliders />
+                        </Box>
+                        <Text fontSize="13px" fontWeight="medium">
+                          Name
+                        </Text>
+                        <Box w="18px" marginLeft={{ base: '1', sm: '2' }}>
+                          <IconChevronDown rotation={180} />
                         </Box>
                       </Pressable>
                       <Pressable
                         flexDirection="row"
                         alignItems="center"
                         paddingY="2"
-                        paddingX="0.7rem"
-                        backgroundColor={theme.colors.shared.aliceBlue}
+                        paddingX="2"
+                        marginBottom={{ base: '2', sm: '0' }}
+                        backgroundColor={{
+                          base: 'white',
+                          sm: theme.colors.shared.aliceBlue
+                        }}
                         borderWidth="1"
                         borderColor={theme.colors.shared.softGray}
                         borderRadius="lg"
                       >
-                        <Box w="16px">
-                          <IconGroup />
+                        <Box w="20px" marginRight={{ base: '1', sm: '2' }}>
+                          <IconCalendar />
                         </Box>
+                        <Text fontSize="13px" fontWeight="medium">
+                          This Month
+                        </Text>
+                        <Box w="18px" marginLeft={{ base: '1', sm: '2' }}>
+                          <IconChevronDown rotation={180} />
+                        </Box>
+                      </Pressable>
+                      <Pressable
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingY="2"
+                        paddingX="2"
+                        marginBottom={{ base: '2', sm: '0' }}
+                        backgroundColor={{
+                          base: 'white',
+                          sm: theme.colors.shared.aliceBlue
+                        }}
+                        borderWidth="1"
+                        borderColor={theme.colors.shared.softGray}
+                        borderRadius="lg"
+                      >
+                        <Box w="18px" marginRight={{ base: '1', sm: '2' }}>
+                          <IconTag />
+                        </Box>
+                        <Hidden till="sm">
+                          <Text fontSize="13px" fontWeight="medium">
+                            Add Tags
+                          </Text>
+                        </Hidden>
+                        <Hidden from="sm">
+                          <Text fontSize="13px" fontWeight="medium">
+                            Tags
+                          </Text>
+                        </Hidden>
                       </Pressable>
                     </HStack>
-                  </Hidden>
-                </HStack>
-                <Hidden from="sm">
-                  <Box position="relative" marginTop="2">
-                    <Input
-                      paddingLeft="10"
-                      paddingRight="10"
-                      paddingTop="0.6rem"
-                      paddingBottom="0.6rem"
-                      w="full"
-                      borderRadius="lg"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.black_20}
-                      backgroundColor={theme.colors.shared.soft6Gray}
-                      fontSize="13px"
-                      placeholder="Search Lists, tags"
-                    />
-                    <Box
-                      position="absolute"
-                      left="3"
-                      h="full"
-                      flexDir="row"
-                      alignItems="center"
-                    >
-                      <Box w="20px">
-                        <IconSearch />
-                      </Box>
-                    </Box>
-                    <Box
-                      position="absolute"
-                      right="0.6rem"
-                      h="full"
-                      flexDir="row"
-                      alignItems="center"
-                    >
-                      <Pressable
-                        backgroundColor="white"
-                        borderWidth="1"
-                        borderColor={theme.colors.shared.black_20}
-                        borderRadius="md"
-                        p="1"
-                      >
-                        <Box w="16px">
-                          <IconPlus />
-                        </Box>
-                      </Pressable>
-                    </Box>
-                  </Box>
-                </Hidden>
-              </Box>
-              {/* <Box
-                marginX={{ base: '3', sm: '5' }}
-                marginBottom="0"
-                paddingX={{ base: '4', sm: '4' }}
-                paddingTop={{ base: '0', sm: '4' }}
-                paddingBottom="1"
-                borderBottomRadius="2xl"
-                backgroundColor="white"
-                borderWidth="1"
-                borderTopWidth="0"
-                borderColor={theme.colors.shared.softGray}
-              >
-                <HStack flexWrap="wrap">
-                  {[...Array(2)].map((_, i) => (
-                    <Fragment key={i}>
-                      <HStack
-                        marginRight="3"
-                        marginBottom="3"
-                        paddingY="2"
-                        paddingLeft="3"
-                        paddingRight="2"
-                        alignItems="center"
-                        borderRadius="full"
-                        borderWidth="1"
-                        borderColor={theme.colors.shared.softGray}
-                        backgroundColor={theme.colors.shared.aliceBlue}
-                      >
-                        <Text
-                          fontSize="13px"
-                          fontWeight="medium"
-                          marginRight="2"
+                    <Hidden till="sm">
+                      <HStack space="2">
+                        <Pressable
+                          flexDirection="row"
+                          alignItems="center"
+                          paddingY="2"
+                          paddingX="0.7rem"
+                          backgroundColor={theme.colors.shared.aliceBlue}
+                          borderWidth="1"
+                          borderColor={theme.colors.shared.softGray}
+                          borderRadius="lg"
                         >
-                          SEO {i}
-                        </Text>
-                        <Pressable>
-                          <Box w="18px">
-                            <IconX color="#545658" />
+                          <Box w="16px">
+                            <IconList />
+                          </Box>
+                        </Pressable>
+                        <Pressable
+                          flexDirection="row"
+                          alignItems="center"
+                          paddingY="2"
+                          paddingX="0.7rem"
+                          backgroundColor={theme.colors.shared.aliceBlue}
+                          borderWidth="1"
+                          borderColor={theme.colors.shared.softGray}
+                          borderRadius="lg"
+                        >
+                          <Box w="16px">
+                            <IconGroup />
                           </Box>
                         </Pressable>
                       </HStack>
-                    </Fragment>
-                  ))}
-                </HStack>
-              </Box> */}
-            </Box>
-          </Hidden>
-          <Box flex="1">
-            <Box
-              marginTop={{ base: '3', sm: '0' }}
-              marginLeft={{ base: '3', sm: '5' }}
-              marginRight={{ base: '3', sm: '5', lg: '5' }}
-              marginBottom="5"
-              paddingX={{ base: '4', sm: '5' }}
-              paddingTop={{ base: '4', sm: '5' }}
-              paddingBottom="4"
-              borderTopRadius="2xl"
-              borderBottomRadius="2xl"
-              backgroundColor="white"
-              borderWidth="1"
-              borderColor={theme.colors.shared.softGray}
-            >
-              <HStack alignItems="center" marginBottom="4">
-                <Center
-                  backgroundColor={theme.colors.shared.fireOrange_20}
-                  paddingY="2"
-                  paddingX="2"
-                  borderRadius="lg"
-                >
-                  <Box w="21px">
-                    <IconFileText color={theme.colors.shared.fireOrange} />
-                  </Box>
-                </Center>
-                <Text
-                  flex="1"
-                  marginLeft="3"
-                  fontWeight="medium"
-                  fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
-                >
-                  Leads
-                </Text>
-                <Hidden till="sm">
-                  <Pressable
-                    backgroundColor={theme.colors.shared.blueGentianFlower}
-                    borderRadius="md"
-                    paddingX="3"
-                    paddingY="2"
-                    _hover={{
-                      backgroundColor: theme.colors.shared.brightBlue
-                    }}
-                    onPress={() => {
-                      alert('The export feature is not available yet.')
-                    }}
-                  >
-                    <HStack alignItems="center" space="3">
-                      <Box w="20px">
-                        <IconUpload color="white" />
-                      </Box>
-                      <Text color="white" fontSize="xs" fontWeight="medium">
-                        Export
-                      </Text>
-                    </HStack>
-                  </Pressable>
-                </Hidden>
-                <Hidden from="sm">
-                  <Pressable
-                    backgroundColor="white"
-                    borderWidth="1"
-                    borderColor={theme.colors.shared.black_20}
-                    borderRadius="md"
-                    p="0.4rem"
-                  >
-                    <Box w="16px">
-                      <IconPlus />
-                    </Box>
-                  </Pressable>
-                </Hidden>
-              </HStack>
-              {/* Manage Lists */}
-              <Hidden till="sm">
-                <Box>
-                  <HStack
-                    paddingX="3"
-                    paddingY="3"
-                    borderBottomWidth="1"
-                    borderBottomColor={theme.colors.shared.softGray}
-                  >
-                    <Box w="6%">{/* Avatar */}</Box>
-                    <Box w="20%">
-                      <Text fontSize="sm" fontWeight="medium">
-                        Name
-                      </Text>
-                    </Box>
-                    <Box w="25.5%">
-                      <Text fontSize="sm" fontWeight="medium">
-                        Job Title
-                      </Text>
-                    </Box>
-                    <Box w="25.5%">
-                      <Text fontSize="sm" fontWeight="medium">
-                        Company Name
-                      </Text>
-                    </Box>
-                    <Box w="18.3%">
-                      <Text fontSize="sm" fontWeight="medium">
-                        Phone Number
-                      </Text>
-                    </Box>
-                    <Box w="16%">
-                      <Text fontSize="sm" fontWeight="medium">
-                        Export
-                      </Text>
-                    </Box>
+                    </Hidden>
                   </HStack>
-                  {[...Array(10)].map((_, i) => (
+                  <Hidden from="sm">
+                    <Box position="relative" marginTop="2">
+                      <Input
+                        paddingLeft="10"
+                        paddingRight="10"
+                        paddingTop="0.6rem"
+                        paddingBottom="0.6rem"
+                        w="full"
+                        borderRadius="lg"
+                        borderWidth="1"
+                        borderColor={theme.colors.shared.black_20}
+                        backgroundColor={theme.colors.shared.soft6Gray}
+                        fontSize="13px"
+                        placeholder="Search Lists, tags"
+                      />
+                      <Box
+                        position="absolute"
+                        left="3"
+                        h="full"
+                        flexDir="row"
+                        alignItems="center"
+                      >
+                        <Box w="20px">
+                          <IconSearch />
+                        </Box>
+                      </Box>
+                      <Box
+                        position="absolute"
+                        right="0.6rem"
+                        h="full"
+                        flexDir="row"
+                        alignItems="center"
+                      >
+                        <Pressable
+                          backgroundColor="white"
+                          borderWidth="1"
+                          borderColor={theme.colors.shared.black_20}
+                          borderRadius="md"
+                          p="1"
+                        >
+                          <Box w="16px">
+                            <IconPlus />
+                          </Box>
+                        </Pressable>
+                      </Box>
+                    </Box>
+                  </Hidden>
+                </Box>
+                {/* <Box
+                  marginX={{ base: '3', sm: '5' }}
+                  marginBottom="0"
+                  paddingX={{ base: '4', sm: '4' }}
+                  paddingTop={{ base: '0', sm: '4' }}
+                  paddingBottom="1"
+                  borderBottomRadius="2xl"
+                  backgroundColor="white"
+                  borderWidth="1"
+                  borderTopWidth="0"
+                  borderColor={theme.colors.shared.softGray}
+                >
+                  <HStack flexWrap="wrap">
+                    {[...Array(2)].map((_, i) => (
+                      <Fragment key={i}>
+                        <HStack
+                          marginRight="3"
+                          marginBottom="3"
+                          paddingY="2"
+                          paddingLeft="3"
+                          paddingRight="2"
+                          alignItems="center"
+                          borderRadius="full"
+                          borderWidth="1"
+                          borderColor={theme.colors.shared.softGray}
+                          backgroundColor={theme.colors.shared.aliceBlue}
+                        >
+                          <Text
+                            fontSize="13px"
+                            fontWeight="medium"
+                            marginRight="2"
+                          >
+                            SEO {i}
+                          </Text>
+                          <Pressable>
+                            <Box w="18px">
+                              <IconX color="#545658" />
+                            </Box>
+                          </Pressable>
+                        </HStack>
+                      </Fragment>
+                    ))}
+                  </HStack>
+                </Box> */}
+              </Box>
+            </Hidden>
+            <Box flex="1">
+              <Box
+                marginTop={{ base: '3', sm: '0' }}
+                marginLeft={{ base: '3', sm: '5' }}
+                marginRight={{ base: '3', sm: '5', lg: '5' }}
+                marginBottom="5"
+                paddingX={{ base: '4', sm: '5' }}
+                paddingTop={{ base: '4', sm: '5' }}
+                paddingBottom="4"
+                borderTopRadius="2xl"
+                borderBottomRadius="2xl"
+                backgroundColor="white"
+                borderWidth="1"
+                borderColor={theme.colors.shared.softGray}
+              >
+                <HStack alignItems="center" marginBottom="4">
+                  <Center
+                    backgroundColor={theme.colors.shared.fireOrange_20}
+                    paddingY="2"
+                    paddingX="2"
+                    borderRadius="lg"
+                  >
+                    <Box w="21px">
+                      <IconFileText color={theme.colors.shared.fireOrange} />
+                    </Box>
+                  </Center>
+                  <Text
+                    flex="1"
+                    marginLeft="3"
+                    fontWeight="medium"
+                    fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
+                  >
+                    Leads
+                  </Text>
+                  <Hidden till="sm">
                     <Pressable
-                      display="flex"
-                      flexDirection="row"
-                      key={i}
-                      marginTop="3"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.softGray}
+                      backgroundColor={theme.colors.shared.blueGentianFlower}
                       borderRadius="md"
                       paddingX="3"
-                      paddingY="3"
-                      alignItems="center"
-                      backgroundColor={theme.colors.shared.aliceBlue}
+                      paddingY="2"
                       _hover={{
-                        backgroundColor: theme.colors.shared.softerGray
+                        backgroundColor: theme.colors.shared.brightBlue
                       }}
-                      onPress={() => push('/lead/123')}
+                      onPress={() => {
+                        alert('The export feature is not available yet.')
+                      }}
                     >
-                      <Box w="6%">
-                        <Avatar
-                          source={require('../../assets/profile-picture.jpeg')}
-                        />
+                      <HStack alignItems="center" space="3">
+                        <Box w="20px">
+                          <IconUpload color="white" />
+                        </Box>
+                        <Text color="white" fontSize="xs" fontWeight="medium">
+                          Export
+                        </Text>
+                      </HStack>
+                    </Pressable>
+                  </Hidden>
+                  <Hidden from="sm">
+                    <Pressable
+                      backgroundColor="white"
+                      borderWidth="1"
+                      borderColor={theme.colors.shared.black_20}
+                      borderRadius="md"
+                      p="0.4rem"
+                    >
+                      <Box w="16px">
+                        <IconPlus />
                       </Box>
-                      <Box w="20%">
+                    </Pressable>
+                  </Hidden>
+                </HStack>
+                {/* Manage Lists */}
+                <Hidden till="sm">
+                  <Box>
+                    <HStack
+                      paddingX="3"
+                      paddingY="3"
+                      borderBottomWidth="1"
+                      borderBottomColor={theme.colors.shared.softGray}
+                    >
+                      <Box w="6%">{/* Avatar */}</Box>
+                      <Box w="17%">
                         <Text fontSize="sm" fontWeight="medium">
-                          Joey Fenny
+                          Name
+                        </Text>
+                      </Box>
+                      <Box w="28.5%">
+                        <Text fontSize="sm" fontWeight="medium">
+                          Job Title
                         </Text>
                       </Box>
                       <Box w="25.5%">
                         <Text fontSize="sm" fontWeight="medium">
-                          Founder
+                          Company Name
                         </Text>
                       </Box>
-                      <Box w="25.5%">
+                      <Box w="18.3%">
                         <Text fontSize="sm" fontWeight="medium">
-                          Outsmarted
-                        </Text>
-                      </Box>
-                      <Box w="20.5%">
-                        <Text fontSize="sm" fontWeight="medium">
-                          +17864960562
+                          Phone Number
                         </Text>
                       </Box>
                       <Box w="16%">
-                        <Checkbox value="" />
+                        <Text fontSize="sm" fontWeight="medium">
+                          Export
+                        </Text>
+                      </Box>
+                    </HStack>
+                    {data?.searchForLeads?.leads?.map((l, i) => (
+                      <Pressable
+                        display="flex"
+                        flexDirection="row"
+                        key={i}
+                        marginTop="3"
+                        borderWidth="1"
+                        borderColor={theme.colors.shared.softGray}
+                        borderRadius="md"
+                        paddingX="3"
+                        paddingY="3"
+                        alignItems="center"
+                        backgroundColor={theme.colors.shared.aliceBlue}
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softerGray
+                        }}
+                        onPress={() => push(`/lead/${l.id}`)}
+                      >
+                        <Box w="6%">
+                          <Avatar
+                            source={{
+                              uri: l.profileImageURL
+                            }}
+                          >
+                            {`${l.firstName?.charAt(0) || ''}${
+                              l.lastName?.charAt(0) || ''
+                            }`}
+                          </Avatar>
+                        </Box>
+                        <Box w="17%">
+                          <Text fontSize="sm" fontWeight="medium" maxW="100%">
+                            {`${l.firstName} ${l.lastName}`}
+                          </Text>
+                        </Box>
+                        <Box w="28.5%">
+                          <Text fontSize="sm" fontWeight="medium">
+                            {l.title}
+                          </Text>
+                        </Box>
+                        <Box w="25.5%">
+                          <Text fontSize="sm" fontWeight="medium">
+                            {l.companyName}
+                          </Text>
+                        </Box>
+                        <Box w="20.5%">
+                          <Text fontSize="sm" fontWeight="medium">
+                            {l.phone || 'Unknown'}
+                          </Text>
+                        </Box>
+                        <Box w="16%">
+                          <Checkbox value="" />
+                        </Box>
+                      </Pressable>
+                    ))}
+                  </Box>
+                </Hidden>
+                <Hidden from="sm">
+                  <VStack space="3">
+                    {[...Array(3)].map((_, i) => (
+                      <Fragment key={i}>
+                        <Box>
+                          <HStack
+                            alignItems="center"
+                            backgroundColor={theme.colors.shared.aliceBlue}
+                            borderWidth="1"
+                            borderColor={theme.colors.shared.softGray}
+                            borderTopRadius="xl"
+                            paddingX="4"
+                            paddingY="3"
+                          >
+                            <Text flex="1" fontSize="15px" fontWeight="medium">
+                              SEO Agencies
+                            </Text>
+                            <Text fontSize="sm" fontWeight="medium">
+                              4.0GB
+                            </Text>
+                          </HStack>
+                          <HStack
+                            alignItems="center"
+                            backgroundColor={theme.colors.shared.aliceBlue}
+                            borderWidth="1"
+                            borderTopWidth="0"
+                            borderColor={theme.colors.shared.softGray}
+                            borderBottomRadius="xl"
+                            paddingX="4"
+                            paddingY="3"
+                          >
+                            <Text flex="1" fontSize="13px" fontWeight="medium">
+                              28 March 2022
+                            </Text>
+                            <HStack space="2">
+                              <Box>
+                                <Pressable
+                                  backgroundColor="white"
+                                  borderWidth="1"
+                                  borderColor={theme.colors.shared.soft4Gray}
+                                  borderRadius="md"
+                                  p={{ base: '6px', sm: '0.3rem' }}
+                                  _hover={{
+                                    backgroundColor:
+                                      theme.colors.shared.softerGray
+                                  }}
+                                >
+                                  <Box w="16px">
+                                    <IconTrashBin
+                                      color={theme.colors.shared.redText}
+                                    />
+                                  </Box>
+                                </Pressable>
+                              </Box>
+                              <Box>
+                                <Pressable
+                                  backgroundColor="white"
+                                  borderWidth="1"
+                                  borderColor={theme.colors.shared.soft4Gray}
+                                  borderRadius="md"
+                                  p={{ base: '6px', sm: '0.3rem' }}
+                                  _hover={{
+                                    backgroundColor:
+                                      theme.colors.shared.softerGray
+                                  }}
+                                >
+                                  <Box w="16px">
+                                    <IconDownload />
+                                  </Box>
+                                </Pressable>
+                              </Box>
+                            </HStack>
+                          </HStack>
+                        </Box>
+                      </Fragment>
+                    ))}
+                  </VStack>
+                </Hidden>
+                <HStack
+                  alignItems="center"
+                  justifyContent="space-between"
+                  marginTop={{ base: '4', sm: '5' }}
+                >
+                  <Box>
+                    <Text
+                      fontWeight="medium"
+                      fontSize={{ base: '13px', sm: 'sm' }}
+                    >
+                      Page 1 of 3
+                    </Text>
+                  </Box>
+                  <HStack>
+                    <Pressable
+                      backgroundColor="white"
+                      borderWidth="1"
+                      borderColor={theme.colors.shared.softer3Gray}
+                      borderLeftRadius="lg"
+                      p="2"
+                      _hover={{
+                        backgroundColor: theme.colors.shared.softerGray
+                      }}
+                    >
+                      <Box w="16px">
+                        <IconChevronDown rotation={270} />
                       </Box>
                     </Pressable>
-                  ))}
-                </Box>
-              </Hidden>
-              <Hidden from="sm">
-                <VStack space="3">
-                  {[...Array(3)].map((_, i) => (
-                    <Fragment key={i}>
-                      <Box>
-                        <HStack
-                          alignItems="center"
-                          backgroundColor={theme.colors.shared.aliceBlue}
-                          borderWidth="1"
-                          borderColor={theme.colors.shared.softGray}
-                          borderTopRadius="xl"
-                          paddingX="4"
-                          paddingY="3"
-                        >
-                          <Text flex="1" fontSize="15px" fontWeight="medium">
-                            SEO Agencies
-                          </Text>
-                          <Text fontSize="sm" fontWeight="medium">
-                            4.0GB
-                          </Text>
-                        </HStack>
-                        <HStack
-                          alignItems="center"
-                          backgroundColor={theme.colors.shared.aliceBlue}
-                          borderWidth="1"
-                          borderTopWidth="0"
-                          borderColor={theme.colors.shared.softGray}
-                          borderBottomRadius="xl"
-                          paddingX="4"
-                          paddingY="3"
-                        >
-                          <Text flex="1" fontSize="13px" fontWeight="medium">
-                            28 March 2022
-                          </Text>
-                          <HStack space="2">
-                            <Box>
-                              <Pressable
-                                backgroundColor="white"
-                                borderWidth="1"
-                                borderColor={theme.colors.shared.soft4Gray}
-                                borderRadius="md"
-                                p={{ base: '6px', sm: '0.3rem' }}
-                                _hover={{
-                                  backgroundColor:
-                                    theme.colors.shared.softerGray
-                                }}
-                              >
-                                <Box w="16px">
-                                  <IconTrashBin
-                                    color={theme.colors.shared.redText}
-                                  />
-                                </Box>
-                              </Pressable>
-                            </Box>
-                            <Box>
-                              <Pressable
-                                backgroundColor="white"
-                                borderWidth="1"
-                                borderColor={theme.colors.shared.soft4Gray}
-                                borderRadius="md"
-                                p={{ base: '6px', sm: '0.3rem' }}
-                                _hover={{
-                                  backgroundColor:
-                                    theme.colors.shared.softerGray
-                                }}
-                              >
-                                <Box w="16px">
-                                  <IconDownload />
-                                </Box>
-                              </Pressable>
-                            </Box>
-                          </HStack>
-                        </HStack>
-                      </Box>
-                    </Fragment>
-                  ))}
-                </VStack>
-              </Hidden>
-              <HStack
-                alignItems="center"
-                justifyContent="space-between"
-                marginTop={{ base: '4', sm: '5' }}
-              >
-                <Box>
-                  <Text
-                    fontWeight="medium"
-                    fontSize={{ base: '13px', sm: 'sm' }}
-                  >
-                    Page 1 of 3
-                  </Text>
-                </Box>
-                <HStack>
-                  <Pressable
-                    backgroundColor="white"
-                    borderWidth="1"
-                    borderColor={theme.colors.shared.softer3Gray}
-                    borderLeftRadius="lg"
-                    p="2"
-                    _hover={{
-                      backgroundColor: theme.colors.shared.softerGray
-                    }}
-                  >
-                    <Box w="16px">
-                      <IconChevronDown rotation={270} />
-                    </Box>
-                  </Pressable>
 
-                  <Pressable
-                    backgroundColor="white"
-                    borderWidth="1"
-                    borderColor={theme.colors.shared.softer3Gray}
-                    borderRightRadius="lg"
-                    p="2"
-                    _hover={{
-                      backgroundColor: theme.colors.shared.softerGray
-                    }}
-                  >
-                    <Box w="16px">
-                      <IconChevronDown rotation={90} />
-                    </Box>
-                  </Pressable>
+                    <Pressable
+                      backgroundColor="white"
+                      borderWidth="1"
+                      borderColor={theme.colors.shared.softer3Gray}
+                      borderRightRadius="lg"
+                      p="2"
+                      _hover={{
+                        backgroundColor: theme.colors.shared.softerGray
+                      }}
+                    >
+                      <Box w="16px">
+                        <IconChevronDown rotation={90} />
+                      </Box>
+                    </Pressable>
+                  </HStack>
                 </HStack>
-              </HStack>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        ) : null}
       </DashboardLayout>
     </>
   )
