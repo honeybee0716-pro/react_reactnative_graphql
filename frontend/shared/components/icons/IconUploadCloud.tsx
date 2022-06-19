@@ -4,17 +4,16 @@ import { theme } from 'shared/styles/theme'
 
 interface MyProps {
   color?: string
-  sizeScale?: number
 }
 
 const IconUploadCloud: React.FC<MyProps> = ({
-  color = theme.colors.shared.soft3Gray,
-  sizeScale = 1
+  color = theme.colors.shared.soft3Gray
 }) => {
   return (
     <Svg
-      width={24 * sizeScale}
-      height={24 * sizeScale}
+      width="100%"
+      height="100%"
+      preserveAspectRatio="none"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

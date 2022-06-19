@@ -498,7 +498,9 @@ const DashboardLayout: React.FC = ({ children }) => {
           }}
           overScrollMode="auto"
         >
-          {children}
+          <Box backgroundColor={theme.colors.shared.aliceBlue} minH="full">
+            {children}
+          </Box>
         </KeyboardAwareScrollView>
       </Box>
     </>
