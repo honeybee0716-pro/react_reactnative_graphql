@@ -1,0 +1,71 @@
+@font-face {
+  font-family: 'AirbnbCereal_W_Blk';
+  src: url('AirbnbCerealWBlk.eot');
+  src: url('AirbnbCerealWBlk.eot?#iefix') format('embedded-opentype'),
+    url('AirbnbCerealWBlk.woff2') format('woff2'),
+    url('AirbnbCerealWBlk.woff') format('woff'),
+    url('AirbnbCerealWBlk.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AirbnbCereal_W_Bk';
+  src: url('AirbnbCerealWBk.eot');
+  src: url('AirbnbCerealWBk.eot?#iefix') format('embedded-opentype'),
+    url('AirbnbCerealWBk.woff2') format('woff2'),
+    url('AirbnbCerealWBk.woff') format('woff'),
+    url('AirbnbCerealWBk.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AirbnbCereal_W_Lt';
+  src: url('AirbnbCerealWLt.eot');
+  src: url('AirbnbCerealWLt.eot?#iefix') format('embedded-opentype'),
+    url('AirbnbCerealWLt.woff2') format('woff2'),
+    url('AirbnbCerealWLt.woff') format('woff'),
+    url('AirbnbCerealWLt.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AirbnbCereal_W_Bd';
+  src: url('AirbnbCerealWBd.eot');
+  src: url('AirbnbCerealWBd.eot?#iefix') format('embedded-opentype'),
+    url('AirbnbCerealWBd.woff2') format('woff2'),
+    url('AirbnbCerealWBd.woff') format('woff'),
+    url('AirbnbCerealWBd.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AirbnbCereal_W_Md';
+  src: url('AirbnbCerealWMd.eot');
+  src: url('AirbnbCerealWMd.eot?#iefix') format('embedded-opentype'),
+    url('AirbnbCerealWMd.woff2') format('woff2'),
+    url('AirbnbCerealWMd.woff') format('woff'),
+    url('AirbnbCerealWMd.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AirbnbCereal_W_XBd';
+  src: url('AirbnbCerealWXBd.eot');
+  src: url('AirbnbCerealWXBd.eot?#iefix') format('embedded-opentype'),
+    url('AirbnbCerealWXBd.woff2') format('woff2'),
+    url('AirbnbCerealWXBd.woff') format('woff'),
+    url('AirbnbCerealWXBd.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
