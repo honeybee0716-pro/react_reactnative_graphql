@@ -44,6 +44,7 @@ import IconArrowRight from 'shared/components/icons/IconArrowRight'
 import IconMenu from 'shared/components/icons/IconMenu'
 import IconX from 'shared/components/icons/IconX'
 import { useRouter } from 'solito/router'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const { width, height } = Dimensions.get('window')
 
@@ -162,21 +163,24 @@ const DashboardLayout: React.FC = ({ children }) => {
               openDelay={100}
             >
               <Center>
-                <HStack
+                <Pressable
                   alignItems="center"
-                  space="1"
+                  display="flex"
+                  flexDirection="row"
                   backgroundColor={theme.colors.shared.blueGentianFlower}
                   paddingY="2"
                   paddingX="6"
                   rounded="full"
+                  justifyContent="center"
+                  onPress={() => push('/billing')}
                 >
-                  <Box w="21px">
+                  <Box w="21px" marginRight="2">
                     <IconCredits />
                   </Box>
                   <Text color="white" fontWeight="semibold">
                     300
                   </Text>
-                </HStack>
+                </Pressable>
               </Center>
             </Tooltip>
           </Hidden>
@@ -228,11 +232,23 @@ const DashboardLayout: React.FC = ({ children }) => {
               borderBottomWidth="1"
               borderBottomColor={theme.colors.shared.softer2Gray}
             >
-              <Center
+              <Pressable
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
                 flexDir="row"
                 w="full"
                 borderRightWidth="1"
                 borderRightColor={theme.colors.shared.softer2Gray}
+                onPress={async () => {
+                  const jwt = await AsyncStorage.getItem('jwt')
+                  if (jwt) {
+                    push('/home')
+                  } else {
+                    push('/sign-in')
+                  }
+                }}
               >
                 <Image
                   w={{ base: '2.5rem', sm: '3.1rem' }}
@@ -249,7 +265,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                     ClientEye
                   </Text>
                 </Hidden>
-              </Center>
+              </Pressable>
             </Center>
             <Box flex="1" paddingY="3">
               <VStack
