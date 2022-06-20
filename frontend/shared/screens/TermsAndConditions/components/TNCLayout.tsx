@@ -65,11 +65,11 @@ export default function TNCLayout({ children }) {
             borderRightColor={theme.colors.shared.softer2Gray}
           >
             <Box flexDir="row" alignItems="center" w="full">
-              <Image
+              {/* <Image
                 w={{ base: '41px', sm: '50px' }}
                 h={{ base: '41px', sm: '50px' }}
                 source={require('shared/assets/images/contact-blaster-blue.png')}
-              />
+              /> */}
               <Hidden till="lg" from="sm">
                 <Text
                   color={theme.colors.shared.softBlack}

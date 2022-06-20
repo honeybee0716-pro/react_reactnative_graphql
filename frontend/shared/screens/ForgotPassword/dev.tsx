@@ -168,11 +168,11 @@ export default function SignUp(props: any) {
                 >
                   <Hidden from="lg">
                     <Center flexDir="row">
-                      <Image
+                      {/* <Image
                         w={{ base: '2.5rem', sm: '3.5rem' }}
                         h={{ base: '2.5rem', sm: '3.5rem' }}
-                        source={require('shared/assets/images/contact-blaster-blue.png')}
-                      />
+                        source=clientEyePrimary{require('shared/assets/images/contact-blaster-blue.png')}
+                      /> */}
                       <Text
                         color={theme.colors.shared.softBlack}
                         fontSize={{ base: 'xl', sm: '2xl' }}
@@ -517,13 +517,13 @@ export default function SignUp(props: any) {
                 w="full"
                 h="full"
               >
-                <Box flexDir="row" justifyContent="center">
+                {/* <Box flexDir="row" justifyContent="center">
                   <Image
                     w="128px"
                     h="128px"
                     source={require('shared/assets/images/contact-blaster-white.png')}
                   />
-                </Box>
+                </Box> */}
                 <Text
                   color="white"
                   textAlign="center"
