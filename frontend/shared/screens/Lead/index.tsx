@@ -210,7 +210,7 @@ export default function ProfileScreen({ id }: any) {
                 justifyContent="center"
                 alignItems="center"
               >
-                {!lead.phone ? (
+                {lead.phone ? (
                   <SolitoLink href={`tel:${lead.phone}`}>
                     <Box
                       display="flex"
@@ -236,7 +236,7 @@ export default function ProfileScreen({ id }: any) {
                     </Box>
                   </SolitoLink>
                 ) : null}
-                {!lead.email ? (
+                {lead.email ? (
                   <SolitoLink href={`mailto:${lead.email}`}>
                     <Box
                       display="flex"
