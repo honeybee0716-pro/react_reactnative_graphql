@@ -41,12 +41,21 @@ export default function SignUp(props: any) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [checkbox, setCheckbox] = useState(false)
   const [showPass, setShowPass] = useState(false)
   const [showConfirmPass, setShowConfirmPass] = useState(false)
 
   const [createUser, { loading }] = useMutation(CREATE_USER)
 
   const handleSignUp = async (e) => {
+    if (!firstName || !lastName || !email || !password) {
+      alert('Please fill all fields.')
+      return
+    }
+    if (!checkbox) {
+      alert('You must agree to the terms and conditions.')
+      return
+    }
     await AsyncStorage.removeItem('jwt')
     createUser({
       variables: {
@@ -411,6 +420,9 @@ export default function SignUp(props: any) {
                             value="demo"
                             colorScheme="primary"
                             accessibilityLabel="Terms and Conditions"
+                            onChange={(value) => {
+                              setCheckbox(value)
+                            }}
                           >
                             <HStack alignItems="center">
                               <Text fontSize="md" fontWeight="medium">

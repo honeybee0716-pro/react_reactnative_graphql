@@ -114,7 +114,7 @@ const DashboardLayout: React.FC = ({ children }) => {
       <HStack
         position="fixed"
         top="0"
-        paddingLeft={{ base: '0', sm: '90px', lg: '310px' }}
+        paddingLeft={{ base: '0', sm: '90px', lg: '20px' }}
         w="full"
         zIndex={10}
         height={{ base: '69px', sm: '84px' }}
@@ -122,41 +122,242 @@ const DashboardLayout: React.FC = ({ children }) => {
         borderBottomWidth="1"
         borderBottomColor={theme.colors.shared.softGray}
       >
-        {/* Logo Contact Blaster */}
-        <Hidden from="sm">
+        <HStack
+          marginLeft={{ base: '5', lg: '0' }}
+          width="100%"
+          justifyContent="space-between"
+          paddingRight={{ base: '0', sm: '5' }}
+        >
           <Center
-            flex="1"
-            paddingLeft="4"
+            h="84px"
             borderBottomWidth="1"
             borderBottomColor={theme.colors.shared.softer2Gray}
           >
-            <Box flexDir="row" alignItems="center" w="full">
+            <Pressable
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+              flexDir="row"
+              w="full"
+              onPress={async () => {
+                const jwt = await AsyncStorage.getItem('jwt')
+                if (jwt) {
+                  push('/home')
+                } else {
+                  push('/sign-in')
+                }
+              }}
+            >
               <Image
-                w="2.5rem"
-                h="2.5rem"
+                w={{ base: '2.5rem', sm: '3.1rem' }}
+                h={{ base: '2.5rem', sm: '3.1rem' }}
                 source={require('shared/assets/images/contact-blaster-blue.png')}
               />
-              <Text
-                color={theme.colors.shared.softBlack}
-                fontSize="lg"
-                fontWeight="semibold"
-                marginLeft={'2'}
-              >
-                ClientEye
-              </Text>
-            </Box>
+              <Hidden till="lg">
+                <Text
+                  color={theme.colors.shared.softBlack}
+                  fontSize={{ base: 'xl', sm: '2xl' }}
+                  fontWeight="semibold"
+                  marginLeft={'4'}
+                >
+                  ClientEye
+                </Text>
+              </Hidden>
+            </Pressable>
           </Center>
-        </Hidden>
-        {/* Search here */}
-        <Hidden till="sm">
-          <Center flex="1" paddingLeft="6"></Center>
-        </Hidden>
-        <HStack
-          marginLeft={{ base: '5', lg: '0' }}
-          width={{ lg: '430px' }}
-          justifyContent="end"
-          paddingRight={{ base: '0', sm: '5' }}
-        >
+
+          <Center>
+            <HStack>
+              <Box flex="1">
+                <Center marginY={{ base: '2', lg: '0' }}>
+                  <Pressable
+                    w={{ lg: 'full' }}
+                    flexDirection="row"
+                    backgroundColor={
+                      route === '/home'
+                        ? theme.colors.shared.brightBlue
+                        : undefined
+                    }
+                    alignItems="center"
+                    paddingX={{ base: '3', lg: '6' }}
+                    paddingY="3"
+                    borderRadius="lg"
+                    onPress={() => push('/home')}
+                    _hover={{
+                      ...(route !== '/home'
+                        ? {
+                            backgroundColor: theme.colors.shared.softer2Gray
+                          }
+                        : {})
+                    }}
+                  >
+                    <Box w={{ base: '20px', lg: '24px' }}>
+                      <IconHome
+                        color={
+                          route === '/home'
+                            ? 'white'
+                            : theme.colors.shared.soft2Gray
+                        }
+                      />
+                    </Box>
+                    <Hidden till="lg">
+                      <Text
+                        color={
+                          route === '/home'
+                            ? 'white'
+                            : theme.colors.shared.soft2Gray
+                        }
+                        fontWeight="semibold"
+                        paddingLeft="4"
+                      >
+                        Visitors
+                      </Text>
+                    </Hidden>
+                  </Pressable>
+                </Center>
+              </Box>
+              <Center marginY={{ base: '2', lg: '0' }}>
+                <Pressable
+                  backgroundColor={
+                    route === '/billing'
+                      ? theme.colors.shared.brightBlue
+                      : undefined
+                  }
+                  w={{ lg: 'full' }}
+                  flexDirection="row"
+                  alignItems="center"
+                  paddingX={{ base: '3', lg: '6' }}
+                  paddingY="3"
+                  borderRadius="lg"
+                  _hover={{
+                    ...(route !== '/billing'
+                      ? {
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }
+                      : {})
+                  }}
+                  onPress={() => push('/billing')}
+                >
+                  <Box w={{ base: '20px', lg: '24px' }}>
+                    <IconCreditCard
+                      color={
+                        route === '/billing'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                    />
+                  </Box>
+                  <Hidden till="lg">
+                    <Text
+                      color={
+                        route === '/billing'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                      fontWeight="semibold"
+                      paddingLeft="4"
+                    >
+                      Billing
+                    </Text>
+                  </Hidden>
+                </Pressable>
+              </Center>
+              <Center marginY={{ base: '2', lg: '0' }}>
+                <Pressable
+                  backgroundColor={
+                    route === '/help'
+                      ? theme.colors.shared.brightBlue
+                      : undefined
+                  }
+                  w={{ lg: 'full' }}
+                  flexDirection="row"
+                  alignItems="center"
+                  paddingX={{ base: '3', lg: '6' }}
+                  paddingY="3"
+                  borderRadius="lg"
+                  _hover={{
+                    ...(route !== '/help'
+                      ? {
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }
+                      : {})
+                  }}
+                  onPress={() => push('/help')}
+                >
+                  <Box w={{ base: '20px', lg: '24px' }}>
+                    <IconHelpCircle
+                      color={
+                        route === '/help'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                    />
+                  </Box>
+                  <Hidden till="lg">
+                    <Text
+                      color={
+                        route === '/help'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                      fontWeight="semibold"
+                      paddingLeft="4"
+                    >
+                      Help
+                    </Text>
+                  </Hidden>
+                </Pressable>
+              </Center>
+              <Center marginY={{ base: '2', lg: '0' }}>
+                <Pressable
+                  backgroundColor={
+                    route === '/sign-out'
+                      ? theme.colors.shared.brightBlue
+                      : undefined
+                  }
+                  w={{ lg: 'full' }}
+                  flexDirection="row"
+                  alignItems="center"
+                  paddingX={{ base: '3', lg: '6' }}
+                  paddingY="3"
+                  borderRadius="lg"
+                  _hover={{
+                    ...(route !== '/sign-out'
+                      ? {
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }
+                      : {})
+                  }}
+                  onPress={() => push('/sign-out')}
+                >
+                  <Box w={{ base: '20px', lg: '24px' }}>
+                    <IconX
+                      color={
+                        route === '/sign-out'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                    />
+                  </Box>
+                  <Hidden till="lg">
+                    <Text
+                      color={
+                        route === '/sign-out'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                      fontWeight="semibold"
+                      paddingLeft="4"
+                    >
+                      Sign out
+                    </Text>
+                  </Hidden>
+                </Pressable>
+              </Center>
+            </HStack>
+          </Center>
+
           <Hidden till="sm">
             <Tooltip
               label="Your credits will reset at the start of your billing cycle."
@@ -215,328 +416,6 @@ const DashboardLayout: React.FC = ({ children }) => {
         </HStack>
       </HStack>
       {/* Left Navbar */}
-      <Hidden till="sm">
-        <Box
-          position="fixed"
-          left="0"
-          top="0"
-          bottom="0"
-          zIndex={10}
-          w={{ base: '90px', lg: '310px' }}
-          h="full"
-          backgroundColor="white"
-        >
-          <VStack h="full">
-            <Center
-              h="84px"
-              borderBottomWidth="1"
-              borderBottomColor={theme.colors.shared.softer2Gray}
-            >
-              <Pressable
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="center"
-                flexDir="row"
-                w="full"
-                borderRightWidth="1"
-                borderRightColor={theme.colors.shared.softer2Gray}
-                onPress={async () => {
-                  const jwt = await AsyncStorage.getItem('jwt')
-                  if (jwt) {
-                    push('/home')
-                  } else {
-                    push('/sign-in')
-                  }
-                }}
-              >
-                <Image
-                  w={{ base: '2.5rem', sm: '3.1rem' }}
-                  h={{ base: '2.5rem', sm: '3.1rem' }}
-                  source={require('shared/assets/images/contact-blaster-blue.png')}
-                />
-                <Hidden till="lg">
-                  <Text
-                    color={theme.colors.shared.softBlack}
-                    fontSize={{ base: 'xl', sm: '2xl' }}
-                    fontWeight="semibold"
-                    marginLeft={'4'}
-                  >
-                    ClientEye
-                  </Text>
-                </Hidden>
-              </Pressable>
-            </Center>
-            <Box flex="1" paddingY="3">
-              <VStack
-                h="full"
-                paddingY={{ base: '0', lg: '4' }}
-                paddingX={{ base: '0', lg: '7' }}
-                borderRightWidth="1"
-                borderRightColor={theme.colors.shared.softer2Gray}
-              >
-                <Box flex="1">
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      backgroundColor={
-                        route === '/home'
-                          ? theme.colors.shared.brightBlue
-                          : undefined
-                      }
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      onPress={() => push('/home')}
-                      _hover={{
-                        ...(route !== '/home'
-                          ? {
-                              backgroundColor: theme.colors.shared.softer2Gray
-                            }
-                          : {})
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconHome
-                          color={
-                            route === '/home'
-                              ? 'white'
-                              : theme.colors.shared.soft2Gray
-                          }
-                        />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={
-                            route === '/home'
-                              ? 'white'
-                              : theme.colors.shared.soft2Gray
-                          }
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Leads
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                </Box>
-                <Box>
-                  <Hidden from="lg">
-                    <>
-                      <Center marginY={{ base: '2', lg: '0' }}>
-                        <Pressable
-                          w={{ lg: 'full' }}
-                          flexDirection="row"
-                          alignItems="center"
-                          paddingX={{ base: '3', lg: '6' }}
-                          paddingY="3"
-                          borderRadius="lg"
-                          _hover={{
-                            backgroundColor: theme.colors.shared.softer2Gray
-                          }}
-                        >
-                          <Box w="20px">
-                            <IconArrowRight />
-                          </Box>
-                        </Pressable>
-                      </Center>
-                      <Center marginY={{ base: '2', lg: '0' }}>
-                        <Pressable
-                          w={{ lg: 'full' }}
-                          flexDirection="row"
-                          alignItems="center"
-                          paddingX={{ base: '3', lg: '6' }}
-                          paddingY="3"
-                          borderRadius="lg"
-                          _hover={{
-                            backgroundColor: theme.colors.shared.softer2Gray
-                          }}
-                        >
-                          <Box w="20px">
-                            <IconSun />
-                          </Box>
-                        </Pressable>
-                      </Center>
-                      <Box
-                        borderBottomWidth="1px"
-                        borderColor="#0000001A"
-                        marginX="3"
-                      ></Box>
-                    </>
-                  </Hidden>
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      backgroundColor={
-                        route === '/billing'
-                          ? theme.colors.shared.brightBlue
-                          : undefined
-                      }
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        ...(route !== '/billing'
-                          ? {
-                              backgroundColor: theme.colors.shared.softer2Gray
-                            }
-                          : {})
-                      }}
-                      onPress={() => push('/billing')}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconCreditCard
-                          color={
-                            route === '/billing'
-                              ? 'white'
-                              : theme.colors.shared.soft2Gray
-                          }
-                        />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={
-                            route === '/billing'
-                              ? 'white'
-                              : theme.colors.shared.soft2Gray
-                          }
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Billing
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                  {/* <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconUser />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={theme.colors.shared.soft2Gray}
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Account
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center> */}
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      backgroundColor={
-                        route === '/help'
-                          ? theme.colors.shared.brightBlue
-                          : undefined
-                      }
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        ...(route !== '/help'
-                          ? {
-                              backgroundColor: theme.colors.shared.softer2Gray
-                            }
-                          : {})
-                      }}
-                      onPress={() => push('/help')}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconHelpCircle
-                          color={
-                            route === '/help'
-                              ? 'white'
-                              : theme.colors.shared.soft2Gray
-                          }
-                        />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={
-                            route === '/help'
-                              ? 'white'
-                              : theme.colors.shared.soft2Gray
-                          }
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Help
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      backgroundColor={
-                        route === '/sign-out'
-                          ? theme.colors.shared.brightBlue
-                          : undefined
-                      }
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        ...(route !== '/sign-out'
-                          ? {
-                              backgroundColor: theme.colors.shared.softer2Gray
-                            }
-                          : {})
-                      }}
-                      onPress={() => push('/sign-out')}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconX
-                          color={
-                            route === '/sign-out'
-                              ? 'white'
-                              : theme.colors.shared.soft2Gray
-                          }
-                        />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={
-                            route === '/sign-out'
-                              ? 'white'
-                              : theme.colors.shared.soft2Gray
-                          }
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Sign out
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                </Box>
-              </VStack>
-            </Box>
-          </VStack>
-        </Box>
-      </Hidden>
       <Box
         position="fixed"
         top="0"
@@ -546,11 +425,6 @@ const DashboardLayout: React.FC = ({ children }) => {
         marginTop={{
           base: '69px',
           sm: '84px'
-        }}
-        marginLeft={{
-          base: '0',
-          sm: '90px',
-          lg: '310px'
         }}
       >
         <KeyboardAwareScrollView

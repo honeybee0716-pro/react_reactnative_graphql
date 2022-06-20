@@ -77,7 +77,7 @@ export default function TNCLayout({ children }) {
                   fontWeight="semibold"
                   marginLeft={'2'}
                 >
-                  Contact Blaster
+                  ClientEye
                 </Text>
               </Hidden>
             </Box>
@@ -93,17 +93,17 @@ export default function TNCLayout({ children }) {
                   </Text>
                 </SolitoLink>
               </Box>
-              <Box>
+              {/* <Box>
                 <SolitoLink href={'#'}>
                   <Text fontSize="md" fontWeight="semibold">
                     Privacy Policy
                   </Text>
                 </SolitoLink>
-              </Box>
+              </Box> */}
             </HStack>
           </Box>
         </Hidden>
-        <HStack
+        {/* <HStack
           marginLeft={{ base: '2', lg: '0' }}
           width={{ lg: '430px' }}
           justifyContent="end"
@@ -165,7 +165,7 @@ export default function TNCLayout({ children }) {
               </Pressable>
             </Hidden>
           </Center>
-        </HStack>
+        </HStack> */}
       </HStack>
 
       <Box
