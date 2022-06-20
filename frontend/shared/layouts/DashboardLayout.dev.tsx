@@ -149,11 +149,11 @@ const DashboardLayout: React.FC = ({ children }) => {
                 }
               }}
             >
-              <Image
+              {/* <Image
                 w={{ base: '2.5rem', sm: '3.1rem' }}
                 h={{ base: '2.5rem', sm: '3.1rem' }}
                 source={require('shared/assets/images/contact-blaster-blue.png')}
-              />
+              /> */}
               <Hidden till="lg">
                 <Text
                   color={theme.colors.shared.softBlack}

@@ -462,7 +462,7 @@ export default function SignUp(props: any) {
               </VStack>
             </VStack>
           </Hidden>
-          <Hidden till="md">
+          {/* <Hidden till="md">
             <Center
               flex="1"
               bg="coolGray.700"
@@ -477,7 +477,7 @@ export default function SignUp(props: any) {
                 source={require('../../assets/clientEyeLogo.jpeg')}
               />
             </Center>
-          </Hidden>
+          </Hidden> */}
           <SignUpForm props={props} />
         </Stack>
       </Center>
