@@ -184,7 +184,13 @@ export default function ProfileScreen({ id }: any) {
                       }}
                       height="100%"
                       width="100%"
-                    />
+                    >
+                      <Text fontSize="30" fontWeight="medium" color="white">
+                        {`${lead.firstName?.charAt(0) || ''}${
+                          lead.lastName?.charAt(0) || ''
+                        }`}
+                      </Text>
+                    </Avatar>
                   </Box>
                 </Box>
               </Box>
@@ -422,6 +428,9 @@ export default function ProfileScreen({ id }: any) {
                         <Text
                           fontSize={{ base: 'sm', sm: '15px' }}
                           fontWeight="medium"
+                          color={
+                            lead.website ? theme.colors.shared.brightBlue : ''
+                          }
                         >
                           {lead.website || 'Unknown'}
                         </Text>
@@ -510,12 +519,22 @@ export default function ProfileScreen({ id }: any) {
                       alignItems="center"
                       paddingLeft={{ base: '0', sm: '4' }}
                     >
-                      <Text
-                        fontSize={{ base: 'sm', sm: '15px' }}
-                        fontWeight="medium"
+                      <Pressable
+                        onPress={() => {
+                          window.location.href = `mailto:${lead.email}`
+                        }}
+                        disabled={!lead.email}
                       >
-                        {lead.email || 'Unkown'}
-                      </Text>
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                          color={
+                            lead.email ? theme.colors.shared.brightBlue : ''
+                          }
+                        >
+                          {lead.email || 'Unkown'}
+                        </Text>
+                      </Pressable>
                     </Box>
                   </HStack>
                 </Box>
@@ -555,12 +574,22 @@ export default function ProfileScreen({ id }: any) {
                       alignItems="center"
                       paddingLeft={{ base: '0', sm: '4' }}
                     >
-                      <Text
-                        fontSize={{ base: 'sm', sm: '15px' }}
-                        fontWeight="medium"
+                      <Pressable
+                        onPress={() => {
+                          window.location.href = `tel:${lead.phone}`
+                        }}
+                        disabled={!lead.phone}
                       >
-                        {lead.phone || 'Unknown'}
-                      </Text>
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                          color={
+                            lead.email ? theme.colors.shared.brightBlue : ''
+                          }
+                        >
+                          {lead.phone || 'Unknown'}
+                        </Text>
+                      </Pressable>
                     </Box>
                   </HStack>
                 </Box>
