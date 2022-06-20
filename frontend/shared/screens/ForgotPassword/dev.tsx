@@ -461,7 +461,7 @@ export default function SignUp(props: any) {
                                   {loadingStep1 || loadingStep2
                                     ? 'Loading...'
                                     : step === 1
-                                    ? 'Sent reset code'
+                                    ? 'Send reset code'
                                     : 'Submit'}
                                 </>
                               </Hidden>
@@ -470,13 +470,40 @@ export default function SignUp(props: any) {
                                   {loadingStep1 || loadingStep2
                                     ? 'Loading...'
                                     : step === 1
-                                    ? 'Sent reset code'
+                                    ? 'Send reset code'
                                     : 'Submit'}
                                 </>
                               </Hidden>
                             </Text>
                           </Pressable>
                         </Box>
+                      </Box>
+
+                      <Box
+                        marginTop={{ base: '5', sm: '7' }}
+                        marginBottom={{ base: '1', sm: '7', lg: '0' }}
+                      >
+                        <SolitoLink href="/sign-in">
+                          <Text
+                            textAlign="center"
+                            fontSize={{ base: 'sm', sm: 'md' }}
+                          >
+                            Remember your password?{' '}
+                            <Link
+                              _text={{
+                                fontSize: 'md'
+                              }}
+                              fontWeight="semibold"
+                            >
+                              <Hidden till="lg">
+                                <>Sign in</>
+                              </Hidden>
+                              <Hidden from="lg">
+                                <>Sign in</>
+                              </Hidden>
+                            </Link>
+                          </Text>
+                        </SolitoLink>
                       </Box>
                     </Box>
                   </Box>
