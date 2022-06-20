@@ -132,18 +132,18 @@ export default function SignUp(props: any) {
                 >
                   <Hidden from="lg">
                     <Center flexDir="row">
-                      <Image
+                      {/* <Image
                         w={{ base: '2.5rem', sm: '3.5rem' }}
                         h={{ base: '2.5rem', sm: '3.5rem' }}
                         source={require('shared/assets/images/contact-blaster-blue.png')}
-                      />
+                      /> */}
                       <Text
                         color={theme.colors.shared.softBlack}
                         fontSize={{ base: 'xl', sm: '2xl' }}
                         fontWeight="semibold"
                         marginLeft={'4'}
                       >
-                        Contact Blaster
+                        ClientEye
                       </Text>
                     </Center>
                   </Hidden>
@@ -516,7 +516,7 @@ export default function SignUp(props: any) {
                           textAlign="center"
                           fontSize={{ base: 'sm', sm: 'md' }}
                         >
-                          Already have an account ?{' '}
+                          Already have an account?{' '}
                           <SolitoLink href="/sign-in">
                             <Link
                               _text={{
@@ -528,7 +528,7 @@ export default function SignUp(props: any) {
                                 <>Sign in</>
                               </Hidden>
                               <Hidden from="lg">
-                                <>Sign in now</>
+                                <>Sign in</>
                               </Hidden>
                             </Link>
                           </SolitoLink>
