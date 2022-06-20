@@ -119,18 +119,18 @@ export default function SignUp(props: any) {
                 >
                   <Hidden from="lg">
                     <Center flexDir="row">
-                      <Image
+                      {/* <Image
                         w={{ base: '2.5rem', sm: '3.5rem' }}
                         h={{ base: '2.5rem', sm: '3.5rem' }}
                         source={require('shared/assets/images/contact-blaster-blue.png')}
-                      />
+                      /> */}
                       <Text
                         color={theme.colors.shared.softBlack}
                         fontSize={{ base: 'xl', sm: '2xl' }}
                         fontWeight="semibold"
                         marginLeft={'4'}
                       >
-                        Contact Blaster
+                        ClientEye
                       </Text>
                     </Center>
                   </Hidden>
@@ -330,13 +330,13 @@ export default function SignUp(props: any) {
                       </Box>
 
                       {/* remember_me_forgot_pass */}
-                      <Hidden from="lg">
-                        <HStack
-                          justifyContent="space-between"
-                          position="relative"
-                          marginTop="5"
-                        >
-                          <Checkbox
+                      <HStack
+                        justifyContent="space-between"
+                        position="relative"
+                        marginTop="5"
+                      >
+                        <Box></Box>
+                        {/* <Checkbox
                             alignItems="center"
                             defaultIsChecked={false}
                             value="demo"
@@ -351,7 +351,8 @@ export default function SignUp(props: any) {
                                 Remember me
                               </Text>
                             </HStack>
-                          </Checkbox>
+                          </Checkbox> */}
+                        <SolitoLink href="/forgot-password">
                           <HStack alignItems="center" space="1">
                             <Box w="18px">
                               <IconLink />
@@ -361,11 +362,11 @@ export default function SignUp(props: any) {
                               fontWeight="medium"
                               color={theme.colors.shared.softBlack}
                             >
-                              Forgot Password ?
+                              Forgot Password?
                             </Text>
                           </HStack>
-                        </HStack>
-                      </Hidden>
+                        </SolitoLink>
+                      </HStack>
 
                       {/* button */}
                       <Box marginTop="5">
@@ -423,34 +424,6 @@ export default function SignUp(props: any) {
                               </Hidden>
                               <Hidden from="lg">
                                 <>Sign up now</>
-                              </Hidden>
-                            </Link>
-                          </SolitoLink>
-                        </Text>
-                      </Box>
-
-                      {/* forgot password */}
-                      <Box
-                        marginTop={{ base: '2', sm: '2' }}
-                        marginBottom={{ base: '1', sm: '7', lg: '0' }}
-                      >
-                        <Text
-                          textAlign="center"
-                          fontSize={{ base: 'sm', sm: 'md' }}
-                        >
-                          Forgot your password?{' '}
-                          <SolitoLink href="/forgot-password">
-                            <Link
-                              _text={{
-                                fontSize: 'md'
-                              }}
-                              fontWeight="semibold"
-                            >
-                              <Hidden till="lg">
-                                <>Reset it</>
-                              </Hidden>
-                              <Hidden from="lg">
-                                <>Reset</>
                               </Hidden>
                             </Link>
                           </SolitoLink>
