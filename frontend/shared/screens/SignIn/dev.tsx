@@ -495,13 +495,13 @@ export default function SignUp(props: any) {
                 w="full"
                 h="full"
               >
-                <Box flexDir="row" justifyContent="center">
+                {/* <Box flexDir="row" justifyContent="center">
                   <Image
                     w="128px"
                     h="128px"
                     source={require('shared/assets/images/contact-blaster-white.png')}
                   />
-                </Box>
+                </Box> */}
                 <Text
                   color="white"
                   textAlign="center"

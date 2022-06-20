@@ -3,6 +3,7 @@ import { Platform } from 'react-native'
 export const theme = {
   colors: {
     shared: {
+      clientEyePrimary: '#7d55c9',
       white: '#FFFFFF',
       blue: '#355DFF',
       purple: '#9757D7',
