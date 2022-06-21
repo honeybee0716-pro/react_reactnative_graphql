@@ -63,6 +63,8 @@ const searchForLeads = async (parent: any, args: any, context: any) => {
     };
   }
 
+  query.orderBy = {profileImageURL: 'desc'};
+
   let leads = await prismaContext.prisma.lead.findMany(query);
 
   leads = leads.map((l) => ({
