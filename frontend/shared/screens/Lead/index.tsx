@@ -728,6 +728,63 @@ export default function ProfileScreen({ id }: any) {
                     </Box>
                   </HStack>
                 </Box>
+                <Box
+                  flexDirection="row"
+                  alignItems="center"
+                  backgroundColor={theme.colors.shared.softer6Gray}
+                  borderWidth="1"
+                  borderColor={theme.colors.shared.softer7Gray_25}
+                  borderRadius="lg"
+                  paddingLeft="4"
+                  paddingRight="5"
+                >
+                  <Box paddingY="4">
+                    <Box w="18px" marginRight="3">
+                      <IconUser />
+                    </Box>
+                  </Box>
+                  <HStack flex="1" h="full">
+                    <Hidden till="sm">
+                      <Box
+                        w="1/4"
+                        h="full"
+                        borderRightWidth="1"
+                        borderRightColor={theme.colors.shared.softer7Gray_25}
+                        flexDirection="row"
+                        alignItems="center"
+                      >
+                        <Text fontSize="15px" fontWeight="medium">
+                          Sales Navigator URL
+                        </Text>
+                      </Box>
+                    </Hidden>
+                    <Box
+                      w={{ base: 'full', sm: '3/4' }}
+                      flexDirection="row"
+                      alignItems="center"
+                      paddingLeft={{ base: '0', sm: '4' }}
+                    >
+                      <Pressable
+                        onPress={() => {
+                          window.open(`${lead.linkedInSalesNavigatorURL}`)
+                        }}
+                        disabled={!lead.linkedInSalesNavigatorURL}
+                      >
+                        <Text
+                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontWeight="medium"
+                          color={
+                            lead.linkedInSalesNavigatorURL
+                              ? theme.colors.shared.brightBlue
+                              : ''
+                          }
+                        >
+                          {lead.linkedInSalesNavigatorURL ? 'Visit' : 'Unknown'}
+                        </Text>
+                      </Pressable>
+                    </Box>
+                  </HStack>
+                </Box>
               </VStack>
             </Box>
           </Box>

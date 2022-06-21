@@ -283,7 +283,9 @@ const DashboardLayout: React.FC = ({ children }) => {
                         }
                       : {})
                   }}
-                  onPress={() => push('/help')}
+                  onPress={() => {
+                    window.open('https://clienteye.com/contact/', '_blank')
+                  }}
                 >
                   <Box w={{ base: '20px', lg: '24px' }}>
                     <IconHelpCircle
