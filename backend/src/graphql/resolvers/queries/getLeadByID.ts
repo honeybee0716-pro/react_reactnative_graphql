@@ -37,6 +37,8 @@ const getLeadByID = async (parent: any, args: any, context: any) => {
     throw new Error('Lead not found.');
   }
 
+  console.log({lead});
+
   return {
     message: 'Lead found',
     status: 'success',
