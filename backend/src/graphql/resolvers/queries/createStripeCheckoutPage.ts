@@ -31,6 +31,11 @@ const createStripeCheckoutPage = async (
   const {plan} = args.input;
   const {user} = context;
 
+  console.log('createStripeCheckoutPage', {
+    user,
+    plan,
+  });
+
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
@@ -47,6 +52,11 @@ const createStripeCheckoutPage = async (
     success_url: `http://localhost:3000/stripe-success`,
     cancel_url: `http://localhost:3000/pricing`,
     payment_method_types: ['card', 'us_bank_account'],
+  });
+
+  console.log('createStripeCheckoutPage', {
+    userID: user.id,
+    sessionURL: session.url,
   });
 
   return {
