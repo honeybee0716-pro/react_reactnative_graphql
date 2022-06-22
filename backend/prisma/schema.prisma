@@ -34,6 +34,7 @@ model User {
   verifyEmailCode            Int?
   verifyEmailCodeTimestamp   DateTime?
   trialCreatedAt             DateTime?
+  firstLeadReceivedAt        DateTime?
   role                       Role      @default(BASIC)
   leads                      Lead[]
 }
@@ -44,30 +45,30 @@ enum Role {
 }
 
 model Lead {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  user               User?   @relation(fields: [userID], references: [id])
-  userID             String? @db.ObjectId
-  code               String?
-  firstName          String?
-  lastName           String?
-  companyName        String?
-  title              String?
-  email              String?
-  phone              String?
-  verificationStatus String?
-  website            String?
-  dbID               String?
-  companyID          String?
-  companyURL         String?
-  durationInCompany  String?
-  durationInRole     String?
-  industry           String?
-  isPremium          String?
-  linkedInProfileURL String?
-  location           String?
-  profileImageURL    String?
-  query              String?
-  leadSource         String?
-  dateAdded          DateTime
+  id                        String   @id @default(auto()) @map("_id") @db.ObjectId
+  user                      User?    @relation(fields: [userID], references: [id])
+  userID                    String?  @db.ObjectId
+  code                      String?
+  firstName                 String?
+  lastName                  String?
+  companyName               String?
+  title                     String?
+  email                     String?
+  phone                     String?
+  verificationStatus        String?
+  website                   String?
+  dbID                      String?
+  companyID                 String?
+  companyURL                String?
+  durationInCompany         String?
+  durationInRole            String?
+  industry                  String?
+  isPremium                 String?
+  linkedInProfileURL        String?
+  location                  String?
+  profileImageURL           String?
+  query                     String?
+  leadSource                String?
+  dateAdded                 DateTime
   linkedInSalesNavigatorURL String?
 }

@@ -37,9 +37,11 @@ import { gql, useQuery, useLazyQuery } from '@apollo/client'
 const GET_USER_SUBSCRIPTION_DATA = gql`
   query GetUserSubscriptionData {
     getUserSubscriptionData {
-      stripeCustomer
       status
       message
+      stripeCustomer
+      isInTrial
+      redirectToPricingPage
     }
   }
 `
@@ -63,6 +65,8 @@ const LoadingSpinner = () => {
 }
 
 export default function ManageLists() {
+  const [finishedVerifyingAccess, setFinishedVerifyingAccess] =
+    useState<boolean>(false)
   const firstName = React.useRef<any>()
   const lastName = React.useRef<any>()
   const companyName = React.useRef<any>()
@@ -101,15 +105,22 @@ export default function ManageLists() {
   }
 
   React.useEffect(() => {
-    if (getUserSubscriptionDataResult) {
-      if (
-        !getUserSubscriptionDataResult?.getUserSubscriptionData?.stripeCustomer
-          ?.activePlanLevel
-      ) {
-        push('/pricing')
-      }
+    if (
+      !!getUserSubscriptionDataError ||
+      getUserSubscriptionDataResult?.getUserSubscriptionData
+        ?.redirectToPricingPage
+    ) {
+      push('/pricing')
+      return
     }
-  }, [getUserSubscriptionDataResult])
+
+    if (
+      getUserSubscriptionDataResult?.getUserSubscriptionData
+        ?.redirectToPricingPage === false
+    ) {
+      setFinishedVerifyingAccess(true)
+    }
+  }, [getUserSubscriptionDataResult, getUserSubscriptionDataError])
 
   React.useEffect(() => {
     handleSearch()
@@ -117,10 +128,10 @@ export default function ManageLists() {
 
   return (
     <>
-      <DashboardLayout>
-        {loading ? <LoadingSpinner /> : null}
-        {error ? <Heading>Error. Please try again.</Heading> : null}
-        {data?.searchForLeads?.leads && !getUserSubscriptionDataLoading ? (
+      {loading ? <LoadingSpinner /> : null}
+      {error ? <Heading>Error. Please try again.</Heading> : null}
+      {data?.searchForLeads?.leads && finishedVerifyingAccess ? (
+        <DashboardLayout>
           <Box flexDirection={{ base: 'column', lg: 'column' }}>
             <Box flex="1">
               <Box
@@ -446,8 +457,8 @@ export default function ManageLists() {
               </Box>
             </Box>
           </Box>
-        ) : null}
-      </DashboardLayout>
+        </DashboardLayout>
+      ) : null}
     </>
   )
 }
