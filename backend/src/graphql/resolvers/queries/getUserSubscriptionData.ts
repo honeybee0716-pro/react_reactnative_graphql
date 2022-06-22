@@ -1,6 +1,5 @@
 import {gql} from 'apollo-server';
 
-import {prismaContext} from '../../prismaContext';
 import {stripe} from '../../../utils/stripe';
 
 export const getUserSubscriptionDataSchema = gql`
@@ -10,6 +9,8 @@ export const getUserSubscriptionDataSchema = gql`
     message: String!
     status: String!
     stripeCustomer: JSON
+    isInTrial: Boolean!
+    redirectToPricingPage: Boolean!
   }
 
   type Query {
@@ -23,24 +24,18 @@ const getUserSubscriptionData = async (
   args: any,
   context: any,
 ) => {
-  const {id} = context.user;
+  const {user} = context;
 
-  const foundUser = await prismaContext.prisma.user.findUnique({
-    where: {
-      id,
-    },
-  });
-
-  if (!foundUser) {
-    throw new Error('User not found.');
-  }
+  console.log('getUserSubscriptionData1', user);
 
   const stripeCustomer: any = await stripe.customers.retrieve(
-    foundUser.stripeCustomerID,
+    user.stripeCustomerID,
     {
       expand: ['subscriptions', 'cash_balance'],
     },
   );
+
+  console.log('getUserSubscriptionData2', stripeCustomer);
 
   const plans: any = {
     prod_LrRvQPWmU3idFM: 'Starter',
@@ -52,12 +47,40 @@ const getUserSubscriptionData = async (
   );
 
   const activePlanLevel = plans[activePlan?.plan?.product];
-  const activePlanPeriodStart = activePlan.current_period_start;
-  const activePlanPeriodEnd = activePlan.current_period_end;
+  const activePlanPeriodStart = activePlan?.current_period_start;
+  const activePlanPeriodEnd = activePlan?.current_period_end;
+
+  let isInTrial = false;
+
+  if (user) {
+    // https://bobbyhadz.com/blog/javascript-check-if-date-within-30-days
+    const {firstLeadReceivedAt} = user;
+    const currentDate = new Date();
+    const msBetweenDates = Math.abs(
+      firstLeadReceivedAt.getTime() - currentDate.getTime(),
+    );
+    const daysBetweenDates = msBetweenDates / (24 * 60 * 60 * 1000);
+
+    if (daysBetweenDates <= 30) {
+      isInTrial = true;
+    }
+  }
+
+  const redirectToPricingPage = !isInTrial && !activePlanLevel;
+
+  console.log({
+    timestamp: new Date(),
+    userID: user.id,
+    redirectToPricingPage,
+    isInTrial,
+    activePlanLevel,
+  });
 
   return {
     message: 'Subscription data retrieved.',
     status: 'success',
+    isInTrial,
+    redirectToPricingPage,
     stripeCustomer: {
       ...stripeCustomer,
       activePlanLevel,
