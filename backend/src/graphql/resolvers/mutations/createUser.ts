@@ -72,7 +72,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
       verifyEmailCode,
       verifyEmailCodeTimestamp: new Date(),
       stripeCustomerID: stripeCustomer.id,
-      createdIPAddress: '111.111.111.111',
+      createdIPAddress: context.ipAddress,
     },
   });
 
