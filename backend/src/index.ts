@@ -106,7 +106,8 @@ const permissions = shield(
     },
   },
   {
-    fallbackError: 'You are not authorized to perform this action.',
+    fallbackError:
+      'You are not authorized to perform this action. Maybe try logging out and then loggin back in.',
     allowExternalErrors: process.env.NODE_ENV === 'localhost',
   },
 );
