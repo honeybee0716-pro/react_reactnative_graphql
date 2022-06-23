@@ -37,6 +37,8 @@ const createContext = async ({req}: any) => {
   const providedJWT = headers?.authorization?.split('Bearer ')[1];
   let decodedJWT: any;
 
+  console.log({providedJWT});
+
   if (!providedJWT) {
     return {
       ipAddress: req.ip,
@@ -55,6 +57,8 @@ const createContext = async ({req}: any) => {
   }
 
   const user = await getUserByID(undefined, {input: {id: decodedJWT.id}});
+
+  console.log('createContext:', user);
 
   if (!user) {
     throw new Error('The provided JSON Web Token is not valid.');
@@ -107,7 +111,7 @@ const permissions = shield(
   },
   {
     fallbackError:
-      'You are not authorized to perform this action. Maybe try logging out and then loggin back in.',
+      'You are not authorized to perform this action. Maybe try logging out and then logging back in.',
     allowExternalErrors: process.env.NODE_ENV === 'localhost',
   },
 );
