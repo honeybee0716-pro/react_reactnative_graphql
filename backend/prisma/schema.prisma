@@ -29,6 +29,7 @@ model User {
   bannedAt                   DateTime?
   allowMarketingEmails       Boolean   @default(true)
   createdIPAddress           String
+  knownIPAddresses           String[]
   passwordResetCode          Int?
   passwordResetCodeTimestamp DateTime?
   verifyEmailCode            Int?

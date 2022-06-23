@@ -26,7 +26,7 @@ const getUserSubscriptionData = async (
 ) => {
   const {user} = context;
 
-  console.log('getUserSubscriptionData1', user);
+  // console.log('getUserSubscriptionData1', user);
 
   const stripeCustomer: any = await stripe.customers.retrieve(
     user.stripeCustomerID,
@@ -35,26 +35,22 @@ const getUserSubscriptionData = async (
     },
   );
 
-  console.log('getUserSubscriptionData2', stripeCustomer);
-
-  const plans: any = {
-    prod_LrRvQPWmU3idFM: 'Starter',
-    prod_LrRwWBSaXy5leE: 'Professional',
-  };
-
   const activePlan = stripeCustomer?.subscriptions?.data?.find(
     (d: any) => d.status === 'active',
   );
 
-  const activePlanLevel = plans[activePlan?.plan?.product];
   const activePlanPeriodStart = activePlan?.current_period_start;
   const activePlanPeriodEnd = activePlan?.current_period_end;
 
+  const {firstLeadReceivedAt} = user;
   let isInTrial = false;
 
-  if (user) {
+  if (!user.firstLeadReceivedAt) {
+    isInTrial = true;
+  }
+
+  if (!isInTrial) {
     // https://bobbyhadz.com/blog/javascript-check-if-date-within-30-days
-    const {firstLeadReceivedAt} = user;
     const currentDate = new Date();
     const msBetweenDates = Math.abs(
       firstLeadReceivedAt.getTime() - currentDate.getTime(),
@@ -66,14 +62,14 @@ const getUserSubscriptionData = async (
     }
   }
 
-  const redirectToPricingPage = !isInTrial && !activePlanLevel;
+  const redirectToPricingPage = !isInTrial && !activePlan;
 
   console.log({
     timestamp: new Date(),
     userID: user.id,
     redirectToPricingPage,
     isInTrial,
-    activePlanLevel,
+    activePlan,
   });
 
   return {
@@ -83,7 +79,7 @@ const getUserSubscriptionData = async (
     redirectToPricingPage,
     stripeCustomer: {
       ...stripeCustomer,
-      activePlanLevel,
+      activePlan,
       activePlanPeriodStart,
       activePlanPeriodEnd,
     },
