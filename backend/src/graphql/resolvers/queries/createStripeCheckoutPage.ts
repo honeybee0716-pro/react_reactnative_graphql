@@ -48,9 +48,7 @@ const createStripeCheckoutPage = async (
     customer: user.stripeCustomerID,
     success_url: <string>process.env.STRIPE_SUCCESS_URL,
     cancel_url: <string>process.env.STRIPE_CANCEL_URL,
-    payment_method_types: JSON.parse(
-      <string>process.env.STRIPE_PAYMENT_METHOD_TYPES,
-    ),
+    payment_method_types: ['card'],
   });
 
   console.log('createStripeCheckoutPage', {
