@@ -128,10 +128,10 @@ export default function ManageLists() {
 
   return (
     <>
-      {loading ? <LoadingSpinner /> : null}
-      {error ? <Heading>Error. Please try again.</Heading> : null}
-      {data?.searchForLeads?.leads && finishedVerifyingAccess ? (
-        <DashboardLayout>
+      <DashboardLayout>
+        {loading ? <LoadingSpinner /> : null}
+        {error ? <Heading>Error. Please try again.</Heading> : null}
+        {data?.searchForLeads?.leads && finishedVerifyingAccess ? (
           <Box flexDirection={{ base: 'column', lg: 'column' }}>
             <Box flex="1">
               <Box
@@ -457,8 +457,8 @@ export default function ManageLists() {
               </Box>
             </Box>
           </Box>
-        </DashboardLayout>
-      ) : null}
+        ) : null}
+      </DashboardLayout>
     </>
   )
 }

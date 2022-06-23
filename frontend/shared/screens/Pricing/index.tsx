@@ -106,7 +106,7 @@ function OptionSection({ tabName, setTabName }) {
             textAlign="center"
             fontWeight={{ base: 'semibold', md: 'bold' }}
           >
-            500 Visitors
+            300 Visitors
           </Text>
           <Text
             px="10"
@@ -116,7 +116,7 @@ function OptionSection({ tabName, setTabName }) {
             textAlign="center"
             fontWeight="medium"
           >
-            Per Month
+            $500 USD Per Month
           </Text>
         </VStack>
       ) : tabName === 'Custom' ? (
@@ -133,6 +133,16 @@ function OptionSection({ tabName, setTabName }) {
             fontWeight={{ base: 'semibold', md: 'bold' }}
           >
             Custom
+          </Text>
+          <Text
+            px="10"
+            _light={{ color: 'coolGray.500' }}
+            _dark={{ color: 'coolGray.400' }}
+            fontSize="sm"
+            textAlign="center"
+            fontWeight="medium"
+          >
+            We will make a custom plan to fit your needs.
           </Text>
         </VStack>
       ) : (
@@ -262,7 +272,7 @@ export default function () {
               ? 'LOADING...'
               : tabName === 'Custom'
               ? 'CONTACT US'
-              : 'UPGRADE NOW'}
+              : 'UNLOCK NOW'}
           </Button>
         </Center>
       </VStack>
