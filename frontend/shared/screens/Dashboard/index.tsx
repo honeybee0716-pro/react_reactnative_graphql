@@ -33,6 +33,7 @@ import IconSearch from 'shared/components/icons/IconSearch'
 import { useRouter } from 'solito/router'
 import { Link as SolitoLink } from 'solito/link'
 import { gql, useQuery, useLazyQuery } from '@apollo/client'
+import { CSVLink, CSVDownload } from 'react-csv'
 
 const GET_USER_SUBSCRIPTION_DATA = gql`
   query GetUserSubscriptionData {
@@ -68,6 +69,8 @@ export default function ManageLists() {
   const [finishedVerifyingAccess, setFinishedVerifyingAccess] =
     useState<boolean>(false)
   const firstName = React.useRef<any>()
+  const [exportLeads, setExportLeads] = React.useState<any>([])
+  const [leads, setLeads] = React.useState<any>([])
   const lastName = React.useRef<any>()
   const companyName = React.useRef<any>()
   const jobTitle = React.useRef<any>()
@@ -104,6 +107,21 @@ export default function ManageLists() {
     handleSearch()
   }
 
+  const exportLead = (value, lead) => {
+    setLeads((prevState) => {
+      return prevState.map((l) => {
+        if (l.id === lead.id) {
+          l.export = value
+        }
+        return l
+      })
+    })
+  }
+
+  const exportAllLeads = (value) => {
+    setLeads((prevState) => prevState.map((l) => ({ ...l, export: value })))
+  }
+
   React.useEffect(() => {
     if (
       !!getUserSubscriptionDataError ||
@@ -125,6 +143,14 @@ export default function ManageLists() {
   React.useEffect(() => {
     handleSearch()
   }, [])
+
+  React.useEffect(() => {
+    if (data?.searchForLeads?.leads) {
+      setLeads(data.searchForLeads.leads.map((l) => ({ ...l, export: false })))
+    }
+  }, [data])
+
+  const exportData = leads.filter((l) => l.export)
 
   return (
     <>
@@ -168,27 +194,67 @@ export default function ManageLists() {
                     Website Visitors
                   </Text>
                   <Hidden till="sm">
-                    <Pressable
-                      backgroundColor={theme.colors.shared.blueGentianFlower}
-                      borderRadius="md"
-                      paddingX="3"
-                      paddingY="2"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.brightBlue
-                      }}
-                      onPress={() => {
-                        alert('The export feature is not available yet.')
-                      }}
-                    >
-                      <HStack alignItems="center" space="3">
-                        <Box w="20px">
-                          <IconUpload color="white" />
+                    {exportData.length > 0 ? (
+                      <CSVLink
+                        data={exportData}
+                        filename={'clienteye-export.csv'}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <Box
+                          backgroundColor={
+                            theme.colors.shared.blueGentianFlower
+                          }
+                          borderRadius="md"
+                          paddingX="3"
+                          paddingY="2"
+                          // _hover={{
+                          //   backgroundColor: theme.colors.shared.brightBlue
+                          // }}
+                        >
+                          <HStack alignItems="center" space="3">
+                            <Box w="20px">
+                              <IconUpload color="white" />
+                            </Box>
+                            <HStack>
+                              <Text
+                                color="white"
+                                fontSize="xs"
+                                fontWeight="medium"
+                                textDecoration="none"
+                              >
+                                Export
+                              </Text>
+                            </HStack>
+                          </HStack>
                         </Box>
-                        <Text color="white" fontSize="xs" fontWeight="medium">
-                          Export
-                        </Text>
-                      </HStack>
-                    </Pressable>
+                      </CSVLink>
+                    ) : (
+                      <Box
+                        backgroundColor={theme.colors.shared.blueGentianFlower}
+                        borderRadius="md"
+                        paddingX="3"
+                        paddingY="2"
+                        // _hover={{
+                        //   backgroundColor: theme.colors.shared.brightBlue
+                        // }}
+                      >
+                        <HStack alignItems="center" space="3">
+                          <Box w="20px">
+                            <IconUpload color="white" />
+                          </Box>
+                          <HStack>
+                            <Text
+                              color="white"
+                              fontSize="xs"
+                              fontWeight="medium"
+                              textDecoration="none"
+                            >
+                              Export
+                            </Text>
+                          </HStack>
+                        </HStack>
+                      </Box>
+                    )}
                   </Hidden>
                   <Hidden from="sm">
                     <Pressable
@@ -234,18 +300,26 @@ export default function ManageLists() {
                           Email
                         </Text>
                       </Box>
-                      <Box w="12.5%">
+                      <Box w="9.5%">
                         <Text fontSize="sm" fontWeight="medium">
                           Phone Number
                         </Text>
                       </Box>
                       <Box w="16%">
-                        <Text fontSize="sm" fontWeight="medium">
-                          Export
-                        </Text>
+                        <HStack>
+                          <Text fontSize="sm" fontWeight="medium">
+                            Export
+                          </Text>
+                          <Box w="15%" marginLeft="2">
+                            <Checkbox
+                              value=""
+                              onChange={(value) => exportAllLeads(value)}
+                            />
+                          </Box>
+                        </HStack>
                       </Box>
                     </HStack>
-                    {data?.searchForLeads?.leads?.map((l, i) => (
+                    {leads?.map((l, i) => (
                       <Pressable
                         display="flex"
                         flexDirection="row"
@@ -325,7 +399,13 @@ export default function ManageLists() {
                           </Text>
                         </Box>
                         <Box w="15%">
-                          <Checkbox value="" />
+                          <Pressable>
+                            <Checkbox
+                              value=""
+                              isChecked={l.export}
+                              onChange={(value) => exportLead(value, l)}
+                            />
+                          </Pressable>
                         </Box>
                       </Pressable>
                     ))}
@@ -409,51 +489,6 @@ export default function ManageLists() {
                     ))}
                   </VStack>
                 </Hidden>
-                <HStack
-                  alignItems="center"
-                  justifyContent="space-between"
-                  marginTop={{ base: '4', sm: '5' }}
-                >
-                  <Box>
-                    <Text
-                      fontWeight="medium"
-                      fontSize={{ base: '13px', sm: 'sm' }}
-                    >
-                      Page 1 of 3
-                    </Text>
-                  </Box>
-                  <HStack>
-                    <Pressable
-                      backgroundColor="white"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.softer3Gray}
-                      borderLeftRadius="lg"
-                      p="2"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softerGray
-                      }}
-                    >
-                      <Box w="16px">
-                        <IconChevronDown rotation={270} />
-                      </Box>
-                    </Pressable>
-
-                    <Pressable
-                      backgroundColor="white"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.softer3Gray}
-                      borderRightRadius="lg"
-                      p="2"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softerGray
-                      }}
-                    >
-                      <Box w="16px">
-                        <IconChevronDown rotation={90} />
-                      </Box>
-                    </Pressable>
-                  </HStack>
-                </HStack>
               </Box>
             </Box>
           </Box>
