@@ -108,18 +108,17 @@ export default function ManageLists() {
   }
 
   const exportLead = (value, lead) => {
-    setLeads((prevState) => {
-      return prevState.map((l) => {
-        if (l.id === lead.id) {
-          l.export = value
-        }
-        return l
-      })
+    setExportLeads((prevState) => {
+      if (value) {
+        return [...prevState, lead]
+      } else {
+        return prevState.filter((item) => item.id !== lead.id)
+      }
     })
   }
 
   const exportAllLeads = (value) => {
-    setLeads((prevState) => prevState.map((l) => ({ ...l, export: value })))
+    setExportLeads(value ? leads : [])
   }
 
   React.useEffect(() => {
@@ -146,11 +145,11 @@ export default function ManageLists() {
 
   React.useEffect(() => {
     if (data?.searchForLeads?.leads) {
-      setLeads(data.searchForLeads.leads.map((l) => ({ ...l, export: false })))
+      setLeads(data.searchForLeads.leads)
     }
   }, [data])
 
-  const exportData = leads.filter((l) => l.export)
+  const enableExportButton = exportLeads.length
 
   return (
     <>
@@ -194,9 +193,9 @@ export default function ManageLists() {
                     Website Visitors
                   </Text>
                   <Hidden till="sm">
-                    {exportData.length > 0 ? (
+                    {enableExportButton ? (
                       <CSVLink
-                        data={exportData}
+                        data={exportLeads}
                         filename={'clienteye-export.csv'}
                         style={{ textDecoration: 'none' }}
                       >
@@ -402,7 +401,7 @@ export default function ManageLists() {
                           <Pressable>
                             <Checkbox
                               value=""
-                              isChecked={l.export}
+                              isChecked={exportLeads.includes(l)}
                               onChange={(value) => exportLead(value, l)}
                             />
                           </Pressable>
