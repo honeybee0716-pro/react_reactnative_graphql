@@ -45,8 +45,19 @@ import IconMenu from 'shared/components/icons/IconMenu'
 import IconX from 'shared/components/icons/IconX'
 import { useRouter } from 'solito/router'
 import AsyncStorage from '@react-native-community/async-storage'
+import { gql, useQuery, useLazyQuery } from '@apollo/client'
 
 const { width, height } = Dimensions.get('window')
+
+const GET_USER_REMAINING_CREDITS = gql`
+  query GetUsersRemainingCredits {
+    getUsersRemainingCredits {
+      message
+      status
+      remainingCredits
+    }
+  }
+`
 
 function MenuComponent() {
   const [shouldOverlapWithTrigger] = React.useState(false)
@@ -91,6 +102,9 @@ function MenuComponent() {
 const DashboardLayout: React.FC = ({ children }) => {
   const { push } = useRouter()
   const [route, setRoute] = React.useState<string | undefined>()
+  const { data, error, loading } = useQuery(GET_USER_REMAINING_CREDITS, {
+    fetchPolicy: 'network-only'
+  })
 
   React.useEffect(() => {
     // alert(document.location.pathname)
@@ -381,7 +395,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                     <IconCredits />
                   </Box>
                   <Text color="white" fontWeight="semibold">
-                    300
+                    {data?.getUsersRemainingCredits?.remainingCredits}
                   </Text>
                 </Pressable>
               </Center>

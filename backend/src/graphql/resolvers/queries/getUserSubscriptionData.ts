@@ -35,12 +35,16 @@ const getUserSubscriptionData = async (
     },
   );
 
+  console.log('getUserSubscriptionData', stripeCustomer);
+
   const activePlan = stripeCustomer?.subscriptions?.data?.find(
     (d: any) => d.status === 'active',
   );
 
-  const activePlanPeriodStart = activePlan?.current_period_start;
-  const activePlanPeriodEnd = activePlan?.current_period_end;
+  const activePlanPeriodStart = new Date(
+    activePlan?.current_period_start * 1000,
+  );
+  const activePlanPeriodEnd = new Date(activePlan?.current_period_end * 1000);
 
   const {firstLeadReceivedAt} = user;
   let isInTrial = false;
@@ -64,7 +68,7 @@ const getUserSubscriptionData = async (
 
   const redirectToPricingPage = !isInTrial && !activePlan;
 
-  console.log({
+  console.log('getUserSubscriptionData', {
     timestamp: new Date(),
     userID: user.id,
     redirectToPricingPage,
@@ -72,17 +76,21 @@ const getUserSubscriptionData = async (
     activePlan,
   });
 
+  const stripeCustomerNew = {
+    ...stripeCustomer,
+    activePlan,
+    activePlanPeriodStart,
+    activePlanPeriodEnd,
+  };
+
+  console.log({stripeCustomerNew});
+
   return {
     message: 'Subscription data retrieved.',
     status: 'success',
     isInTrial,
     redirectToPricingPage,
-    stripeCustomer: {
-      ...stripeCustomer,
-      activePlan,
-      activePlanPeriodStart,
-      activePlanPeriodEnd,
-    },
+    stripeCustomer: stripeCustomerNew,
   };
 };
 /* jscpd:ignore-end */

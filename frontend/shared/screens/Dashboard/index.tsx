@@ -88,6 +88,7 @@ export default function ManageLists() {
     useLazyQuery(SEARCH_FOR_LEADS)
 
   const handleSearch = async () => {
+    setModalIsOpen(false)
     await searchForLeads({
       fetchPolicy: 'network-only',
       variables: {
@@ -161,8 +162,8 @@ export default function ManageLists() {
     <>
       <DashboardLayout>
         {loading ? <LoadingSpinner /> : null}
-        {!error ? <Heading>Error. Please try again.</Heading> : null}
-        {[] && true ? (
+        {error ? <Heading>Error. Please try again.</Heading> : null}
+        {data?.searchForLeads?.leads && finishedVerifyingAccess && true ? (
           <Box flexDirection={{ base: 'column', lg: 'column' }}>
             <Box flex="1">
               <Box
@@ -1061,23 +1062,16 @@ export default function ManageLists() {
                           Email
                         </Text>
                       </Box>
-                      <Box w="9.5%">
+                      <Box w="13.8%">
                         <Text fontSize="sm" fontWeight="medium">
                           Phone Number
                         </Text>
                       </Box>
                       <Box w="16%">
-                        <HStack>
-                          <Text fontSize="sm" fontWeight="medium">
-                            Export
-                          </Text>
-                          <Box w="15%" marginLeft="2">
-                            <Checkbox
-                              value=""
-                              onChange={(value) => exportAllLeads(value)}
-                            />
-                          </Box>
-                        </HStack>
+                        <Checkbox
+                          value=""
+                          onChange={(value) => exportAllLeads(value)}
+                        />
                       </Box>
                     </HStack>
                     {leads?.map((l, i) => (
@@ -1149,7 +1143,7 @@ export default function ManageLists() {
                             {l.email || 'Unknown'}
                           </Text>
                         </Box>
-                        <Box w="13.5%">
+                        <Box w="14%">
                           <Text
                             fontSize="sm"
                             fontWeight="medium"
@@ -1159,7 +1153,7 @@ export default function ManageLists() {
                             {l.phone || 'Unknown'}
                           </Text>
                         </Box>
-                        <Box w="15%">
+                        <Box w="16%">
                           <Pressable>
                             <Checkbox
                               value=""

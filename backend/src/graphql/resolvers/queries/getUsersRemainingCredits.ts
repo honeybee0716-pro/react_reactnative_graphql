@@ -1,5 +1,6 @@
-import {gql} from 'apollo-server';
+import {ApolloError, gql} from 'apollo-server';
 
+import {stripe} from '../../../utils/stripe';
 import {prismaContext} from '../../prismaContext';
 
 import getUserSubscriptionData from './getUserSubscriptionData';
@@ -26,11 +27,11 @@ const getUsersRemainingCredits = async (
 ) => {
   const {id: userID} = context.user;
 
-  const {activePlanLevel, activePlanPeriodStart, activePlanPeriodEnd} = await (
+  const {activePlan, activePlanPeriodStart, activePlanPeriodEnd} = await (
     await getUserSubscriptionData(null, null, context)
   ).stripeCustomer;
 
-  if (!activePlanLevel || !activePlanPeriodStart || !activePlanPeriodEnd) {
+  if (!activePlan || !activePlanPeriodStart || !activePlanPeriodEnd) {
     return {
       message: 'There was an error.',
       status: 'success',
@@ -38,32 +39,49 @@ const getUsersRemainingCredits = async (
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  const numberOfLeads = await prismaContext.prisma.lead.aggregate({
-    where: {
-      userID,
-      dateAdded: {
-        gte: new Date(activePlanPeriodStart),
-        lte: new Date(activePlanPeriodEnd),
+  const {_count: numberOfLeadsUsed} = await prismaContext.prisma.lead.aggregate(
+    {
+      where: {
+        userID,
+        dateAdded: {
+          gte: new Date(activePlanPeriodStart),
+          lte: new Date(activePlanPeriodEnd),
+        },
       },
+      _count: true,
     },
-    _count: true,
-  });
+  );
 
-  const creditsPerPlan: any = {
-    Starter: 300,
-    Professional: 5000,
-    Enterprise: 999999,
-  };
+  if (!numberOfLeadsUsed && numberOfLeadsUsed !== 0) {
+    throw new ApolloError(
+      'There was an error fetching the number of leads used this month.',
+    );
+  }
+
+  const productID = activePlan.plan.product;
+
+  if (!productID) {
+    throw new ApolloError('There was an issue with that Stripe product ID.');
+  }
+
+  const product: any = await stripe.products.retrieve(productID);
+
+  if (!product) {
+    throw new ApolloError('There was an issue fetching that Stripe product.');
+  }
+
+  const {monthlyCredits} = product?.metadata;
+
+  if (!monthlyCredits) {
+    throw new ApolloError(
+      'Could not find monthlyCredits in the stripe products metadata',
+    );
+  }
 
   return {
     message: 'Retrieved users credits.',
     status: 'success',
-    remainingCredits:
-      // if === 1655068053 then it's stripe test data, they don't give real start date with test data
-      activePlanPeriodStart === 1655068053
-        ? 123
-        : // eslint-disable-next-line no-underscore-dangle
-          creditsPerPlan[activePlanLevel] - numberOfLeads._count,
+    remainingCredits: monthlyCredits - numberOfLeadsUsed,
   };
 };
 /* jscpd:ignore-end */

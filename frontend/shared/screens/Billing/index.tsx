@@ -406,7 +406,7 @@ export default function Billing() {
                       >
                         {getUserSubscriptionDataResult?.getUserSubscriptionData
                           ?.isInTrial
-                          ? "You're in a free trial."
+                          ? 'You are on a free trial plan. You can upgrade your plan at anytime.'
                           : 'Cancel subscription'}
                       </Text>
                       <Hidden from="sm">
@@ -824,7 +824,7 @@ export default function Billing() {
                         fontWeight="medium"
                         fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
                       >
-                        Change your plan level
+                        Switch Pricing Plan
                       </Text>
                       <Hidden from="sm">
                         <Box>
