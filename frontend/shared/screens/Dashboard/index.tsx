@@ -940,7 +940,7 @@ export default function ManageLists() {
                     >
                       <HStack alignItems="center" space="3">
                         <Box w="20px">
-                          <IconUpload color="white" />
+                          <IconFilter color="white" />
                         </Box>
                         <HStack>
                           <Text
