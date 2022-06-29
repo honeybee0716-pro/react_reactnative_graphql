@@ -27,15 +27,14 @@ const getUsersRemainingCredits = async (
 ) => {
   const {id: userID} = context.user;
 
-  const {activePlan, activePlanPeriodStart, activePlanPeriodEnd, isInTrial} =
-    await (
-      await getUserSubscriptionData(null, null, context)
-    ).stripeCustomer;
+  const {stripeCustomer, isInTrial} = await await getUserSubscriptionData(
+    null,
+    null,
+    context,
+  );
 
-  console.log('isInTrial:', isInTrial);
-  console.log('activePlan:', activePlan);
-  console.log('activePlanPeriodStart:', activePlanPeriodStart);
-  console.log('activePlanPeriodEnd:', activePlanPeriodEnd);
+  const {activePlan, activePlanPeriodStart, activePlanPeriodEnd} =
+    stripeCustomer;
 
   if (
     (!activePlan || !activePlanPeriodStart || !activePlanPeriodEnd) &&
