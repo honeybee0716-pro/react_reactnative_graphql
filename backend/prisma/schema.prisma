@@ -20,7 +20,7 @@ model User {
   stripeCustomerID           String    @unique
   firstName                  String
   lastName                   String
-  companyName                String
+  companyName                String?
   email                      String    @unique
   emailIsVerified            Boolean   @default(false)
   password                   String
