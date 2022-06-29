@@ -42,6 +42,7 @@ function SignUpForm() {
   const { push } = useRouter()
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
+  const [companyName, setCompanyName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -56,6 +57,7 @@ function SignUpForm() {
         input: {
           firstName,
           lastName,
+          companyName,
           email,
           password
         }
@@ -134,6 +136,25 @@ function SignUpForm() {
                   borderRadius="4"
                   defaultValue={lastName}
                   onChangeText={(txt: any) => setLastName(txt)}
+                  _text={{
+                    fontSize: 'sm',
+                    fontWeight: 'medium'
+                  }}
+                  _dark={{
+                    borderColor: 'coolGray.700'
+                  }}
+                  _light={{
+                    borderColor: 'coolGray.300'
+                  }}
+                />
+                <FloatingLabelInput
+                  isRequired
+                  label="Company Name"
+                  labelColor="#9ca3af"
+                  labelBGColor={useColorModeValue('#fff', '#1f2937')}
+                  borderRadius="4"
+                  defaultValue={companyName}
+                  onChangeText={(txt: any) => setCompanyName(txt)}
                   _text={{
                     fontSize: 'sm',
                     fontWeight: 'medium'

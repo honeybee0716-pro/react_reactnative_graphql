@@ -19,6 +19,7 @@ export const createUserSchema = gql`
   input createUserInput {
     firstName: String!
     lastName: String!
+    companyName: String!
     email: String!
     password: String!
   }
@@ -61,6 +62,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
       firstName: args.input.firstName,
       lastName: args.input.lastName,
       phoneNumber: args.input.phoneNumber,
+      companyName: args.input.companyName,
     },
   });
 

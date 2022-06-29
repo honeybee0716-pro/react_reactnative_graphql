@@ -23,6 +23,11 @@ import { gql, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Link as SolitoLink } from 'solito/link'
 import { useRouter } from 'solito/router'
+import IconUsers from 'shared/components/icons/IconUsers'
+import IconUser from 'shared/components/icons/IconUser'
+import IconMail from 'shared/components/icons/IconMail'
+import IconLock from 'shared/components/icons/IconLock'
+import IconEye from 'shared/components/icons/IconEye'
 
 const CREATE_USER = gql`
   mutation CreateUser($input: createUserInput!) {
@@ -38,6 +43,7 @@ export default function SignUp(props: any) {
   const { push } = useRouter()
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
+  const [companyName, setCompanyName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -48,7 +54,7 @@ export default function SignUp(props: any) {
   const [createUser, { loading }] = useMutation(CREATE_USER)
 
   const handleSignUp = async (e) => {
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !companyName || !email || !password) {
       alert('Please fill all fields.')
       return
     }
@@ -62,6 +68,7 @@ export default function SignUp(props: any) {
         input: {
           firstName,
           lastName,
+          companyName,
           email,
           password
         }
@@ -278,15 +285,14 @@ export default function SignUp(props: any) {
                           <Box
                             position="absolute"
                             left="4"
+                            top="3.5"
                             h="full"
                             flexDir="row"
                             alignItems="center"
+                            height="24px"
+                            width="24px"
                           >
-                            <Image
-                              w="6"
-                              h="6"
-                              source={require('shared/assets/icons/user (1) 1.png')}
-                            />
+                            <IconUser color="#6E767E" />
                           </Box>
                         </Box>
                         <Box position="relative" w="47%">
@@ -308,18 +314,47 @@ export default function SignUp(props: any) {
                           <Box
                             position="absolute"
                             left="4"
+                            top="3.5"
                             h="full"
                             flexDir="row"
                             alignItems="center"
+                            height="24px"
+                            width="24px"
                           >
-                            <Image
-                              w="6"
-                              h="6"
-                              source={require('shared/assets/icons/user (1) 1.png')}
-                            />
+                            <IconUser color="#6E767E" />
                           </Box>
                         </Box>
                       </HStack>
+                      {/* company name */}
+                      <Box position="relative" w="full" marginTop="5">
+                        <Input
+                          paddingLeft="12"
+                          paddingTop="3"
+                          paddingRight="3"
+                          paddingBottom="3"
+                          w="full"
+                          borderRadius="xl"
+                          borderWidth="2"
+                          borderColor={theme.colors.shared.softerGray}
+                          fontSize={{ base: 'xs', sm: 'md' }}
+                          fontWeight="medium"
+                          backgroundColor={theme.colors.shared.aliceBlue}
+                          placeholder="Company Name"
+                          onChangeText={(text) => setCompanyName(text)}
+                        />
+                        <Box
+                          position="absolute"
+                          left="4"
+                          top="3.5"
+                          h="full"
+                          flexDir="row"
+                          alignItems="center"
+                          height="24px"
+                          width="24px"
+                        >
+                          <IconUsers color="#6E767E" />
+                        </Box>
+                      </Box>
                       {/* input email */}
                       <Box position="relative" w="full" marginTop="5">
                         <Input
@@ -334,21 +369,20 @@ export default function SignUp(props: any) {
                           fontSize={{ base: 'xs', sm: 'md' }}
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="eg: johndoe@gmail.com"
+                          placeholder="johndoe@gmail.com"
                           onChangeText={(text) => setEmail(text)}
                         />
                         <Box
                           position="absolute"
                           left="4"
+                          top="3.5"
                           h="full"
                           flexDir="row"
                           alignItems="center"
+                          height="24px"
+                          width="24px"
                         >
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/assets/icons/mail 1.png')}
-                          />
+                          <IconMail color="#6E767E" />
                         </Box>
                       </Box>
                       {/* input password */}
@@ -372,15 +406,14 @@ export default function SignUp(props: any) {
                         <Box
                           position="absolute"
                           left="4"
+                          top="3.5"
                           h="full"
                           flexDir="row"
                           alignItems="center"
+                          height="24px"
+                          width="24px"
                         >
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/assets/icons/lock 1.png')}
-                          />
+                          <IconLock color="#6E767E" />
                         </Box>
                         <Box
                           position="absolute"
@@ -402,11 +435,9 @@ export default function SignUp(props: any) {
                               setShowPass(!showPass)
                             }}
                           >
-                            <Image
-                              w="4"
-                              h="4"
-                              source={require('shared/assets/icons/eye (1) 1.png')}
-                            />
+                            <Box>
+                              <IconEye color="#6E767E" />
+                            </Box>
                           </Button>
                         </Box>
                       </Box>
