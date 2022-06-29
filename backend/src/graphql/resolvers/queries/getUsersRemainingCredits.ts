@@ -32,6 +32,11 @@ const getUsersRemainingCredits = async (
       await getUserSubscriptionData(null, null, context)
     ).stripeCustomer;
 
+  console.log('isInTrial:', isInTrial);
+  console.log('activePlan:', activePlan);
+  console.log('activePlanPeriodStart:', activePlanPeriodStart);
+  console.log('activePlanPeriodEnd:', activePlanPeriodEnd);
+
   if (
     (!activePlan || !activePlanPeriodStart || !activePlanPeriodEnd) &&
     !isInTrial
