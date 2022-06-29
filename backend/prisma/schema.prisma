@@ -73,4 +73,5 @@ model Lead {
   leadSource                String?
   dateAdded                 DateTime
   linkedInSalesNavigatorURL String?
+  stripeUsageLoggedAt       DateTime?
 }
