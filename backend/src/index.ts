@@ -112,7 +112,7 @@ const permissions = shield(
   {
     fallbackError:
       'You are not authorized to perform this action. Maybe try logging out and then logging back in.',
-    allowExternalErrors: process.env.NODE_ENV === 'localhost',
+    allowExternalErrors: true,
   },
 );
 
