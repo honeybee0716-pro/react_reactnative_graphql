@@ -27,14 +27,33 @@ const getUsersRemainingCredits = async (
 ) => {
   const {id: userID} = context.user;
 
-  const {activePlan, activePlanPeriodStart, activePlanPeriodEnd} = await (
-    await getUserSubscriptionData(null, null, context)
-  ).stripeCustomer;
+  const {activePlan, activePlanPeriodStart, activePlanPeriodEnd, isInTrial} =
+    await (
+      await getUserSubscriptionData(null, null, context)
+    ).stripeCustomer;
 
-  if (!activePlan || !activePlanPeriodStart || !activePlanPeriodEnd) {
+  if (
+    (!activePlan || !activePlanPeriodStart || !activePlanPeriodEnd) &&
+    !isInTrial
+  ) {
     return {
       message: 'There was an error.',
       status: 'success',
+    };
+  }
+
+  if (isInTrial) {
+    const {_count: trialLeadsUsed} = await prismaContext.prisma.lead.aggregate({
+      where: {
+        userID,
+      },
+      _count: true,
+    });
+
+    return {
+      message: 'Retrieved users credits.',
+      status: 'success',
+      remainingCredits: 300 - trialLeadsUsed,
     };
   }
 
