@@ -37,13 +37,12 @@ const createStripeCheckoutPage = async (
   });
 
   const session = await stripe.checkout.sessions.create({
+    mode: 'subscription',
     line_items: [
       {
         price: process.env.STANDARD_PLAN_PRICE_ID,
-        quantity: 1,
       },
     ],
-    mode: 'subscription',
     client_reference_id: user.stripeCustomerID,
     customer: user.stripeCustomerID,
     success_url: <string>process.env.STRIPE_SUCCESS_URL,
