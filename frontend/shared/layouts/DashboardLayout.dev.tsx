@@ -2,59 +2,40 @@ import {
   StatusBar,
   Box,
   Center,
-  Stack,
   Hidden,
   Text,
-  Image,
   HStack,
   VStack,
-  Input,
-  InputGroup,
   Button,
-  Checkbox,
-  Link,
-  Icon,
   Pressable,
   Avatar,
   Menu,
-  CheckIcon,
-  Select,
   Tooltip
 } from 'native-base'
 import React from 'react'
-import { Dimensions, View } from 'react-native'
+import { Dimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
-import IconMacCommand from 'shared/components/icons/IconMacCommand'
 import IconCredits from 'shared/components/icons/IconCredits'
-import IconSun from 'shared/components/icons/IconSun'
-import IconNotificationBell from 'shared/components/icons/IconNotificationBell'
 import IconHome from 'shared/components/icons/IconHome'
-import IconLists from 'shared/components/icons/IconLists'
-import IconMessages from 'shared/components/icons/IconMessages'
-import IconFlag from 'shared/components/icons/IconFlag'
-import IconTrashBin from 'shared/components/icons/IconTrashBin'
 import IconCreditCard from 'shared/components/icons/IconCreditCard'
-import IconUser from 'shared/components/icons/IconUser'
 import IconHelpCircle from 'shared/components/icons/IconHelpCircle'
-import IconChevronDown from 'shared/components/icons/IconChevronDown'
-import IconArrowRight from 'shared/components/icons/IconArrowRight'
-import IconMenu from 'shared/components/icons/IconMenu'
 import IconX from 'shared/components/icons/IconX'
 import { useRouter } from 'solito/router'
 import AsyncStorage from '@react-native-community/async-storage'
-import { gql, useQuery, useLazyQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 
-const { width, height } = Dimensions.get('window')
-
-const GET_USER_REMAINING_CREDITS = gql`
-  query GetUsersRemainingCredits {
-    getUsersRemainingCredits {
+const GET_USER_SUBSCRIPTION_DATA = gql`
+  query Query {
+    getUserSubscriptionData {
       message
       status
+      stripeCustomer
+      activeSubscription
       remainingCredits
+      isInTrial
+      redirectToPricingPage
     }
   }
 `
@@ -102,7 +83,7 @@ function MenuComponent() {
 const DashboardLayout: React.FC = ({ children }) => {
   const { push } = useRouter()
   const [route, setRoute] = React.useState<string | undefined>()
-  const { data, error, loading } = useQuery(GET_USER_REMAINING_CREDITS, {
+  const { data, error, loading } = useQuery(GET_USER_SUBSCRIPTION_DATA, {
     fetchPolicy: 'network-only'
   })
 
@@ -395,7 +376,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                     <IconCredits />
                   </Box>
                   <Text color="white" fontWeight="semibold">
-                    {data?.getUsersRemainingCredits?.remainingCredits}
+                    {data?.getUserSubscriptionData?.remainingCredits}
                   </Text>
                 </Pressable>
               </Center>

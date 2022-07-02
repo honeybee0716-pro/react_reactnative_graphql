@@ -15,7 +15,6 @@ import {
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
 import React, { Fragment, useState } from 'react'
-import { Pagination } from 'swiper'
 import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
 import IconDownload from 'shared/components/icons/IconDownload'
 import IconCalendar from 'shared/components/icons/IconCalendar'
@@ -32,16 +31,17 @@ import IconList from 'shared/components/icons/IconList'
 import IconGroup from 'shared/components/icons/IconGroup'
 import IconSearch from 'shared/components/icons/IconSearch'
 import { useRouter } from 'solito/router'
-import { Link as SolitoLink } from 'solito/link'
 import { gql, useQuery, useLazyQuery } from '@apollo/client'
-import { CSVLink, CSVDownload } from 'react-csv'
+import { CSVLink } from 'react-csv'
 
 const GET_USER_SUBSCRIPTION_DATA = gql`
-  query GetUserSubscriptionData {
+  query Query {
     getUserSubscriptionData {
-      status
       message
+      status
       stripeCustomer
+      activeSubscription
+      remainingCredits
       isInTrial
       redirectToPricingPage
     }

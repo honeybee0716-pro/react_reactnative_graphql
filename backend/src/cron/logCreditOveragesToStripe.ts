@@ -5,6 +5,8 @@ import {stripe} from '../utils/stripe';
 import getUserByID from '../graphql/resolvers/queries/getUserByID';
 import getUserSubscriptionData from '../graphql/resolvers/queries/getUserSubscriptionData';
 
+// add an idempotency key to the request to prevent duplicate charges
+
 const logCreditOveragesToStripe = async () => {
   const leads = await prismaContext.prisma.lead.findMany({
     where: {

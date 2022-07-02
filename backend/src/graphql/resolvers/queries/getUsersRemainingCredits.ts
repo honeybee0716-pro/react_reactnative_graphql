@@ -3,7 +3,24 @@ import {ApolloError, gql} from 'apollo-server';
 import {stripe} from '../../../utils/stripe';
 import {prismaContext} from '../../prismaContext';
 
-import getUserSubscriptionData from './getUserSubscriptionData';
+// cant use because period: {start: null, end: null}
+// const planData = activeSubscription.items.data.map((data) => {
+//   return {
+//     ...data,
+//     metadata: data.metadata,
+//     active: data.plan.active,
+//     usageType: data.plan.usage_type,
+//     subscriptionItemID: data.id,
+//   };
+// });
+
+// const meteredPlan = planData.find((data) => data.usageType === 'metered');
+// const usageRecordSummary =
+//   await stripe.subscriptionItems.listUsageRecordSummaries(
+//     meteredPlan.subscriptionItemID,
+//   );
+
+// console.log('usageRecordSummary', usageRecordSummary.data);
 
 export const getUsersRemainingCreditsSchema = gql`
   scalar JSON
@@ -25,28 +42,19 @@ const getUsersRemainingCredits = async (
   args: any,
   context: any,
 ) => {
-  const {id: userID} = context.user;
+  const {isInTrial, activeSubscription} = args.input;
+  const {user} = context;
+  const {id: userID} = user;
 
-  const {stripeCustomer, isInTrial} = await await getUserSubscriptionData(
-    null,
-    null,
-    context,
-  );
-
-  const {activePlan, activePlanPeriodStart, activePlanPeriodEnd} =
-    stripeCustomer;
-
-  if (
-    (!activePlan || !activePlanPeriodStart || !activePlanPeriodEnd) &&
-    !isInTrial
-  ) {
+  if (!activeSubscription && !isInTrial) {
     return {
-      message: 'There was an error.',
+      message:
+        'Cannot get remaining credits for this user as they are not in a trial and not on an active plan.',
       status: 'success',
     };
   }
 
-  if (isInTrial) {
+  if (isInTrial && !activeSubscription) {
     const {_count: trialLeadsUsed} = await prismaContext.prisma.lead.aggregate({
       where: {
         userID,
@@ -67,8 +75,8 @@ const getUsersRemainingCredits = async (
       where: {
         userID,
         dateAdded: {
-          gte: new Date(activePlanPeriodStart),
-          lte: new Date(activePlanPeriodEnd),
+          gte: new Date(activeSubscription.cycleStartAt),
+          lte: new Date(activeSubscription.cycleEndAt),
         },
       },
       _count: true,
@@ -81,7 +89,9 @@ const getUsersRemainingCredits = async (
     );
   }
 
-  const productID = activePlan.plan.product;
+  const productID = activeSubscription.items.data.find((item) => {
+    return item.plan.usage_type === 'licensed';
+  }).plan.product;
 
   if (!productID) {
     throw new ApolloError('There was an issue with that Stripe product ID.');

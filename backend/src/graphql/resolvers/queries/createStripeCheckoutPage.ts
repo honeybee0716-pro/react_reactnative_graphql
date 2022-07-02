@@ -40,7 +40,11 @@ const createStripeCheckoutPage = async (
     mode: 'subscription',
     line_items: [
       {
-        price: process.env.STANDARD_PLAN_PRICE_ID,
+        price: process.env.STRIPE_STANDARD_METERED_PRICE_ID,
+      },
+      {
+        price: process.env.STRIPE_STANDARD_FLAT_PRICE_ID,
+        quantity: 1,
       },
     ],
     client_reference_id: user.stripeCustomerID,

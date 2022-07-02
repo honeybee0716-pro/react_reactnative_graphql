@@ -1,6 +1,10 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 import {gql} from 'apollo-server';
 
 import {stripe} from '../../../utils/stripe';
+
+import getUsersRemainingCredits from './getUsersRemainingCredits';
 
 export const getUserSubscriptionDataSchema = gql`
   scalar JSON
@@ -9,6 +13,8 @@ export const getUserSubscriptionDataSchema = gql`
     message: String!
     status: String!
     stripeCustomer: JSON
+    activeSubscription: JSON
+    remainingCredits: Int!
     isInTrial: Boolean!
     redirectToPricingPage: Boolean!
   }
@@ -26,8 +32,6 @@ const getUserSubscriptionData = async (
 ) => {
   const {user} = context;
 
-  // console.log('getUserSubscriptionData1', user);
-
   const stripeCustomer: any = await stripe.customers.retrieve(
     user.stripeCustomerID,
     {
@@ -35,62 +39,62 @@ const getUserSubscriptionData = async (
     },
   );
 
-  console.log('getUserSubscriptionData', stripeCustomer);
+  const activeSubscription = stripeCustomer?.subscriptions?.data
+    ?.map((subscription: any) => {
+      return {
+        ...subscription,
+        cycleStartAt: new Date(subscription.current_period_start * 1000),
+        cycleEndAt: new Date(subscription.current_period_end * 1000),
+        isActive: subscription.status === 'active',
+      };
+    })
+    .filter((subscription: any) => subscription.isActive)?.[0];
 
-  const activePlan = stripeCustomer?.subscriptions?.data?.find(
-    (d: any) => d.status === 'active',
-  );
+  let isInTrial = true;
 
-  const activePlanPeriodStart = new Date(
-    activePlan?.current_period_start * 1000,
-  );
-  const activePlanPeriodEnd = new Date(activePlan?.current_period_end * 1000);
-
-  const {firstLeadReceivedAt} = user;
-  let isInTrial = false;
-
-  if (!user.firstLeadReceivedAt) {
-    isInTrial = true;
+  if (activeSubscription) {
+    isInTrial = false;
   }
 
-  if (!isInTrial) {
-    // https://bobbyhadz.com/blog/javascript-check-if-date-within-30-days
+  const {firstLeadReceivedAt} = user;
+
+  if (firstLeadReceivedAt) {
     const currentDate = new Date();
     const msBetweenDates = Math.abs(
       firstLeadReceivedAt.getTime() - currentDate.getTime(),
     );
     const daysBetweenDates = msBetweenDates / (24 * 60 * 60 * 1000);
 
-    if (daysBetweenDates <= 30) {
-      isInTrial = true;
+    if (daysBetweenDates > 30) {
+      isInTrial = false;
     }
   }
 
-  const redirectToPricingPage = !isInTrial && !activePlan;
+  const redirectToPricingPage = !isInTrial && !activeSubscription;
 
-  console.log('getUserSubscriptionData', {
-    timestamp: new Date(),
-    userID: user.id,
-    redirectToPricingPage,
+  const data: any = {
     isInTrial,
-    activePlan,
-  });
-
-  const stripeCustomerNew = {
-    ...stripeCustomer,
-    activePlan,
-    activePlanPeriodStart,
-    activePlanPeriodEnd,
+    redirectToPricingPage,
+    stripeCustomer,
+    activeSubscription,
   };
 
-  console.log({stripeCustomerNew});
+  const {remainingCredits} = await getUsersRemainingCredits(
+    null,
+    {
+      input: {
+        user,
+        ...data,
+      },
+    },
+    {user},
+  );
+  data.remainingCredits = remainingCredits || 0;
 
   return {
+    ...data,
     message: 'Subscription data retrieved.',
     status: 'success',
-    isInTrial,
-    redirectToPricingPage,
-    stripeCustomer: stripeCustomerNew,
   };
 };
 /* jscpd:ignore-end */

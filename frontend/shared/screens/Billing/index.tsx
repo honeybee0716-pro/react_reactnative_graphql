@@ -527,20 +527,6 @@ export default function Billing() {
             <Box flexDirection={{ base: 'column-reverse', lg: 'row' }}>
               {/* Billing information */}
               <Box flex="1">
-                <Box
-                  marginTop={{ base: '0', lg: '0' }}
-                  marginLeft={{ base: '3', lg: '5' }}
-                  marginRight={{ base: '3', lg: '0' }}
-                  paddingX={{ base: '0', lg: '5' }}
-                  paddingTop={{ base: '0', lg: '5' }}
-                  paddingBottom={{ base: '0', lg: '4' }}
-                  borderTopRadius={{ base: 'none', sm: '2xl' }}
-                  borderBottomRadius={{ base: 'none', sm: '2xl', lg: 'none' }}
-                  backgroundColor={{ base: 'none', lg: 'white' }}
-                  borderWidth={{ base: '0', lg: '1' }}
-                  borderBottomWidth={{ base: 'none', sm: '1', lg: '0' }}
-                  borderColor={theme.colors.shared.softer3Gray}
-                ></Box>
                 {/* Saved Card for phone view */}
                 <Hidden from="sm">
                   <Box flex="1" w={{ base: 'full', sm: 'auto' }}>
@@ -788,7 +774,7 @@ export default function Billing() {
                     </Box>
                   </Box>
                 </Hidden>
-                <Pressable onPress={() => push('/pricing')}>
+                {/* <Pressable onPress={() => push('/pricing')}>
                   <Box
                     marginBottom={{ base: '1', lg: '5' }}
                     marginLeft={{ base: '3', lg: '5' }}
@@ -808,13 +794,13 @@ export default function Billing() {
                       {getUserSubscriptionDataResult?.getUserSubscriptionData
                         ?.isInTrial ? null : (
                         <Center
-                          backgroundColor={theme.colors.shared.redOrange_20}
+                          backgroundColor={theme.colors.shared.lightGreen2}
                           paddingY="2"
                           paddingX="2"
                           borderRadius="lg"
                         >
                           <Box w="18px">
-                            <IconX color={theme.colors.shared.redOrange} />
+                            <IconEdit color={theme.colors.shared.green2} />
                           </Box>
                         </Center>
                       )}
@@ -844,7 +830,6 @@ export default function Billing() {
                         </Box>
                       </Hidden>
                     </HStack>
-                    {/* List recent top up phone */}
                     <Hidden from="sm">
                       <VStack space="3">
                         {[...Array(2)].map((_, i) => (
@@ -934,7 +919,7 @@ export default function Billing() {
                       marginTop={{ base: '4', sm: '5' }}
                     ></HStack>
                   </Box>
-                </Pressable>
+                </Pressable> */}
               </Box>
               <Box
                 width={{ base: 'auto', lg: '20px' }}

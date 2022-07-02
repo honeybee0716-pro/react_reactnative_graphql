@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import {ApolloServer} from 'apollo-server';
+import {ApolloServer} from 'apollo-server-express';
+import express from 'express';
 import {makeExecutableSchema} from '@graphql-tools/schema';
 import {PrismaClient} from '@prisma/client';
 import {applyMiddleware} from 'graphql-middleware';
@@ -37,8 +38,6 @@ const createContext = async ({req}: any) => {
   const providedJWT = headers?.authorization?.split('Bearer ')[1];
   let decodedJWT: any;
 
-  console.log({providedJWT});
-
   if (!providedJWT) {
     return {
       ipAddress: req.ip,
@@ -57,8 +56,6 @@ const createContext = async ({req}: any) => {
   }
 
   const user = await getUserByID(undefined, {input: {id: decodedJWT.id}});
-
-  console.log('createContext:', user);
 
   if (!user) {
     throw new Error('The provided JSON Web Token is not valid.');
@@ -131,6 +128,14 @@ export const setupServer = async () => {
     schema: applyMiddleware(schema, permissions),
     context: createContext,
     introspection: true,
+  });
+
+  const app = express();
+
+  await server.start();
+
+  server.applyMiddleware({
+    app,
     cors: {
       origin:
         NODE_ENV === 'localhost'
@@ -140,12 +145,15 @@ export const setupServer = async () => {
     },
   });
 
-  const {url} = await server.listen({port: PORT});
+  await app.listen({port: PORT}, () => {
+    console.log(
+      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`,
+    );
+  });
 
-  console.log(`Server is running at ${url}`);
-  console.log(
-    `GraphQL Playground is available at http://localhost:${PORT}/graphql`,
-  );
+  app.get('/', (req, res) => {
+    res.send('Hello, World!');
+  });
 
   try {
     await prisma.$connect();
