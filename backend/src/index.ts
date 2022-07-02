@@ -8,6 +8,7 @@ import {rule, shield} from 'graphql-shield';
 import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 import jwt from 'jsonwebtoken';
+import cors from 'cors';
 // import {createClient} from 'redis';
 
 import {typeDefs} from './graphql/typeDefs/index';
@@ -131,6 +132,14 @@ export const setupServer = async () => {
   });
 
   const app = express();
+
+  const corsOptions = {
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  };
+  app.use(cors(corsOptions));
 
   await server.start();
 
