@@ -27,7 +27,6 @@ export interface IAppConfig {
   DATABASE_URL: string;
   NODE_ENV: string;
   JWT_SECRET: string;
-  CORS_ORIGIN: string;
   PORT: number;
   SENDGRID_API_KEY: string;
   STRIPE_SECRET_KEY: string;
@@ -45,7 +44,6 @@ export const AppConfig: IAppConfig = {
   NODE_ENV: loadEnvironmentVariable('NODE_ENV'),
   PORT: loadNumericEnvironmentVariable('PORT', 6000),
   JWT_SECRET: loadEnvironmentVariable('JWT_SECRET'),
-  CORS_ORIGIN: loadEnvironmentVariable('CORS_ORIGIN'),
   SENDGRID_API_KEY: loadEnvironmentVariable('SENDGRID_API_KEY'),
   DATABASE_URL: loadEnvironmentVariable('DATABASE_URL'),
   STRIPE_SECRET_KEY: loadEnvironmentVariable('STRIPE_SECRET_KEY'),
