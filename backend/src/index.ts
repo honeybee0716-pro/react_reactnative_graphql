@@ -137,11 +137,15 @@ export const setupServer = async () => {
   server.applyMiddleware({
     app,
     cors: {
-      origin:
-        NODE_ENV === 'localhost'
-          ? [CORS_ORIGIN, 'https://studio.apollographql.com']
-          : CORS_ORIGIN,
-      credentials: true,
+      origin: [
+        'https://www.dash.clienteye.com',
+        'https://dash.clienteye.com',
+        'https://staging.dash.clienteye.com',
+        'https://www.staging.dash.clienteye.com',
+        'https://www.development.dash.clienteye.com',
+        'https://development.dash.clienteye.com',
+        'http://localhost:3000',
+      ],
     },
   });
 
