@@ -123,7 +123,7 @@ const schema = applyMiddleware(
 );
 
 export const setupServer = async () => {
-  const {PORT, NODE_ENV, CORS_ORIGIN} = AppConfig;
+  const {PORT, NODE_ENV} = AppConfig;
 
   const server = new ApolloServer({
     schema: applyMiddleware(schema, permissions),
