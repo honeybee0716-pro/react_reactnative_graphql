@@ -7,7 +7,8 @@ import {
   Text,
   Image,
   Input,
-  Pressable
+  Pressable,
+  useToast
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
@@ -28,6 +29,7 @@ const CONFIRM_EMAIL_VALIDATION_CODE = gql`
 export default function OTP(props: any) {
   const { push } = useRouter()
   const [code, setCode] = useState('')
+  const toast = useToast()
 
   const [confirmEmailValidationCode, { loading }] = useMutation(
     CONFIRM_EMAIL_VALIDATION_CODE
@@ -35,18 +37,24 @@ export default function OTP(props: any) {
 
   const handleSubmitOTP = async () => {
     if (!code) {
-      alert('Please enter a code.')
+      toast.show({
+        description: 'Please enter a code.'
+      })
       return
     }
     try {
       Number(code)
     } catch (e) {
-      alert('Please enter a valid code.')
+      toast.show({
+        description: 'Please enter a valid code.'
+      })
       return
     }
     const jwt = await AsyncStorage.getItem('jwt')
     if (!jwt) {
-      alert('There was an error. Please try again.')
+      toast.show({
+        description: 'There was an error. Please try again.'
+      })
       return
     }
     confirmEmailValidationCode({
@@ -61,14 +69,20 @@ export default function OTP(props: any) {
           return
         }
         if (confirmEmailValidationCode?.message) {
-          alert(confirmEmailValidationCode.message)
+          toast.show({
+            description: confirmEmailValidationCode.message
+          })
           return
         }
-        alert('There was an error')
+        toast.show({
+          description: 'There was an error'
+        })
         return
       },
       onError: (error) => {
-        alert(error)
+        toast.show({
+          description: error
+        })
       }
     })
   }

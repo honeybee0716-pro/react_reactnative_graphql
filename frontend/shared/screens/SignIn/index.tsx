@@ -5,22 +5,18 @@ import {
   VStack,
   Text,
   Link,
-  Checkbox,
-  Divider,
   Image,
   useColorModeValue,
   IconButton,
   Icon,
-  Pressable,
   Center,
   Hidden,
   StatusBar,
   Stack,
-  Box
+  Box,
+  useToast
 } from 'native-base'
 import { AntDesign, Entypo } from '@expo/vector-icons'
-// import IconGoogle from './components/IconGoogle'
-// import IconFacebook from './components/IconFacebook'
 import FloatingLabelInput from './components/FloatingLabelInput'
 import { Link as SolitoLink } from 'solito/link'
 import { gql, useLazyQuery } from '@apollo/client'
@@ -40,6 +36,7 @@ const LOGIN_USER = gql`
 `
 
 export function SignInForm(props: any) {
+  const toast = useToast()
   const { push } = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -65,14 +62,20 @@ export function SignInForm(props: any) {
           return
         }
         if (loginUserWithPassword?.message) {
-          alert(loginUserWithPassword.message)
+          toast.show({
+            description: loginUserWithPassword.message
+          })
           return
         }
-        alert('There was an error')
+        toast.show({
+          description: 'There was an error'
+        })
         return
       },
       onError: (error) => {
-        alert(`${error.message}`)
+        toast.show({
+          description: `${error.message}`
+        })
       }
     })
   }

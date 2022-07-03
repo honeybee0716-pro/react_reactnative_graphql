@@ -7,13 +7,12 @@ import {
   Text,
   Image,
   HStack,
-  VStack,
   Input,
-  InputGroup,
   Button,
   Checkbox,
   Link,
-  Pressable
+  Pressable,
+  useToast
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
@@ -40,6 +39,7 @@ const CREATE_USER = gql`
 `
 
 export default function SignUp(props: any) {
+  const toast = useToast()
   const { push } = useRouter()
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -55,11 +55,15 @@ export default function SignUp(props: any) {
 
   const handleSignUp = async (e) => {
     if (!firstName || !lastName || !companyName || !email || !password) {
-      alert('Please fill all fields.')
+      toast.show({
+        description: 'Please fill all fields.'
+      })
       return
     }
     if (!checkbox) {
-      alert('You must agree to the terms and conditions.')
+      toast.show({
+        description: 'You must agree to the terms and conditions.'
+      })
       return
     }
     await AsyncStorage.removeItem('jwt')
@@ -80,14 +84,20 @@ export default function SignUp(props: any) {
           return
         }
         if (createUser?.message) {
-          alert(createUser.message)
+          toast.show({
+            description: createUser.message
+          })
           return
         }
-        alert('There was an error')
+        toast.show({
+          description: 'There was an error'
+        })
         return
       },
       onError: (error) => {
-        alert(`There was an error: ${error}`)
+        toast.show({
+          description: `There was an error: ${error}`
+        })
       }
     })
   }

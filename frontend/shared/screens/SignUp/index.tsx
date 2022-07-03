@@ -2,21 +2,19 @@ import React, { useState } from 'react'
 import {
   Button,
   Checkbox,
-  Image,
   HStack,
   VStack,
   Text,
   Link,
-  Divider,
   Icon,
   IconButton,
   useColorModeValue,
-  Pressable,
   Hidden,
   Center,
   StatusBar,
   Box,
-  Stack
+  Stack,
+  useToast
 } from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Link as SolitoLink } from 'solito/link'
@@ -40,6 +38,7 @@ const CREATE_USER = gql`
 
 function SignUpForm() {
   const { push } = useRouter()
+  const toast = useToast()
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [companyName, setCompanyName] = useState('')
@@ -69,14 +68,20 @@ function SignUpForm() {
           return
         }
         if (createUser?.message) {
-          alert(createUser.message)
+          toast.show({
+            description: createUser.message
+          })
           return
         }
-        alert('There was an error')
+        toast.show({
+          description: 'There was an error'
+        })
         return
       },
       onError: (error) => {
-        alert(`There was an error: ${error}`)
+        toast.show({
+          description: `There was an error: ${error}`
+        })
       }
     })
   }

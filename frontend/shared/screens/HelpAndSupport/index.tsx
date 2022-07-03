@@ -1,76 +1,25 @@
 import {
-  StatusBar,
   Box,
   Center,
-  Stack,
   Hidden,
   Text,
-  Image,
   HStack,
   VStack,
   Input,
-  InputGroup,
-  Button,
-  Checkbox,
-  Link,
-  Icon,
   Pressable,
-  Flex,
-  Select,
-  CheckIcon,
-  Slider,
-  Switch
+  useToast
 } from 'native-base'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { theme } from 'shared/styles/theme'
-import { Link as SolitoLink } from 'solito/link'
-import { Dimensions, View } from 'react-native'
-import { useRef, useState } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination } from 'swiper'
-import { BaseEditor, Descendant, createEditor } from 'slate'
-import { ReactEditor, Slate, Editable, withReact } from 'slate-react'
+import { BaseEditor } from 'slate'
+import { ReactEditor } from 'slate-react'
 import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
-import IconCredits from 'shared/components/icons/IconCredits'
-import IconCornerUpRight from 'shared/components/icons/IconCornerUpRight'
-import IconZap from 'shared/components/icons/IconZap'
-import IconDollarSign from 'shared/components/icons/IconDollarSign'
-import IconUploadCloud from 'shared/components/icons/IconUploadCloud'
-import IconBarChart from 'shared/components/icons/IconBarChart'
-import IconCompass from 'shared/components/icons/IconCompass'
-import IconDownload from 'shared/components/icons/IconDownload'
-import IconEye from 'shared/components/icons/IconEye'
-import IconClock from 'shared/components/icons/IconClock'
-import IconCalendar from 'shared/components/icons/IconCalendar'
-import IconShoppingCart from 'shared/components/icons/IconShoppingCart'
 import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
-import IconChevronDown from 'shared/components/icons/IconChevronDown'
-import IconPlayCircle from 'shared/components/icons/IconPlayCircle'
-import IconCreditCard from 'shared/components/icons/IconCreditCard'
-import IconLightcoin from 'shared/components/icons/IconLightcoin'
-import IconNFC from 'shared/components/icons/IconNFC'
-import IconEdit from 'shared/components/icons/IconEdit'
-import IconCornerLeftDown from 'shared/components/icons/IconCornerLeftDown'
-import IconMasterCard from 'shared/components/icons/IconMasterCard'
-import IconVISA from 'shared/components/icons/IconVISA'
 import IconMail from 'shared/components/icons/IconMail'
 import IconHelpCircle from 'shared/components/icons/IconHelpCircle'
-import IconUser from 'shared/components/icons/IconUser'
 import IconAlignLeft from 'shared/components/icons/IconAlignLeft'
-import IconFileText from 'shared/components/icons/IconFileText'
-import IconImage from 'shared/components/icons/IconImage'
-import IconX from 'shared/components/icons/IconX'
 import IconPen from 'shared/components/icons/IconPen'
 import IconPlus from 'shared/components/icons/IconPlus'
-import IconBook from 'shared/components/icons/IconBook'
-import IconLists from 'shared/components/icons/IconLists'
-import IconFlag from 'shared/components/icons/IconFlag'
-import IconFile from 'shared/components/icons/IconFile'
-import IconFacebookCircleWhite from 'shared/components/icons/IconFacebookCircleWhite'
 import IconLink from 'shared/components/icons/IconLink'
-import IconTwitterWhite from 'shared/components/icons/IconTwitterWhite'
-import IconInstagramWhite from 'shared/components/icons/IconInstagramWhite'
 import IconBold from 'shared/components/icons/IconBold'
 import IconItalic from 'shared/components/icons/IconItalic'
 import IconUnderline from 'shared/components/icons/IconUnderline'
@@ -82,7 +31,6 @@ import IconSmile from 'shared/components/icons/IconSmile'
 import IconInsertMore from 'shared/components/icons/IconInsertMore'
 import IconUndo from 'shared/components/icons/IconUndo'
 import IconRedo from 'shared/components/icons/IconRedo'
-import IconPaperClip from 'shared/components/icons/IconPaperClip'
 
 type CustomElement = { type: 'paragraph'; children: CustomText[] }
 type CustomText = { text: string }
@@ -96,6 +44,7 @@ declare module 'slate' {
 }
 
 export default function Credits() {
+  const toast = useToast()
   // const [editor] = useState(() => withReact(createEditor()))
 
   return (
@@ -287,9 +236,10 @@ export default function Credits() {
                   }}
                   onPress={() => {
                     setTimeout(() => {
-                      alert(
-                        'Feature is not active yet. Please email support at support@clienteye.com'
-                      )
+                      toast.show({
+                        description:
+                          'Feature is not active yet. Please email support at support@clienteye.com'
+                      })
                     }, 1000)
                   }}
                 >

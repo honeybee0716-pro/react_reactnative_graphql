@@ -1,13 +1,12 @@
 import React from 'react'
 import {
-  Box,
   HStack,
   Text,
   VStack,
   Center,
   Button,
   Pressable,
-  Divider
+  useToast
 } from 'native-base'
 import { useRouter } from 'solito/router'
 import { gql, useLazyQuery } from '@apollo/client'
@@ -182,6 +181,7 @@ export default function () {
     GET_STRIPE_CHECKOUT_LINK
   )
   const { push } = useRouter()
+  const toast = useToast()
 
   const handlePress = () => {
     if (tabName === 'Custom') {
@@ -199,7 +199,9 @@ export default function () {
           return
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }

@@ -11,7 +11,8 @@ import {
   Avatar,
   Heading,
   Spinner,
-  Modal
+  Modal,
+  useToast
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
 import React, { Fragment, useState } from 'react'
@@ -68,6 +69,7 @@ export default function ManageLists() {
   const [searchForLeads, { data, loading, error }] =
     useLazyQuery(SEARCH_FOR_LEADS)
   const [userSubscriptionData] = useRecoilState<any>(userSubscriptionDataState)
+  const toast = useToast()
 
   const handleSearch = async () => {
     setModalIsOpen(false)
@@ -251,7 +253,9 @@ export default function ManageLists() {
                                   theme.colors.shared.blueGentianFlower
                               }}
                               onPress={() =>
-                                alert('This feature is not active yet.')
+                                toast.show({
+                                  description: 'This feature is not active yet.'
+                                })
                               }
                             >
                               <Text
@@ -292,7 +296,9 @@ export default function ManageLists() {
                                 backgroundColor: theme.colors.shared.softerGray
                               }}
                               onPress={() =>
-                                alert('This feature is not active yet.')
+                                toast.show({
+                                  description: 'This feature is not active yet.'
+                                })
                               }
                             >
                               <Text

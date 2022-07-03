@@ -16,7 +16,8 @@ import {
   Pressable,
   IconButton,
   Icon,
-  useColorMode
+  useColorMode,
+  useToast
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AntDesign, Entypo } from '@expo/vector-icons'
@@ -48,6 +49,7 @@ const CONFIRM_FORGOT_PASSWORD = gql`
 
 export default function SignUp(props: any) {
   const { push } = useRouter()
+  const toast = useToast()
   const [email, setEmail] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [code, setCode] = useState('')
@@ -73,26 +75,36 @@ export default function SignUp(props: any) {
             return
           }
           if (forgotPassword?.message) {
-            alert(forgotPassword.message)
+            toast.show({
+              description: forgotPassword.message
+            })
             return
           }
-          alert('There was an error')
+          toast.show({
+            description: 'There was an error'
+          })
           return
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }
     if (step === 2) {
       if (!code) {
-        alert('Please enter a code.')
+        toast.show({
+          description: 'Please enter a code.'
+        })
         return
       }
       try {
         Number(code)
       } catch (e) {
-        alert('Please enter a valid code.')
+        toast.show({
+          description: 'Please enter a valid code.'
+        })
         return
       }
       step2({
@@ -106,16 +118,22 @@ export default function SignUp(props: any) {
         onCompleted: async ({ confirmForgotPasswordCode }) => {
           if (confirmForgotPasswordCode?.status === 'success') {
             if (confirmForgotPasswordCode?.message) {
-              alert(confirmForgotPasswordCode.message)
+              toast.show({
+                description: confirmForgotPasswordCode.message
+              })
             }
             push('/sign-in')
             return
           }
-          alert('There was an error')
+          toast.show({
+            description: 'There was an error'
+          })
           return
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }

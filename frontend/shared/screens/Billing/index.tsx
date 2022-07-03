@@ -7,7 +7,8 @@ import {
   HStack,
   VStack,
   Pressable,
-  Spinner
+  Spinner,
+  useToast
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
 import { Fragment } from 'react'
@@ -58,6 +59,7 @@ const LoadingSpinner = () => {
 
 export default function Billing() {
   const { push } = useRouter()
+  const toast = useToast()
   const [cancelSubscription, { loading }] = useLazyQuery(CANCEL_SUBSCRIPTION)
   const {
     data: getUserSubscriptionDataResult,
@@ -82,7 +84,9 @@ export default function Billing() {
           }
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }
