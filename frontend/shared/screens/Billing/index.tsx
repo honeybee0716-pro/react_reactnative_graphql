@@ -14,7 +14,7 @@ import { theme } from 'shared/styles/theme'
 import { Fragment, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
-import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 import IconDownload from 'shared/components/icons/IconDownload'
 import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
 import IconCreditCard from 'shared/components/icons/IconCreditCard'
@@ -39,26 +39,6 @@ const CANCEL_SUBSCRIPTION = gql`
     }
   }
 `
-
-const GET_USER_SUBSCRIPTION_DATA = gql`
-  query GetUserSubscriptionData {
-    getUserSubscriptionData {
-      status
-      message
-      stripeCustomer
-      isInTrial
-      redirectToPricingPage
-    }
-  }
-`
-
-const LoadingSpinner = () => {
-  return (
-    <HStack space={8} flex="1" justifyContent="center" alignItems="center">
-      <Spinner size="lg" color={theme.colors.shared.brightBlue} />
-    </HStack>
-  )
-}
 
 export default function Billing() {
   const { push } = useRouter()
@@ -95,7 +75,7 @@ export default function Billing() {
         <Prompt
           title="Cancel Subscription"
           description="This will take effect immediately. Are you sure you want to cancel your subscription?"
-          cancelText="Cancel"
+          cancelText="Nevermind"
           submitText="Confirm"
           onCancel={onClose}
           onSubmit={confirmCancelSubscription}

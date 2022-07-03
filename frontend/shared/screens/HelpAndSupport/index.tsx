@@ -12,7 +12,7 @@ import {
 import { theme } from 'shared/styles/theme'
 import { BaseEditor } from 'slate'
 import { ReactEditor } from 'slate-react'
-import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
 import IconMail from 'shared/components/icons/IconMail'
 import IconHelpCircle from 'shared/components/icons/IconHelpCircle'

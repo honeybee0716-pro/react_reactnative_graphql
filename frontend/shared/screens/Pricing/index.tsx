@@ -11,7 +11,7 @@ import {
 import { useRouter } from 'solito/router'
 import { gql, useLazyQuery } from '@apollo/client'
 import { theme } from 'shared/styles/theme'
-import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 
 const GET_STRIPE_CHECKOUT_LINK = gql`
   query CreateStripeCheckoutPage($input: createStripeCheckoutPageInput) {

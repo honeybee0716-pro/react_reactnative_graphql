@@ -36,7 +36,7 @@ const loginUserWithMagicLink = async (parent: null, args: any) => {
     {id: foundUser.data.id},
     <string>process.env.JWT_SECRET,
     {
-      expiresIn: '1d',
+      expiresIn: '7d',
     },
   );
 

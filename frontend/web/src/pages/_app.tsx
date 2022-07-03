@@ -13,6 +13,7 @@ import apolloClient from '../lib/apolloClient'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import { RecoilRoot } from 'recoil'
+import { DataProvider } from 'shared/DataProvider'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -28,20 +29,22 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <RecoilRoot>
         <ApolloProvider client={apolloClient}>
-          <SafeAreaProvider>
-            <NativeBaseProvider
-              theme={extendTheme({
-                fonts: {
-                  body: 'Poppins',
-                  card: 'Nunito',
-                  card_title: 'Sk-Modernist, sans-serif',
-                  card_name: 'AirbnbCereal_W_Md'
-                }
-              })}
-            >
-              <Component {...pageProps} />
-            </NativeBaseProvider>
-          </SafeAreaProvider>
+          <DataProvider>
+            <SafeAreaProvider>
+              <NativeBaseProvider
+                theme={extendTheme({
+                  fonts: {
+                    body: 'Poppins',
+                    card: 'Nunito',
+                    card_title: 'Sk-Modernist, sans-serif',
+                    card_name: 'AirbnbCereal_W_Md'
+                  }
+                })}
+              >
+                <Component {...pageProps} />
+              </NativeBaseProvider>
+            </SafeAreaProvider>
+          </DataProvider>
         </ApolloProvider>
       </RecoilRoot>
     </>

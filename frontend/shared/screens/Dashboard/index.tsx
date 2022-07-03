@@ -16,7 +16,7 @@ import {
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
 import React, { Fragment, useState } from 'react'
-import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 import IconDownload from 'shared/components/icons/IconDownload'
 import IconCalendar from 'shared/components/icons/IconCalendar'
 import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
@@ -122,7 +122,7 @@ export default function ManageLists() {
 
   React.useEffect(() => {
     handleSearch()
-  }, [])
+  }, [firstName, lastName, companyName, jobTitle])
 
   React.useEffect(() => {
     if (data?.searchForLeads?.leads) {
@@ -133,8 +133,8 @@ export default function ManageLists() {
   const enableExportButton = exportLeads.length
 
   const hideLeads =
-    !userSubscriptionData?.activeSubscription &&
-    !userSubscriptionData?.isInTrial
+    userSubscriptionData?.activeSubscription === null &&
+    userSubscriptionData?.isInTrial === false
 
   return (
     <>
