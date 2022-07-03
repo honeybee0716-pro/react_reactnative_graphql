@@ -158,6 +158,11 @@ export default function ManageLists() {
 
   const enableExportButton = exportLeads.length
 
+  const hideLeads =
+    !getUserSubscriptionDataResult?.getUserSubscriptionData
+      ?.activeSubscription &&
+    !getUserSubscriptionDataResult?.getUserSubscriptionData?.isInTrial
+
   return (
     <>
       <DashboardLayout>
@@ -197,7 +202,9 @@ export default function ManageLists() {
                     fontWeight="medium"
                     fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
                   >
-                    Website Visitors
+                    {hideLeads
+                      ? "Your leads are hidden because you don't have an active subscription."
+                      : 'Website Visitors'}
                   </Text>
                   <Modal
                     isOpen={modalIsOpen}
@@ -956,7 +963,7 @@ export default function ManageLists() {
                     </Pressable>
                   </Hidden>
                   <Hidden till="sm">
-                    {enableExportButton ? (
+                    {enableExportButton && !hideLeads ? (
                       <CSVLink
                         data={exportLeads}
                         filename={'clienteye-export.csv'}
@@ -1074,96 +1081,101 @@ export default function ManageLists() {
                         />
                       </Box>
                     </HStack>
-                    {leads?.map((l, i) => (
-                      <Pressable
-                        display="flex"
-                        flexDirection="row"
-                        key={i}
-                        marginTop="3"
-                        borderWidth="1"
-                        borderColor={theme.colors.shared.softGray}
-                        borderRadius="md"
-                        paddingX="3"
-                        paddingY="3"
-                        alignItems="center"
-                        backgroundColor={theme.colors.shared.aliceBlue}
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softerGray
-                        }}
-                        onPress={() => push(`/lead/${l.id}`)}
-                      >
-                        <Box w="5%">
-                          <Avatar
-                            source={{
-                              uri: l.profileImageURL
-                            }}
-                          >
-                            {`${l.firstName?.charAt(0) || ''}${
-                              l.lastName?.charAt(0) || ''
-                            }`}
-                          </Avatar>
-                        </Box>
-                        <Box w="12%">
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            isTruncated
-                            maxW="145"
-                          >
-                            {`${l.firstName} ${l.lastName}`}
-                          </Text>
-                        </Box>
-                        <Box w="27%">
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            isTruncated
-                            maxW="315"
-                          >
-                            {l.title}
-                          </Text>
-                        </Box>
-                        <Box w="20%">
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            isTruncated
-                            maxW="240"
-                          >
-                            {l.companyName}
-                          </Text>
-                        </Box>
-                        <Box w="20.5%">
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            isTruncated
-                            maxW="250"
-                          >
-                            {l.email || 'Unknown'}
-                          </Text>
-                        </Box>
-                        <Box w="14%">
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            isTruncated
-                            maxW="150"
-                          >
-                            {l.phone || 'Unknown'}
-                          </Text>
-                        </Box>
-                        <Box w="16%">
-                          <Pressable>
-                            <Checkbox
-                              value=""
-                              isChecked={exportLeads.includes(l)}
-                              onChange={(value) => exportLead(value, l)}
-                            />
-                          </Pressable>
-                        </Box>
-                      </Pressable>
-                    ))}
+                    {leads?.map((l, i) => {
+                      return (
+                        <Pressable
+                          disabled={hideLeads}
+                          display="flex"
+                          flexDirection="row"
+                          key={i}
+                          marginTop="3"
+                          borderWidth="1"
+                          borderColor={theme.colors.shared.softGray}
+                          borderRadius="md"
+                          paddingX="3"
+                          paddingY="3"
+                          alignItems="center"
+                          backgroundColor={theme.colors.shared.aliceBlue}
+                          _hover={{
+                            backgroundColor: theme.colors.shared.softerGray
+                          }}
+                          onPress={() => push(`/lead/${l.id}`)}
+                        >
+                          <Box w="5%">
+                            <Avatar
+                              source={{
+                                uri: l.profileImageURL
+                              }}
+                            >
+                              {`${l.firstName?.charAt(0) || ''}${
+                                l.lastName?.charAt(0) || ''
+                              }`}
+                            </Avatar>
+                          </Box>
+                          <Box w="12%">
+                            <Text
+                              fontSize="sm"
+                              fontWeight="medium"
+                              isTruncated
+                              maxW="145"
+                            >
+                              {hideLeads
+                                ? 'Hidden'
+                                : `${l.firstName} ${l.lastName}`}
+                            </Text>
+                          </Box>
+                          <Box w="27%">
+                            <Text
+                              fontSize="sm"
+                              fontWeight="medium"
+                              isTruncated
+                              maxW="315"
+                            >
+                              {hideLeads ? 'Hidden' : l.title}
+                            </Text>
+                          </Box>
+                          <Box w="20%">
+                            <Text
+                              fontSize="sm"
+                              fontWeight="medium"
+                              isTruncated
+                              maxW="240"
+                            >
+                              {hideLeads ? 'Hidden' : l.companyName}
+                            </Text>
+                          </Box>
+                          <Box w="20.5%">
+                            <Text
+                              fontSize="sm"
+                              fontWeight="medium"
+                              isTruncated
+                              maxW="250"
+                            >
+                              {hideLeads ? 'Hidden' : l.email || 'Unknown'}
+                            </Text>
+                          </Box>
+                          <Box w="14%">
+                            <Text
+                              fontSize="sm"
+                              fontWeight="medium"
+                              isTruncated
+                              maxW="150"
+                            >
+                              {hideLeads ? 'Hidden' : l.phone || 'Unknown'}
+                            </Text>
+                          </Box>
+                          <Box w="16%">
+                            <Pressable>
+                              <Checkbox
+                                value=""
+                                isChecked={exportLeads.includes(l)}
+                                onChange={(value) => exportLead(value, l)}
+                              />
+                            </Pressable>
+                          </Box>
+                        </Pressable>
+                      )
+                    })}
                   </Box>
                 </Hidden>
                 <Hidden from="sm">
