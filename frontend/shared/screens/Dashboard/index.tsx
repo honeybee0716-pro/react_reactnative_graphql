@@ -31,22 +31,10 @@ import IconList from 'shared/components/icons/IconList'
 import IconGroup from 'shared/components/icons/IconGroup'
 import IconSearch from 'shared/components/icons/IconSearch'
 import { useRouter } from 'solito/router'
-import { gql, useQuery, useLazyQuery } from '@apollo/client'
+import { gql, useLazyQuery } from '@apollo/client'
 import { CSVLink } from 'react-csv'
-
-const GET_USER_SUBSCRIPTION_DATA = gql`
-  query Query {
-    getUserSubscriptionData {
-      message
-      status
-      stripeCustomer
-      activeSubscription
-      remainingCredits
-      isInTrial
-      redirectToPricingPage
-    }
-  }
-`
+import { useRecoilState } from 'recoil'
+import { userSubscriptionDataState } from '../../state'
 
 const SEARCH_FOR_LEADS = gql`
   query SearchForLeads($input: searchForLeadsInput) {
@@ -77,15 +65,9 @@ export default function ManageLists() {
   const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(false)
   const jobTitle = React.useRef<any>()
   const { push } = useRouter()
-  const {
-    data: getUserSubscriptionDataResult,
-    error: getUserSubscriptionDataError,
-    loading: getUserSubscriptionDataLoading
-  } = useQuery(GET_USER_SUBSCRIPTION_DATA, {
-    fetchPolicy: 'network-only'
-  })
   const [searchForLeads, { data, loading, error }] =
     useLazyQuery(SEARCH_FOR_LEADS)
+  const [userSubscriptionData] = useRecoilState<any>(userSubscriptionDataState)
 
   const handleSearch = async () => {
     setModalIsOpen(false)
@@ -129,22 +111,12 @@ export default function ManageLists() {
   }
 
   React.useEffect(() => {
-    if (
-      !!getUserSubscriptionDataError ||
-      getUserSubscriptionDataResult?.getUserSubscriptionData
-        ?.redirectToPricingPage
-    ) {
-      // push('/pricing')
-      return
-    }
-
-    if (
-      getUserSubscriptionDataResult?.getUserSubscriptionData
-        ?.redirectToPricingPage === false
-    ) {
+    if (userSubscriptionData?.redirectToPricingPage) {
+      push('/pricing')
+    } else {
       setFinishedVerifyingAccess(true)
     }
-  }, [getUserSubscriptionDataResult, getUserSubscriptionDataError])
+  }, [userSubscriptionData])
 
   React.useEffect(() => {
     handleSearch()
@@ -159,9 +131,8 @@ export default function ManageLists() {
   const enableExportButton = exportLeads.length
 
   const hideLeads =
-    !getUserSubscriptionDataResult?.getUserSubscriptionData
-      ?.activeSubscription &&
-    !getUserSubscriptionDataResult?.getUserSubscriptionData?.isInTrial
+    !userSubscriptionData?.activeSubscription &&
+    !userSubscriptionData?.isInTrial
 
   return (
     <>

@@ -13,7 +13,6 @@ import {
   Tooltip
 } from 'native-base'
 import React from 'react'
-import { Dimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
@@ -24,7 +23,9 @@ import IconHelpCircle from 'shared/components/icons/IconHelpCircle'
 import IconX from 'shared/components/icons/IconX'
 import { useRouter } from 'solito/router'
 import AsyncStorage from '@react-native-community/async-storage'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useLazyQuery } from '@apollo/client'
+import { useRecoilState } from 'recoil'
+import { userSubscriptionDataState } from '../state'
 
 const GET_USER_SUBSCRIPTION_DATA = gql`
   query Query {
@@ -40,57 +41,71 @@ const GET_USER_SUBSCRIPTION_DATA = gql`
   }
 `
 
-function MenuComponent() {
-  const [shouldOverlapWithTrigger] = React.useState(false)
-  const [position, setPosition] = React.useState('auto')
+// function MenuComponent() {
+//   const [shouldOverlapWithTrigger] = React.useState(false)
+//   const [position, setPosition] = React.useState('auto')
 
-  return (
-    <VStack space={6} alignSelf="flex-start" w="100%">
-      <Menu
-        w="160"
-        shouldOverlapWithTrigger={shouldOverlapWithTrigger} // @ts-ignore
-        placement={position == 'auto' ? undefined : position}
-        trigger={(triggerProps) => {
-          return (
-            <Button variant="unstyled" {...triggerProps}>
-              <Box
-                w={{ base: '35px', sm: '12' }}
-                h={{ base: '35px', sm: '12' }}
-              >
-                <Avatar
-                  source={{
-                    uri: undefined
-                    // uri: "https://media-exp1.licdn.com/dms/image/C5603AQH7LFIlwjId2g/profile-displayphoto-shrink_100_100/0/1517410056178?e=1655942400&v=beta&t=h6GNGaSXOzOrdXoMyBVV906rm7NtIFS-MtPEgLWqWQ8"
-                  }}
-                  w="100%"
-                  h="100%"
-                >
-                  {`${'J' || ''}${'F' || ''}`}
-                </Avatar>
-              </Box>
-            </Button>
-          )
-        }}
-      >
-        <SolitoLink href="/sign-out">
-          <Menu.Item>Sign out</Menu.Item>
-        </SolitoLink>
-      </Menu>
-    </VStack>
-  )
-}
+//   return (
+//     <VStack space={6} alignSelf="flex-start" w="100%">
+//       <Menu
+//         w="160"
+//         shouldOverlapWithTrigger={shouldOverlapWithTrigger} // @ts-ignore
+//         placement={position == 'auto' ? undefined : position}
+//         trigger={(triggerProps) => {
+//           return (
+//             <Button variant="unstyled" {...triggerProps}>
+//               <Box
+//                 w={{ base: '35px', sm: '12' }}
+//                 h={{ base: '35px', sm: '12' }}
+//               >
+//                 <Avatar
+//                   source={{
+//                     uri: undefined
+//                     // uri: "https://media-exp1.licdn.com/dms/image/C5603AQH7LFIlwjId2g/profile-displayphoto-shrink_100_100/0/1517410056178?e=1655942400&v=beta&t=h6GNGaSXOzOrdXoMyBVV906rm7NtIFS-MtPEgLWqWQ8"
+//                   }}
+//                   w="100%"
+//                   h="100%"
+//                 >
+//                   {`${'J' || ''}${'F' || ''}`}
+//                 </Avatar>
+//               </Box>
+//             </Button>
+//           )
+//         }}
+//       >
+//         <SolitoLink href="/sign-out">
+//           <Menu.Item>Sign out</Menu.Item>
+//         </SolitoLink>
+//       </Menu>
+//     </VStack>
+//   )
+// }
 
 const DashboardLayout: React.FC = ({ children }) => {
   const { push } = useRouter()
   const [route, setRoute] = React.useState<string | undefined>()
-  const { data, error, loading } = useQuery(GET_USER_SUBSCRIPTION_DATA, {
-    fetchPolicy: 'network-only'
-  })
+  const [getUserSubscriptionData, { data, loading }] = useLazyQuery(
+    GET_USER_SUBSCRIPTION_DATA,
+    {
+      fetchPolicy: 'network-only'
+    }
+  )
+  const [userSubscriptionData, setUserSubscriptionData] = useRecoilState<any>(
+    userSubscriptionDataState
+  )
 
   React.useEffect(() => {
-    // alert(document.location.pathname)
     setRoute(document.location.pathname)
+    ;(async () => {
+      await getUserSubscriptionData()
+    })()
   }, [])
+
+  React.useEffect(() => {
+    if (data?.getUserSubscriptionData) {
+      setUserSubscriptionData(data.getUserSubscriptionData)
+    }
+  }, [data])
 
   return (
     <>
@@ -376,7 +391,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                     <IconCredits />
                   </Box>
                   <Text color="white" fontWeight="semibold">
-                    {data?.getUserSubscriptionData?.remainingCredits}
+                    {userSubscriptionData?.remainingCredits}
                   </Text>
                 </Pressable>
               </Center>
