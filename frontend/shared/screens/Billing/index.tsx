@@ -11,7 +11,7 @@ import {
   useToast
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
@@ -27,6 +27,9 @@ import IconPlus from 'shared/components/icons/IconPlus'
 import IconX from 'shared/components/icons/IconX'
 import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import { useRouter } from 'solito/router'
+import { Prompt } from '../../components/Prompt/Prompt'
+import { useRecoilState } from 'recoil'
+import { userSubscriptionDataState } from '../../state'
 
 const CANCEL_SUBSCRIPTION = gql`
   query CancelSubscription {
@@ -61,46 +64,45 @@ export default function Billing() {
   const { push } = useRouter()
   const toast = useToast()
   const [cancelSubscription, { loading }] = useLazyQuery(CANCEL_SUBSCRIPTION)
-  const {
-    data: getUserSubscriptionDataResult,
-    error: getUserSubscriptionDataError,
-    loading: getUserSubscriptionDataLoading
-  } = useQuery(GET_USER_SUBSCRIPTION_DATA, {
-    fetchPolicy: 'network-only'
-  })
+  const [isOpen, setIsOpen] = useState(false)
+  const onClose = () => setIsOpen(false)
+  const [userSubscriptionData] = useRecoilState<any>(userSubscriptionDataState)
 
   const handleCancelSubscription = () => {
-    const confirm = window.confirm(
-      'Are you sure you want to cancel your subscription?'
-    )
-
-    if (confirm) {
-      cancelSubscription({
-        onCompleted: async ({ cancelSubscription }) => {
-          if (cancelSubscription.status === 'success') {
-            push('/goodbye')
-
-            return
-          }
-        },
-        onError: (error) => {
-          toast.show({
-            description: `There was an error: ${error}`
-          })
-        }
-      })
-    }
+    setIsOpen(true)
   }
 
-  if (getUserSubscriptionDataError) {
-    return <Text>Error. Please try again.</Text>
+  const confirmCancelSubscription = () => {
+    cancelSubscription({
+      onCompleted: async ({ cancelSubscription }) => {
+        if (cancelSubscription.status === 'success') {
+          push('/goodbye')
+
+          return
+        }
+      },
+      onError: (error) => {
+        toast.show({
+          description: `There was an error: ${error}`
+        })
+      }
+    })
   }
 
   return (
     <>
+      {isOpen ? (
+        <Prompt
+          title="Cancel Subscription"
+          description="This will take effect immediately. Are you sure you want to cancel your subscription?"
+          cancelText="Cancel"
+          submitText="Confirm"
+          onCancel={onClose}
+          onSubmit={confirmCancelSubscription}
+        />
+      ) : null}
       <DashboardLayout>
-        {getUserSubscriptionDataLoading ? <LoadingSpinner /> : null}
-        {getUserSubscriptionDataResult ? (
+        {userSubscriptionData ? (
           <>
             <Box flexDirection={{ base: 'column-reverse', lg: 'row' }}>
               {/* Billing information */}
@@ -367,10 +369,7 @@ export default function Billing() {
                   </Box>
                 </Hidden>
                 <Pressable
-                  disabled={
-                    getUserSubscriptionDataResult?.getUserSubscriptionData
-                      ?.isInTrial
-                  }
+                  disabled={userSubscriptionData?.isInTrial}
                   onPress={handleCancelSubscription}
                 >
                   <Box
@@ -389,8 +388,7 @@ export default function Billing() {
                     borderColor={theme.colors.shared.softer3Gray}
                   >
                     <HStack alignItems="center" marginBottom="4">
-                      {getUserSubscriptionDataResult?.getUserSubscriptionData
-                        ?.isInTrial ? null : (
+                      {userSubscriptionData?.isInTrial ? null : (
                         <Center
                           backgroundColor={theme.colors.shared.redOrange_20}
                           paddingY="2"
@@ -408,8 +406,7 @@ export default function Billing() {
                         fontWeight="medium"
                         fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
                       >
-                        {getUserSubscriptionDataResult?.getUserSubscriptionData
-                          ?.isInTrial
+                        {userSubscriptionData?.isInTrial
                           ? 'You are on a free trial plan. You can upgrade your plan at anytime.'
                           : 'Cancel subscription'}
                       </Text>
@@ -531,6 +528,20 @@ export default function Billing() {
             <Box flexDirection={{ base: 'column-reverse', lg: 'row' }}>
               {/* Billing information */}
               <Box flex="1">
+                <Box
+                  marginTop={{ base: '0', lg: '0' }}
+                  marginLeft={{ base: '3', lg: '5' }}
+                  marginRight={{ base: '3', lg: '0' }}
+                  paddingX={{ base: '0', lg: '5' }}
+                  paddingTop={{ base: '0', lg: '5' }}
+                  paddingBottom={{ base: '0', lg: '4' }}
+                  borderTopRadius={{ base: 'none', sm: '2xl' }}
+                  borderBottomRadius={{ base: 'none', sm: '2xl', lg: 'none' }}
+                  backgroundColor={{ base: 'none', lg: 'white' }}
+                  borderWidth={{ base: '0', lg: '1' }}
+                  borderBottomWidth={{ base: 'none', sm: '1', lg: '0' }}
+                  borderColor={theme.colors.shared.softer3Gray}
+                ></Box>
                 {/* Saved Card for phone view */}
                 <Hidden from="sm">
                   <Box flex="1" w={{ base: 'full', sm: 'auto' }}>
@@ -778,7 +789,7 @@ export default function Billing() {
                     </Box>
                   </Box>
                 </Hidden>
-                {/* <Pressable onPress={() => push('/pricing')}>
+                <Pressable onPress={() => push('/pricing')}>
                   <Box
                     marginBottom={{ base: '1', lg: '5' }}
                     marginLeft={{ base: '3', lg: '5' }}
@@ -795,8 +806,7 @@ export default function Billing() {
                     borderColor={theme.colors.shared.softer3Gray}
                   >
                     <HStack alignItems="center" marginBottom="4">
-                      {getUserSubscriptionDataResult?.getUserSubscriptionData
-                        ?.isInTrial ? null : (
+                      {userSubscriptionData?.isInTrial ? null : (
                         <Center
                           backgroundColor={theme.colors.shared.lightGreen2}
                           paddingY="2"
@@ -923,7 +933,7 @@ export default function Billing() {
                       marginTop={{ base: '4', sm: '5' }}
                     ></HStack>
                   </Box>
-                </Pressable> */}
+                </Pressable>
               </Box>
               <Box
                 width={{ base: 'auto', lg: '20px' }}
