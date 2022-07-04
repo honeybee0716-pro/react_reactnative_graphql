@@ -21,6 +21,9 @@ import IconLink from 'shared/components/icons/IconLink'
 import { gql, useLazyQuery } from '@apollo/client'
 import { useRouter } from 'solito/router'
 import AsyncStorage from '@react-native-community/async-storage'
+import IconMail from 'shared/components/icons/IconMail'
+import IconLock from 'shared/components/icons/IconLock'
+import IconEye from 'shared/components/icons/IconEye'
 
 const LOGIN_USER = gql`
   query LoginUserWithPassword($input: loginUserWithPasswordInput) {
@@ -257,21 +260,20 @@ export default function SignUp(props: any) {
                           fontSize={{ base: 'xs', sm: 'md' }}
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="eg: johndoe@gmail.com"
+                          placeholder="Email"
                           onChangeText={(text) => setEmail(text)}
                         />
                         <Box
                           position="absolute"
                           left="4"
+                          top="3.5"
                           h="full"
                           flexDir="row"
                           alignItems="center"
+                          height="24px"
+                          width="24px"
                         >
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/assets/icons/mail 1.png')}
-                          />
+                          <IconMail color="#6E767E" />
                         </Box>
                       </Box>
                       {/* input password */}
@@ -289,21 +291,20 @@ export default function SignUp(props: any) {
                           fontSize={{ base: 'xs', sm: 'md' }}
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="Enter your password"
+                          placeholder="Password"
                           onChangeText={(text) => setPassword(text)}
                         />
                         <Box
                           position="absolute"
                           left="4"
+                          top="3.5"
                           h="full"
                           flexDir="row"
                           alignItems="center"
+                          height="24px"
+                          width="24px"
                         >
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/assets/icons/lock 1.png')}
-                          />
+                          <IconLock color="#6E767E" />
                         </Box>
                         <Box
                           position="absolute"
@@ -325,11 +326,9 @@ export default function SignUp(props: any) {
                               setShowPass(!showPass)
                             }}
                           >
-                            <Image
-                              w="4"
-                              h="4"
-                              source={require('shared/assets/icons/eye (1) 1.png')}
-                            />
+                            <Box>
+                              <IconEye color="#6E767E" />
+                            </Box>
                           </Button>
                         </Box>
                       </Box>

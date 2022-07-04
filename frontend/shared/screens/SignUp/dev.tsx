@@ -379,7 +379,7 @@ export default function SignUp(props: any) {
                           fontSize={{ base: 'xs', sm: 'md' }}
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="johndoe@gmail.com"
+                          placeholder="Email"
                           onChangeText={(text) => setEmail(text)}
                         />
                         <Box
@@ -410,7 +410,7 @@ export default function SignUp(props: any) {
                           fontSize={{ base: 'xs', sm: 'md' }}
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="Enter your password"
+                          placeholder="Password"
                           onChangeText={(text) => setPassword(text)}
                         />
                         <Box
