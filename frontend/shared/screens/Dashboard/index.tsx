@@ -1055,6 +1055,7 @@ export default function ManageLists() {
                         <Checkbox
                           value=""
                           onChange={(value) => exportAllLeads(value)}
+                          accessibilityLabel="Select all leads"
                         />
                       </Box>
                     </HStack>
@@ -1147,6 +1148,7 @@ export default function ManageLists() {
                                 value=""
                                 isChecked={exportLeads.includes(l)}
                                 onChange={(value) => exportLead(value, l)}
+                                accessibilityLabel="Export this lead"
                               />
                             </Pressable>
                           </Box>

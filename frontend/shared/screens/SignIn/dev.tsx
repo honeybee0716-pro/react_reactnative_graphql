@@ -24,6 +24,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 import IconMail from 'shared/components/icons/IconMail'
 import IconLock from 'shared/components/icons/IconLock'
 import IconEye from 'shared/components/icons/IconEye'
+import { useRecoilState } from 'recoil'
+import { jwtState } from '../../state'
 
 const LOGIN_USER = gql`
   query LoginUserWithPassword($input: loginUserWithPasswordInput) {
@@ -42,10 +44,12 @@ export default function SignUp(props: any) {
   const [showPass, setShowPass] = useState(false)
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER)
   const toast = useToast()
+  const [jwt, setJWT] = useRecoilState<any>(jwtState)
 
   const handleSignIn = async () => {
     await AsyncStorage.removeItem('jwt')
     loginUser({
+      fetchPolicy: 'network-only',
       variables: {
         input: {
           email,
@@ -58,6 +62,7 @@ export default function SignUp(props: any) {
           loginUserWithPassword?.jwt
         ) {
           await AsyncStorage.setItem('jwt', loginUserWithPassword.jwt)
+          setJWT(loginUserWithPassword.jwt)
           push('/home')
           return
         }

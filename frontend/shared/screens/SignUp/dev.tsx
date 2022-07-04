@@ -27,6 +27,8 @@ import IconUser from 'shared/components/icons/IconUser'
 import IconMail from 'shared/components/icons/IconMail'
 import IconLock from 'shared/components/icons/IconLock'
 import IconEye from 'shared/components/icons/IconEye'
+import { useRecoilState } from 'recoil'
+import { jwtState } from '../../state'
 
 const CREATE_USER = gql`
   mutation CreateUser($input: createUserInput!) {
@@ -50,6 +52,7 @@ export default function SignUp(props: any) {
   const [checkbox, setCheckbox] = useState(false)
   const [showPass, setShowPass] = useState(false)
   const [showConfirmPass, setShowConfirmPass] = useState(false)
+  const [jwt, setJWT] = useRecoilState<any>(jwtState)
 
   const [createUser, { loading }] = useMutation(CREATE_USER)
 
@@ -68,6 +71,7 @@ export default function SignUp(props: any) {
     }
     await AsyncStorage.removeItem('jwt')
     createUser({
+      fetchPolicy: 'network-only',
       variables: {
         input: {
           firstName,
@@ -80,6 +84,7 @@ export default function SignUp(props: any) {
       onCompleted: async ({ createUser }) => {
         if (createUser?.status === 'success' && createUser?.jwt) {
           await AsyncStorage.setItem('jwt', createUser.jwt)
+          setJWT(createUser.jwt)
           push('/otp')
           return
         }

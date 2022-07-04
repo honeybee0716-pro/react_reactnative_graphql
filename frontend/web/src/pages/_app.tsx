@@ -14,6 +14,7 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import { RecoilRoot } from 'recoil'
 import { DataProvider } from 'shared/DataProvider'
+import { DebugObserver } from 'shared/state'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -28,6 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <RecoilRoot>
+        <DebugObserver />
         <ApolloProvider client={apolloClient}>
           <DataProvider>
             <SafeAreaProvider>

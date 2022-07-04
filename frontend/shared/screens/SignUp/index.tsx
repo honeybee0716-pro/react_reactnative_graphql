@@ -25,6 +25,8 @@ import { AntDesign, Entypo } from '@expo/vector-icons'
 import FloatingLabelInput from './components/FloatingLabelInput'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { gql, useMutation } from '@apollo/client'
+import { useRecoilState } from 'recoil'
+import { jwtState } from '../../state'
 
 const CREATE_USER = gql`
   mutation CreateUser($input: createUserInput!) {
@@ -47,6 +49,7 @@ function SignUpForm() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPass, setShowPass] = React.useState(false)
   const [showConfirmPass, setShowConfirmPass] = React.useState(false)
+  const [jwt, setJWT] = useRecoilState<any>(jwtState)
 
   const [createUser, { loading }] = useMutation(CREATE_USER)
 
@@ -64,6 +67,7 @@ function SignUpForm() {
       onCompleted: async ({ createUser }) => {
         if (createUser?.status === 'success' && createUser?.jwt) {
           await AsyncStorage.setItem('jwt', createUser.jwt)
+          setJWT(createUser.jwt)
           push('/otp')
           return
         }

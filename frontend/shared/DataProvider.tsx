@@ -3,7 +3,7 @@ import React from 'react'
 // import AsyncStorage from '@react-native-community/async-storage'
 import { gql, useLazyQuery } from '@apollo/client'
 import { useRecoilState } from 'recoil'
-import { userSubscriptionDataState } from './state'
+import { userSubscriptionDataState, jwtState } from './state'
 
 const GET_USER_SUBSCRIPTION_DATA = gql`
   query Query {
@@ -31,6 +31,7 @@ export const DataProvider = ({ children }) => {
   const [userSubscriptionData, setUserSubscriptionData] = useRecoilState<any>(
     userSubscriptionDataState
   )
+  const [jwt, setJWT] = useRecoilState<any>(jwtState)
 
   React.useEffect(() => {
     // setRoute(document.location.pathname);
@@ -44,6 +45,14 @@ export const DataProvider = ({ children }) => {
       setUserSubscriptionData(data.getUserSubscriptionData)
     }
   }, [data])
+
+  React.useEffect(() => {
+    if (jwt) {
+      ;(async () => {
+        getUserSubscriptionData()
+      })()
+    }
+  }, [jwt])
 
   return children
 }

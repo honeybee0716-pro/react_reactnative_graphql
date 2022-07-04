@@ -16,7 +16,7 @@ const IconEye: React.FC<MyProps> = ({ color = '#2F2F2F', sizeScale = 1 }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1_220)">
+      <g clipPath="url(#clip0_1_220)">
         <path
           d="M1.29419 6C1.29419 6 3.31632 2 6.85506 2C10.3938 2 12.4159 6 12.4159 6C12.4159 6 10.3938 10 6.85506 10C3.31632 10 1.29419 6 1.29419 6Z"
           stroke={color}

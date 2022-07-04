@@ -487,7 +487,7 @@ export default function Credits() {
                 <Box>
                   <HStack paddingX="3" paddingY="3">
                     <Box w="5%">
-                      <Checkbox value="" />
+                      <Checkbox value="" accessibilityLabel="Date" />
                     </Box>
                     <Box w="24%">
                       <Text fontSize="sm" fontWeight="medium">
@@ -540,7 +540,7 @@ export default function Credits() {
                       alignItems="center"
                     >
                       <Box w="5%">
-                        <Checkbox value="" />
+                        <Checkbox value="" accessibilityLabel="unknown" />
                       </Box>
                       <Box w="24%">
                         <Text fontSize="sm" fontWeight="medium">
