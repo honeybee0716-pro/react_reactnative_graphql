@@ -309,6 +309,8 @@ const DashboardLayout: React.FC = ({ children }) => {
                   rounded="full"
                   justifyContent="center"
                   onPress={() => push('/billing')}
+                  height="40px"
+                  width="105px"
                 >
                   <Box w="21px" marginRight="2">
                     <IconCredits />

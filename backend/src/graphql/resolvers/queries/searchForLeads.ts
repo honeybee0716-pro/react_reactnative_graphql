@@ -64,7 +64,7 @@ const searchForLeads = async (parent: any, args: any, context: any) => {
     };
   }
 
-  query.orderBy = sortBy === 'date' ? {dateAdded: 'asc'} : {firstName: 'asc'};
+  query.orderBy = sortBy === 'date' ? {dateAdded: 'desc'} : {firstName: 'asc'};
 
   let leads = await prismaContext.prisma.lead.findMany(query);
 
