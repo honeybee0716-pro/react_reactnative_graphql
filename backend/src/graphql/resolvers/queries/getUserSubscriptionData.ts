@@ -17,6 +17,7 @@ export const getUserSubscriptionDataSchema = gql`
     remainingCredits: Int!
     isInTrial: Boolean!
     redirectToPricingPage: Boolean!
+    isCustomPlan: Boolean!
   }
 
   type Query {
@@ -79,7 +80,7 @@ const getUserSubscriptionData = async (
     activeSubscription,
   };
 
-  const {remainingCredits} = await getUsersRemainingCredits(
+  const {remainingCredits, isCustomPlan} = await getUsersRemainingCredits(
     null,
     {
       input: {
@@ -90,6 +91,7 @@ const getUserSubscriptionData = async (
     {user},
   );
   data.remainingCredits = remainingCredits || 0;
+  data.isCustomPlan = isCustomPlan || false;
 
   return {
     ...data,

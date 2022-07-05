@@ -11,8 +11,7 @@ import {
   Avatar,
   Heading,
   Spinner,
-  Modal,
-  useToast
+  Modal
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
 import React, { Fragment, useState } from 'react'
@@ -61,6 +60,7 @@ export default function ManageLists() {
   const firstName = React.useRef<any>()
   const [exportLeads, setExportLeads] = React.useState<any>([])
   const [leads, setLeads] = React.useState<any>([])
+  const [sortBy, setSortBy] = React.useState<string>('date')
   const lastName = React.useRef<any>()
   const companyName = React.useRef<any>()
   const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(false)
@@ -69,7 +69,6 @@ export default function ManageLists() {
   const [searchForLeads, { data, loading, error }] =
     useLazyQuery(SEARCH_FOR_LEADS)
   const [userSubscriptionData] = useRecoilState<any>(userSubscriptionDataState)
-  const toast = useToast()
 
   const handleSearch = async () => {
     setModalIsOpen(false)
@@ -80,7 +79,8 @@ export default function ManageLists() {
           firstName: firstName?.current?.value,
           lastName: lastName?.current?.value,
           companyName: companyName?.current?.value,
-          jobTitle: jobTitle?.current?.value
+          jobTitle: jobTitle?.current?.value,
+          sortBy
         }
       }
     })
@@ -112,6 +112,14 @@ export default function ManageLists() {
     setModalIsOpen(true)
   }
 
+  const handleSortByDate = () => {
+    setSortBy('date')
+  }
+
+  const handleSortByName = () => {
+    setSortBy('name')
+  }
+
   React.useEffect(() => {
     if (userSubscriptionData?.redirectToPricingPage) {
       push('/pricing')
@@ -121,14 +129,16 @@ export default function ManageLists() {
   }, [userSubscriptionData])
 
   React.useEffect(() => {
-    handleSearch()
-  }, [firstName, lastName, companyName, jobTitle])
-
-  React.useEffect(() => {
     if (data?.searchForLeads?.leads) {
       setLeads(data.searchForLeads.leads)
     }
   }, [data])
+
+  React.useEffect(() => {
+    ;(async () => {
+      await handleSearch()
+    })()
+  }, [])
 
   const enableExportButton = exportLeads.length
 
@@ -247,22 +257,24 @@ export default function ManageLists() {
                               borderRightRadius="lg"
                               marginRight="2"
                               paddingY="0.35rem"
-                              backgroundColor={theme.colors.shared.brightBlue}
+                              backgroundColor={
+                                sortBy === 'date'
+                                  ? theme.colors.shared.brightBlue
+                                  : theme.colors.shared.aliceBlue
+                              }
                               _hover={{
                                 backgroundColor:
-                                  theme.colors.shared.blueGentianFlower
+                                  sortBy === 'date'
+                                    ? theme.colors.shared.blueGentianFlower
+                                    : theme.colors.shared.softerGray
                               }}
-                              onPress={() =>
-                                toast.show({
-                                  description: 'This feature is not active yet.'
-                                })
-                              }
+                              onPress={handleSortByDate}
                             >
                               <Text
                                 fontSize="13px"
                                 fontWeight="medium"
                                 textAlign="center"
-                                color="white"
+                                color={sortBy === 'date' ? 'white' : 'black'}
                               >
                                 Date
                               </Text>
@@ -291,20 +303,24 @@ export default function ManageLists() {
                               borderLeftRadius="lg"
                               marginLeft="2"
                               paddingY="0.35rem"
-                              backgroundColor={theme.colors.shared.aliceBlue}
-                              _hover={{
-                                backgroundColor: theme.colors.shared.softerGray
-                              }}
-                              onPress={() =>
-                                toast.show({
-                                  description: 'This feature is not active yet.'
-                                })
+                              backgroundColor={
+                                sortBy === 'name'
+                                  ? theme.colors.shared.brightBlue
+                                  : theme.colors.shared.aliceBlue
                               }
+                              _hover={{
+                                backgroundColor:
+                                  sortBy === 'name'
+                                    ? theme.colors.shared.blueGentianFlower
+                                    : theme.colors.shared.softerGray
+                              }}
+                              onPress={handleSortByName}
                             >
                               <Text
                                 fontSize="13px"
                                 fontWeight="medium"
                                 textAlign="center"
+                                color={sortBy === 'name' ? 'white' : 'black'}
                               >
                                 Name
                               </Text>

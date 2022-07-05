@@ -15,6 +15,7 @@ const GET_USER_SUBSCRIPTION_DATA = gql`
       remainingCredits
       isInTrial
       redirectToPricingPage
+      isCustomPlan
     }
   }
 `

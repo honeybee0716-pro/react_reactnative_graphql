@@ -29,6 +29,7 @@ export const getUsersRemainingCreditsSchema = gql`
     message: String!
     status: String!
     remainingCredits: Int
+    isCustomPlan: Boolean
   }
 
   type Query {
@@ -103,7 +104,9 @@ const getUsersRemainingCredits = async (
     throw new ApolloError('There was an issue fetching that Stripe product.');
   }
 
-  const {monthlyCredits} = product?.metadata;
+  console.log({product});
+
+  const {monthlyCredits, isCustomPlan} = product?.metadata;
 
   if (!monthlyCredits) {
     throw new ApolloError(
@@ -111,10 +114,13 @@ const getUsersRemainingCredits = async (
     );
   }
 
+  console.log({monthlyCredits, isCustomPlan});
+
   return {
     message: 'Retrieved users credits.',
     status: 'success',
     remainingCredits: monthlyCredits - numberOfLeadsUsed,
+    isCustomPlan: Boolean(isCustomPlan),
   };
 };
 /* jscpd:ignore-end */

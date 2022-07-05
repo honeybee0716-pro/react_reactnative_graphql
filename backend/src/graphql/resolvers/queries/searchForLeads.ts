@@ -16,6 +16,7 @@ export const searchForLeadsSchema = gql`
     lastName: String
     companyName: String
     jobTitle: String
+    sortBy: String!
   }
 
   type Query {
@@ -27,7 +28,7 @@ export const searchForLeadsSchema = gql`
 const searchForLeads = async (parent: any, args: any, context: any) => {
   const {id: userID} = context.user;
 
-  const {firstName, lastName, companyName, jobTitle} = args.input;
+  const {firstName, lastName, companyName, jobTitle, sortBy} = args.input;
 
   const query: any = {
     where: {
@@ -63,7 +64,7 @@ const searchForLeads = async (parent: any, args: any, context: any) => {
     };
   }
 
-  query.orderBy = {profileImageURL: 'desc'};
+  query.orderBy = sortBy === 'date' ? {dateAdded: 'asc'} : {firstName: 'asc'};
 
   let leads = await prismaContext.prisma.lead.findMany(query);
 
