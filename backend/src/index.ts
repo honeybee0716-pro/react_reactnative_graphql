@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import {ApolloServer} from 'apollo-server-express';
+import {ApolloServer, AuthenticationError} from 'apollo-server-express';
 import express from 'express';
 import {makeExecutableSchema} from '@graphql-tools/schema';
 import {PrismaClient} from '@prisma/client';
@@ -46,20 +46,22 @@ const createContext = async ({req}: any) => {
     };
   }
 
+  const errorMessage = 'The provided JSON Web Token is not valid.';
+
   try {
     decodedJWT = jwt.verify(providedJWT, <string>process.env.JWT_SECRET);
 
     if (!decodedJWT.id) {
-      throw new Error('The provided JSON Web Token is not valid.');
+      throw new AuthenticationError(errorMessage);
     }
   } catch (err) {
-    throw new Error('The provided JSON Web Token is not valid.');
+    throw new AuthenticationError(errorMessage);
   }
 
   const user = await getUserByID(undefined, {input: {id: decodedJWT.id}});
 
   if (!user) {
-    throw new Error('The provided JSON Web Token is not valid.');
+    throw new AuthenticationError(errorMessage);
   }
 
   return {

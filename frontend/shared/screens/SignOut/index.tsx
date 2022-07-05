@@ -11,6 +11,11 @@ export const SignOut = () => {
   useEffect(() => {
     ;(async () => {
       await AsyncStorage.removeItem('jwt')
+      // we should be clearing the apollo store here
+      // we should also be clearing this on login as well
+      // we should also be clearing the recoil state
+      // https://www.apollographql.com/docs/react/networking/authentication/
+      // client.clearStore()
       setJWT(undefined)
       push('/sign-in')
     })()

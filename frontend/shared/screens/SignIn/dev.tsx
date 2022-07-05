@@ -16,7 +16,7 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import IconLink from 'shared/components/icons/IconLink'
 import { gql, useLazyQuery } from '@apollo/client'
 import { useRouter } from 'solito/router'
@@ -84,6 +84,13 @@ export default function SignUp(props: any) {
       }
     })
   }
+
+  useEffect(() => {
+    ;(async () => {
+      await AsyncStorage.removeItem('jwt')
+      setJWT(undefined)
+    })()
+  }, [])
 
   return (
     <>
