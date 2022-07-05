@@ -37,11 +37,17 @@ const logCreditOveragesToStripe = async () => {
         return;
       }
 
-      await stripe.subscriptionItems.createUsageRecord(subscriptionItemID, {
-        quantity: 1,
-        timestamp: Math.round(new Date().getTime() / 1000),
-        action: 'increment',
-      });
+      await stripe.subscriptionItems.createUsageRecord(
+        subscriptionItemID,
+        {
+          quantity: 1,
+          timestamp: Math.round(new Date().getTime() / 1000),
+          action: 'increment',
+        },
+        {
+          idempotencyKey: id,
+        },
+      );
 
       await prismaContext.prisma.lead.update({
         where: {
