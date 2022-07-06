@@ -28,6 +28,7 @@ import IconMail from 'shared/components/icons/IconMail'
 import IconLock from 'shared/components/icons/IconLock'
 import IconEye from 'shared/components/icons/IconEye'
 import { useRecoilState } from 'recoil'
+import { Platform } from 'react-native'
 import { jwtState } from '../../state'
 
 const CREATE_USER = gql`
@@ -473,11 +474,26 @@ export default function SignUp(props: any) {
                             <HStack alignItems="center">
                               <Text fontSize="md" fontWeight="medium">
                                 I agree to the{' '}
-                                <SolitoLink href="/terms-and-conditions">
-                                  <Text fontSize="md" fontWeight="bold">
-                                    Terms and Conditions
-                                  </Text>
-                                </SolitoLink>
+                                {Platform.OS === 'web' ? (
+                                  <a
+                                    style={{
+                                      textDecoration: 'none',
+                                      color: 'black'
+                                    }}
+                                    href="/terms-and-conditions"
+                                    target="_blank"
+                                  >
+                                    <Text fontSize="md" fontWeight="bold">
+                                      Terms and Conditions
+                                    </Text>
+                                  </a>
+                                ) : (
+                                  <SolitoLink href="/terms-and-conditions">
+                                    <Text fontSize="md" fontWeight="bold">
+                                      Terms and Conditions
+                                    </Text>
+                                  </SolitoLink>
+                                )}
                                 .
                               </Text>
                             </HStack>
