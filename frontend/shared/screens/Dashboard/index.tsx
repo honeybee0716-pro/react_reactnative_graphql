@@ -74,6 +74,7 @@ export default function ManageLists() {
     setModalIsOpen(false)
     await searchForLeads({
       fetchPolicy: 'network-only',
+      nextFetchPolicy: 'cache-and-network',
       variables: {
         input: {
           firstName: firstName?.current?.value,
