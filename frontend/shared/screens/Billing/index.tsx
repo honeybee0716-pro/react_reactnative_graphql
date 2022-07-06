@@ -558,7 +558,7 @@ export default function Billing() {
                           fontWeight="medium"
                           fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
                         >
-                          Switch Pricing Plan
+                          Switch pricing plan
                         </Text>
                         <Hidden from="sm">
                           <Box>

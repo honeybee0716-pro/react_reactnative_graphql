@@ -150,8 +150,19 @@ export default function ManageLists() {
     <>
       <DashboardLayout>
         {loading ? <LoadingSpinner /> : null}
-        {error ? <Heading>Error. Please try again.</Heading> : null}
-        {data?.searchForLeads?.leads && finishedVerifyingAccess && true ? (
+        {error ? (
+          <Heading marginTop="2" marginLeft="2">
+            Error. Please try again.
+          </Heading>
+        ) : null}
+        {data?.searchForLeads?.leads?.length === 0 ? (
+          <Heading marginTop="2" marginLeft="2">
+            You don't have any leads yet.
+          </Heading>
+        ) : null}
+        {data?.searchForLeads?.leads?.length &&
+        finishedVerifyingAccess &&
+        true ? (
           <Box flexDirection={{ base: 'column', lg: 'column' }}>
             <Box flex="1">
               <Box
@@ -168,7 +179,7 @@ export default function ManageLists() {
                 borderWidth="1"
                 borderColor={theme.colors.shared.softGray}
               >
-                <HStack alignItems="center" marginBottom="4">
+                <HStack alignItems="center" marginBottom="4" flex="none">
                   <Center
                     backgroundColor={theme.colors.shared.fireOrange_20}
                     paddingY="2"
@@ -184,10 +195,21 @@ export default function ManageLists() {
                     marginLeft="3"
                     fontWeight="medium"
                     fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
+                    maxWidth="150px"
                   >
                     {hideLeads
                       ? "Your leads are hidden because you don't have an active subscription."
                       : 'Website Visitors'}
+                  </Text>
+                  <Text
+                    flex="1"
+                    fontWeight="light"
+                    fontSize="sm"
+                    width="300px"
+                    marginLeft="3"
+                  >
+                    (Showing {data?.searchForLeads?.leads?.length || 0} of{' '}
+                    {data?.searchForLeads?.leads.length || 0})
                   </Text>
                   <Modal
                     isOpen={modalIsOpen}
@@ -224,26 +246,13 @@ export default function ManageLists() {
                                 />
                               </Box>
                             </Center>
-                            <HStack justifyContent="center" alignItems="center">
-                              <Text
-                                marginLeft="3"
-                                fontWeight="medium"
-                                fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
-                              >
-                                Filters
-                              </Text>
-                              <Text
-                                flex="1"
-                                fontWeight="light"
-                                fontSize="sm"
-                                width="300px"
-                                marginLeft="3"
-                              >
-                                (Showing{' '}
-                                {data?.searchForLeads?.leads?.length || 0} of{' '}
-                                {data?.searchForLeads?.leads.length || 0})
-                              </Text>
-                            </HStack>
+                            <Text
+                              marginLeft="3"
+                              fontWeight="medium"
+                              fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
+                            >
+                              Filters
+                            </Text>
                           </HStack>
                           <Text fontSize="sm" fontWeight="500" marginBottom="4">
                             Sort By:
