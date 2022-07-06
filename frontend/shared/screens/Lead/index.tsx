@@ -200,7 +200,9 @@ export default function ProfileScreen({ id }: any) {
                 textAlign="center"
                 marginTop="5"
               >
-                {`${lead.firstName} ${lead.lastName}`}
+                {lead.firstName && lead.lastName
+                  ? `${lead.firstName} ${lead.lastName}`
+                  : 'Unknown'}
               </Text>
               <Text
                 fontSize={{ base: '14px', sm: '14px' }}
@@ -208,7 +210,7 @@ export default function ProfileScreen({ id }: any) {
                 textAlign="center"
                 marginTop="5"
               >
-                {`${lead.location}`}
+                {lead.location ? lead.location : 'Unknown'}
               </Text>
               <Box
                 display="flex"
@@ -378,7 +380,7 @@ export default function ProfileScreen({ id }: any) {
                         fontSize={{ base: 'sm', sm: '15px' }}
                         fontWeight="medium"
                       >
-                        {lead.companyName || 'Unkown'}
+                        {lead.companyName || 'Unknown'}
                       </Text>
                     </Box>
                   </HStack>
@@ -478,7 +480,7 @@ export default function ProfileScreen({ id }: any) {
                         fontSize={{ base: 'sm', sm: '15px' }}
                         fontWeight="medium"
                       >
-                        {lead.title || 'Unkown'}
+                        {lead.title || 'Unknown'}
                       </Text>
                     </Box>
                   </HStack>
@@ -532,7 +534,7 @@ export default function ProfileScreen({ id }: any) {
                             lead.email ? theme.colors.shared.brightBlue : ''
                           }
                         >
-                          {lead.email || 'Unkown'}
+                          {lead.email || 'Unknown'}
                         </Text>
                       </Pressable>
                     </Box>
@@ -633,7 +635,7 @@ export default function ProfileScreen({ id }: any) {
                         fontSize={{ base: 'sm', sm: '15px' }}
                         fontWeight="medium"
                       >
-                        {lead.durationInCompany || 'Unkown'}
+                        {lead.durationInCompany || 'Unknown'}
                       </Text>
                     </Box>
                   </HStack>
@@ -678,7 +680,7 @@ export default function ProfileScreen({ id }: any) {
                         fontSize={{ base: 'sm', sm: '15px' }}
                         fontWeight="medium"
                       >
-                        {lead.durationInRole || 'Unkown'}
+                        {lead.durationInRole || 'Unknown'}
                       </Text>
                     </Box>
                   </HStack>

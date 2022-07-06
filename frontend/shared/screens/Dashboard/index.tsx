@@ -1115,7 +1115,9 @@ export default function ManageLists() {
                             >
                               {hideLeads
                                 ? 'Hidden'
-                                : `${l.firstName} ${l.lastName}`}
+                                : l.firstName && l.lastName
+                                ? `${l.firstName} ${l.lastName}`
+                                : 'Unknown'}
                             </Text>
                           </Box>
                           <Box w="27%">
@@ -1125,7 +1127,7 @@ export default function ManageLists() {
                               isTruncated
                               maxW="315"
                             >
-                              {hideLeads ? 'Hidden' : l.title}
+                              {hideLeads ? 'Hidden' : l.title || 'Unknown'}
                             </Text>
                           </Box>
                           <Box w="20%">
@@ -1135,7 +1137,9 @@ export default function ManageLists() {
                               isTruncated
                               maxW="240"
                             >
-                              {hideLeads ? 'Hidden' : l.companyName}
+                              {hideLeads
+                                ? 'Hidden'
+                                : l.companyName || 'Unknown'}
                             </Text>
                           </Box>
                           <Box w="20.5%">
