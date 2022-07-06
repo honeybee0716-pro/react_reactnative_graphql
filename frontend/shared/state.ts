@@ -30,3 +30,28 @@ export const leadsState = atom({
   key: 'leads',
   default: []
 })
+
+export const filterSort = atom({
+  key: 'filterSort',
+  default: 'date'
+})
+
+export const filterFirstName = atom({
+  key: 'filterFirstName',
+  default: undefined
+})
+
+export const filterLastName = atom({
+  key: 'filterLastName',
+  default: undefined
+})
+
+export const filterCompanyName = atom({
+  key: 'filterCompanyName',
+  default: undefined
+})
+
+export const filterJobTitle = atom({
+  key: 'filterJobTitle',
+  default: undefined
+})
