@@ -114,7 +114,7 @@ export default function Dashboard() {
   }, [userSubscriptionData])
 
   useEffect(() => {
-    if (data?.searchForLeads?.count) {
+    if (data?.searchForLeads?.count || data?.searchForLeads?.count === 0) {
       setCount(data.searchForLeads.count)
     }
     if (data?.searchForLeads?.leads) {
@@ -143,6 +143,8 @@ export default function Dashboard() {
     await handleSearch(false)
   }
 
+  const showLoadMore = leads.length && count !== leads.length && !loading
+
   return (
     <>
       <DashboardLayout>
@@ -151,7 +153,8 @@ export default function Dashboard() {
             Error. Please try again.
           </Heading>
         ) : null}
-        {data?.searchForLeads && finishedVerifyingAccess === true ? (
+        {(leads.length || data?.searchForLeads) &&
+        finishedVerifyingAccess === true ? (
           <Box flexDirection={{ base: 'column', lg: 'column' }}>
             <Box flex="1">
               <Box
@@ -391,11 +394,17 @@ export default function Dashboard() {
           </Box>
         ) : null}
         {loading ? (
-          <Box height="50px">
-            <LoadingSpinner />
-          </Box>
+          <>
+            {count !== leads.length ? (
+              <Box height="50px">
+                <LoadingSpinner />
+              </Box>
+            ) : (
+              <LoadingSpinner />
+            )}
+          </>
         ) : null}
-        {leads.length && count !== leads.length && !hasFilters && !loading ? (
+        {showLoadMore ? (
           <Center height="50px">
             <Pressable
               backgroundColor={theme.colors.shared.clientEyePrimary}
