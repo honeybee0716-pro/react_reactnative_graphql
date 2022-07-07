@@ -9,6 +9,7 @@ export const searchForLeadsSchema = gql`
     message: String!
     status: String!
     leads: JSON
+    count: Int!
   }
 
   input searchForLeadsInput {
@@ -17,6 +18,7 @@ export const searchForLeadsSchema = gql`
     companyName: String
     jobTitle: String
     sortBy: String!
+    cursor: String
   }
 
   type Query {
@@ -28,7 +30,8 @@ export const searchForLeadsSchema = gql`
 const searchForLeads = async (parent: any, args: any, context: any) => {
   const {id: userID} = context.user;
 
-  const {firstName, lastName, companyName, jobTitle, sortBy} = args.input;
+  const {firstName, lastName, companyName, jobTitle, sortBy, cursor} =
+    args.input;
 
   const query: any = {
     where: {
@@ -66,7 +69,31 @@ const searchForLeads = async (parent: any, args: any, context: any) => {
 
   query.orderBy = sortBy === 'date' ? {dateAdded: 'desc'} : {firstName: 'asc'};
 
-  let leads = await prismaContext.prisma.lead.findMany(query);
+  if (cursor) {
+    query.skip = 1;
+    query.cursor = {
+      id: cursor,
+    };
+  }
+
+  query.take = 1;
+
+  const countQuery = {
+    ...query,
+  };
+
+  delete countQuery.take;
+  delete countQuery.skip;
+  delete countQuery.cursor;
+  delete countQuery.orderBy;
+
+  // move to more efficient query when this github issue is resolved
+  // https://github.com/prisma/prisma/discussions/3087
+  // eslint-disable-next-line prefer-const
+  let [leads, count] = await prismaContext.prisma.$transaction([
+    prismaContext.prisma.lead.findMany(query),
+    prismaContext.prisma.lead.count(countQuery),
+  ]);
 
   leads = leads.map((l) => ({
     ...l,
@@ -77,6 +104,7 @@ const searchForLeads = async (parent: any, args: any, context: any) => {
     message: 'Retrieved user leads.',
     status: 'success',
     leads,
+    count,
   };
 };
 /* jscpd:ignore-end */

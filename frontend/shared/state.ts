@@ -55,3 +55,8 @@ export const filterJobTitle = atom({
   key: 'filterJobTitle',
   default: undefined
 })
+
+export const searchForLeadsVariablesState = atom({
+  key: 'searchForLeadsVariablesState',
+  default: undefined
+})
