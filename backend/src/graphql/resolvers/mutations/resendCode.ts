@@ -2,7 +2,8 @@ import {gql} from 'apollo-server';
 
 import {prismaContext} from '../../prismaContext';
 import {generateRandomNumber} from '../../../utils/generateRandomNumber';
-import {sendEmail} from '../../../utils/sendgrid';
+// import {sendEmail} from '../../../utils/sendgrid';
+import {nodemailer} from '../../../utils/nodemailer';
 
 export const resendCodeSchema = gql`
   scalar JSON
@@ -32,15 +33,23 @@ const resendCode = async (parent: any, args: any, context: any) => {
     },
   });
 
-  await sendEmail({
-    to: user.email,
-    subject: 'Verification Code',
-    text: `Please use this code to verify your account: ${verifyEmailCode}`,
-    html: `
-        <p>
-          Please use this code to verify your account: ${verifyEmailCode}
-        </p>
-      `,
+  // await sendEmail({
+  //   to: user.email,
+  //   subject: 'Verification Code',
+  //   text: `Please use this code to verify your account: ${verifyEmailCode}`,
+  //   html: `
+  //       <p>
+  //         Please use this code to verify your account: ${verifyEmailCode}
+  //       </p>
+  //     `,
+  // });
+
+  await nodemailer.sendMail({
+    from: '"ClientEye Alerts" <alerts@clienteye.com>', // sender address
+    to: user.email, // list of receivers
+    subject: 'Verification Code', // Subject line
+    text: `Please use this code to verify your account: ${verifyEmailCode}`, // plain text body
+    html: `<p>Please use this code to verify your account: ${verifyEmailCode}</p>`, // html body
   });
 
   return {

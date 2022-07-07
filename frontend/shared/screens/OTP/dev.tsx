@@ -124,7 +124,7 @@ export default function OTP(props: any) {
 
   useEffect(() => {
     toast.show({
-      description: 'Please enter the code we just sent to your email.'
+      description: 'Please enter the code that we sent to your email.'
     })
   }, [])
 
