@@ -84,21 +84,11 @@ const DashboardLayout: React.FC = ({ children }) => {
               }}
             >
               <Image
-                w="65px"
-                h="65px"
+                w="200px"
+                h="200px"
                 resizeMode="contain"
-                source={require('shared/assets/images/clientEyeLogo.png')}
+                source={require('shared/assets/images/clientEyeLogoFull.png')}
               />
-              <Hidden till="lg">
-                <Text
-                  color={theme.colors.shared.softBlack}
-                  fontSize={{ base: 'xl', sm: '2xl' }}
-                  fontWeight="semibold"
-                  marginLeft={'4'}
-                >
-                  ClientEye
-                </Text>
-              </Hidden>
             </Pressable>
           </Center>
 
