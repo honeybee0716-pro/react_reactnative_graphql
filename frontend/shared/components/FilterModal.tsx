@@ -44,12 +44,12 @@ export const FilterModal = ({
     useRecoilState<any>(searchForLeadsVariablesState)
 
   const resetFilters = async () => {
-    setFirstName(undefined)
-    setLastName(undefined)
-    setCompanyName(undefined)
-    setJobTitle(undefined)
+    setFirstName('')
+    setLastName('')
+    setCompanyName('')
+    setJobTitle('')
     setSearchForLeadsVariables(undefined)
-    await handleSearch()
+    await handleSearch(false)
   }
 
   const handleSortByDate = () => {

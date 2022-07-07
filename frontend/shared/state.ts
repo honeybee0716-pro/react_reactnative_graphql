@@ -38,22 +38,22 @@ export const filterSort = atom({
 
 export const filterFirstName = atom({
   key: 'filterFirstName',
-  default: undefined
+  default: ''
 })
 
 export const filterLastName = atom({
   key: 'filterLastName',
-  default: undefined
+  default: ''
 })
 
 export const filterCompanyName = atom({
   key: 'filterCompanyName',
-  default: undefined
+  default: ''
 })
 
 export const filterJobTitle = atom({
   key: 'filterJobTitle',
-  default: undefined
+  default: ''
 })
 
 export const searchForLeadsVariablesState = atom({
