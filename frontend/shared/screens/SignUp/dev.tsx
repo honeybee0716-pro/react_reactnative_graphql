@@ -16,7 +16,7 @@ import {
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import IconLink from 'shared/components/icons/IconLink'
 import { gql, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -41,7 +41,7 @@ const CREATE_USER = gql`
   }
 `
 
-export default function SignUp(props: any) {
+export default function SignUp({ client }: any) {
   const toast = useToast()
   const { push } = useRouter()
   const [firstName, setFirstName] = useState('')
@@ -107,6 +107,12 @@ export default function SignUp(props: any) {
       }
     })
   }
+
+  useEffect(() => {
+    ;(async () => {
+      await client.cache.reset()
+    })()
+  }, [])
 
   return (
     <>

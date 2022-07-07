@@ -4,7 +4,7 @@ import { useRouter } from 'solito/router'
 import { useRecoilState } from 'recoil'
 import { jwtState } from '../../state'
 
-export const SignOut = () => {
+export const SignOut = ({ client }) => {
   const { push } = useRouter()
   const [jwt, setJWT] = useRecoilState<any>(jwtState)
 
@@ -17,6 +17,7 @@ export const SignOut = () => {
       // https://www.apollographql.com/docs/react/networking/authentication/
       // client.clearStore()
       setJWT(undefined)
+      await client.cache.reset()
       push('/sign-in')
     })()
   }, [])

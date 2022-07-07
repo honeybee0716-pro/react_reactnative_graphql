@@ -37,7 +37,7 @@ const LOGIN_USER = gql`
   }
 `
 
-export default function SignUp(props: any) {
+export default function SignUp({ client }: any) {
   const { push } = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -88,6 +88,7 @@ export default function SignUp(props: any) {
   useEffect(() => {
     ;(async () => {
       await AsyncStorage.removeItem('jwt')
+      await client.cache.reset()
       setJWT(undefined)
     })()
   }, [])

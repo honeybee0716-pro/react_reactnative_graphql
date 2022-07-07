@@ -38,7 +38,19 @@ export const DataProvider = ({ children }) => {
   React.useEffect(() => {
     // setRoute(document.location.pathname);
     ;(async () => {
-      await getUserSubscriptionData()
+      const jwt = await localStorage.getItem('jwt')
+
+      if (jwt) {
+        // caches the request
+        await getUserSubscriptionData()
+      } else {
+        if (
+          document.location.href.includes('/home') ||
+          document.location.href.includes('/billing')
+        ) {
+          push('/sign-in')
+        }
+      }
     })()
   }, [])
 

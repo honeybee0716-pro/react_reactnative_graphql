@@ -43,7 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
                   }
                 })}
               >
-                <Component {...pageProps} />
+                <Component {...pageProps} client={apolloClient} />
               </NativeBaseProvider>
             </SafeAreaProvider>
           </DataProvider>
