@@ -57,6 +57,8 @@ export default function Dashboard() {
     hasFiltersParam: boolean,
     variablesParam?: any
   ) => {
+    setModalIsOpen(false)
+
     setHasFilters(hasFiltersParam)
 
     const variables = variablesParam
@@ -73,7 +75,6 @@ export default function Dashboard() {
       nextFetchPolicy: 'cache-and-network',
       variables
     })
-    setModalIsOpen(false)
   }
 
   const exportLead = (value, lead) => {
@@ -138,6 +139,10 @@ export default function Dashboard() {
     userSubscriptionData?.activeSubscription === null &&
     userSubscriptionData?.isInTrial === false
 
+  const clearFilters = async () => {
+    await handleSearch(false)
+  }
+
   return (
     <>
       <DashboardLayout>
@@ -146,7 +151,7 @@ export default function Dashboard() {
             Error. Please try again.
           </Heading>
         ) : null}
-        {leads.length && finishedVerifyingAccess === true ? (
+        {data?.searchForLeads && finishedVerifyingAccess === true ? (
           <Box flexDirection={{ base: 'column', lg: 'column' }}>
             <Box flex="1">
               <Box
@@ -345,9 +350,32 @@ export default function Dashboard() {
                       </Text>
                     ) : null}
                     {leads?.length === 0 && hasFilters ? (
-                      <Text marginTop="4" textAlign="center">
-                        No leads found with those filters.
-                      </Text>
+                      <>
+                        <Text marginTop="4" textAlign="center">
+                          No leads found with those filters.
+                        </Text>
+                        <Center height="50px">
+                          <Pressable
+                            backgroundColor={
+                              theme.colors.shared.clientEyePrimary
+                            }
+                            borderRadius="md"
+                            paddingX="3"
+                            paddingY="2"
+                            marginTop="2"
+                            onPress={clearFilters}
+                          >
+                            <Text
+                              color="white"
+                              fontSize="xs"
+                              fontWeight="medium"
+                              textDecoration="none"
+                            >
+                              Clear Filters
+                            </Text>
+                          </Pressable>
+                        </Center>
+                      </>
                     ) : null}
                     <LeadRows
                       leads={leads}
@@ -367,7 +395,7 @@ export default function Dashboard() {
             <LoadingSpinner />
           </Box>
         ) : null}
-        {count !== leads.length ? (
+        {leads.length && count !== leads.length && !hasFilters && !loading ? (
           <Center height="50px">
             <Pressable
               backgroundColor={theme.colors.shared.clientEyePrimary}

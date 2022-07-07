@@ -76,7 +76,7 @@ const searchForLeads = async (parent: any, args: any, context: any) => {
     };
   }
 
-  query.take = 1;
+  query.take = 100;
 
   const countQuery = {
     ...query,
