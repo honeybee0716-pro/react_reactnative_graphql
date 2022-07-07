@@ -100,74 +100,85 @@ export default function OTP(props: any) {
         _dark={{ bg: 'coolGray.900' }}
       />
 
-      <Stack
-        flexDirection={{ base: 'column', md: 'row' }}
+      <Image
+        position="absolute"
         w="full"
         h="full"
-        backgroundColor="white"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        source={require('shared/assets/wallpaper.jpeg')}
+      />
+
+      <Box
+        w={{ base: 'full', lg: 'full' }}
+        h="full"
+        backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
       >
         <Box
-          w={{ base: 'full', lg: '1/2' }}
+          flexDirection="row"
+          justifyContent="center"
+          alignItems="center"
           h="full"
-          backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
         >
-          <Box
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            h="full"
+          <KeyboardAwareScrollView
+            contentContainerStyle={{
+              flexGrow: 1
+            }}
+            style={{ flex: 1 }}
           >
-            <KeyboardAwareScrollView
-              contentContainerStyle={{
-                flexGrow: 1
-              }}
-              style={{ flex: 1 }}
-            >
-              <Center>
-                <Box
-                  width={{
-                    base: `${(11 / 12) * 100}%`,
-                    sm: `${(9 / 12) * 100}%`,
-                    lg: '30rem',
-                    xl: '35rem'
-                  }}
-                >
-                  <Hidden from="lg">
-                    <Center flexDir="row">
-                      <Image
-                        w={{ base: '2.5rem', sm: '3.5rem' }}
-                        h={{ base: '2.5rem', sm: '3.5rem' }}
-                        source={require('shared/assets/images/contact-blaster-blue.png')}
-                      />
-                      <Text
-                        color={theme.colors.shared.softBlack}
-                        fontSize={{ base: 'xl', sm: '2xl' }}
-                        fontWeight="semibold"
-                        marginLeft={'4'}
-                      >
-                        ClientEye
-                      </Text>
-                    </Center>
-                  </Hidden>
-
-                  <Box
-                    bgColor="white"
-                    borderRadius="2xl"
-                    paddingY="4"
-                    paddingX={{ base: '4', sm: '8' }}
-                    marginTop={{ base: '4', sm: '7', lg: '6' }}
-                  >
+            <Center>
+              <Image
+                height="100px"
+                width="250px"
+                resizeMode="contain"
+                source={require('shared/assets/images/clientEyeLogoWhite.png')}
+              />
+              <Box
+                width={{
+                  base: `${(11 / 12) * 100}%`,
+                  sm: `${(9 / 12) * 100}%`,
+                  lg: '30rem',
+                  xl: '35rem'
+                }}
+              >
+                <Hidden from="lg">
+                  <Center flexDir="row">
+                    <Image
+                      w={{ base: '2.5rem', sm: '3.5rem' }}
+                      h={{ base: '2.5rem', sm: '3.5rem' }}
+                      source={require('shared/assets/images/contact-blaster-blue.png')}
+                    />
                     <Text
-                      fontWeight="semibold"
                       color={theme.colors.shared.softBlack}
-                      textAlign="center"
-                      fontSize={{ base: '2xl', sm: '4xl' }}
-                      marginTop={{ base: '1', sm: '9', lg: '0' }}
-                      fontFamily="body"
+                      fontSize={{ base: 'xl', sm: '2xl' }}
+                      fontWeight="semibold"
+                      marginLeft={'4'}
                     >
-                      Verify code
+                      ClientEye
                     </Text>
-                    {/* <HStack
+                  </Center>
+                </Hidden>
+
+                <Box
+                  bgColor="white"
+                  borderRadius="2xl"
+                  paddingY="4"
+                  paddingX={{ base: '4', sm: '8' }}
+                  marginTop={{ base: '4', sm: '7', lg: '6' }}
+                >
+                  <Text
+                    fontWeight="semibold"
+                    color={theme.colors.shared.softBlack}
+                    textAlign="center"
+                    fontSize={{ base: '2xl', sm: '4xl' }}
+                    marginTop={{ base: '1', sm: '9', lg: '0' }}
+                    fontFamily="body"
+                  >
+                    Verify code
+                  </Text>
+                  {/* <HStack
                       justifyContent="center"
                       marginTop="7"
                       space={{ base: '5', sm: '7' }}
@@ -223,7 +234,7 @@ export default function OTP(props: any) {
                         </Text>
                       </Box>
                     </HStack> */}
-                    {/* <Box position="relative">
+                  {/* <Box position="relative">
                       <HStack justifyContent="center" mt="7" space="10">
                         <Box
                           w="45%"
@@ -253,123 +264,71 @@ export default function OTP(props: any) {
                         </Text>
                       </Box>
                     </Box> */}
-                    <Box>
-                      {/* input email */}
-                      <Box position="relative" w="full" marginTop="5">
-                        <Input
-                          paddingLeft="12"
-                          paddingTop="3"
-                          paddingRight="3"
-                          paddingBottom="3"
-                          w="full"
-                          borderRadius="xl"
-                          borderWidth="2"
-                          borderColor={theme.colors.shared.softerGray}
-                          fontSize={{ base: 'xs', sm: 'md' }}
-                          fontWeight="medium"
-                          backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="eg: 123456"
-                          onChangeText={(text) => setCode(text)}
+                  <Box>
+                    {/* input email */}
+                    <Box position="relative" w="full" marginTop="5">
+                      <Input
+                        paddingLeft="12"
+                        paddingTop="3"
+                        paddingRight="3"
+                        paddingBottom="3"
+                        w="full"
+                        borderRadius="xl"
+                        borderWidth="2"
+                        borderColor={theme.colors.shared.softerGray}
+                        fontSize={{ base: 'xs', sm: 'md' }}
+                        fontWeight="medium"
+                        backgroundColor={theme.colors.shared.aliceBlue}
+                        placeholder="eg: 123456"
+                        onChangeText={(text) => setCode(text)}
+                      />
+                      <Box
+                        position="absolute"
+                        left="4"
+                        h="full"
+                        flexDir="row"
+                        alignItems="center"
+                      >
+                        <Image
+                          w="6"
+                          h="6"
+                          source={require('shared/assets/icons/mail 1.png')}
                         />
-                        <Box
-                          position="absolute"
-                          left="4"
-                          h="full"
-                          flexDir="row"
-                          alignItems="center"
-                        >
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/assets/icons/mail 1.png')}
-                          />
-                        </Box>
                       </Box>
+                    </Box>
 
-                      {/* button */}
-                      <Box marginTop="5">
-                        <Box
-                          backgroundColor={theme.colors.shared.brightBlue}
-                          paddingY="3"
-                          paddingX="2"
-                          borderRadius="xl"
+                    {/* button */}
+                    <Box marginTop="5">
+                      <Box
+                        backgroundColor={theme.colors.shared.clientEyePrimary}
+                        paddingY="3"
+                        paddingX="2"
+                        borderRadius="xl"
+                      >
+                        <Text
+                          textAlign="center"
+                          fontWeight="semibold"
+                          color="white"
+                          fontSize={{ base: 'sm', sm: 'md' }}
                         >
-                          <Text
-                            textAlign="center"
-                            fontWeight="semibold"
-                            color="white"
-                            fontSize={{ base: 'sm', sm: 'md' }}
-                          >
-                            <Pressable onPress={handleSubmitOTP}>
-                              <Hidden till="lg">
-                                <>{loading ? 'Loading...' : 'Verify code'}</>
-                              </Hidden>
-                              <Hidden from="lg">
-                                <>{loading ? 'Loading...' : 'Verify code'}</>
-                              </Hidden>
-                            </Pressable>
-                          </Text>
-                        </Box>
+                          <Pressable onPress={handleSubmitOTP}>
+                            <Hidden till="lg">
+                              <>{loading ? 'Loading...' : 'Verify code'}</>
+                            </Hidden>
+                            <Hidden from="lg">
+                              <>{loading ? 'Loading...' : 'Verify code'}</>
+                            </Hidden>
+                          </Pressable>
+                        </Text>
                       </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Center>
-            </KeyboardAwareScrollView>
-          </Box>
-        </Box>
-        <Hidden till="lg">
-          <Box
-            position="relative"
-            w="1/2"
-            h="full"
-            overflow="hidden"
-            borderBottomLeftRadius="9.375rem"
-          >
-            <Image
-              position="absolute"
-              w="full"
-              h="full"
-              top={0}
-              left={0}
-              right={0}
-              bottom={0}
-              source={require('./components/pexels-gradienta-7135120 1.png')}
-            />
-            <Box
-              flexDirection={'column'}
-              justifyContent={'center'}
-              alignItems={'center'}
-              w="full"
-              h="90%"
-            >
-              <Box
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                w="full"
-                h="full"
-              >
-                <Box flexDir="row" justifyContent="center">
-                  <Image
-                    w="128px"
-                    h="128px"
-                    source={require('shared/assets/images/contact-blaster-white.png')}
-                  />
-                </Box>
-                <Text
-                  color="white"
-                  textAlign="center"
-                  fontSize={{ base: '4xl', xl: '5xl' }}
-                  fontWeight="semibold"
-                >
-                  ClientEye
-                </Text>
               </Box>
-            </Box>
-          </Box>
-        </Hidden>
-      </Stack>
+            </Center>
+          </KeyboardAwareScrollView>
+        </Box>
+      </Box>
     </>
   )
 }

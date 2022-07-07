@@ -35,7 +35,7 @@ function OptionSection({ tabName, setTabName }) {
           _light={{
             bgColor:
               tabName === 'Standard'
-                ? theme.colors.shared.brightBlue
+                ? theme.colors.shared.clientEyePrimary
                 : 'coolGray.200'
           }}
           _dark={{
@@ -67,7 +67,7 @@ function OptionSection({ tabName, setTabName }) {
           _light={{
             bgColor:
               tabName === 'Custom'
-                ? theme.colors.shared.brightBlue
+                ? theme.colors.shared.clientEyePrimary
                 : 'coolGray.200'
           }}
           _dark={{
@@ -255,10 +255,10 @@ export default function () {
             size="md"
             py="4"
             _light={{
-              bg: theme.colors.shared.brightBlue
+              bg: theme.colors.shared.clientEyePrimary
             }}
             _hover={{
-              bg: theme.colors.shared.brightBlue
+              bg: theme.colors.shared.clientEyePrimary
             }}
             // _dark={{
             //   bg: 'primary.700',

@@ -7,7 +7,6 @@ import {
   HStack,
   VStack,
   Pressable,
-  Spinner,
   useToast
 } from 'native-base'
 import { theme } from 'shared/styles/theme'

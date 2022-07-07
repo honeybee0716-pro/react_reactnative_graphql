@@ -56,7 +56,7 @@ const SEARCH_FOR_LEADS = gql`
 const LoadingSpinner = () => {
   return (
     <HStack space={8} flex="1" justifyContent="center" alignItems="center">
-      <Spinner size="lg" color={theme.colors.shared.brightBlue} />
+      <Spinner size="lg" color={theme.colors.shared.clientEyePrimary} />
     </HStack>
   )
 }
@@ -214,13 +214,13 @@ const FilterModal = ({ modalIsOpen, setModalIsOpen, handleSearch }: any) => {
                 paddingY="0.35rem"
                 backgroundColor={
                   sortBy === 'date'
-                    ? theme.colors.shared.brightBlue
+                    ? theme.colors.shared.clientEyePrimary
                     : theme.colors.shared.aliceBlue
                 }
                 _hover={{
                   backgroundColor:
                     sortBy === 'date'
-                      ? theme.colors.shared.blueGentianFlower
+                      ? theme.colors.shared.clientEyePrimary
                       : theme.colors.shared.softerGray
                 }}
                 onPress={handleSortByDate}
@@ -244,13 +244,13 @@ const FilterModal = ({ modalIsOpen, setModalIsOpen, handleSearch }: any) => {
                 paddingY="0.35rem"
                 backgroundColor={
                   sortBy === 'name'
-                    ? theme.colors.shared.brightBlue
+                    ? theme.colors.shared.clientEyePrimary
                     : theme.colors.shared.aliceBlue
                 }
                 _hover={{
                   backgroundColor:
                     sortBy === 'name'
-                      ? theme.colors.shared.blueGentianFlower
+                      ? theme.colors.shared.clientEyePrimary
                       : theme.colors.shared.softerGray
                 }}
                 onPress={handleSortByName}
@@ -287,10 +287,10 @@ const FilterModal = ({ modalIsOpen, setModalIsOpen, handleSearch }: any) => {
                   backgroundColor={theme.colors.shared.soft6Gray}
                   fontSize="13px"
                   placeholder="First Name"
+                  value={firstName}
                   onChangeText={(text) =>
                     setFirstName(text.length ? text : undefined)
                   }
-                  value={firstName}
                 />
               </Box>
               <Box flex="1" position="relative" marginBottom="3" marginLeft="2">
@@ -364,10 +364,7 @@ const FilterModal = ({ modalIsOpen, setModalIsOpen, handleSearch }: any) => {
                 flex="1"
                 marginRight="2"
                 paddingY="2"
-                backgroundColor={theme.colors.shared.brightBlue}
-                _hover={{
-                  backgroundColor: theme.colors.shared.blueGentianFlower
-                }}
+                backgroundColor={theme.colors.shared.clientEyePrimary}
                 onPress={() =>
                   handleSearch(hasFilters, {
                     input: {
@@ -397,10 +394,10 @@ const FilterModal = ({ modalIsOpen, setModalIsOpen, handleSearch }: any) => {
                 flex="1"
                 marginLeft="2"
                 paddingY="2"
+                onPress={resetFilters}
                 _hover={{
                   backgroundColor: theme.colors.shared.softerGray
                 }}
-                onPress={resetFilters}
               >
                 <Text
                   color={theme.colors.shared.soft2Gray}
@@ -774,7 +771,7 @@ export default function Dashboard() {
                   />
                   <Hidden till="sm">
                     <Pressable
-                      backgroundColor={theme.colors.shared.blueGentianFlower}
+                      backgroundColor={theme.colors.shared.clientEyePrimary}
                       borderRadius="md"
                       paddingX="3"
                       paddingY="2"
@@ -809,9 +806,7 @@ export default function Dashboard() {
                         style={{ textDecoration: 'none' }}
                       >
                         <Box
-                          backgroundColor={
-                            theme.colors.shared.blueGentianFlower
-                          }
+                          backgroundColor={theme.colors.shared.clientEyePrimary}
                           borderRadius="md"
                           paddingX="3"
                           paddingY="2"
@@ -838,7 +833,7 @@ export default function Dashboard() {
                       </CSVLink>
                     ) : (
                       <Box
-                        backgroundColor={theme.colors.shared.blueGentianFlower}
+                        backgroundColor={theme.colors.shared.clientEyePrimary}
                         borderRadius="md"
                         paddingX="3"
                         paddingY="2"

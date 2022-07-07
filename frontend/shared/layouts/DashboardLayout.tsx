@@ -6,7 +6,8 @@ import {
   Text,
   HStack,
   Pressable,
-  Tooltip
+  Tooltip,
+  Image
 } from 'native-base'
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -82,11 +83,12 @@ const DashboardLayout: React.FC = ({ children }) => {
                 }
               }}
             >
-              {/* <Image
-                w={{ base: '2.5rem', sm: '3.1rem' }}
-                h={{ base: '2.5rem', sm: '3.1rem' }}
-                source={require('shared/assets/images/contact-blaster-blue.png')}
-              /> */}
+              <Image
+                w="65px"
+                h="65px"
+                resizeMode="contain"
+                source={require('shared/assets/images/clientEyeLogo.png')}
+              />
               <Hidden till="lg">
                 <Text
                   color={theme.colors.shared.softBlack}
@@ -109,7 +111,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                     flexDirection="row"
                     backgroundColor={
                       route === '/home'
-                        ? theme.colors.shared.brightBlue
+                        ? theme.colors.shared.clientEyePrimary
                         : undefined
                     }
                     alignItems="center"
@@ -154,7 +156,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                 <Pressable
                   backgroundColor={
                     route === '/billing'
-                      ? theme.colors.shared.brightBlue
+                      ? theme.colors.shared.clientEyePrimary
                       : undefined
                   }
                   w={{ lg: 'full' }}
@@ -200,7 +202,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                 <Pressable
                   backgroundColor={
                     route === '/help'
-                      ? theme.colors.shared.brightBlue
+                      ? theme.colors.shared.clientEyePrimary
                       : undefined
                   }
                   w={{ lg: 'full' }}
@@ -248,7 +250,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                 <Pressable
                   backgroundColor={
                     route === '/sign-out'
-                      ? theme.colors.shared.brightBlue
+                      ? theme.colors.shared.clientEyePrimary
                       : undefined
                   }
                   w={{ lg: 'full' }}
@@ -303,7 +305,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                   alignItems="center"
                   display="flex"
                   flexDirection="row"
-                  backgroundColor={theme.colors.shared.blueGentianFlower}
+                  backgroundColor={theme.colors.shared.clientEyePrimary}
                   paddingY="2"
                   paddingX="6"
                   rounded="full"
