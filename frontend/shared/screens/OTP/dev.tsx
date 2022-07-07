@@ -2,13 +2,13 @@ import {
   StatusBar,
   Box,
   Center,
-  Stack,
   Hidden,
   Text,
   Image,
   Input,
   Pressable,
-  useToast
+  useToast,
+  HStack
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
@@ -16,6 +16,7 @@ import { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 import { useRouter } from 'solito/router'
+import { useEffect } from 'react'
 
 const CONFIRM_EMAIL_VALIDATION_CODE = gql`
   mutation ConfirmEmailValidationCode($input: confirmEmailValidationCodeInput) {
@@ -26,14 +27,26 @@ const CONFIRM_EMAIL_VALIDATION_CODE = gql`
   }
 `
 
+const RESEND_CODE = gql`
+  mutation ResendCode {
+    resendCode {
+      message
+      status
+    }
+  }
+`
+
 export default function OTP(props: any) {
   const { push } = useRouter()
   const [code, setCode] = useState('')
+  const [codeJustSent, setCodeJustSent] = useState(false)
   const toast = useToast()
 
   const [confirmEmailValidationCode, { loading }] = useMutation(
     CONFIRM_EMAIL_VALIDATION_CODE
   )
+
+  const [resendCodeMutation] = useMutation(RESEND_CODE)
 
   const handleSubmitOTP = async () => {
     if (!code) {
@@ -86,6 +99,34 @@ export default function OTP(props: any) {
       }
     })
   }
+
+  const resendCode = async () => {
+    if (codeJustSent) {
+      toast.show({
+        description: 'Please wait before trying again.'
+      })
+    } else {
+      setCodeJustSent(true)
+      toast.show({
+        description: 'We just sent a new code to your email.'
+      })
+      await resendCodeMutation()
+    }
+  }
+
+  useEffect(() => {
+    if (codeJustSent) {
+      setTimeout(() => {
+        setCodeJustSent(false)
+      }, 10000)
+    }
+  }, [codeJustSent])
+
+  useEffect(() => {
+    toast.show({
+      description: 'Please enter the code we just sent to your email.'
+    })
+  }, [])
 
   return (
     <>
@@ -176,7 +217,7 @@ export default function OTP(props: any) {
                     marginTop={{ base: '1', sm: '9', lg: '0' }}
                     fontFamily="body"
                   >
-                    Verify code
+                    Verify your email
                   </Text>
                   {/* <HStack
                       justifyContent="center"
@@ -297,6 +338,25 @@ export default function OTP(props: any) {
                       </Box>
                     </Box>
 
+                    <Pressable onPress={resendCode}>
+                      <HStack
+                        justifyContent="space-between"
+                        position="relative"
+                        marginTop="5"
+                      >
+                        <Box></Box>
+                        <HStack alignItems="center" space="1">
+                          <Text
+                            fontSize={{ base: 'xs', sm: 'md' }}
+                            fontWeight="medium"
+                            color={theme.colors.shared.softBlack}
+                          >
+                            Resend code
+                          </Text>
+                        </HStack>
+                      </HStack>
+                    </Pressable>
+
                     {/* button */}
                     <Box marginTop="5">
                       <Box
@@ -313,10 +373,10 @@ export default function OTP(props: any) {
                         >
                           <Pressable onPress={handleSubmitOTP}>
                             <Hidden till="lg">
-                              <>{loading ? 'Loading...' : 'Verify code'}</>
+                              <>{loading ? 'Loading...' : 'Submit code'}</>
                             </Hidden>
                             <Hidden from="lg">
-                              <>{loading ? 'Loading...' : 'Verify code'}</>
+                              <>{loading ? 'Loading...' : 'Submit code'}</>
                             </Hidden>
                           </Pressable>
                         </Text>

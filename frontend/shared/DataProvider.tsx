@@ -1,5 +1,5 @@
 import React from 'react'
-// import { useRouter } from 'solito/router'
+import { useRouter } from 'solito/router'
 // import AsyncStorage from '@react-native-community/async-storage'
 import { gql, useLazyQuery } from '@apollo/client'
 import { useRecoilState } from 'recoil'
@@ -15,13 +15,14 @@ const GET_USER_SUBSCRIPTION_DATA = gql`
       remainingCredits
       isInTrial
       redirectToPricingPage
+      redirectToOTPPage
       isCustomPlan
     }
   }
 `
 
 export const DataProvider = ({ children }) => {
-  // const { push } = useRouter()
+  const { push } = useRouter()
   // const [route, setRoute] = React.useState<string | undefined>()
   const [getUserSubscriptionData, { data, loading }] = useLazyQuery(
     GET_USER_SUBSCRIPTION_DATA,
@@ -44,13 +45,20 @@ export const DataProvider = ({ children }) => {
   React.useEffect(() => {
     if (data?.getUserSubscriptionData) {
       setUserSubscriptionData(data.getUserSubscriptionData)
+      // will need to change the line below to not look for document.location.href once we have mobile app
+      if (
+        data.getUserSubscriptionData.redirectToOTPPage &&
+        !document.location.href.includes('otp')
+      ) {
+        push('/otp')
+      }
     }
   }, [data])
 
   React.useEffect(() => {
     if (jwt) {
       ;(async () => {
-        getUserSubscriptionData()
+        await getUserSubscriptionData()
       })()
     }
   }, [jwt])

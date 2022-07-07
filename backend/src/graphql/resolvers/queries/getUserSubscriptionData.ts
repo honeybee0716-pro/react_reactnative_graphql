@@ -17,6 +17,7 @@ export const getUserSubscriptionDataSchema = gql`
     remainingCredits: Int!
     isInTrial: Boolean!
     redirectToPricingPage: Boolean!
+    redirectToOTPPage: Boolean!
     isCustomPlan: Boolean!
   }
 
@@ -76,6 +77,7 @@ const getUserSubscriptionData = async (
   const data: any = {
     isInTrial,
     redirectToPricingPage,
+    redirectToOTPPage: user.emailIsVerified !== true,
     stripeCustomer,
     activeSubscription,
   };

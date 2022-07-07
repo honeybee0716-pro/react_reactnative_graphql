@@ -107,6 +107,7 @@ const permissions = shield(
       updateUser: isAuthenticated,
       banUser: isAdmin,
       confirmEmailValidationCode: isAuthenticated,
+      resendCode: isAuthenticated,
     },
   },
   {

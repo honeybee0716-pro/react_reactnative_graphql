@@ -361,22 +361,6 @@ export default function SignUp(props: any) {
                       marginTop="5"
                     >
                       <Box></Box>
-                      {/* <Checkbox
-                            alignItems="center"
-                            defaultIsChecked={false}
-                            value="demo"
-                            colorScheme="primary"
-                            accessibilityLabel="Remember me"
-                          >
-                            <HStack alignItems="center">
-                              <Text
-                                fontSize={{ base: 'sm', sm: 'md' }}
-                                fontWeight="medium"
-                              >
-                                Remember me
-                              </Text>
-                            </HStack>
-                          </Checkbox> */}
                       <SolitoLink href="/forgot-password">
                         <HStack alignItems="center" space="1">
                           <Box w="18px">
