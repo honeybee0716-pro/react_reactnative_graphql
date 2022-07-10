@@ -1,43 +1,31 @@
-import React, { useMemo } from 'react'
 import {
   Box,
-  HStack,
-  Icon,
-  Text,
-  VStack,
-  Avatar,
-  ScrollView,
-  Pressable,
   Center,
-  Input,
-  Fab,
-  IconButton,
-  useColorModeValue,
-  Divider,
-  Button,
-  Heading,
-  Stack,
-  InputGroup,
-  InputLeftAddon,
-  InputRightAddon
+  Hidden,
+  Text,
+  HStack,
+  Checkbox,
+  Pressable,
+  Heading
 } from 'native-base'
-import FloatingLabelInput from './components/FloatingLabelInput'
-import { Link as SolitoLink } from 'solito/link'
+import { theme } from 'shared/styles/theme'
+import { useEffect, useState } from 'react'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
+import IconPlus from 'shared/components/icons/IconPlus'
+import IconFileText from 'shared/components/icons/IconFileText'
+import IconUpload from 'shared/components/icons/IconUpload'
+import IconFilter from 'shared/components/icons/IconFilter'
+import { LoadingSpinner } from 'shared/components/LoadingSpinner'
+import { FilterModal } from 'shared/components/FilterModal'
+import { LeadRows } from 'shared/components/LeadRows'
 import { useRouter } from 'solito/router'
-import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
-import { gql, useQuery, useLazyQuery } from '@apollo/client'
-
-import DashboardLayout from '../../layouts/DashboardLayout'
-
-const GET_USER_SUBSCRIPTION_DATA = gql`
-  query GetUserSubscriptionData {
-    getUserSubscriptionData {
-      stripeCustomer
-      status
-      message
-    }
-  }
-`
+import { gql, useLazyQuery } from '@apollo/client'
+import { CSVLink } from 'react-csv'
+import { useRecoilState } from 'recoil'
+import {
+  userSubscriptionDataState,
+  searchForLeadsVariablesState
+} from '../../state'
 
 const SEARCH_FOR_LEADS = gql`
   query SearchForLeads($input: searchForLeadsInput) {
@@ -45,419 +33,397 @@ const SEARCH_FOR_LEADS = gql`
       message
       status
       leads
+      count
     }
   }
 `
 
-// const sortedContacts = clientEyeData.sort((a, b) =>
-//   a.contactName.localeCompare(b.contactName)
-// );
-
-// const groupedContacts = getGroupedContacts(sortedContacts);
-
-// type GroupedContact = {
-//   [key: string]: ContactProps[];
-// };
-
-// function getGroupedContacts(contactsData: ContactProps[]) {
-//   const data = contactsData.reduce<GroupedContact>((acc, curr) => {
-//     const group = curr.contactName[0];
-//     if (!acc[group]) acc[group] = [curr];
-//     else acc[group].push(curr);
-//     return acc;
-//   }, {} as GroupedContact);
-//   return data;
-// }
-
-// function ListWithLabel({ category }: { category: string }) {
-//   return (
-//     <Box>
-//       <HStack alignItems="center">
-//         <Text
-//           fontSize="xs"
-//           _light={{ color: 'coolGray.400' }}
-//           _dark={{ color: 'coolGray.50' }}
-//           mt={5}
-//           mb={2}
-//           pl={4}
-//         >
-//           {category.toUpperCase()}
-//         </Text>
-//         <Divider ml={2} mr={9} mt={2} flex={1} />
-//       </HStack>
-
-//       {groupedContacts[category].map((item, index) => {
-//         return (
-//           <Pressable p={2} key={index}>
-//             <HStack alignItems="center" space={4}>
-//               <Avatar
-//                 source={{
-//                   uri: item.imageUri,
-//                 }}
-//                 w={10}
-//                 h={10}
-//               >
-//                 JD
-//               </Avatar>
-
-//               <VStack>
-//                 <Text
-//                   fontSize="sm"
-//                   _light={{ color: 'coolGray.400' }}
-//                   _dark={{ color: 'coolGray.50' }}
-//                 >
-//                   {item.contactName.charAt(0).toUpperCase() +
-//                     item.contactName.slice(1)}
-//                 </Text>
-//               </VStack>
-//             </HStack>
-//           </Pressable>
-//         );
-//       })}
-//     </Box>
-//   );
-// }
-
-type ListItemProps = {
-  item: any
-}
-
-function ListItem(props: ListItemProps) {
-  return (
-    <Pressable p={2}>
-      <HStack alignItems="center" space={4}>
-        <Avatar
-          source={{
-            uri: props.item.imageUri
-          }}
-          w={10}
-          h={10}
-        >
-          JD
-        </Avatar>
-        <VStack>
-          <Text
-            fontSize="sm"
-            _light={{ color: 'coolGray.400' }}
-            _dark={{ color: 'coolGray.50' }}
-          >
-            {props.item.contactName.charAt(0).toUpperCase() +
-              props.item.contactName.slice(1, props.item.contactName.length)}
-          </Text>
-        </VStack>
-      </HStack>
-    </Pressable>
-  )
-}
-
-function ListItemDesktop(props: ListItemProps) {
-  return (
-    <SolitoLink href={`/lead/${props?.item?.id}`}>
-      <Pressable p={2} flex={1}>
-        <HStack alignItems="center" flex={1} justifyContent="space-between">
-          <HStack alignItems="center" space={4} w={40}>
-            <Avatar
-              source={{
-                uri: props?.item?.profileImageURL
-              }}
-              w={10}
-              h={10}
-            >
-              {`${props?.item?.firstName?.charAt(0) || ''}${
-                props?.item?.lastName?.charAt(0) || ''
-              }`}
-            </Avatar>
-            <Text
-              _light={{ color: 'coolGray.700' }}
-              _dark={{ color: 'coolGray.50' }}
-            >
-              {props?.item?.fullName || 'unknown'}
-            </Text>
-          </HStack>
-
-          <Text
-            w={40}
-            _light={{ color: 'coolGray.700' }}
-            _dark={{ color: 'coolGray.50' }}
-          >
-            {props?.item?.email || 'unknown'}
-          </Text>
-
-          <Text
-            w={40}
-            _light={{ color: 'coolGray.700' }}
-            _dark={{ color: 'coolGray.50' }}
-          >
-            {props?.item?.phone || 'unknown'}
-          </Text>
-
-          <Text
-            w={40}
-            _light={{ color: 'coolGray.700' }}
-            _dark={{ color: 'coolGray.50' }}
-          >
-            {props?.item?.companyName || 'unknown'}
-          </Text>
-
-          <Text
-            w={40}
-            _light={{ color: 'coolGray.700' }}
-            _dark={{ color: 'coolGray.50' }}
-          >
-            {props?.item?.title || 'unknown'}
-          </Text>
-        </HStack>
-      </Pressable>
-      <Divider />
-    </SolitoLink>
-  )
-}
-
-export default function ContactList() {
-  const firstName = React.useRef<any>()
-  const lastName = React.useRef<any>()
-  const companyName = React.useRef<any>()
-  const jobTitle = React.useRef<any>()
+export default function Dashboard() {
+  const [finishedVerifyingAccess, setFinishedVerifyingAccess] =
+    useState<boolean>(false)
+  const [exportLeads, setExportLeads] = useState<any>([])
+  const [leads, setLeads] = useState<any>([])
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
+  const [hasFilters, setHasFilters] = useState<boolean>(false)
+  const [count, setCount] = useState<number>(0)
   const { push } = useRouter()
-  const {
-    data: getUserSubscriptionDataResult,
-    error: getUserSubscriptionDataError,
-    loading: getUserSubscriptionDataLoading
-  } = useQuery(GET_USER_SUBSCRIPTION_DATA, {
-    fetchPolicy: 'cache-first'
-  })
   const [searchForLeads, { data, loading, error }] =
     useLazyQuery(SEARCH_FOR_LEADS)
+  const [userSubscriptionData] = useRecoilState<any>(userSubscriptionDataState)
+  const [searchForLeadsVariables, setSearchForLeadsVariables] =
+    useRecoilState<any>(searchForLeadsVariablesState)
 
-  const handleSearch = async () => {
-    await searchForLeads({
-      fetchPolicy: 'cache-first',
-      variables: {
-        input: {
-          firstName: firstName?.current?.value,
-          lastName: lastName?.current?.value,
-          companyName: companyName?.current?.value,
-          jobTitle: jobTitle?.current?.value
+  const handleSearch = async (
+    hasFiltersParam: boolean,
+    variablesParam?: any
+  ) => {
+    setModalIsOpen(false)
+
+    setHasFilters(hasFiltersParam)
+
+    const variables = variablesParam
+      ? variablesParam
+      : {
+          input: {
+            sortBy: 'date'
+          }
         }
+    setSearchForLeadsVariables(variables)
+
+    await searchForLeads({
+      fetchPolicy: 'network-only',
+      nextFetchPolicy: 'cache-and-network',
+      variables
+    })
+  }
+
+  const exportLead = (value, lead) => {
+    setExportLeads((prevState) => {
+      if (value) {
+        return [...prevState, lead]
+      } else {
+        return prevState.filter((item) => item.id !== lead.id)
       }
     })
   }
 
-  React.useEffect(() => {
-    if (getUserSubscriptionDataResult) {
-      if (
-        !getUserSubscriptionDataResult?.getUserSubscriptionData?.stripeCustomer
-          ?.activePlanLevel
-      ) {
-        push('/pricing')
+  const exportAllLeads = (value) => {
+    setExportLeads(value ? leads : [])
+  }
+
+  const handleFilterPress = () => {
+    setModalIsOpen(true)
+  }
+
+  const loadMore = async () => {
+    const variables = {
+      input: {
+        ...searchForLeadsVariables.input
       }
     }
-  }, [getUserSubscriptionDataResult])
+    variables.input.cursor = leads[leads.length - 1].id
+    await handleSearch(true, variables)
+  }
 
-  React.useEffect(() => {
-    handleSearch()
+  useEffect(() => {
+    if (userSubscriptionData?.redirectToPricingPage) {
+      push('/pricing')
+    } else {
+      setFinishedVerifyingAccess(true)
+    }
+  }, [userSubscriptionData])
+
+  useEffect(() => {
+    if (data?.searchForLeads?.count || data?.searchForLeads?.count === 0) {
+      setCount(data.searchForLeads.count)
+    }
+    if (data?.searchForLeads?.leads) {
+      if (searchForLeadsVariables.input.cursor) {
+        setLeads((prevLeads) => [...prevLeads, ...data.searchForLeads.leads])
+      } else {
+        setLeads(data.searchForLeads.leads)
+      }
+    }
+  }, [data?.searchForLeads?.leads])
+
+  useEffect(() => {
+    ;(async () => {
+      // initial search
+      await handleSearch(false)
+    })()
   }, [])
+
+  const enableExportButton = exportLeads.length
+
+  const hideLeads =
+    userSubscriptionData?.activeSubscription === null &&
+    userSubscriptionData?.isInTrial === false
+
+  const clearFilters = async () => {
+    await handleSearch(false)
+  }
+
+  const showLoadMore = leads.length && count !== leads.length && !loading
 
   return (
     <>
-      <DashboardLayout
-        displaySidebar
-        displayScreenTitle={false}
-        title={'Leads'}
-      >
-        {loading ? <Heading>Loading...</Heading> : null}
-        {error ? <Heading>Error. Please try again.</Heading> : null}
-        {data?.searchForLeads?.leads && !getUserSubscriptionDataLoading ? (
-          <>
-            <HStack
-              pt={{ md: 5, base: 2 }}
-              mb={{ md: 5, base: 0 }}
-              w="100%"
-              justifyContent="space-between"
-              _light={{ bg: { base: 'white', md: 'coolGray.200' } }}
-              _dark={{
-                bg: { base: 'coolGray.800', md: 'coolGray.700' }
-              }}
-            >
-              <Input
-                size="xl"
-                placeholder="First Name"
-                color="muted.900"
-                placeholderTextColor="muted.500"
-                bg="coolGray.100"
-                borderColor="coolGray.400"
-                ref={firstName}
-              />
-              <Input
-                size="xl"
-                placeholder="Last Name"
-                color="muted.900"
-                placeholderTextColor="muted.500"
-                bg="coolGray.100"
-                borderColor="coolGray.400"
-                ref={lastName}
-              />
-              <Input
-                size="xl"
-                placeholder="Company Name"
-                color="muted.900"
-                placeholderTextColor="muted.500"
-                bg="coolGray.100"
-                borderColor="coolGray.400"
-                ref={companyName}
-              />
-              <Input
-                size="xl"
-                placeholder="Job Title"
-                color="muted.900"
-                placeholderTextColor="muted.500"
-                bg="coolGray.100"
-                borderColor="coolGray.400"
-                ref={jobTitle}
-              />
-              <Button
-                onPress={handleSearch}
-                bg="primary.700"
-                color="muted.200"
-                leftIcon={<Icon as={Ionicons} name="search" size="sm" />}
+      <DashboardLayout>
+        {error ? (
+          <Heading marginTop="2" marginLeft="2">
+            Error. Please try again.
+          </Heading>
+        ) : null}
+        {(leads.length || data?.searchForLeads) &&
+        finishedVerifyingAccess === true ? (
+          <Box flexDirection={{ base: 'column', lg: 'column' }}>
+            <Box flex="1">
+              <Box
+                marginTop={{ base: '3', sm: '5' }}
+                marginLeft={{ base: '3', sm: '5' }}
+                marginRight={{ base: '3', sm: '5', lg: '5' }}
+                marginBottom="5"
+                paddingX={{ base: '4', sm: '5' }}
+                paddingTop={{ base: '4', sm: '5' }}
+                paddingBottom="4"
+                borderTopRadius="2xl"
+                borderBottomRadius="2xl"
+                backgroundColor="white"
+                borderWidth="1"
+                borderColor={theme.colors.shared.softGray}
               >
-                Search
-              </Button>
-            </HStack>
-            <VStack
-              px={{ base: 4, md: 8 }}
-              py={{ base: 2, md: 8 }}
-              borderRadius={{ md: '8' }}
-              _light={{
-                borderColor: 'coolGray.400',
-                bg: { base: 'white' }
-              }}
-              _dark={{
-                borderColor: 'coolGray.700',
-                bg: { md: 'coolGray.400', base: 'coolGray.800' }
-              }}
-              borderWidth={{ md: '1' }}
-              borderBottomWidth="1"
-              space="4"
-            >
-              <Box>
-                <ScrollView>
-                  <Box display={{ md: 'flex', base: 'none' }}>
-                    <HStack
-                      alignItems="center"
-                      justifyContent="space-between"
-                      borderBottomWidth={1}
-                      _light={{ borderColor: 'coolGray.400' }}
-                      _dark={{ borderColor: 'coolGray.600' }}
-                    >
-                      <Text
-                        fontWeight="bold"
-                        textAlign="left"
-                        w={40}
-                        mb={3}
-                        _light={{ color: 'coolGray.800' }}
-                        _dark={{ color: 'coolGray.50' }}
-                      >
-                        Name
-                      </Text>
-                      <Text
-                        fontWeight="bold"
-                        textAlign="left"
-                        w={40}
-                        mb={3}
-                        _light={{ color: 'coolGray.800' }}
-                        _dark={{ color: 'coolGray.50' }}
-                      >
-                        Email
-                      </Text>
-                      <Text
-                        fontWeight="bold"
-                        textAlign="left"
-                        w={40}
-                        mb={3}
-                        _light={{ color: 'coolGray.800' }}
-                        _dark={{ color: 'coolGray.50' }}
-                      >
-                        Phone
-                      </Text>
-                      <Text
-                        fontWeight="bold"
-                        w={40}
-                        mb={3}
-                        _light={{ color: 'coolGray.800' }}
-                        _dark={{ color: 'coolGray.50' }}
-                      >
-                        Company
-                      </Text>
-                      <Text
-                        fontWeight="bold"
-                        w={40}
-                        mb={3}
-                        _light={{ color: 'coolGray.800' }}
-                        _dark={{ color: 'coolGray.50' }}
-                      >
-                        Job Title
-                      </Text>
-                    </HStack>
-                    <Text
-                      mt={7}
-                      pl={2}
-                      fontSize="sm"
-                      mb={3}
-                      _light={{ color: 'coolGray.600' }}
-                      _dark={{ color: 'coolGray.300' }}
-                    >
-                      Contacts ({data?.searchForLeads?.leads?.length} shown out
-                      of {data?.searchForLeads?.leads.length})
-                    </Text>
-                    <VStack space={4}>
-                      {data?.searchForLeads?.leads?.map((item: any, index) => {
-                        return <ListItemDesktop item={item} key={item.id} />
-                      })}
-                    </VStack>
-                  </Box>
-                </ScrollView>
-                <VStack
-                  display={{ md: 'none', base: 'flex' }}
-                  zIndex={2}
-                  position="absolute"
-                  alignItems="center"
-                  right={5}
-                  top={4}
-                >
-                  <Icon
-                    size={3}
-                    _light={{ color: 'coolGray.400' }}
-                    _dark={{ color: 'violet.500' }}
-                    as={AntDesign}
-                    name="heart"
+                <HStack alignItems="center" marginBottom="4" flex="none">
+                  <Center
+                    backgroundColor={theme.colors.shared.fireOrange_20}
+                    paddingY="2"
+                    paddingX="2"
+                    borderRadius="lg"
+                  >
+                    <Box w="21px">
+                      <IconFileText color={theme.colors.shared.fireOrange} />
+                    </Box>
+                  </Center>
+                  <Text
+                    flex="1"
+                    marginLeft="3"
+                    fontWeight="medium"
+                    fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
+                    maxWidth="150px"
+                  >
+                    {hideLeads
+                      ? "Your leads are hidden because you don't have an active subscription."
+                      : 'Website Visitors'}
+                  </Text>
+                  <Text
+                    flex="1"
+                    fontWeight="light"
+                    fontSize="sm"
+                    width="300px"
+                    marginLeft="3"
+                  >
+                    (Showing {leads?.length || 0} of {count || 0})
+                  </Text>
+                  <FilterModal
+                    modalIsOpen={modalIsOpen}
+                    setModalIsOpen={setModalIsOpen}
+                    handleSearch={handleSearch}
+                    handleFilterPress={handleFilterPress}
+                    hasFilters={hasFilters}
+                    setHasFilters={setHasFilters}
                   />
-                  {/* {Object.keys(groupedContacts).map((key) => (
-                    <Pressable key={key}>
-                      <Text mt={2}> {key.toUpperCase()}</Text>
+                  <Hidden till="sm">
+                    <Pressable
+                      backgroundColor={theme.colors.shared.clientEyePrimary}
+                      borderRadius="md"
+                      paddingX="3"
+                      paddingY="2"
+                      marginRight="5"
+                      onPress={handleFilterPress}
+                    >
+                      <HStack alignItems="center" space="3">
+                        <Box w="20px">
+                          <IconFilter color="white" />
+                        </Box>
+                        <HStack>
+                          <Text
+                            color="white"
+                            fontSize="xs"
+                            fontWeight="medium"
+                            textDecoration="none"
+                          >
+                            Filter
+                          </Text>
+                        </HStack>
+                      </HStack>
                     </Pressable>
-                  ))} */}
-                </VStack>
-                <Fab
-                  display={{ md: 'none', base: 'flex' }}
-                  bg="coolGray.400"
-                  placement="bottom-right"
-                  mb={10}
-                  borderRadius="full"
-                  icon={
-                    <Center>
-                      <Icon
-                        size={6}
-                        color="white"
-                        as={Ionicons}
-                        name={'keypad'}
-                      />
-                    </Center>
-                  }
-                />
+                  </Hidden>
+                  <Hidden till="sm">
+                    {enableExportButton && !hideLeads ? (
+                      <CSVLink
+                        data={exportLeads}
+                        filename={'clienteye-export.csv'}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <Box
+                          backgroundColor={theme.colors.shared.clientEyePrimary}
+                          borderRadius="md"
+                          paddingX="3"
+                          paddingY="2"
+                        >
+                          <HStack alignItems="center" space="3">
+                            <Box w="20px">
+                              <IconUpload color="white" />
+                            </Box>
+                            <HStack>
+                              <Text
+                                color="white"
+                                fontSize="xs"
+                                fontWeight="medium"
+                                textDecoration="none"
+                              >
+                                Export
+                              </Text>
+                            </HStack>
+                          </HStack>
+                        </Box>
+                      </CSVLink>
+                    ) : (
+                      <Box
+                        backgroundColor={theme.colors.shared.clientEyePrimary}
+                        borderRadius="md"
+                        paddingX="3"
+                        paddingY="2"
+                      >
+                        <HStack alignItems="center" space="3">
+                          <Box w="20px">
+                            <IconUpload color="white" />
+                          </Box>
+                          <HStack>
+                            <Text
+                              color="white"
+                              fontSize="xs"
+                              fontWeight="medium"
+                              textDecoration="none"
+                            >
+                              Export
+                            </Text>
+                          </HStack>
+                        </HStack>
+                      </Box>
+                    )}
+                  </Hidden>
+                  <Hidden from="sm">
+                    <Pressable
+                      backgroundColor="white"
+                      borderWidth="1"
+                      borderColor={theme.colors.shared.black_20}
+                      borderRadius="md"
+                      p="0.4rem"
+                    >
+                      <Box w="16px">
+                        <IconPlus />
+                      </Box>
+                    </Pressable>
+                  </Hidden>
+                </HStack>
+                <Hidden till="sm">
+                  <Box>
+                    <HStack
+                      paddingX="3"
+                      paddingY="3"
+                      borderBottomWidth="1"
+                      borderBottomColor={theme.colors.shared.softGray}
+                    >
+                      <Box w="5%" />
+                      <Box w="12%">
+                        <Text fontSize="sm" fontWeight="medium">
+                          Name
+                        </Text>
+                      </Box>
+                      <Box w="27%">
+                        <Text fontSize="sm" fontWeight="medium">
+                          Job Title
+                        </Text>
+                      </Box>
+                      <Box w="20%">
+                        <Text fontSize="sm" fontWeight="medium">
+                          Company Name
+                        </Text>
+                      </Box>
+                      <Box w="20.5%">
+                        <Text fontSize="sm" fontWeight="medium">
+                          Email
+                        </Text>
+                      </Box>
+                      <Box w="13.8%">
+                        <Text fontSize="sm" fontWeight="medium">
+                          Phone Number
+                        </Text>
+                      </Box>
+                      <Box w="16%">
+                        <Checkbox
+                          value=""
+                          onChange={(value) => exportAllLeads(value)}
+                          accessibilityLabel="Select all leads"
+                        />
+                      </Box>
+                    </HStack>
+                    {leads?.length === 0 && !hasFilters ? (
+                      <Text marginTop="4" textAlign="center">
+                        You don't have any leads yet.
+                      </Text>
+                    ) : null}
+                    {leads?.length === 0 && hasFilters ? (
+                      <>
+                        <Text marginTop="4" textAlign="center">
+                          No leads found with those filters.
+                        </Text>
+                        <Center height="50px">
+                          <Pressable
+                            backgroundColor={
+                              theme.colors.shared.clientEyePrimary
+                            }
+                            borderRadius="md"
+                            paddingX="3"
+                            paddingY="2"
+                            marginTop="2"
+                            onPress={clearFilters}
+                          >
+                            <Text
+                              color="white"
+                              fontSize="xs"
+                              fontWeight="medium"
+                              textDecoration="none"
+                            >
+                              Clear Filters
+                            </Text>
+                          </Pressable>
+                        </Center>
+                      </>
+                    ) : null}
+                    <LeadRows
+                      leads={leads}
+                      hideLeads={hideLeads}
+                      exportLeads={exportLeads}
+                      exportLead={exportLead}
+                      push={push}
+                    />
+                  </Box>
+                </Hidden>
               </Box>
-            </VStack>
+            </Box>
+          </Box>
+        ) : null}
+        {loading ? (
+          <>
+            {count !== leads.length ? (
+              <Box height="50px">
+                <LoadingSpinner />
+              </Box>
+            ) : (
+              <LoadingSpinner />
+            )}
           </>
+        ) : null}
+        {showLoadMore ? (
+          <Center height="50px">
+            <Pressable
+              backgroundColor={theme.colors.shared.clientEyePrimary}
+              borderRadius="md"
+              paddingX="3"
+              paddingY="2"
+              marginTop="2"
+              onPress={loadMore}
+            >
+              <Text
+                color="white"
+                fontSize="xs"
+                fontWeight="medium"
+                textDecoration="none"
+              >
+                Load more
+              </Text>
+            </Pressable>
+          </Center>
         ) : null}
       </DashboardLayout>
     </>

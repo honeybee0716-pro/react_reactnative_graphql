@@ -11,7 +11,7 @@ import {
   Divider,
   Hidden,
   Menu,
-  Pressable
+  useToast
 } from 'native-base'
 import { useRouter } from 'solito/router'
 
@@ -31,11 +31,14 @@ type HeaderProps = {
 
 export default function Header({ ...props }: HeaderProps) {
   const { push } = useRouter()
+  const toast = useToast()
 
   const { colorMode } = useColorMode()
 
   const handleLogoPress = () => {
-    alert('test')
+    toast.show({
+      description: 'test'
+    })
     push('/home')
   }
 

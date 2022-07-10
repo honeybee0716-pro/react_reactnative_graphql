@@ -27,7 +27,6 @@ export interface IAppConfig {
   DATABASE_URL: string;
   NODE_ENV: string;
   JWT_SECRET: string;
-  CORS_ORIGIN: string;
   PORT: number;
   SENDGRID_API_KEY: string;
   STRIPE_SECRET_KEY: string;
@@ -39,13 +38,23 @@ export interface IAppConfig {
   TWILIO_AUTH_TOKEN: string;
   TWILIO_PHONE_NUMBER: string;
   SLACK_WEBHOOK_URL: string;
+  REDISCLOUD_URL: string;
+  STRIPE_STANDARD_FLAT_PRICE_ID: string;
+  STRIPE_STANDARD_METERED_PRICE_ID: string;
+  STRIPE_SUCCESS_URL: string;
+  STRIPE_CANCEL_URL: string;
+  STRIPE_PAYMENT_METHOD_TYPES: string;
+  SMTP_HOST: string;
+  SMTP_SECURE: string;
+  SMTP_PORT: string;
+  SMTP_USER: string;
+  SMTP_PASSWORD: string;
 }
 
 export const AppConfig: IAppConfig = {
   NODE_ENV: loadEnvironmentVariable('NODE_ENV'),
   PORT: loadNumericEnvironmentVariable('PORT', 6000),
   JWT_SECRET: loadEnvironmentVariable('JWT_SECRET'),
-  CORS_ORIGIN: loadEnvironmentVariable('CORS_ORIGIN'),
   SENDGRID_API_KEY: loadEnvironmentVariable('SENDGRID_API_KEY'),
   DATABASE_URL: loadEnvironmentVariable('DATABASE_URL'),
   STRIPE_SECRET_KEY: loadEnvironmentVariable('STRIPE_SECRET_KEY'),
@@ -57,4 +66,21 @@ export const AppConfig: IAppConfig = {
   TWILIO_AUTH_TOKEN: loadEnvironmentVariable('TWILIO_AUTH_TOKEN'),
   TWILIO_PHONE_NUMBER: loadEnvironmentVariable('TWILIO_PHONE_NUMBER'),
   SLACK_WEBHOOK_URL: loadEnvironmentVariable('SLACK_WEBHOOK_URL'),
+  REDISCLOUD_URL: loadEnvironmentVariable('REDISCLOUD_URL'),
+  STRIPE_STANDARD_FLAT_PRICE_ID: loadEnvironmentVariable(
+    'STRIPE_STANDARD_FLAT_PRICE_ID',
+  ),
+  STRIPE_STANDARD_METERED_PRICE_ID: loadEnvironmentVariable(
+    'STRIPE_STANDARD_METERED_PRICE_ID',
+  ),
+  STRIPE_SUCCESS_URL: loadEnvironmentVariable('STRIPE_SUCCESS_URL'),
+  STRIPE_CANCEL_URL: loadEnvironmentVariable('STRIPE_CANCEL_URL'),
+  STRIPE_PAYMENT_METHOD_TYPES: loadEnvironmentVariable(
+    'STRIPE_PAYMENT_METHOD_TYPES',
+  ),
+  SMTP_HOST: loadEnvironmentVariable('SMTP_HOST'),
+  SMTP_SECURE: loadEnvironmentVariable('SMTP_SECURE'),
+  SMTP_PORT: loadEnvironmentVariable('SMTP_PORT'),
+  SMTP_USER: loadEnvironmentVariable('SMTP_USER'),
+  SMTP_PASSWORD: loadEnvironmentVariable('SMTP_PASSWORD'),
 };

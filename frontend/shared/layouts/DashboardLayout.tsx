@@ -1,316 +1,35 @@
-import React from 'react'
 import {
-  Box,
-  VStack,
   StatusBar,
-  ScrollView,
+  Box,
+  Center,
+  Hidden,
+  Text,
   HStack,
   Pressable,
-  Icon,
-  Image,
-  Text,
-  Hidden,
-  useColorMode,
-  IconButton,
-  Divider,
-  Menu,
-  Avatar,
-  Input,
-  Heading,
-  Tooltip
+  Tooltip,
+  Image
 } from 'native-base'
-import { useRouter } from 'solito/router'
-import { gql, useQuery } from '@apollo/client'
-import {
-  AntDesign,
-  FontAwesome,
-  Ionicons,
-  MaterialCommunityIcons
-} from '@expo/vector-icons'
-
-import Sidebar from '../components/Sidebar'
-
+import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { theme } from 'shared/styles/theme'
+import IconCredits from 'shared/components/icons/IconCredits'
+import IconHome from 'shared/components/icons/IconHome'
+import IconCreditCard from 'shared/components/icons/IconCreditCard'
+import IconHelpCircle from 'shared/components/icons/IconHelpCircle'
+import IconX from 'shared/components/icons/IconX'
+import { useRouter } from 'solito/router'
+import AsyncStorage from '@react-native-community/async-storage'
+import { useRecoilState } from 'recoil'
+import { userSubscriptionDataState } from '../state'
 
-type DashboardLayoutProps = {
-  scrollable?: boolean
-  displayScreenTitle?: boolean
-  displaySidebar?: boolean
-  displayBackButton?: boolean
-  showIcons?: boolean
-  displaySearchButton?: boolean
-  displayNotificationButton?: boolean
-  displayMenuButton?: boolean
-  displayAlternateMobileHeader?: boolean
-  header?: {
-    searchbar: boolean
-  }
-  mobileHeader?: {
-    backButton: boolean
-  }
-  title: string
-  subTitle?: string
-  children: React.ReactNode
-  showGroupInfoHeader?: boolean
-  displayBackIcon?: boolean
-}
-
-type MainContentProps = DashboardLayoutProps
-
-type MobileHeaderProps = {
-  title: string
-  backButton: boolean
-}
-
-type HeaderProps = {
-  title: string
-  toggleSidebar: () => void
-  menuButton: boolean
-  searchbar: boolean
-}
-
-const GET_USERS_REMAINING_CREDITS = gql`
-  query GetUsersRemainingCredits {
-    getUsersRemainingCredits {
-      message
-      status
-      remainingCredits
-    }
-  }
-`
-
-export function Header(props: HeaderProps) {
+const DashboardLayout: React.FC = ({ children }) => {
   const { push } = useRouter()
-  const { colorMode } = useColorMode()
-  const { data, error, loading } = useQuery(GET_USERS_REMAINING_CREDITS, {
-    fetchPolicy: 'network-only'
-  })
+  const [route, setRoute] = React.useState<string | undefined>()
+  const [userSubscriptionData] = useRecoilState<any>(userSubscriptionDataState)
 
-  console.log({ data })
-
-  const handleLogoPress = () => {
-    push('/home')
-  }
-
-  return (
-    <Box
-      px="6"
-      pt="3"
-      pb="3"
-      borderBottomWidth="1"
-      _dark={{ bg: 'coolGray.400', borderColor: 'coolGray.800' }}
-      _light={{
-        bg: { base: 'coolGray.400', md: 'white' },
-        borderColor: 'coolGray.400'
-      }}
-    >
-      <VStack
-        alignSelf="center"
-        width="100%"
-        maxW={props.menuButton ? null : '1016px'}
-      >
-        <HStack alignItems="center" justifyContent="space-between">
-          <HStack space="4" alignItems="center">
-            {props.menuButton && (
-              <IconButton
-                variant="ghost"
-                colorScheme="light"
-                onPress={props.toggleSidebar}
-                icon={
-                  <Icon
-                    size="6"
-                    name="menu-sharp"
-                    as={Ionicons}
-                    _light={{ color: 'coolGray.800' }}
-                    _dark={{ color: 'coolGray.50' }}
-                  />
-                }
-              />
-            )}
-
-            <Pressable onPress={handleLogoPress}>
-              {colorMode === 'light' ? (
-                <Image
-                  h="10"
-                  w="56"
-                  alt="NativeBase Startup+"
-                  resizeMode="contain"
-                  source={require('../assets/clientEyeLogo.jpeg')}
-                />
-              ) : (
-                <Image
-                  h="10"
-                  w="56"
-                  alt="NativeBase Startup+"
-                  resizeMode="contain"
-                  source={require('../assets/clientEyeLogo.jpeg')}
-                />
-              )}
-            </Pressable>
-          </HStack>
-          <Tooltip
-            label="Your credits will reset at the start of your billing cycle"
-            openDelay={500}
-          >
-            <Heading size="sm">
-              Credits Remaining:{' '}
-              {loading
-                ? ''
-                : error
-                ? 'Error'
-                : data?.getUsersRemainingCredits?.remainingCredits || 0}
-            </Heading>
-          </Tooltip>
-        </HStack>
-      </VStack>
-    </Box>
-  )
-}
-
-function MainContent(props: MainContentProps) {
-  const { back } = useRouter()
-
-  return (
-    <VStack maxW="1016px" flex={1} width="100%">
-      {props.displayScreenTitle && (
-        <Hidden till="md">
-          <HStack mb="4" space={2} alignItems="center">
-            {props.displayBackButton ? (
-              <Pressable onPress={() => back()}>
-                <Icon
-                  size="6"
-                  as={AntDesign}
-                  name={'arrowleft'}
-                  _light={{ color: 'coolGray.800' }}
-                  _dark={{ color: 'coolGray.50' }}
-                />
-              </Pressable>
-            ) : null}
-            <Text
-              fontSize="lg"
-              _dark={{ color: 'coolGray.50' }}
-              _light={{ color: 'coolGray.800' }}
-            >
-              {props.title}
-            </Text>
-          </HStack>
-        </Hidden>
-      )}
-      {props.children}
-    </VStack>
-  )
-}
-
-export function MobileHeader(props: MobileHeaderProps) {
-  return (
-    <Box
-      px="1"
-      pt="4"
-      pb="4"
-      _dark={{ bg: 'coolGray.400', borderColor: 'coolGray.800' }}
-      _light={{
-        bg: { base: 'coolGray.400', md: 'white' },
-        borderColor: 'coolGray.400'
-      }}
-    >
-      <HStack space="2" justifyContent="space-between">
-        <HStack
-          flex="1"
-          space="2"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <>
-            <HStack alignItems="center" space="1">
-              {props.backButton && (
-                <IconButton
-                  variant="ghost"
-                  colorScheme="light"
-                  icon={
-                    <Icon
-                      size="6"
-                      as={AntDesign}
-                      name="arrowleft"
-                      color="coolGray.50"
-                    />
-                  }
-                />
-              )}
-
-              <Text color="coolGray.50" fontSize="lg">
-                {props.title}
-              </Text>
-            </HStack>
-            <HStack space="1">
-              <IconButton
-                variant="ghost"
-                colorScheme="light"
-                icon={
-                  <Icon
-                    size="6"
-                    name="bell"
-                    as={FontAwesome}
-                    _dark={{
-                      color: 'coolGray.400'
-                    }}
-                    _light={{
-                      color: 'coolGray.50'
-                    }}
-                  />
-                }
-              />
-              <Menu
-                w="150"
-                trigger={(triggerProps) => {
-                  return (
-                    <IconButton
-                      variant="ghost"
-                      colorScheme="light"
-                      accessibilityLabel="More options menu"
-                      {...triggerProps}
-                      icon={
-                        <Icon
-                          size="6"
-                          color="coolGray.50"
-                          name={'dots-vertical'}
-                          as={MaterialCommunityIcons}
-                        />
-                      }
-                    />
-                  )
-                }}
-                placement="bottom right"
-                //@ts-ignore
-                _dark={{ bg: 'coolGray.800', borderColor: 'coolGray.700' }}
-              >
-                <Menu.Item>New Group</Menu.Item>
-                <Menu.Item>New Broadcast</Menu.Item>
-                <Menu.Item>Settings</Menu.Item>
-              </Menu>
-            </HStack>
-          </>
-        </HStack>
-      </HStack>
-    </Box>
-  )
-}
-
-export default function DashboardLayout({
-  // scrollable = true,
-  displayScreenTitle = true,
-  displaySidebar = true,
-  header = {
-    searchbar: false
-  },
-  mobileHeader = {
-    backButton: true
-  },
-  ...props
-}: DashboardLayoutProps) {
-  const [isSidebarVisible, setIsSidebarVisible] = React.useState(true)
-  function toggleSidebar() {
-    setIsSidebarVisible(!isSidebarVisible)
-  }
+  React.useEffect(() => {
+    setRoute(document.location.pathname)
+  }, [])
 
   return (
     <>
@@ -321,69 +40,309 @@ export default function DashboardLayout({
       />
       <Box
         safeAreaTop
-        _light={{ bg: 'coolGray.200' }}
-        _dark={{ bg: 'coolGray.200' }}
+        _light={{ bg: 'primary.900' }}
+        _dark={{ bg: 'coolGray.900' }}
       />
-      <VStack
-        flex={1}
-        _light={{ bg: 'coolGray.200' }}
-        _dark={{ bg: 'customGray' }}
+
+      {/* Top navigation */}
+      <HStack
+        position="fixed"
+        top="0"
+        paddingLeft={{ base: '0', sm: '90px', lg: '20px' }}
+        w="full"
+        zIndex={10}
+        height={{ base: '69px', sm: '84px' }}
+        backgroundColor="white"
+        borderBottomWidth="1"
+        borderBottomColor={theme.colors.shared.softGray}
+      >
+        <HStack
+          marginLeft={{ base: '5', lg: '0' }}
+          width="100%"
+          justifyContent="space-between"
+          paddingRight={{ base: '0', sm: '5' }}
+        >
+          <Center
+            h="84px"
+            borderBottomWidth="1"
+            borderBottomColor={theme.colors.shared.softer2Gray}
+          >
+            <Pressable
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+              flexDir="row"
+              w="full"
+              onPress={async () => {
+                const jwt = await AsyncStorage.getItem('jwt')
+                if (jwt) {
+                  push('/home')
+                } else {
+                  push('/sign-in')
+                }
+              }}
+            >
+              <Image
+                w="200px"
+                h="200px"
+                resizeMode="contain"
+                source={require('shared/assets/images/clientEyeLogoFull.png')}
+              />
+            </Pressable>
+          </Center>
+
+          <Center>
+            <HStack>
+              <Box flex="1">
+                <Center marginY={{ base: '2', lg: '0' }}>
+                  <Pressable
+                    w={{ lg: 'full' }}
+                    flexDirection="row"
+                    backgroundColor={
+                      route === '/home'
+                        ? theme.colors.shared.clientEyePrimary
+                        : undefined
+                    }
+                    alignItems="center"
+                    paddingX={{ base: '3', lg: '6' }}
+                    paddingY="3"
+                    borderRadius="lg"
+                    onPress={() => push('/home')}
+                    _hover={{
+                      ...(route !== '/home'
+                        ? {
+                            backgroundColor: theme.colors.shared.softer2Gray
+                          }
+                        : {})
+                    }}
+                  >
+                    <Box w={{ base: '20px', lg: '24px' }}>
+                      <IconHome
+                        color={
+                          route === '/home'
+                            ? 'white'
+                            : theme.colors.shared.soft2Gray
+                        }
+                      />
+                    </Box>
+                    <Hidden till="lg">
+                      <Text
+                        color={
+                          route === '/home'
+                            ? 'white'
+                            : theme.colors.shared.soft2Gray
+                        }
+                        fontWeight="semibold"
+                        paddingLeft="4"
+                      >
+                        Visitors
+                      </Text>
+                    </Hidden>
+                  </Pressable>
+                </Center>
+              </Box>
+              <Center marginY={{ base: '2', lg: '0' }}>
+                <Pressable
+                  backgroundColor={
+                    route === '/billing'
+                      ? theme.colors.shared.clientEyePrimary
+                      : undefined
+                  }
+                  w={{ lg: 'full' }}
+                  flexDirection="row"
+                  alignItems="center"
+                  paddingX={{ base: '3', lg: '6' }}
+                  paddingY="3"
+                  borderRadius="lg"
+                  _hover={{
+                    ...(route !== '/billing'
+                      ? {
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }
+                      : {})
+                  }}
+                  onPress={() => push('/billing')}
+                >
+                  <Box w={{ base: '20px', lg: '24px' }}>
+                    <IconCreditCard
+                      color={
+                        route === '/billing'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                    />
+                  </Box>
+                  <Hidden till="lg">
+                    <Text
+                      color={
+                        route === '/billing'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                      fontWeight="semibold"
+                      paddingLeft="4"
+                    >
+                      Billing
+                    </Text>
+                  </Hidden>
+                </Pressable>
+              </Center>
+              <Center marginY={{ base: '2', lg: '0' }}>
+                <Pressable
+                  backgroundColor={
+                    route === '/help'
+                      ? theme.colors.shared.clientEyePrimary
+                      : undefined
+                  }
+                  w={{ lg: 'full' }}
+                  flexDirection="row"
+                  alignItems="center"
+                  paddingX={{ base: '3', lg: '6' }}
+                  paddingY="3"
+                  borderRadius="lg"
+                  _hover={{
+                    ...(route !== '/help'
+                      ? {
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }
+                      : {})
+                  }}
+                  onPress={() => {
+                    window.open('https://clienteye.com/contact/', '_blank')
+                  }}
+                >
+                  <Box w={{ base: '20px', lg: '24px' }}>
+                    <IconHelpCircle
+                      color={
+                        route === '/help'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                    />
+                  </Box>
+                  <Hidden till="lg">
+                    <Text
+                      color={
+                        route === '/help'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                      fontWeight="semibold"
+                      paddingLeft="4"
+                    >
+                      Help
+                    </Text>
+                  </Hidden>
+                </Pressable>
+              </Center>
+              <Center marginY={{ base: '2', lg: '0' }}>
+                <Pressable
+                  backgroundColor={
+                    route === '/sign-out'
+                      ? theme.colors.shared.clientEyePrimary
+                      : undefined
+                  }
+                  w={{ lg: 'full' }}
+                  flexDirection="row"
+                  alignItems="center"
+                  paddingX={{ base: '3', lg: '6' }}
+                  paddingY="3"
+                  borderRadius="lg"
+                  _hover={{
+                    ...(route !== '/sign-out'
+                      ? {
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }
+                      : {})
+                  }}
+                  onPress={() => push('/sign-out')}
+                >
+                  <Box w={{ base: '20px', lg: '24px' }}>
+                    <IconX
+                      color={
+                        route === '/sign-out'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                    />
+                  </Box>
+                  <Hidden till="lg">
+                    <Text
+                      color={
+                        route === '/sign-out'
+                          ? 'white'
+                          : theme.colors.shared.soft2Gray
+                      }
+                      fontWeight="semibold"
+                      paddingLeft="4"
+                    >
+                      Sign out
+                    </Text>
+                  </Hidden>
+                </Pressable>
+              </Center>
+            </HStack>
+          </Center>
+
+          <Hidden till="sm">
+            <Tooltip
+              label="Your credits will reset at the start of your billing cycle."
+              openDelay={100}
+            >
+              <Center>
+                <Pressable
+                  alignItems="center"
+                  display="flex"
+                  flexDirection="row"
+                  backgroundColor={theme.colors.shared.clientEyePrimary}
+                  paddingY="2"
+                  paddingX="6"
+                  rounded="full"
+                  justifyContent="center"
+                  onPress={() => push('/billing')}
+                  height="40px"
+                  width="105px"
+                >
+                  <Box w="21px" marginRight="2">
+                    <IconCredits />
+                  </Box>
+                  <Text color="white" fontWeight="semibold">
+                    {userSubscriptionData?.remainingCredits}
+                  </Text>
+                </Pressable>
+              </Center>
+            </Tooltip>
+          </Hidden>
+        </HStack>
+      </HStack>
+      {/* Left Navbar */}
+      <Box
+        position="fixed"
+        top="0"
+        left="0"
+        right="0"
+        bottom="0"
+        marginTop={{
+          base: '69px',
+          sm: '84px'
+        }}
       >
         <KeyboardAwareScrollView
-          contentContainerStyle={{ width: '100%', height: '100%' }}
+          contentContainerStyle={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: theme.colors.shared.aliceBlue
+          }}
+          overScrollMode="auto"
         >
-          <Hidden from="md">
-            <MobileHeader
-              title={props.title}
-              backButton={mobileHeader.backButton}
-            />
-          </Hidden>
-          <Hidden till="md">
-            <Header
-              toggleSidebar={toggleSidebar}
-              title={props.title}
-              menuButton={displaySidebar}
-              searchbar={header.searchbar}
-            />
-          </Hidden>
-
-          <Box
-            flex={1}
-            safeAreaBottom
-            flexDirection={{ base: 'column', md: 'row' }}
-            _light={{
-              borderTopColor: 'coolGray.400'
-            }}
-            _dark={{
-              bg: 'coolGray.700',
-              borderTopColor: 'coolGray.700'
-            }}
-          >
-            {isSidebarVisible && displaySidebar && (
-              <Hidden till="md">
-                <Sidebar />
-              </Hidden>
-            )}
-
-            <Hidden till="md">
-              <ScrollView
-                flex={1}
-                p={{ md: 8 }}
-                contentContainerStyle={{ alignItems: 'center', flexGrow: 1 }}
-              >
-                <MainContent
-                  {...props}
-                  displayScreenTitle={displayScreenTitle}
-                />
-              </ScrollView>
-            </Hidden>
-
-            <Hidden from="md">
-              <MainContent {...props} displayScreenTitle={displayScreenTitle} />
-            </Hidden>
+          <Box backgroundColor={theme.colors.shared.aliceBlue} minH="full">
+            {children}
           </Box>
         </KeyboardAwareScrollView>
-      </VStack>
+      </Box>
     </>
   )
 }
+
+export default DashboardLayout

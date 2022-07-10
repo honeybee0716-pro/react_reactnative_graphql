@@ -1,5 +1,5 @@
-import SignIn from 'shared/screens/SignIn'
+import SignIn from 'shared/screens/SignIn/dev'
 
-export default function Page() {
-  return <SignIn />
+export default function Page({ client }) {
+  return <SignIn client={client} />
 }

@@ -1,22 +1,17 @@
 import React from 'react'
 import {
-  Box,
   HStack,
-  Icon,
   Text,
   VStack,
   Center,
   Button,
   Pressable,
-  Divider,
-  Hidden
+  useToast
 } from 'native-base'
 import { useRouter } from 'solito/router'
 import { gql, useLazyQuery } from '@apollo/client'
-import { Link as SolitoLink } from 'solito/link'
-import { MaterialIcons } from '@expo/vector-icons'
-import IconSubscription from './components/IconSubscription'
-import DashboardLayout from '../../layouts/DashboardLayout'
+import { theme } from 'shared/styles/theme'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 
 const GET_STRIPE_CHECKOUT_LINK = gql`
   query CreateStripeCheckoutPage($input: createStripeCheckoutPageInput) {
@@ -34,11 +29,14 @@ function OptionSection({ tabName, setTabName }) {
       <HStack mt="4" alignItems="center" width="100%">
         <Pressable
           onPress={() => {
-            setTabName('Starter')
+            setTabName('Standard')
           }}
           flex={1}
           _light={{
-            bgColor: 'primary.50'
+            bgColor:
+              tabName === 'Standard'
+                ? theme.colors.shared.clientEyePrimary
+                : 'coolGray.200'
           }}
           _dark={{
             bgColor: 'customGray'
@@ -52,102 +50,25 @@ function OptionSection({ tabName, setTabName }) {
             fontWeight="medium"
             letterSpacing="0.4"
             _light={{
-              color: 'coolGray.800'
+              color: tabName === 'Standard' ? 'white' : 'coolGray.800'
             }}
             _dark={{
               color: 'coolGray.200'
             }}
           >
-            Starter
+            Standard
           </Text>
-          {tabName === 'Starter' ? (
-            <Box w="100%">
-              <Divider
-                _light={{
-                  bgColor: 'coolGray.800'
-                }}
-                _dark={{
-                  bgColor: 'coolGray.50'
-                }}
-                py="0.5"
-              />
-            </Box>
-          ) : (
-            <Box w="100%">
-              <Divider
-                _light={{
-                  bgColor: 'primary.50'
-                }}
-                _dark={{
-                  bgColor: 'customGray'
-                }}
-                py="0.5"
-              />
-            </Box>
-          )}
-        </Pressable>
-
-        <Pressable
-          onPress={() => {
-            setTabName('Professional')
-          }}
-          flex={1}
-          _light={{
-            bgColor: 'primary.900'
-          }}
-          _dark={{
-            bgColor: 'primary.700'
-          }}
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Text
-            py={1}
-            fontSize="lg"
-            fontWeight="medium"
-            letterSpacing="0.4"
-            _light={{
-              color: 'coolGray.50'
-            }}
-            _dark={{
-              color: 'coolGray.50'
-            }}
-          >
-            Professional
-          </Text>
-          {tabName === 'Professional' ? (
-            <Box w="100%">
-              <Divider
-                _light={{
-                  bgColor: 'primary.900'
-                }}
-                _dark={{
-                  bgColor: 'coolGray.50'
-                }}
-                py="0.5"
-              />
-            </Box>
-          ) : (
-            <Box w="100%">
-              <Divider
-                _light={{
-                  bgColor: 'primary.900'
-                }}
-                _dark={{
-                  bgColor: 'primary.700'
-                }}
-                py="0.5"
-              />
-            </Box>
-          )}
         </Pressable>
         <Pressable
           onPress={() => {
-            setTabName('Enterprise')
+            setTabName('Custom')
           }}
           flex={1}
           _light={{
-            bgColor: 'primary.50'
+            bgColor:
+              tabName === 'Custom'
+                ? theme.colors.shared.clientEyePrimary
+                : 'coolGray.200'
           }}
           _dark={{
             bgColor: 'customGray'
@@ -161,49 +82,24 @@ function OptionSection({ tabName, setTabName }) {
             fontWeight="medium"
             letterSpacing="0.4"
             _light={{
-              color: 'coolGray.800'
+              color: tabName === 'Custom' ? 'white' : 'coolGray.800'
             }}
             _dark={{
               color: 'coolGray.200'
             }}
           >
-            Enterprise
+            Custom
           </Text>
-          {tabName === 'Enterprise' ? (
-            <Box w="100%">
-              <Divider
-                _light={{
-                  bgColor: 'coolGray.800'
-                }}
-                _dark={{
-                  bgColor: 'coolGray.50'
-                }}
-                py="0.5"
-              />
-            </Box>
-          ) : (
-            <Box w="100%">
-              <Divider
-                _light={{
-                  bgColor: 'primary.50'
-                }}
-                _dark={{
-                  bgColor: 'customGray'
-                }}
-                py="0.5"
-              />
-            </Box>
-          )}
         </Pressable>
       </HStack>
-      {tabName === 'Starter' ? (
+      {tabName === 'Standard' ? (
         <VStack
           alignItems="center"
           mt={{ base: 6, md: '30px' }}
           space={{ base: 2, md: 2 }}
         >
           <Text
-            _light={{ color: 'primary.900' }}
+            _light={{ color: 'coolGray.800' }}
             _dark={{ color: 'primary.700' }}
             fontSize="2xl"
             textAlign="center"
@@ -219,17 +115,17 @@ function OptionSection({ tabName, setTabName }) {
             textAlign="center"
             fontWeight="medium"
           >
-            Per Month
+            $500 USD Per Month
           </Text>
         </VStack>
-      ) : tabName === 'Enterprise' ? (
+      ) : tabName === 'Custom' ? (
         <VStack
           alignItems="center"
           mt={{ base: 6, md: '30px' }}
           space={{ base: 2, md: 2 }}
         >
           <Text
-            _light={{ color: 'primary.900' }}
+            _light={{ color: 'coolGray.800' }}
             _dark={{ color: 'primary.700' }}
             fontSize="2xl"
             textAlign="center"
@@ -245,7 +141,7 @@ function OptionSection({ tabName, setTabName }) {
             textAlign="center"
             fontWeight="medium"
           >
-            Talk to us.
+            We will make a custom plan to fit your needs.
           </Text>
         </VStack>
       ) : (
@@ -280,15 +176,16 @@ function OptionSection({ tabName, setTabName }) {
 }
 
 export default function () {
-  const [tabName, setTabName] = React.useState('Professional')
+  const [tabName, setTabName] = React.useState('Standard')
   const [createStripeCheckoutPage, { loading }] = useLazyQuery(
     GET_STRIPE_CHECKOUT_LINK
   )
   const { push } = useRouter()
+  const toast = useToast()
 
   const handlePress = () => {
-    if (tabName === 'Enterprise') {
-      window.open('https://interview.joeyfenny.com')
+    if (tabName === 'Custom') {
+      window.open('https://clienteye.com/contact')
     } else {
       createStripeCheckoutPage({
         variables: {
@@ -302,18 +199,16 @@ export default function () {
           return
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }
   }
 
   return (
-    <DashboardLayout
-      title={'Subscription Plans'}
-      displaySidebar={false}
-      displayScreenTitle={false}
-    >
+    <DashboardLayout>
       <VStack
         safeAreaBottom
         borderRadius={{ md: '8' }}
@@ -330,9 +225,6 @@ export default function () {
           md: 32
         }}
       >
-        <Center mt="8">
-          <IconSubscription />
-        </Center>
         <Text
           fontSize="xl"
           textAlign="center"
@@ -341,7 +233,7 @@ export default function () {
           _light={{ color: 'coolGray.800' }}
           _dark={{ color: 'coolGray.100' }}
         >
-          Upgrade your account
+          Select a plan
         </Text>
         <Text
           mt="3"
@@ -351,22 +243,27 @@ export default function () {
           textAlign="center"
           fontWeight="medium"
         >
-          Take your lead generation to the next level.
+          Unlock the next level.
         </Text>
+
         <OptionSection tabName={tabName} setTabName={setTabName} />
+
         <Center mt={{ base: '18px', md: 15 }} pb="8" w="100%">
           <Button
             borderRadius="4"
-            width="100%"
+            width="20%"
             size="md"
             py="4"
             _light={{
-              bg: 'primary.900'
+              bg: theme.colors.shared.clientEyePrimary
             }}
-            _dark={{
-              bg: 'primary.700',
-              _pressed: { bg: 'primary.500' }
+            _hover={{
+              bg: theme.colors.shared.clientEyePrimary
             }}
+            // _dark={{
+            //   bg: 'primary.700',
+            //   _pressed: { bg: 'primary.500' }
+            // }}
             onPress={handlePress}
             _text={{
               fontSize: 'sm',
@@ -375,9 +272,9 @@ export default function () {
           >
             {loading
               ? 'LOADING...'
-              : tabName === 'Enterprise'
+              : tabName === 'Custom'
               ? 'CONTACT US'
-              : 'UPGRADE NOW'}
+              : 'UNLOCK NOW'}
           </Button>
         </Center>
       </VStack>

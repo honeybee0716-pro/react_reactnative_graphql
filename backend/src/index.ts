@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import {ApolloServer} from 'apollo-server';
+import {ApolloServer, AuthenticationError} from 'apollo-server-express';
+import express from 'express';
 import {makeExecutableSchema} from '@graphql-tools/schema';
 import {PrismaClient} from '@prisma/client';
 import {applyMiddleware} from 'graphql-middleware';
@@ -7,6 +8,7 @@ import {rule, shield} from 'graphql-shield';
 import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 import jwt from 'jsonwebtoken';
+import cors from 'cors';
 // import {createClient} from 'redis';
 
 import {typeDefs} from './graphql/typeDefs/index';
@@ -44,20 +46,22 @@ const createContext = async ({req}: any) => {
     };
   }
 
+  const errorMessage = 'The provided JSON Web Token is not valid.';
+
   try {
     decodedJWT = jwt.verify(providedJWT, <string>process.env.JWT_SECRET);
 
     if (!decodedJWT.id) {
-      throw new Error('The provided JSON Web Token is not valid.');
+      throw new AuthenticationError(errorMessage);
     }
   } catch (err) {
-    throw new Error('The provided JSON Web Token is not valid.');
+    throw new AuthenticationError(errorMessage);
   }
 
   const user = await getUserByID(undefined, {input: {id: decodedJWT.id}});
 
   if (!user) {
-    throw new Error('The provided JSON Web Token is not valid.');
+    throw new AuthenticationError(errorMessage);
   }
 
   return {
@@ -103,11 +107,13 @@ const permissions = shield(
       updateUser: isAuthenticated,
       banUser: isAdmin,
       confirmEmailValidationCode: isAuthenticated,
+      resendCode: isAuthenticated,
     },
   },
   {
-    fallbackError: 'You are not authorized to perform this action.',
-    allowExternalErrors: process.env.NODE_ENV === 'localhost',
+    fallbackError:
+      'You are not authorized to perform this action. Maybe try logging out and then logging back in.',
+    allowExternalErrors: true,
   },
 );
 
@@ -120,27 +126,50 @@ const schema = applyMiddleware(
 );
 
 export const setupServer = async () => {
-  const {PORT, NODE_ENV, CORS_ORIGIN} = AppConfig;
+  const {PORT, NODE_ENV} = AppConfig;
 
   const server = new ApolloServer({
     schema: applyMiddleware(schema, permissions),
     context: createContext,
     introspection: true,
+  });
+
+  const app = express();
+
+  const corsOptions = {
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  };
+  app.use(cors(corsOptions));
+
+  await server.start();
+
+  server.applyMiddleware({
+    app,
     cors: {
-      origin:
-        NODE_ENV === 'localhost'
-          ? [CORS_ORIGIN, 'https://studio.apollographql.com']
-          : CORS_ORIGIN,
-      credentials: true,
+      origin: [
+        'https://www.dash.clienteye.com',
+        'https://dash.clienteye.com',
+        'https://staging.dash.clienteye.com',
+        'https://www.staging.dash.clienteye.com',
+        'https://www.development.dash.clienteye.com',
+        'https://development.dash.clienteye.com',
+        'http://localhost:3000',
+      ],
     },
   });
 
-  const {url} = await server.listen({port: PORT});
+  await app.listen({port: PORT}, () => {
+    console.log(
+      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`,
+    );
+  });
 
-  console.log(`Server is running at ${url}`);
-  console.log(
-    `GraphQL Playground is available at http://localhost:${PORT}/graphql`,
-  );
+  app.get('/', (req, res) => {
+    res.send('Hello, World!');
+  });
 
   try {
     await prisma.$connect();

@@ -1,7 +1,10 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 import {gql} from 'apollo-server';
 
-import {prismaContext} from '../../prismaContext';
 import {stripe} from '../../../utils/stripe';
+
+import getUsersRemainingCredits from './getUsersRemainingCredits';
 
 export const getUserSubscriptionDataSchema = gql`
   scalar JSON
@@ -10,6 +13,12 @@ export const getUserSubscriptionDataSchema = gql`
     message: String!
     status: String!
     stripeCustomer: JSON
+    activeSubscription: JSON
+    remainingCredits: Int!
+    isInTrial: Boolean!
+    redirectToPricingPage: Boolean!
+    redirectToOTPPage: Boolean!
+    isCustomPlan: Boolean!
   }
 
   type Query {
@@ -23,47 +32,73 @@ const getUserSubscriptionData = async (
   args: any,
   context: any,
 ) => {
-  const {id} = context.user;
-
-  const foundUser = await prismaContext.prisma.user.findUnique({
-    where: {
-      id,
-    },
-  });
-
-  if (!foundUser) {
-    throw new Error('User not found.');
-  }
+  const {user} = context;
 
   const stripeCustomer: any = await stripe.customers.retrieve(
-    foundUser.stripeCustomerID,
+    user.stripeCustomerID,
     {
       expand: ['subscriptions', 'cash_balance'],
     },
   );
 
-  const plans: any = {
-    prod_LrRvQPWmU3idFM: 'Starter',
-    prod_LrRwWBSaXy5leE: 'Professional',
+  const activeSubscription = stripeCustomer?.subscriptions?.data
+    ?.map((subscription: any) => {
+      return {
+        ...subscription,
+        cycleStartAt: new Date(subscription.current_period_start * 1000),
+        cycleEndAt: new Date(subscription.current_period_end * 1000),
+        isActive: subscription.status === 'active',
+      };
+    })
+    .filter((subscription: any) => subscription.isActive)?.[0];
+
+  let isInTrial = true;
+
+  if (activeSubscription) {
+    isInTrial = false;
+  }
+
+  const {firstLeadReceivedAt} = user;
+
+  if (firstLeadReceivedAt) {
+    const currentDate = new Date();
+    const msBetweenDates = Math.abs(
+      firstLeadReceivedAt.getTime() - currentDate.getTime(),
+    );
+    const daysBetweenDates = msBetweenDates / (24 * 60 * 60 * 1000);
+
+    if (daysBetweenDates > 30) {
+      isInTrial = false;
+    }
+  }
+
+  const redirectToPricingPage = !isInTrial && !activeSubscription;
+
+  const data: any = {
+    isInTrial,
+    redirectToPricingPage,
+    redirectToOTPPage: user.emailIsVerified !== true,
+    stripeCustomer,
+    activeSubscription,
   };
 
-  const activePlan = stripeCustomer?.subscriptions?.data?.find(
-    (d: any) => d.status === 'active',
+  const {remainingCredits, isCustomPlan} = await getUsersRemainingCredits(
+    null,
+    {
+      input: {
+        user,
+        ...data,
+      },
+    },
+    {user},
   );
-
-  const activePlanLevel = plans[activePlan?.plan?.product];
-  const activePlanPeriodStart = activePlan.current_period_start;
-  const activePlanPeriodEnd = activePlan.current_period_end;
+  data.remainingCredits = remainingCredits || 0;
+  data.isCustomPlan = isCustomPlan || false;
 
   return {
+    ...data,
     message: 'Subscription data retrieved.',
     status: 'success',
-    stripeCustomer: {
-      ...stripeCustomer,
-      activePlanLevel,
-      activePlanPeriodStart,
-      activePlanPeriodEnd,
-    },
   };
 };
 /* jscpd:ignore-end */

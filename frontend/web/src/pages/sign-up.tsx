@@ -1,5 +1,5 @@
-import SignUp from 'shared/screens/SignUp'
+import SignUp from 'shared/screens/SignUp/dev'
 
-export default function Page() {
-  return <SignUp />
+export default function Page({ client }) {
+  return <SignUp client={client} />
 }
