@@ -1,5 +1,5 @@
 import { SignOut } from 'shared/screens/SignOut'
 
-export default function Page() {
-  return <SignOut />
+export default function Page({ client }) {
+  return <SignOut client={client} />
 }

@@ -2,7 +2,8 @@ import {gql} from 'apollo-server';
 
 import {prismaContext} from '../../prismaContext';
 import {generateRandomNumber} from '../../../utils/generateRandomNumber';
-import {sendEmail} from '../../../utils/sendgrid';
+// import {sendEmail} from '../../../utils/sendgrid';
+import {nodemailer} from '../../../utils/nodemailer';
 
 export const forgotPasswordSchema = gql`
   scalar JSON
@@ -43,15 +44,27 @@ const forgotPassword = async (parent: any, args: any) => {
       },
     });
 
-    await sendEmail({
-      to: email,
+    // await sendEmail({
+    //   to: email,
+    //   subject: 'Password Reset',
+    //   text: `Please use this code to reset your password: ${passwordResetCode}`,
+    //   html: `
+    //     <p>
+    //       Please use this code to reset your password: ${passwordResetCode}
+    //     </p>
+    //   `,
+    // });
+
+    await nodemailer.sendMail({
+      from: '"ClientEye Alerts" <alerts@clienteye.com>', // sender address
+      to: email, // list of receivers
       subject: 'Password Reset',
       text: `Please use this code to reset your password: ${passwordResetCode}`,
       html: `
-        <p>
-          Please use this code to reset your password: ${passwordResetCode}
-        </p>
-      `,
+      <p>
+        Please use this code to reset your password: ${passwordResetCode}
+      </p>
+    `,
     });
   }
 

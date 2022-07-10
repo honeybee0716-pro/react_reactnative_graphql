@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text, VStack, Hidden } from 'native-base'
 import { useRouter } from 'solito/router'
+import IconBalanceCheckTwo from './components/IconBalanceCheckTwo'
 import DashboardLayout from '../../layouts/DashboardLayout'
 
 export default function StripeSuccess() {
@@ -15,11 +16,7 @@ export default function StripeSuccess() {
   return (
     <>
       <Hidden till="md">
-        <DashboardLayout
-          title="Subscription Canelled"
-          displaySidebar={false}
-          displayScreenTitle={false}
-        >
+        <DashboardLayout>
           <VStack
             flex={1}
             px={{ base: 4, md: 8 }}
@@ -48,14 +45,6 @@ export default function StripeSuccess() {
                   fontSize="xl"
                   fontWeight="medium"
                 >
-                  Goodbye! We're sad to see you go.
-                </Text>
-                <Text
-                  _dark={{ color: 'coolGray.50' }}
-                  _light={{ color: 'coolGray.800' }}
-                  fontSize="xl"
-                  fontWeight="medium"
-                >
                   Your subscription has been cancelled.
                 </Text>
               </VStack>
@@ -63,7 +52,7 @@ export default function StripeSuccess() {
                 <Text
                   _dark={{ color: 'coolGray.50' }}
                   _light={{ color: 'coolGray.800' }}
-                  fontSize="xl"
+                  fontSize="md"
                   fontWeight="medium"
                 >
                   You will be redirected in 5 seconds.

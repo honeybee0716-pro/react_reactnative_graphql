@@ -16,7 +16,8 @@ import {
   Pressable,
   IconButton,
   Icon,
-  useColorMode
+  useColorMode,
+  useToast
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AntDesign, Entypo } from '@expo/vector-icons'
@@ -48,6 +49,7 @@ const CONFIRM_FORGOT_PASSWORD = gql`
 
 export default function SignUp(props: any) {
   const { push } = useRouter()
+  const toast = useToast()
   const [email, setEmail] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [code, setCode] = useState('')
@@ -73,26 +75,36 @@ export default function SignUp(props: any) {
             return
           }
           if (forgotPassword?.message) {
-            alert(forgotPassword.message)
+            toast.show({
+              description: forgotPassword.message
+            })
             return
           }
-          alert('There was an error')
+          toast.show({
+            description: 'There was an error'
+          })
           return
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }
     if (step === 2) {
       if (!code) {
-        alert('Please enter a code.')
+        toast.show({
+          description: 'Please enter a code.'
+        })
         return
       }
       try {
         Number(code)
       } catch (e) {
-        alert('Please enter a valid code.')
+        toast.show({
+          description: 'Please enter a valid code.'
+        })
         return
       }
       step2({
@@ -106,16 +118,22 @@ export default function SignUp(props: any) {
         onCompleted: async ({ confirmForgotPasswordCode }) => {
           if (confirmForgotPasswordCode?.status === 'success') {
             if (confirmForgotPasswordCode?.message) {
-              alert(confirmForgotPasswordCode.message)
+              toast.show({
+                description: confirmForgotPasswordCode.message
+              })
             }
             push('/sign-in')
             return
           }
-          alert('There was an error')
+          toast.show({
+            description: 'There was an error'
+          })
           return
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }
@@ -134,74 +152,85 @@ export default function SignUp(props: any) {
         _dark={{ bg: 'coolGray.900' }}
       />
 
-      <Stack
-        flexDirection={{ base: 'column', md: 'row' }}
+      <Image
+        position="absolute"
         w="full"
         h="full"
-        backgroundColor="white"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        source={require('shared/assets/wallpaper.jpeg')}
+      />
+
+      <Box
+        w={{ base: 'full', lg: 'full' }}
+        h="full"
+        backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
       >
         <Box
-          w={{ base: 'full', lg: '1/2' }}
+          flexDirection="row"
+          justifyContent="center"
+          alignItems="center"
           h="full"
-          backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
         >
-          <Box
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            h="full"
+          <KeyboardAwareScrollView
+            contentContainerStyle={{
+              flexGrow: 1
+            }}
+            style={{ flex: 1 }}
           >
-            <KeyboardAwareScrollView
-              contentContainerStyle={{
-                flexGrow: 1
-              }}
-              style={{ flex: 1 }}
-            >
-              <Center>
-                <Box
-                  width={{
-                    base: `${(11 / 12) * 100}%`,
-                    sm: `${(9 / 12) * 100}%`,
-                    lg: '30rem',
-                    xl: '35rem'
-                  }}
-                >
-                  <Hidden from="lg">
-                    <Center flexDir="row">
-                      {/* <Image
+            <Center>
+              <Image
+                height="100px"
+                width="250px"
+                resizeMode="contain"
+                source={require('shared/assets/images/clientEyeLogoWhite.png')}
+              />
+              <Box
+                width={{
+                  base: `${(11 / 12) * 100}%`,
+                  sm: `${(9 / 12) * 100}%`,
+                  lg: '30rem',
+                  xl: '35rem'
+                }}
+              >
+                <Hidden from="lg">
+                  <Center flexDir="row">
+                    {/* <Image
                         w={{ base: '2.5rem', sm: '3.5rem' }}
                         h={{ base: '2.5rem', sm: '3.5rem' }}
                         source=clientEyePrimary{require('shared/assets/images/contact-blaster-blue.png')}
                       /> */}
-                      <Text
-                        color={theme.colors.shared.softBlack}
-                        fontSize={{ base: 'xl', sm: '2xl' }}
-                        fontWeight="semibold"
-                        marginLeft={'4'}
-                      >
-                        ClientEye
-                      </Text>
-                    </Center>
-                  </Hidden>
-
-                  <Box
-                    bgColor="white"
-                    borderRadius="2xl"
-                    paddingY="4"
-                    paddingX={{ base: '4', sm: '8' }}
-                    marginTop={{ base: '4', sm: '7', lg: '6' }}
-                  >
                     <Text
-                      fontWeight="semibold"
                       color={theme.colors.shared.softBlack}
-                      textAlign="center"
-                      fontSize={{ base: '2xl', sm: '4xl' }}
-                      marginTop={{ base: '1', sm: '9', lg: '0' }}
-                      fontFamily="body"
+                      fontSize={{ base: 'xl', sm: '2xl' }}
+                      fontWeight="semibold"
+                      marginLeft={'4'}
                     >
-                      {step === 1 ? 'Forgot password' : 'Confirm code'}
+                      ClientEye
                     </Text>
-                    {/* <HStack
+                  </Center>
+                </Hidden>
+
+                <Box
+                  bgColor="white"
+                  borderRadius="2xl"
+                  paddingY="4"
+                  paddingX={{ base: '4', sm: '8' }}
+                  marginTop={{ base: '4', sm: '7', lg: '6' }}
+                >
+                  <Text
+                    fontWeight="semibold"
+                    color={theme.colors.shared.softBlack}
+                    textAlign="center"
+                    fontSize={{ base: '2xl', sm: '4xl' }}
+                    marginTop={{ base: '1', sm: '9', lg: '0' }}
+                    fontFamily="body"
+                  >
+                    {step === 1 ? 'Forgot password' : 'Confirm code'}
+                  </Text>
+                  {/* <HStack
                       justifyContent="center"
                       marginTop="7"
                       space={{ base: '5', sm: '7' }}
@@ -257,7 +286,7 @@ export default function SignUp(props: any) {
                         </Text>
                       </Box>
                     </HStack> */}
-                    {/* <Box position="relative">
+                  {/* <Box position="relative">
                       <HStack justifyContent="center" mt="7" space="10">
                         <Box
                           w="45%"
@@ -287,8 +316,41 @@ export default function SignUp(props: any) {
                         </Text>
                       </Box>
                     </Box> */}
-                    <Box>
-                      {step === 1 ? (
+                  <Box>
+                    {step === 1 ? (
+                      <Box position="relative" w="full" marginTop="5">
+                        <Input
+                          paddingLeft="12"
+                          paddingTop="3"
+                          paddingRight="3"
+                          paddingBottom="3"
+                          w="full"
+                          borderRadius="xl"
+                          borderWidth="2"
+                          borderColor={theme.colors.shared.softerGray}
+                          fontSize={{ base: 'xs', sm: 'md' }}
+                          fontWeight="medium"
+                          backgroundColor={theme.colors.shared.aliceBlue}
+                          placeholder="eg: johndoe@gmail.com"
+                          onChangeText={(text) => setEmail(text)}
+                          value={email}
+                        />
+                        <Box
+                          position="absolute"
+                          left="4"
+                          h="full"
+                          flexDir="row"
+                          alignItems="center"
+                        >
+                          <Image
+                            w="6"
+                            h="6"
+                            source={require('shared/assets/icons/mail 1.png')}
+                          />
+                        </Box>
+                      </Box>
+                    ) : (
+                      <>
                         <Box position="relative" w="full" marginTop="5">
                           <Input
                             paddingLeft="12"
@@ -302,9 +364,9 @@ export default function SignUp(props: any) {
                             fontSize={{ base: 'xs', sm: 'md' }}
                             fontWeight="medium"
                             backgroundColor={theme.colors.shared.aliceBlue}
-                            placeholder="eg: johndoe@gmail.com"
-                            onChangeText={(text) => setEmail(text)}
-                            value={email}
+                            placeholder="eg: 123456"
+                            onChangeText={(text) => setCode(text)}
+                            value={code}
                           />
                           <Box
                             position="absolute"
@@ -320,250 +382,165 @@ export default function SignUp(props: any) {
                             />
                           </Box>
                         </Box>
-                      ) : (
-                        <>
-                          <Box position="relative" w="full" marginTop="5">
-                            <Input
-                              paddingLeft="12"
-                              paddingTop="3"
-                              paddingRight="3"
-                              paddingBottom="3"
-                              w="full"
-                              borderRadius="xl"
-                              borderWidth="2"
-                              borderColor={theme.colors.shared.softerGray}
-                              fontSize={{ base: 'xs', sm: 'md' }}
-                              fontWeight="medium"
-                              backgroundColor={theme.colors.shared.aliceBlue}
-                              placeholder="eg: 123456"
-                              onChangeText={(text) => setCode(text)}
-                              value={code}
-                            />
-                            <Box
-                              position="absolute"
-                              left="4"
-                              h="full"
-                              flexDir="row"
-                              alignItems="center"
-                            >
-                              <Image
-                                w="6"
-                                h="6"
-                                source={require('shared/assets/icons/mail 1.png')}
+                        <Box position="relative" w="full" marginTop="5">
+                          <Input
+                            paddingLeft="12"
+                            type={showPass ? 'text' : 'password'}
+                            paddingTop="3"
+                            paddingRight="3"
+                            paddingBottom="3"
+                            w="full"
+                            borderRadius="xl"
+                            borderWidth="2"
+                            borderColor={theme.colors.shared.softerGray}
+                            fontSize={{ base: 'xs', sm: 'md' }}
+                            fontWeight="medium"
+                            backgroundColor={theme.colors.shared.aliceBlue}
+                            placeholder="New password"
+                            onChangeText={(text) => setNewPassword(text)}
+                            value={newPassword}
+                            InputRightElement={
+                              <IconButton
+                                variant="unstyled"
+                                icon={
+                                  <Icon
+                                    size="4"
+                                    color="coolGray.400"
+                                    as={Entypo}
+                                    name={showPass ? 'eye-with-line' : 'eye'}
+                                  />
+                                }
+                                onPress={() => {
+                                  setShowPass(!showPass)
+                                }}
                               />
-                            </Box>
-                          </Box>
-                          <Box position="relative" w="full" marginTop="5">
-                            <Input
-                              paddingLeft="12"
-                              type={showPass ? 'text' : 'password'}
-                              paddingTop="3"
-                              paddingRight="3"
-                              paddingBottom="3"
-                              w="full"
-                              borderRadius="xl"
-                              borderWidth="2"
-                              borderColor={theme.colors.shared.softerGray}
-                              fontSize={{ base: 'xs', sm: 'md' }}
-                              fontWeight="medium"
-                              backgroundColor={theme.colors.shared.aliceBlue}
-                              placeholder="New password"
-                              onChangeText={(text) => setNewPassword(text)}
-                              value={newPassword}
-                              InputRightElement={
-                                <IconButton
-                                  variant="unstyled"
-                                  icon={
-                                    <Icon
-                                      size="4"
-                                      color="coolGray.400"
-                                      as={Entypo}
-                                      name={showPass ? 'eye-with-line' : 'eye'}
-                                    />
-                                  }
-                                  onPress={() => {
-                                    setShowPass(!showPass)
-                                  }}
-                                />
-                              }
-                            />
-                            <Box
-                              position="absolute"
-                              left="4"
-                              h="full"
-                              flexDir="row"
-                              alignItems="center"
-                            >
-                              <Image
-                                w="6"
-                                h="6"
-                                source={require('shared/assets/icons/lock 1.png')}
-                              />
-                            </Box>
-                          </Box>
-                        </>
-                      )}
-                      {/* remember_me_forgot_pass */}
-                      <Hidden from="lg">
-                        <HStack
-                          justifyContent="space-between"
-                          position="relative"
-                          marginTop="5"
-                        >
-                          <Checkbox
+                            }
+                          />
+                          <Box
+                            position="absolute"
+                            left="4"
+                            h="full"
+                            flexDir="row"
                             alignItems="center"
-                            defaultIsChecked={false}
-                            value="demo"
-                            colorScheme="primary"
-                            accessibilityLabel="Remember me"
                           >
-                            <HStack alignItems="center">
-                              <Text
-                                fontSize={{ base: 'sm', sm: 'md' }}
-                                fontWeight="medium"
-                              >
-                                Remember me
-                              </Text>
-                            </HStack>
-                          </Checkbox>
-                          <HStack alignItems="center" space="1">
-                            <Box w="18px">
-                              <IconLink />
-                            </Box>
+                            <Image
+                              w="6"
+                              h="6"
+                              source={require('shared/assets/icons/lock 1.png')}
+                            />
+                          </Box>
+                        </Box>
+                      </>
+                    )}
+                    {/* remember_me_forgot_pass */}
+                    <Hidden from="lg">
+                      <HStack
+                        justifyContent="space-between"
+                        position="relative"
+                        marginTop="5"
+                      >
+                        <Checkbox
+                          alignItems="center"
+                          defaultIsChecked={false}
+                          value="demo"
+                          colorScheme="primary"
+                          accessibilityLabel="Remember me"
+                        >
+                          <HStack alignItems="center">
                             <Text
-                              fontSize={{ base: 'xs', sm: 'md' }}
+                              fontSize={{ base: 'sm', sm: 'md' }}
                               fontWeight="medium"
-                              color={theme.colors.shared.softBlack}
                             >
-                              Forgot Password ?
+                              Remember me
                             </Text>
                           </HStack>
+                        </Checkbox>
+                        <HStack alignItems="center" space="1">
+                          <Box w="18px">
+                            <IconLink />
+                          </Box>
+                          <Text
+                            fontSize={{ base: 'xs', sm: 'md' }}
+                            fontWeight="medium"
+                            color={theme.colors.shared.softBlack}
+                          >
+                            Forgot Password ?
+                          </Text>
                         </HStack>
-                      </Hidden>
+                      </HStack>
+                    </Hidden>
 
-                      {/* button */}
-                      <Box marginTop="5">
-                        <Box
-                          backgroundColor={theme.colors.shared.brightBlue}
-                          paddingY="3"
-                          paddingX="2"
-                          borderRadius="xl"
-                        >
-                          <Pressable onPress={handleSubmit}>
-                            <Text
-                              textAlign="center"
-                              fontWeight="semibold"
-                              color="white"
-                              fontSize={{ base: 'sm', sm: 'md' }}
-                            >
-                              <Hidden till="lg">
-                                <>
-                                  {loadingStep1 || loadingStep2
-                                    ? 'Loading...'
-                                    : step === 1
-                                    ? 'Send reset code'
-                                    : 'Submit'}
-                                </>
-                              </Hidden>
-                              <Hidden from="lg">
-                                <>
-                                  {loadingStep1 || loadingStep2
-                                    ? 'Loading...'
-                                    : step === 1
-                                    ? 'Send reset code'
-                                    : 'Submit'}
-                                </>
-                              </Hidden>
-                            </Text>
-                          </Pressable>
-                        </Box>
-                      </Box>
-
+                    {/* button */}
+                    <Box marginTop="5">
                       <Box
-                        marginTop={{ base: '5', sm: '7' }}
-                        marginBottom={{ base: '1', sm: '7', lg: '0' }}
+                        backgroundColor={theme.colors.shared.clientEyePrimary}
+                        paddingY="3"
+                        paddingX="2"
+                        borderRadius="xl"
                       >
-                        <SolitoLink href="/sign-in">
+                        <Pressable onPress={handleSubmit}>
                           <Text
                             textAlign="center"
+                            fontWeight="semibold"
+                            color="white"
                             fontSize={{ base: 'sm', sm: 'md' }}
                           >
-                            Remember your password?{' '}
-                            <Link
-                              _text={{
-                                fontSize: 'md'
-                              }}
-                              fontWeight="semibold"
-                            >
-                              <Hidden till="lg">
-                                <>Sign in</>
-                              </Hidden>
-                              <Hidden from="lg">
-                                <>Sign in</>
-                              </Hidden>
-                            </Link>
+                            <Hidden till="lg">
+                              <>
+                                {loadingStep1 || loadingStep2
+                                  ? 'Loading...'
+                                  : step === 1
+                                  ? 'Send reset code'
+                                  : 'Submit'}
+                              </>
+                            </Hidden>
+                            <Hidden from="lg">
+                              <>
+                                {loadingStep1 || loadingStep2
+                                  ? 'Loading...'
+                                  : step === 1
+                                  ? 'Send reset code'
+                                  : 'Submit'}
+                              </>
+                            </Hidden>
                           </Text>
-                        </SolitoLink>
+                        </Pressable>
                       </Box>
+                    </Box>
+
+                    <Box
+                      marginTop={{ base: '5', sm: '7' }}
+                      marginBottom={{ base: '1', sm: '7', lg: '0' }}
+                    >
+                      <SolitoLink href="/sign-in">
+                        <Text
+                          textAlign="center"
+                          fontSize={{ base: 'sm', sm: 'md' }}
+                        >
+                          Remember your password?{' '}
+                          <Link
+                            _text={{
+                              fontSize: 'md'
+                            }}
+                            fontWeight="semibold"
+                          >
+                            <Hidden till="lg">
+                              <>Sign in</>
+                            </Hidden>
+                            <Hidden from="lg">
+                              <>Sign in</>
+                            </Hidden>
+                          </Link>
+                        </Text>
+                      </SolitoLink>
                     </Box>
                   </Box>
                 </Box>
-              </Center>
-            </KeyboardAwareScrollView>
-          </Box>
-        </Box>
-        <Hidden till="lg">
-          <Box
-            position="relative"
-            w="1/2"
-            h="full"
-            overflow="hidden"
-            borderBottomLeftRadius="9.375rem"
-          >
-            <Image
-              position="absolute"
-              w="full"
-              h="full"
-              top={0}
-              left={0}
-              right={0}
-              bottom={0}
-              source={require('./components/pexels-gradienta-7135120 1.png')}
-            />
-            <Box
-              flexDirection={'column'}
-              justifyContent={'center'}
-              alignItems={'center'}
-              w="full"
-              h="90%"
-            >
-              <Box
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                w="full"
-                h="full"
-              >
-                {/* <Box flexDir="row" justifyContent="center">
-                  <Image
-                    w="128px"
-                    h="128px"
-                    source={require('shared/assets/images/contact-blaster-white.png')}
-                  />
-                </Box> */}
-                <Text
-                  color="white"
-                  textAlign="center"
-                  fontSize={{ base: '4xl', xl: '5xl' }}
-                  fontWeight="semibold"
-                >
-                  ClientEye
-                </Text>
               </Box>
-            </Box>
-          </Box>
-        </Hidden>
-      </Stack>
+            </Center>
+          </KeyboardAwareScrollView>
+        </Box>
+      </Box>
     </>
   )
 }

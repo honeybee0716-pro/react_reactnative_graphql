@@ -1,18 +1,17 @@
 import React from 'react'
 import {
-  Box,
   HStack,
   Text,
   VStack,
   Center,
   Button,
   Pressable,
-  Divider
+  useToast
 } from 'native-base'
 import { useRouter } from 'solito/router'
 import { gql, useLazyQuery } from '@apollo/client'
 import { theme } from 'shared/styles/theme'
-import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 
 const GET_STRIPE_CHECKOUT_LINK = gql`
   query CreateStripeCheckoutPage($input: createStripeCheckoutPageInput) {
@@ -36,7 +35,7 @@ function OptionSection({ tabName, setTabName }) {
           _light={{
             bgColor:
               tabName === 'Standard'
-                ? theme.colors.shared.brightBlue
+                ? theme.colors.shared.clientEyePrimary
                 : 'coolGray.200'
           }}
           _dark={{
@@ -68,7 +67,7 @@ function OptionSection({ tabName, setTabName }) {
           _light={{
             bgColor:
               tabName === 'Custom'
-                ? theme.colors.shared.brightBlue
+                ? theme.colors.shared.clientEyePrimary
                 : 'coolGray.200'
           }}
           _dark={{
@@ -182,6 +181,7 @@ export default function () {
     GET_STRIPE_CHECKOUT_LINK
   )
   const { push } = useRouter()
+  const toast = useToast()
 
   const handlePress = () => {
     if (tabName === 'Custom') {
@@ -199,7 +199,9 @@ export default function () {
           return
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }
@@ -253,10 +255,10 @@ export default function () {
             size="md"
             py="4"
             _light={{
-              bg: theme.colors.shared.brightBlue
+              bg: theme.colors.shared.clientEyePrimary
             }}
             _hover={{
-              bg: theme.colors.shared.brightBlue
+              bg: theme.colors.shared.clientEyePrimary
             }}
             // _dark={{
             //   bg: 'primary.700',

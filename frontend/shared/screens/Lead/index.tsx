@@ -1,90 +1,30 @@
 import {
-  StatusBar,
   Box,
   Center,
-  Stack,
   Hidden,
   Text,
-  Image,
   HStack,
   VStack,
-  Input,
-  InputGroup,
-  Button,
-  Checkbox,
-  Link,
   Icon,
   Pressable,
-  Flex,
-  Select,
-  CheckIcon,
-  Slider,
-  Switch,
-  AspectRatio,
   Spinner,
   Heading,
   Avatar
 } from 'native-base'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {
-  AntDesign,
-  Ionicons,
-  MaterialCommunityIcons,
-  Entypo,
-  Feather
-} from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
-import { Dimensions, View } from 'react-native'
-import { Fragment, useState } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination } from 'swiper'
-import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
-import IconCredits from 'shared/components/icons/IconCredits'
-import IconCornerUpRight from 'shared/components/icons/IconCornerUpRight'
-import IconZap from 'shared/components/icons/IconZap'
-import IconDollarSign from 'shared/components/icons/IconDollarSign'
-import IconUploadCloud from 'shared/components/icons/IconUploadCloud'
-import IconBarChart from 'shared/components/icons/IconBarChart'
-import IconCompass from 'shared/components/icons/IconCompass'
-import IconDownload from 'shared/components/icons/IconDownload'
-import IconEye from 'shared/components/icons/IconEye'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 import IconClock from 'shared/components/icons/IconClock'
-import IconCalendar from 'shared/components/icons/IconCalendar'
-import IconShoppingCart from 'shared/components/icons/IconShoppingCart'
-import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
-import IconChevronDown from 'shared/components/icons/IconChevronDown'
-import IconPlayCircle from 'shared/components/icons/IconPlayCircle'
-import IconCreditCard from 'shared/components/icons/IconCreditCard'
-import IconLightcoin from 'shared/components/icons/IconLightcoin'
-import IconNFC from 'shared/components/icons/IconNFC'
-import IconEdit from 'shared/components/icons/IconEdit'
-import IconCornerLeftDown from 'shared/components/icons/IconCornerLeftDown'
-import IconMasterCard from 'shared/components/icons/IconMasterCard'
-import IconVISA from 'shared/components/icons/IconVISA'
-import IconHome from 'shared/components/icons/IconHome'
-import IconGlobe from 'shared/components/icons/IconGlobe'
-import IconPlus from 'shared/components/icons/IconPlus'
-import IconFileText from 'shared/components/icons/IconFileText'
-import IconSliders from 'shared/components/icons/IconSliders'
-import IconTrashBin from 'shared/components/icons/IconTrashBin'
-import IconUpload from 'shared/components/icons/IconUpload'
-import IconTag from 'shared/components/icons/IconTag'
-import IconX from 'shared/components/icons/IconX'
-import IconFilter from 'shared/components/icons/IconFilter'
-import IconList from 'shared/components/icons/IconList'
-import IconGroup from 'shared/components/icons/IconGroup'
-import IconSearch from 'shared/components/icons/IconSearch'
 import IconUsers from 'shared/components/icons/IconUsers'
-import IconLock from 'shared/components/icons/IconLock'
 import IconShield from 'shared/components/icons/IconShield'
 import IconMail from 'shared/components/icons/IconMail'
 import IconUser from 'shared/components/icons/IconUser'
 import IconAtSign from 'shared/components/icons/IconAtSign'
 import IconPhoneCall from 'shared/components/icons/IconPhoneCall'
-import IconSave from 'shared/components/icons/IconSave'
-import { useRouter } from 'solito/router'
+import IconArrowRight from 'shared/components/icons/IconArrowRight'
 import { gql, useQuery } from '@apollo/client'
+import { useRouter } from 'solito/router'
 
 const GET_LEAD = gql`
   query GetLeadByID($input: getLeadByIDInput) {
@@ -99,13 +39,13 @@ const GET_LEAD = gql`
 const LoadingSpinner = () => {
   return (
     <HStack space={8} flex="1" justifyContent="center" alignItems="center">
-      <Spinner size="lg" color={theme.colors.shared.brightBlue} />
+      <Spinner size="lg" color={theme.colors.shared.clientEyePrimary} />
     </HStack>
   )
 }
 
 export default function ProfileScreen({ id }: any) {
-  const { push } = useRouter()
+  const router = useRouter()
 
   const { data, error, loading } = useQuery(GET_LEAD, {
     fetchPolicy: 'cache-first',
@@ -116,17 +56,11 @@ export default function ProfileScreen({ id }: any) {
     }
   })
 
-  // if (error || data && !data?.getLeadByID?.lead?.id) {
-  //   return (
-  //     <>
-  //       <div>{id}</div>
-  //       <br />
-  //       <div>{JSON.stringify(error || "There was an error.")}</div>
-  //     </>
-  //   )
-  // }
-
   const lead = data?.getLeadByID?.lead
+
+  const goHome = () => {
+    router.push('/home')
+  }
 
   return (
     <>
@@ -146,22 +80,19 @@ export default function ProfileScreen({ id }: any) {
               borderWidth="1"
               borderColor={theme.colors.shared.softGray}
             >
+              <Pressable paddingTop="5" onPress={goHome} width="25px">
+                <Box
+                  height="25px"
+                  width="25px"
+                  style={{
+                    transform: [{ rotate: '180deg' }]
+                  }}
+                >
+                  <IconArrowRight color="black" />
+                </Box>
+              </Pressable>
               <Box position="relative" marginBottom={{ base: '12', sm: '16' }}>
                 <Box borderRadius="xl" height={{ base: '94px', sm: '81px' }} />
-                <Pressable
-                  position="absolute"
-                  bottom="2"
-                  right="2"
-                  backgroundColor="#FFFFFF78"
-                  borderRadius="lg"
-                  paddingY="2"
-                  paddingX="4"
-                  flexDirection="row"
-                  alignItems="center"
-                  _hover={{
-                    backgroundColor: 'white'
-                  }}
-                ></Pressable>
                 <Box
                   position="absolute"
                   bottom={{ base: '-40px', sm: '-60px' }}
@@ -200,7 +131,9 @@ export default function ProfileScreen({ id }: any) {
                 textAlign="center"
                 marginTop="5"
               >
-                {`${lead.firstName} ${lead.lastName}`}
+                {lead.firstName && lead.lastName
+                  ? `${lead.firstName} ${lead.lastName}`
+                  : 'Unknown'}
               </Text>
               <Text
                 fontSize={{ base: '14px', sm: '14px' }}
@@ -208,7 +141,7 @@ export default function ProfileScreen({ id }: any) {
                 textAlign="center"
                 marginTop="5"
               >
-                {`${lead.location}`}
+                {lead.location ? lead.location : 'Unknown'}
               </Text>
               <Box
                 display="flex"
@@ -378,7 +311,7 @@ export default function ProfileScreen({ id }: any) {
                         fontSize={{ base: 'sm', sm: '15px' }}
                         fontWeight="medium"
                       >
-                        {lead.companyName || 'Unkown'}
+                        {lead.companyName || 'Unknown'}
                       </Text>
                     </Box>
                   </HStack>
@@ -478,7 +411,7 @@ export default function ProfileScreen({ id }: any) {
                         fontSize={{ base: 'sm', sm: '15px' }}
                         fontWeight="medium"
                       >
-                        {lead.title || 'Unkown'}
+                        {lead.title || 'Unknown'}
                       </Text>
                     </Box>
                   </HStack>
@@ -532,7 +465,7 @@ export default function ProfileScreen({ id }: any) {
                             lead.email ? theme.colors.shared.brightBlue : ''
                           }
                         >
-                          {lead.email || 'Unkown'}
+                          {lead.email || 'Unknown'}
                         </Text>
                       </Pressable>
                     </Box>
@@ -633,7 +566,7 @@ export default function ProfileScreen({ id }: any) {
                         fontSize={{ base: 'sm', sm: '15px' }}
                         fontWeight="medium"
                       >
-                        {lead.durationInCompany || 'Unkown'}
+                        {lead.durationInCompany || 'Unknown'}
                       </Text>
                     </Box>
                   </HStack>
@@ -678,7 +611,7 @@ export default function ProfileScreen({ id }: any) {
                         fontSize={{ base: 'sm', sm: '15px' }}
                         fontWeight="medium"
                       >
-                        {lead.durationInRole || 'Unkown'}
+                        {lead.durationInRole || 'Unknown'}
                       </Text>
                     </Box>
                   </HStack>

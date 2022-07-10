@@ -4,47 +4,28 @@ import {
   Hidden,
   Text,
   HStack,
-  VStack,
-  Input,
   Checkbox,
   Pressable,
-  Avatar,
-  Heading,
-  Spinner
+  Heading
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
-import React, { Fragment, useState } from 'react'
-import { Pagination } from 'swiper'
-import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
-import IconDownload from 'shared/components/icons/IconDownload'
-import IconCalendar from 'shared/components/icons/IconCalendar'
-import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
-import IconChevronDown from 'shared/components/icons/IconChevronDown'
+import { useEffect, useState } from 'react'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 import IconPlus from 'shared/components/icons/IconPlus'
 import IconFileText from 'shared/components/icons/IconFileText'
-import IconSliders from 'shared/components/icons/IconSliders'
-import IconTrashBin from 'shared/components/icons/IconTrashBin'
 import IconUpload from 'shared/components/icons/IconUpload'
-import IconTag from 'shared/components/icons/IconTag'
 import IconFilter from 'shared/components/icons/IconFilter'
-import IconList from 'shared/components/icons/IconList'
-import IconGroup from 'shared/components/icons/IconGroup'
-import IconSearch from 'shared/components/icons/IconSearch'
+import { LoadingSpinner } from 'shared/components/LoadingSpinner'
+import { FilterModal } from 'shared/components/FilterModal'
+import { LeadRows } from 'shared/components/LeadRows'
 import { useRouter } from 'solito/router'
-import { Link as SolitoLink } from 'solito/link'
-import { gql, useQuery, useLazyQuery } from '@apollo/client'
-
-const GET_USER_SUBSCRIPTION_DATA = gql`
-  query GetUserSubscriptionData {
-    getUserSubscriptionData {
-      status
-      message
-      stripeCustomer
-      isInTrial
-      redirectToPricingPage
-    }
-  }
-`
+import { gql, useLazyQuery } from '@apollo/client'
+import { CSVLink } from 'react-csv'
+import { useRecoilState } from 'recoil'
+import {
+  userSubscriptionDataState,
+  searchForLeadsVariablesState
+} from '../../state'
 
 const SEARCH_FOR_LEADS = gql`
   query SearchForLeads($input: searchForLeadsInput) {
@@ -52,86 +33,128 @@ const SEARCH_FOR_LEADS = gql`
       message
       status
       leads
+      count
     }
   }
 `
 
-const LoadingSpinner = () => {
-  return (
-    <HStack space={8} flex="1" justifyContent="center" alignItems="center">
-      <Spinner size="lg" color={theme.colors.shared.brightBlue} />
-    </HStack>
-  )
-}
-
-export default function ManageLists() {
+export default function Dashboard() {
   const [finishedVerifyingAccess, setFinishedVerifyingAccess] =
     useState<boolean>(false)
-  const firstName = React.useRef<any>()
-  const lastName = React.useRef<any>()
-  const companyName = React.useRef<any>()
-  const jobTitle = React.useRef<any>()
+  const [exportLeads, setExportLeads] = useState<any>([])
+  const [leads, setLeads] = useState<any>([])
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
+  const [hasFilters, setHasFilters] = useState<boolean>(false)
+  const [count, setCount] = useState<number>(0)
   const { push } = useRouter()
-  const {
-    data: getUserSubscriptionDataResult,
-    error: getUserSubscriptionDataError,
-    loading: getUserSubscriptionDataLoading
-  } = useQuery(GET_USER_SUBSCRIPTION_DATA, {
-    fetchPolicy: 'network-only'
-  })
   const [searchForLeads, { data, loading, error }] =
     useLazyQuery(SEARCH_FOR_LEADS)
+  const [userSubscriptionData] = useRecoilState<any>(userSubscriptionDataState)
+  const [searchForLeadsVariables, setSearchForLeadsVariables] =
+    useRecoilState<any>(searchForLeadsVariablesState)
 
-  const handleSearch = async () => {
+  const handleSearch = async (
+    hasFiltersParam: boolean,
+    variablesParam?: any
+  ) => {
+    setModalIsOpen(false)
+
+    setHasFilters(hasFiltersParam)
+
+    const variables = variablesParam
+      ? variablesParam
+      : {
+          input: {
+            sortBy: 'date'
+          }
+        }
+    setSearchForLeadsVariables(variables)
+
     await searchForLeads({
       fetchPolicy: 'network-only',
-      variables: {
-        input: {
-          firstName: firstName?.current?.value,
-          lastName: lastName?.current?.value,
-          companyName: companyName?.current?.value,
-          jobTitle: jobTitle?.current?.value
-        }
+      nextFetchPolicy: 'cache-and-network',
+      variables
+    })
+  }
+
+  const exportLead = (value, lead) => {
+    setExportLeads((prevState) => {
+      if (value) {
+        return [...prevState, lead]
+      } else {
+        return prevState.filter((item) => item.id !== lead.id)
       }
     })
   }
 
-  const resetFilters = () => {
-    firstName.current.value = ''
-    lastName.current.value = ''
-    companyName.current.value = ''
-    jobTitle.current.value = ''
-    handleSearch()
+  const exportAllLeads = (value) => {
+    setExportLeads(value ? leads : [])
   }
 
-  React.useEffect(() => {
-    if (
-      !!getUserSubscriptionDataError ||
-      getUserSubscriptionDataResult?.getUserSubscriptionData
-        ?.redirectToPricingPage
-    ) {
-      push('/pricing')
-      return
-    }
+  const handleFilterPress = () => {
+    setModalIsOpen(true)
+  }
 
-    if (
-      getUserSubscriptionDataResult?.getUserSubscriptionData
-        ?.redirectToPricingPage === false
-    ) {
+  const loadMore = async () => {
+    const variables = {
+      input: {
+        ...searchForLeadsVariables.input
+      }
+    }
+    variables.input.cursor = leads[leads.length - 1].id
+    await handleSearch(true, variables)
+  }
+
+  useEffect(() => {
+    if (userSubscriptionData?.redirectToPricingPage) {
+      push('/pricing')
+    } else {
       setFinishedVerifyingAccess(true)
     }
-  }, [getUserSubscriptionDataResult, getUserSubscriptionDataError])
+  }, [userSubscriptionData])
 
-  React.useEffect(() => {
-    handleSearch()
+  useEffect(() => {
+    if (data?.searchForLeads?.count || data?.searchForLeads?.count === 0) {
+      setCount(data.searchForLeads.count)
+    }
+    if (data?.searchForLeads?.leads) {
+      if (searchForLeadsVariables.input.cursor) {
+        setLeads((prevLeads) => [...prevLeads, ...data.searchForLeads.leads])
+      } else {
+        setLeads(data.searchForLeads.leads)
+      }
+    }
+  }, [data?.searchForLeads?.leads])
+
+  useEffect(() => {
+    ;(async () => {
+      // initial search
+      await handleSearch(false)
+    })()
   }, [])
+
+  const enableExportButton = exportLeads.length
+
+  const hideLeads =
+    userSubscriptionData?.activeSubscription === null &&
+    userSubscriptionData?.isInTrial === false
+
+  const clearFilters = async () => {
+    await handleSearch(false)
+  }
+
+  const showLoadMore = leads.length && count !== leads.length && !loading
 
   return (
     <>
       <DashboardLayout>
-        {loading ? <LoadingSpinner /> : null}
-        {error ? <Heading>Error. Please try again.</Heading> : null}
-        {data?.searchForLeads?.leads && finishedVerifyingAccess ? (
+        {error ? (
+          <Heading marginTop="2" marginLeft="2">
+            Error. Please try again.
+          </Heading>
+        ) : null}
+        {(leads.length || data?.searchForLeads) &&
+        finishedVerifyingAccess === true ? (
           <Box flexDirection={{ base: 'column', lg: 'column' }}>
             <Box flex="1">
               <Box
@@ -148,7 +171,7 @@ export default function ManageLists() {
                 borderWidth="1"
                 borderColor={theme.colors.shared.softGray}
               >
-                <HStack alignItems="center" marginBottom="4">
+                <HStack alignItems="center" marginBottom="4" flex="none">
                   <Center
                     backgroundColor={theme.colors.shared.fireOrange_20}
                     paddingY="2"
@@ -164,31 +187,109 @@ export default function ManageLists() {
                     marginLeft="3"
                     fontWeight="medium"
                     fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
+                    maxWidth="150px"
                   >
-                    Website Visitors
+                    {hideLeads
+                      ? "Your leads are hidden because you don't have an active subscription."
+                      : 'Website Visitors'}
                   </Text>
+                  <Text
+                    flex="1"
+                    fontWeight="light"
+                    fontSize="sm"
+                    width="300px"
+                    marginLeft="3"
+                  >
+                    (Showing {leads?.length || 0} of {count || 0})
+                  </Text>
+                  <FilterModal
+                    modalIsOpen={modalIsOpen}
+                    setModalIsOpen={setModalIsOpen}
+                    handleSearch={handleSearch}
+                    handleFilterPress={handleFilterPress}
+                    hasFilters={hasFilters}
+                    setHasFilters={setHasFilters}
+                  />
                   <Hidden till="sm">
                     <Pressable
-                      backgroundColor={theme.colors.shared.blueGentianFlower}
+                      backgroundColor={theme.colors.shared.clientEyePrimary}
                       borderRadius="md"
                       paddingX="3"
                       paddingY="2"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.brightBlue
-                      }}
-                      onPress={() => {
-                        alert('The export feature is not available yet.')
-                      }}
+                      marginRight="5"
+                      onPress={handleFilterPress}
                     >
                       <HStack alignItems="center" space="3">
                         <Box w="20px">
-                          <IconUpload color="white" />
+                          <IconFilter color="white" />
                         </Box>
-                        <Text color="white" fontSize="xs" fontWeight="medium">
-                          Export
-                        </Text>
+                        <HStack>
+                          <Text
+                            color="white"
+                            fontSize="xs"
+                            fontWeight="medium"
+                            textDecoration="none"
+                          >
+                            Filter
+                          </Text>
+                        </HStack>
                       </HStack>
                     </Pressable>
+                  </Hidden>
+                  <Hidden till="sm">
+                    {enableExportButton && !hideLeads ? (
+                      <CSVLink
+                        data={exportLeads}
+                        filename={'clienteye-export.csv'}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <Box
+                          backgroundColor={theme.colors.shared.clientEyePrimary}
+                          borderRadius="md"
+                          paddingX="3"
+                          paddingY="2"
+                        >
+                          <HStack alignItems="center" space="3">
+                            <Box w="20px">
+                              <IconUpload color="white" />
+                            </Box>
+                            <HStack>
+                              <Text
+                                color="white"
+                                fontSize="xs"
+                                fontWeight="medium"
+                                textDecoration="none"
+                              >
+                                Export
+                              </Text>
+                            </HStack>
+                          </HStack>
+                        </Box>
+                      </CSVLink>
+                    ) : (
+                      <Box
+                        backgroundColor={theme.colors.shared.clientEyePrimary}
+                        borderRadius="md"
+                        paddingX="3"
+                        paddingY="2"
+                      >
+                        <HStack alignItems="center" space="3">
+                          <Box w="20px">
+                            <IconUpload color="white" />
+                          </Box>
+                          <HStack>
+                            <Text
+                              color="white"
+                              fontSize="xs"
+                              fontWeight="medium"
+                              textDecoration="none"
+                            >
+                              Export
+                            </Text>
+                          </HStack>
+                        </HStack>
+                      </Box>
+                    )}
                   </Hidden>
                   <Hidden from="sm">
                     <Pressable
@@ -204,7 +305,6 @@ export default function ManageLists() {
                     </Pressable>
                   </Hidden>
                 </HStack>
-                {/* Manage Lists */}
                 <Hidden till="sm">
                   <Box>
                     <HStack
@@ -213,7 +313,7 @@ export default function ManageLists() {
                       borderBottomWidth="1"
                       borderBottomColor={theme.colors.shared.softGray}
                     >
-                      <Box w="5%">{/* Avatar */}</Box>
+                      <Box w="5%" />
                       <Box w="12%">
                         <Text fontSize="sm" fontWeight="medium">
                           Name
@@ -234,229 +334,96 @@ export default function ManageLists() {
                           Email
                         </Text>
                       </Box>
-                      <Box w="12.5%">
+                      <Box w="13.8%">
                         <Text fontSize="sm" fontWeight="medium">
                           Phone Number
                         </Text>
                       </Box>
                       <Box w="16%">
-                        <Text fontSize="sm" fontWeight="medium">
-                          Export
-                        </Text>
+                        <Checkbox
+                          value=""
+                          onChange={(value) => exportAllLeads(value)}
+                          accessibilityLabel="Select all leads"
+                        />
                       </Box>
                     </HStack>
-                    {data?.searchForLeads?.leads?.map((l, i) => (
-                      <Pressable
-                        display="flex"
-                        flexDirection="row"
-                        key={i}
-                        marginTop="3"
-                        borderWidth="1"
-                        borderColor={theme.colors.shared.softGray}
-                        borderRadius="md"
-                        paddingX="3"
-                        paddingY="3"
-                        alignItems="center"
-                        backgroundColor={theme.colors.shared.aliceBlue}
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softerGray
-                        }}
-                        onPress={() => push(`/lead/${l.id}`)}
-                      >
-                        <Box w="5%">
-                          <Avatar
-                            source={{
-                              uri: l.profileImageURL
-                            }}
+                    {leads?.length === 0 && !hasFilters ? (
+                      <Text marginTop="4" textAlign="center">
+                        You don't have any leads yet.
+                      </Text>
+                    ) : null}
+                    {leads?.length === 0 && hasFilters ? (
+                      <>
+                        <Text marginTop="4" textAlign="center">
+                          No leads found with those filters.
+                        </Text>
+                        <Center height="50px">
+                          <Pressable
+                            backgroundColor={
+                              theme.colors.shared.clientEyePrimary
+                            }
+                            borderRadius="md"
+                            paddingX="3"
+                            paddingY="2"
+                            marginTop="2"
+                            onPress={clearFilters}
                           >
-                            {`${l.firstName?.charAt(0) || ''}${
-                              l.lastName?.charAt(0) || ''
-                            }`}
-                          </Avatar>
-                        </Box>
-                        <Box w="12%">
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            isTruncated
-                            maxW="145"
-                          >
-                            {`${l.firstName} ${l.lastName}`}
-                          </Text>
-                        </Box>
-                        <Box w="27%">
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            isTruncated
-                            maxW="315"
-                          >
-                            {l.title}
-                          </Text>
-                        </Box>
-                        <Box w="20%">
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            isTruncated
-                            maxW="240"
-                          >
-                            {l.companyName}
-                          </Text>
-                        </Box>
-                        <Box w="20.5%">
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            isTruncated
-                            maxW="250"
-                          >
-                            {l.email || 'Unknown'}
-                          </Text>
-                        </Box>
-                        <Box w="13.5%">
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            isTruncated
-                            maxW="150"
-                          >
-                            {l.phone || 'Unknown'}
-                          </Text>
-                        </Box>
-                        <Box w="15%">
-                          <Checkbox value="" />
-                        </Box>
-                      </Pressable>
-                    ))}
+                            <Text
+                              color="white"
+                              fontSize="xs"
+                              fontWeight="medium"
+                              textDecoration="none"
+                            >
+                              Clear Filters
+                            </Text>
+                          </Pressable>
+                        </Center>
+                      </>
+                    ) : null}
+                    <LeadRows
+                      leads={leads}
+                      hideLeads={hideLeads}
+                      exportLeads={exportLeads}
+                      exportLead={exportLead}
+                      push={push}
+                    />
                   </Box>
                 </Hidden>
-                <Hidden from="sm">
-                  <VStack space="3">
-                    {[...Array(3)].map((_, i) => (
-                      <Fragment key={i}>
-                        <Box>
-                          <HStack
-                            alignItems="center"
-                            backgroundColor={theme.colors.shared.aliceBlue}
-                            borderWidth="1"
-                            borderColor={theme.colors.shared.softGray}
-                            borderTopRadius="xl"
-                            paddingX="4"
-                            paddingY="3"
-                          >
-                            <Text flex="1" fontSize="15px" fontWeight="medium">
-                              SEO Agencies
-                            </Text>
-                            <Text fontSize="sm" fontWeight="medium">
-                              4.0GB
-                            </Text>
-                          </HStack>
-                          <HStack
-                            alignItems="center"
-                            backgroundColor={theme.colors.shared.aliceBlue}
-                            borderWidth="1"
-                            borderTopWidth="0"
-                            borderColor={theme.colors.shared.softGray}
-                            borderBottomRadius="xl"
-                            paddingX="4"
-                            paddingY="3"
-                          >
-                            <Text flex="1" fontSize="13px" fontWeight="medium">
-                              28 March 2022
-                            </Text>
-                            <HStack space="2">
-                              <Box>
-                                <Pressable
-                                  backgroundColor="white"
-                                  borderWidth="1"
-                                  borderColor={theme.colors.shared.soft4Gray}
-                                  borderRadius="md"
-                                  p={{ base: '6px', sm: '0.3rem' }}
-                                  _hover={{
-                                    backgroundColor:
-                                      theme.colors.shared.softerGray
-                                  }}
-                                >
-                                  <Box w="16px">
-                                    <IconTrashBin
-                                      color={theme.colors.shared.redText}
-                                    />
-                                  </Box>
-                                </Pressable>
-                              </Box>
-                              <Box>
-                                <Pressable
-                                  backgroundColor="white"
-                                  borderWidth="1"
-                                  borderColor={theme.colors.shared.soft4Gray}
-                                  borderRadius="md"
-                                  p={{ base: '6px', sm: '0.3rem' }}
-                                  _hover={{
-                                    backgroundColor:
-                                      theme.colors.shared.softerGray
-                                  }}
-                                >
-                                  <Box w="16px">
-                                    <IconDownload />
-                                  </Box>
-                                </Pressable>
-                              </Box>
-                            </HStack>
-                          </HStack>
-                        </Box>
-                      </Fragment>
-                    ))}
-                  </VStack>
-                </Hidden>
-                <HStack
-                  alignItems="center"
-                  justifyContent="space-between"
-                  marginTop={{ base: '4', sm: '5' }}
-                >
-                  <Box>
-                    <Text
-                      fontWeight="medium"
-                      fontSize={{ base: '13px', sm: 'sm' }}
-                    >
-                      Page 1 of 3
-                    </Text>
-                  </Box>
-                  <HStack>
-                    <Pressable
-                      backgroundColor="white"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.softer3Gray}
-                      borderLeftRadius="lg"
-                      p="2"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softerGray
-                      }}
-                    >
-                      <Box w="16px">
-                        <IconChevronDown rotation={270} />
-                      </Box>
-                    </Pressable>
-
-                    <Pressable
-                      backgroundColor="white"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.softer3Gray}
-                      borderRightRadius="lg"
-                      p="2"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softerGray
-                      }}
-                    >
-                      <Box w="16px">
-                        <IconChevronDown rotation={90} />
-                      </Box>
-                    </Pressable>
-                  </HStack>
-                </HStack>
               </Box>
             </Box>
           </Box>
+        ) : null}
+        {loading ? (
+          <>
+            {count !== leads.length ? (
+              <Box height="50px">
+                <LoadingSpinner />
+              </Box>
+            ) : (
+              <LoadingSpinner />
+            )}
+          </>
+        ) : null}
+        {showLoadMore ? (
+          <Center height="50px">
+            <Pressable
+              backgroundColor={theme.colors.shared.clientEyePrimary}
+              borderRadius="md"
+              paddingX="3"
+              paddingY="2"
+              marginTop="2"
+              onPress={loadMore}
+            >
+              <Text
+                color="white"
+                fontSize="xs"
+                fontWeight="medium"
+                textDecoration="none"
+              >
+                Load more
+              </Text>
+            </Pressable>
+          </Center>
         ) : null}
       </DashboardLayout>
     </>
