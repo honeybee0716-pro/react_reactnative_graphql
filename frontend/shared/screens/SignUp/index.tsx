@@ -2,21 +2,19 @@ import React, { useState } from 'react'
 import {
   Button,
   Checkbox,
-  Image,
   HStack,
   VStack,
   Text,
   Link,
-  Divider,
   Icon,
   IconButton,
   useColorModeValue,
-  Pressable,
   Hidden,
   Center,
   StatusBar,
   Box,
-  Stack
+  Stack,
+  useToast
 } from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Link as SolitoLink } from 'solito/link'
@@ -27,6 +25,8 @@ import { AntDesign, Entypo } from '@expo/vector-icons'
 import FloatingLabelInput from './components/FloatingLabelInput'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { gql, useMutation } from '@apollo/client'
+import { useRecoilState } from 'recoil'
+import { jwtState } from '../../state'
 
 const CREATE_USER = gql`
   mutation CreateUser($input: createUserInput!) {
@@ -40,13 +40,16 @@ const CREATE_USER = gql`
 
 function SignUpForm() {
   const { push } = useRouter()
+  const toast = useToast()
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
+  const [companyName, setCompanyName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPass, setShowPass] = React.useState(false)
   const [showConfirmPass, setShowConfirmPass] = React.useState(false)
+  const [jwt, setJWT] = useRecoilState<any>(jwtState)
 
   const [createUser, { loading }] = useMutation(CREATE_USER)
 
@@ -56,6 +59,7 @@ function SignUpForm() {
         input: {
           firstName,
           lastName,
+          companyName,
           email,
           password
         }
@@ -63,18 +67,25 @@ function SignUpForm() {
       onCompleted: async ({ createUser }) => {
         if (createUser?.status === 'success' && createUser?.jwt) {
           await AsyncStorage.setItem('jwt', createUser.jwt)
+          setJWT(createUser.jwt)
           push('/otp')
           return
         }
         if (createUser?.message) {
-          alert(createUser.message)
+          toast.show({
+            description: createUser.message
+          })
           return
         }
-        alert('There was an error')
+        toast.show({
+          description: 'There was an error'
+        })
         return
       },
       onError: (error) => {
-        alert(`There was an error: ${error}`)
+        toast.show({
+          description: `There was an error: ${error}`
+        })
       }
     })
   }
@@ -134,6 +145,25 @@ function SignUpForm() {
                   borderRadius="4"
                   defaultValue={lastName}
                   onChangeText={(txt: any) => setLastName(txt)}
+                  _text={{
+                    fontSize: 'sm',
+                    fontWeight: 'medium'
+                  }}
+                  _dark={{
+                    borderColor: 'coolGray.700'
+                  }}
+                  _light={{
+                    borderColor: 'coolGray.300'
+                  }}
+                />
+                <FloatingLabelInput
+                  isRequired
+                  label="Company Name"
+                  labelColor="#9ca3af"
+                  labelBGColor={useColorModeValue('#fff', '#1f2937')}
+                  borderRadius="4"
+                  defaultValue={companyName}
+                  onChangeText={(txt: any) => setCompanyName(txt)}
                   _text={{
                     fontSize: 'sm',
                     fontWeight: 'medium'

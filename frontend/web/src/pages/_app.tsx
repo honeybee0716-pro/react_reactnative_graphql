@@ -12,6 +12,9 @@ import { ApolloProvider } from '@apollo/client'
 import apolloClient from '../lib/apolloClient'
 import 'swiper/css'
 import 'swiper/css/pagination'
+import { RecoilRoot } from 'recoil'
+import { DataProvider } from 'shared/DataProvider'
+import { DebugObserver } from 'shared/state'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -25,22 +28,27 @@ export default function App({ Component, pageProps }: AppProps) {
           name="viewport"
         />
       </Head>
-      <ApolloProvider client={apolloClient}>
-        <SafeAreaProvider>
-          <NativeBaseProvider
-            theme={extendTheme({
-              fonts: {
-                body: 'Poppins',
-                card: 'Nunito',
-                card_title: 'Sk-Modernist, sans-serif',
-                card_name: 'AirbnbCereal_W_Md'
-              }
-            })}
-          >
-            <Component {...pageProps} />
-          </NativeBaseProvider>
-        </SafeAreaProvider>
-      </ApolloProvider>
+      <RecoilRoot>
+        <DebugObserver />
+        <ApolloProvider client={apolloClient}>
+          <DataProvider>
+            <SafeAreaProvider>
+              <NativeBaseProvider
+                theme={extendTheme({
+                  fonts: {
+                    body: 'Poppins',
+                    card: 'Nunito',
+                    card_title: 'Sk-Modernist, sans-serif',
+                    card_name: 'AirbnbCereal_W_Md'
+                  }
+                })}
+              >
+                <Component {...pageProps} client={apolloClient} />
+              </NativeBaseProvider>
+            </SafeAreaProvider>
+          </DataProvider>
+        </ApolloProvider>
+      </RecoilRoot>
     </>
   )
 }

@@ -20,6 +20,7 @@ import {cancelSubscriptionSchema} from '../resolvers/queries/cancelSubscription'
 import {getUserSubscriptionDataSchema} from '../resolvers/queries/getUserSubscriptionData';
 import {getUsersRemainingCreditsSchema} from '../resolvers/queries/getUsersRemainingCredits';
 import {searchForLeadsSchema} from '../resolvers/queries/searchForLeads';
+import {resendCodeSchema} from '../resolvers/mutations/resendCode';
 
 import {sharedSchema} from './shared';
 
@@ -45,4 +46,5 @@ export const typeDefs = mergeTypeDefs([
   cancelSubscriptionSchema,
   getUsersRemainingCreditsSchema,
   searchForLeadsSchema,
+  resendCodeSchema,
 ]) as any;

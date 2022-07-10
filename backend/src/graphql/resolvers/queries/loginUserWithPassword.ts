@@ -18,9 +18,11 @@ export const loginUserWithPasswordSchema = gql`
 `;
 
 const loginUserWithPassword = async (parent: null, args: any) => {
+  console.log('loginUserWithPassword init');
   const foundUser = await getUserByEmail(undefined, {
     input: {email: args.input.email},
   });
+  console.log('loginUserWithPassword', {foundUser});
 
   if (!foundUser) {
     return {
@@ -39,7 +41,7 @@ const loginUserWithPassword = async (parent: null, args: any) => {
       {id: foundUser.data.id},
       <string>process.env.JWT_SECRET,
       {
-        expiresIn: '1d',
+        expiresIn: '7d',
       },
     );
 

@@ -17,7 +17,7 @@ const IconMasterCard: React.FC<MyProps> = ({ rotation = 0 }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <G clip-path="url(#clip0_0_428)">
+      <G clipPath="url(#clip0_0_428)">
         <Path
           d="M20.9614 2.1389H12.0386V17.8611H20.9614V2.1389Z"
           fill="#FF5F00"

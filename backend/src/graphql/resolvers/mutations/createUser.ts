@@ -2,7 +2,8 @@ import bcrypt from 'bcrypt';
 import {gql} from 'apollo-server';
 import jwt from 'jsonwebtoken';
 
-import {sendEmail} from '../../../utils/sendgrid';
+// import {sendEmail} from '../../../utils/sendgrid';
+import {nodemailer} from '../../../utils/nodemailer';
 import {stripe} from '../../../utils/stripe';
 import {prismaContext} from '../../prismaContext';
 import {generateRandomNumber} from '../../../utils/generateRandomNumber';
@@ -19,6 +20,7 @@ export const createUserSchema = gql`
   input createUserInput {
     firstName: String!
     lastName: String!
+    companyName: String!
     email: String!
     password: String!
   }
@@ -61,6 +63,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
       firstName: args.input.firstName,
       lastName: args.input.lastName,
       phoneNumber: args.input.phoneNumber,
+      companyName: args.input.companyName,
     },
   });
 
@@ -81,10 +84,25 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
     metadata: {userID: createdUser.id},
   });
 
-  await sendEmail({
-    to: args.input.email,
-    subject: 'Please verify your email.',
-    text: `Please use this code to verify your account: ${verifyEmailCode}`,
+  // await sendEmail({
+  //   to: args.input.email,
+  //   subject: 'Please verify your email.',
+  //   text: `Please use this code to verify your account: ${verifyEmailCode}`,
+  // html: `
+  //   <p>
+  //     You've just signed up for an account on ${process.env.PROTOCOL}://${process.env.DOMAIN}.
+  //   </p>
+  //   <p>
+  //     Please use this code to verify your account: ${verifyEmailCode}
+  //   </p>
+  // `,
+  // });
+
+  await nodemailer.sendMail({
+    from: '"ClientEye Alerts" <alerts@clienteye.com>', // sender address
+    to: args.input.email, // list of receivers
+    subject: 'Please verify your email.', // Subject line
+    text: `Please use this code to verify your account: ${verifyEmailCode}`, // plain text body
     html: `
       <p>
         You've just signed up for an account on ${process.env.PROTOCOL}://${process.env.DOMAIN}.

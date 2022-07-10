@@ -15,7 +15,8 @@ import {
   StatusBar,
   Stack,
   Input,
-  useColorModeValue
+  useColorModeValue,
+  useToast
 } from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Link as SolitoLink } from 'solito/link'
@@ -39,26 +40,32 @@ export default function OtpVerification() {
     CONFIRM_EMAIL_VALIDATION_CODE
   )
   const [code, setCode] = useState('')
+  const toast = useToast()
 
   const handleSubmitOTP = async () => {
     if (!code) {
-      alert('Please enter a code.')
+      toast.show({
+        description: 'Please enter a code.'
+      })
       return
     }
     try {
       Number(code)
     } catch (e) {
-      alert('Please enter a valid code.')
+      toast.show({
+        description: 'Please enter a valid code.'
+      })
       return
     }
 
     const jwt = await AsyncStorage.getItem('jwt')
     if (!jwt) {
-      alert('There was an error. Please try again.')
+      toast.show({
+        description: 'There was an error. Please try again.'
+      })
       return
     }
 
-    console.log({ code })
     confirmEmailValidationCode({
       variables: {
         input: {
@@ -71,14 +78,20 @@ export default function OtpVerification() {
           return
         }
         if (confirmEmailValidationCode?.message) {
-          alert(confirmEmailValidationCode.message)
+          toast.show({
+            description: confirmEmailValidationCode.message
+          })
           return
         }
-        alert('There was an error')
+        toast.show({
+          description: 'There was an error'
+        })
         return
       },
       onError: (error) => {
-        alert(error)
+        toast.show({
+          description: error
+        })
       }
     })
   }

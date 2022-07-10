@@ -12,7 +12,8 @@ import {
   Center,
   Hidden,
   useColorModeValue,
-  useColorMode
+  useColorMode,
+  useToast
 } from 'native-base'
 import { AntDesign, Entypo } from '@expo/vector-icons'
 import FloatingLabelInput from '../../components/FloatingLabelInput'
@@ -47,6 +48,7 @@ export default function ForgotPassword() {
   const [showPass, setShowPass] = React.useState(false)
   const [step, setStep] = React.useState(1)
   const { colorMode } = useColorMode()
+  const toast = useToast()
   const [step1, { loading: loadingStep1 }] = useMutation(FORGOT_PASSWORD)
   const [step2, { loading: loadingStep2 }] = useMutation(
     CONFIRM_FORGOT_PASSWORD
@@ -66,26 +68,36 @@ export default function ForgotPassword() {
             return
           }
           if (forgotPassword?.message) {
-            alert(forgotPassword.message)
+            toast.show({
+              description: forgotPassword.message
+            })
             return
           }
-          alert('There was an error')
+          toast.show({
+            description: 'There was an error'
+          })
           return
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }
     if (step === 2) {
       if (!code) {
-        alert('Please enter a code.')
+        toast.show({
+          description: 'Please enter a code.'
+        })
         return
       }
       try {
         Number(code)
       } catch (e) {
-        alert('Please enter a valid code.')
+        toast.show({
+          description: 'Please enter a valid code.'
+        })
         return
       }
       step2({
@@ -99,16 +111,22 @@ export default function ForgotPassword() {
         onCompleted: async ({ confirmForgotPasswordCode }) => {
           if (confirmForgotPasswordCode?.status === 'success') {
             if (confirmForgotPasswordCode?.message) {
-              alert(confirmForgotPasswordCode.message)
+              toast.show({
+                description: confirmForgotPasswordCode.message
+              })
             }
             push('/sign-in')
             return
           }
-          alert('There was an error')
+          toast.show({
+            description: 'There was an error'
+          })
           return
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }

@@ -29,7 +29,7 @@ import { Dimensions, View } from 'react-native'
 import { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
-import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 import IconCredits from 'shared/components/icons/IconCredits'
 import IconCornerUpRight from 'shared/components/icons/IconCornerUpRight'
 import IconZap from 'shared/components/icons/IconZap'
@@ -487,7 +487,7 @@ export default function Credits() {
                 <Box>
                   <HStack paddingX="3" paddingY="3">
                     <Box w="5%">
-                      <Checkbox value="" />
+                      <Checkbox value="" accessibilityLabel="Date" />
                     </Box>
                     <Box w="24%">
                       <Text fontSize="sm" fontWeight="medium">
@@ -540,7 +540,7 @@ export default function Credits() {
                       alignItems="center"
                     >
                       <Box w="5%">
-                        <Checkbox value="" />
+                        <Checkbox value="" accessibilityLabel="unknown" />
                       </Box>
                       <Box w="24%">
                         <Text fontSize="sm" fontWeight="medium">

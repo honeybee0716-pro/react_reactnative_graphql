@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import {gql} from 'apollo-server';
 
-import {sendEmail} from '../../../utils/sendgrid';
+// import {sendEmail} from '../../../utils/sendgrid';
+import {nodemailer} from '../../../utils/nodemailer';
 
 import getUserByEmail from './getUserByEmail';
 
@@ -36,15 +37,23 @@ const loginUserWithMagicLink = async (parent: null, args: any) => {
     {id: foundUser.data.id},
     <string>process.env.JWT_SECRET,
     {
-      expiresIn: '1d',
+      expiresIn: '7d',
     },
   );
 
-  await sendEmail({
-    to: args.input.email,
-    subject: 'Here is your magic login link.',
-    html: `<a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/login?token=${token}">Login</a>`,
+  // await sendEmail({
+  //   to: args.input.email,
+  //   subject: 'Here is your magic login link.',
+  //   text: `Here is your magic login link: ${process.env.PROTOCOL}://${process.env.DOMAIN}/login?token=${token}`,
+  //   html: `<a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/login?token=${token}">Login</a>`,
+  // });
+
+  await nodemailer.sendMail({
+    from: '"ClientEye Alerts" <alerts@clienteye.com>', // sender address
+    to: args.input.email, // list of receivers
+    subject: 'Here is your magic login link.', // Subject line
     text: `Here is your magic login link: ${process.env.PROTOCOL}://${process.env.DOMAIN}/login?token=${token}`,
+    html: `<a href="${process.env.PROTOCOL}://${process.env.DOMAIN}/login?token=${token}">Login</a>`,
   });
 
   return {

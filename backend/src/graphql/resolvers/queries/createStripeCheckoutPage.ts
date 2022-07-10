@@ -37,18 +37,21 @@ const createStripeCheckoutPage = async (
   });
 
   const session = await stripe.checkout.sessions.create({
+    mode: 'subscription',
     line_items: [
       {
-        price: process.env.STANDARD_PLAN_PRICE_ID,
+        price: process.env.STRIPE_STANDARD_METERED_PRICE_ID,
+      },
+      {
+        price: process.env.STRIPE_STANDARD_FLAT_PRICE_ID,
         quantity: 1,
       },
     ],
-    mode: 'subscription',
     client_reference_id: user.stripeCustomerID,
     customer: user.stripeCustomerID,
     success_url: <string>process.env.STRIPE_SUCCESS_URL,
     cancel_url: <string>process.env.STRIPE_CANCEL_URL,
-    payment_method_types: ['card', 'us_bank_account'],
+    payment_method_types: ['card'],
   });
 
   console.log('createStripeCheckoutPage', {
