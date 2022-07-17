@@ -36,23 +36,42 @@ const createStripeCheckoutPage = async (
     plan,
   });
 
-  const session = await stripe.checkout.sessions.create({
+  // eslint-disable-next-line camelcase
+  const line_items =
+    plan === 'tempCustom'
+      ? [
+          {
+            price: process.env.STRIPE_TEMP_CUSTOM_PLAN_ID,
+            quantity: 1,
+          },
+        ]
+      : [
+          {
+            price: process.env.STRIPE_STANDARD_METERED_PRICE_ID,
+          },
+          {
+            price: process.env.STRIPE_STANDARD_FLAT_PRICE_ID,
+            quantity: 1,
+          },
+        ];
+
+  const data: any = {
     mode: 'subscription',
-    line_items: [
-      {
-        price: process.env.STRIPE_STANDARD_METERED_PRICE_ID,
-      },
-      {
-        price: process.env.STRIPE_STANDARD_FLAT_PRICE_ID,
-        quantity: 1,
-      },
-    ],
+    line_items,
     client_reference_id: user.stripeCustomerID,
     customer: user.stripeCustomerID,
     success_url: <string>process.env.STRIPE_SUCCESS_URL,
     cancel_url: <string>process.env.STRIPE_CANCEL_URL,
     payment_method_types: ['card'],
-  });
+  };
+
+  if (plan === 'tempCustom') {
+    data.subscription_data = {
+      trial_period_days: 90,
+    };
+  }
+
+  const session = await stripe.checkout.sessions.create(data);
 
   console.log('createStripeCheckoutPage', {
     userID: user.id,
