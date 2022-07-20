@@ -615,57 +615,6 @@ export default function SignUp({ client }: any) {
           </KeyboardAwareScrollView>
         </Box>
       </Box>
-      <Hidden till="lg">
-        <Box
-          position="relative"
-          w="1/2"
-          h="full"
-          overflow="hidden"
-          borderBottomLeftRadius="9.375rem"
-        >
-          <Image
-            position="absolute"
-            w="full"
-            h="full"
-            top={0}
-            left={0}
-            right={0}
-            bottom={0}
-            source={require('shared/assets/wallpaper.jpeg')}
-          />
-          <Box
-            flexDirection={'column'}
-            justifyContent={'center'}
-            alignItems={'center'}
-            w="full"
-            h="90%"
-          >
-            <Box
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="center"
-              w="full"
-              h="full"
-            >
-              {/* <Box flexDir="row" justifyContent="center">
-                  <Image
-                    w="128px"
-                    h="128px"
-                    source={require('shared/assets/images/contact-blaster-white.png')}
-                  />
-                </Box> */}
-              <Text
-                color="white"
-                textAlign="center"
-                fontSize={{ base: '4xl', xl: '5xl' }}
-                fontWeight="semibold"
-              >
-                ClientEye
-              </Text>
-            </Box>
-          </Box>
-        </Box>
-      </Hidden>
     </>
   )
 }
