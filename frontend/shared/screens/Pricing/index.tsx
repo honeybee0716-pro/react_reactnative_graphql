@@ -209,26 +209,6 @@ export default function () {
     }
   }
 
-  const handleAlreadyHaveCustomPlanPress = () => {
-    createCustomStripeCheckoutPage({
-      variables: {
-        input: {
-          plan: 'tempCustom'
-        }
-      },
-      onCompleted: async ({ createStripeCheckoutPage }) => {
-        document.location = createStripeCheckoutPage.link
-
-        return
-      },
-      onError: (error) => {
-        toast.show({
-          description: `There was an error: ${error}`
-        })
-      }
-    })
-  }
-
   return (
     <DashboardLayout>
       <VStack
@@ -298,24 +278,6 @@ export default function () {
               ? 'CONTACT US'
               : 'UNLOCK NOW'}
           </Button>
-          {tabName === 'Custom' ? (
-            <Pressable onPress={handleAlreadyHaveCustomPlanPress}>
-              <Text
-                px="10"
-                marginTop={3}
-                marginBottom={0}
-                _light={{ color: 'coolGray.500' }}
-                _dark={{ color: 'coolGray.400' }}
-                fontSize="sm"
-                textAlign="center"
-                fontWeight="medium"
-              >
-                {loadingCustomPlan
-                  ? 'Loading...'
-                  : 'Already on a custom package? Click here.'}
-              </Text>
-            </Pressable>
-          ) : null}
         </Center>
       </VStack>
     </DashboardLayout>

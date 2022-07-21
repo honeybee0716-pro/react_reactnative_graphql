@@ -10,7 +10,7 @@ import {
   useToast
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
-import { Fragment, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
@@ -19,12 +19,9 @@ import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
 import IconCreditCard from 'shared/components/icons/IconCreditCard'
 import IconLightcoin from 'shared/components/icons/IconLightcoin'
 import IconNFC from 'shared/components/icons/IconNFC'
-import IconEdit from 'shared/components/icons/IconEdit'
 import IconMasterCard from 'shared/components/icons/IconMasterCard'
-import IconVISA from 'shared/components/icons/IconVISA'
 import IconPlus from 'shared/components/icons/IconPlus'
-import IconX from 'shared/components/icons/IconX'
-import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import { gql, useLazyQuery } from '@apollo/client'
 import { useRouter } from 'solito/router'
 import { Prompt } from '../../components/Prompt/Prompt'
 import { useRecoilState } from 'recoil'
@@ -39,10 +36,22 @@ const CANCEL_SUBSCRIPTION = gql`
   }
 `
 
+const GET_STRIPE_CUSTOMER_PORTAL = gql`
+  query GetStripeCustomerPortal {
+    getStripeCustomerPortal {
+      message
+      status
+      link
+    }
+  }
+`
+
 export default function Billing() {
   const { push } = useRouter()
   const toast = useToast()
   const [cancelSubscription, { loading }] = useLazyQuery(CANCEL_SUBSCRIPTION)
+  const [getStripeCustomerPortal, { loading: loadingGetStripeCustomerPortal }] =
+    useLazyQuery(GET_STRIPE_CUSTOMER_PORTAL)
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
   const [userSubscriptionData] = useRecoilState<any>(userSubscriptionDataState)
@@ -56,6 +65,23 @@ export default function Billing() {
       onCompleted: async ({ cancelSubscription }) => {
         if (cancelSubscription.status === 'success') {
           push('/goodbye')
+
+          return
+        }
+      },
+      onError: (error) => {
+        toast.show({
+          description: `There was an error: ${error}`
+        })
+      }
+    })
+  }
+
+  const handleManageBillingPress = () => {
+    getStripeCustomerPortal({
+      onCompleted: async ({ getStripeCustomerPortal }) => {
+        if (getStripeCustomerPortal.status === 'success') {
+          document.location = getStripeCustomerPortal.link
 
           return
         }
@@ -249,100 +275,6 @@ export default function Billing() {
                             ))}
                           </Swiper>
                         </Box>
-                        <Box marginTop="4">
-                          <Box
-                            flexDirection="row"
-                            alignItems="center"
-                            backgroundColor={theme.colors.shared.aliceBlue}
-                            borderWidth="1"
-                            borderColor={theme.colors.shared.softGray}
-                            borderRadius="xl"
-                            paddingX="4"
-                            paddingY="4"
-                          >
-                            <Box width="33px">
-                              <IconMasterCard />
-                            </Box>
-                            <Box flex="1" marginLeft="4">
-                              <Text
-                                color={theme.colors.shared.softBlack}
-                                fontWeight="medium"
-                                fontSize="13px"
-                              >
-                                Mastercard ending in 7322
-                              </Text>
-                              <Text
-                                color={theme.colors.shared.soft5Gray}
-                                fontWeight="medium"
-                                fontSize="11px"
-                              >
-                                Expiry : 05-09-2022
-                              </Text>
-                            </Box>
-                            <Pressable
-                              backgroundColor="white"
-                              borderWidth="1"
-                              borderColor={theme.colors.shared.softGray}
-                              borderRadius="md"
-                              paddingX="2"
-                              paddingY="2"
-                              _hover={{
-                                backgroundColor: theme.colors.shared.softerGray
-                              }}
-                            >
-                              <Box w="14px">
-                                <IconEdit />
-                              </Box>
-                            </Pressable>
-                          </Box>
-                        </Box>
-                        <Box marginTop="4">
-                          <Box
-                            flexDirection="row"
-                            alignItems="center"
-                            backgroundColor={theme.colors.shared.aliceBlue}
-                            borderWidth="1"
-                            borderColor={theme.colors.shared.softGray}
-                            borderRadius="xl"
-                            paddingX="4"
-                            paddingY="4"
-                          >
-                            <Box w="33px">
-                              <IconVISA />
-                            </Box>
-                            <Box flex="1" marginLeft="4">
-                              <Text
-                                color={theme.colors.shared.softBlack}
-                                fontWeight="medium"
-                                fontSize="13px"
-                              >
-                                Visa ending in 6534
-                              </Text>
-                              <Text
-                                color={theme.colors.shared.soft5Gray}
-                                fontWeight="medium"
-                                fontSize="11px"
-                              >
-                                Expiry : 05-09-2022
-                              </Text>
-                            </Box>
-                            <Pressable
-                              backgroundColor="white"
-                              borderWidth="1"
-                              borderColor={theme.colors.shared.softGray}
-                              borderRadius="md"
-                              paddingX="2"
-                              paddingY="2"
-                              _hover={{
-                                backgroundColor: theme.colors.shared.softerGray
-                              }}
-                            >
-                              <Box w="14px">
-                                <IconEdit />
-                              </Box>
-                            </Pressable>
-                          </Box>
-                        </Box>
                       </Box>
                     </Box>
                   </Box>
@@ -367,18 +299,6 @@ export default function Billing() {
                     borderColor={theme.colors.shared.softer3Gray}
                   >
                     <HStack alignItems="center" marginBottom="4">
-                      {userSubscriptionData?.isInTrial ? null : (
-                        <Center
-                          backgroundColor={theme.colors.shared.redOrange_20}
-                          paddingY="2"
-                          paddingX="2"
-                          borderRadius="lg"
-                        >
-                          <Box w="18px">
-                            <IconX color={theme.colors.shared.redOrange} />
-                          </Box>
-                        </Center>
-                      )}
                       <Text
                         flex="1"
                         marginLeft="3"
@@ -387,7 +307,7 @@ export default function Billing() {
                       >
                         {userSubscriptionData?.isInTrial
                           ? 'You are on a free trial plan. You can upgrade your plan at anytime.'
-                          : 'Cancel subscription'}
+                          : 'Cancel subscription.'}
                       </Text>
                       <Hidden from="sm">
                         <Box>
@@ -539,25 +459,13 @@ export default function Billing() {
                       borderColor={theme.colors.shared.softer3Gray}
                     >
                       <HStack alignItems="center" marginBottom="4">
-                        {userSubscriptionData?.isInTrial ? null : (
-                          <Center
-                            backgroundColor={theme.colors.shared.lightGreen2}
-                            paddingY="2"
-                            paddingX="2"
-                            borderRadius="lg"
-                          >
-                            <Box w="18px">
-                              <IconEdit color={theme.colors.shared.green2} />
-                            </Box>
-                          </Center>
-                        )}
                         <Text
                           flex="1"
                           marginLeft="3"
                           fontWeight="medium"
                           fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
                         >
-                          Switch pricing plan
+                          View our pricing options.
                         </Text>
                         <Hidden from="sm">
                           <Box>
@@ -662,6 +570,83 @@ export default function Billing() {
                           ))}
                         </VStack>
                       </Hidden>
+                      <HStack
+                        alignItems="center"
+                        justifyContent="space-between"
+                        marginTop={{ base: '4', sm: '5' }}
+                      ></HStack>
+                    </Box>
+                  </Pressable>
+                </Box>
+                <Box
+                  width={{ base: 'auto', lg: '20px' }}
+                  flexDirection={{ base: 'column', sm: 'row', lg: 'column' }}
+                ></Box>
+              </Box>
+            ) : null}
+            {userSubscriptionData?.isCustomPlan !== true ? (
+              <Box flexDirection={{ base: 'column-reverse', lg: 'row' }}>
+                {/* Billing information */}
+                <Box flex="1">
+                  <Box
+                    marginTop={{ base: '0', lg: '0' }}
+                    marginLeft={{ base: '3', lg: '5' }}
+                    marginRight={{ base: '3', lg: '0' }}
+                    paddingX={{ base: '0', lg: '5' }}
+                    paddingTop={{ base: '0', lg: '5' }}
+                    paddingBottom={{ base: '0', lg: '4' }}
+                    borderTopRadius={{ base: 'none', sm: '2xl' }}
+                    borderBottomRadius={{ base: 'none', sm: '2xl', lg: 'none' }}
+                    backgroundColor={{ base: 'none', lg: 'white' }}
+                    borderWidth={{ base: '0', lg: '1' }}
+                    borderBottomWidth={{ base: 'none', sm: '1', lg: '0' }}
+                    borderColor={theme.colors.shared.softer3Gray}
+                  ></Box>
+                  <Pressable onPress={handleManageBillingPress}>
+                    <Box
+                      marginBottom={{ base: '1', lg: '5' }}
+                      marginLeft={{ base: '3', lg: '5' }}
+                      marginTop={{ base: '1', lg: '0' }}
+                      marginRight={{ base: '3', lg: '0' }}
+                      paddingX={{ base: '4', sm: '5' }}
+                      paddingTop={{ base: '1', sm: '1' }}
+                      paddingBottom={{ base: '1', sm: '1' }}
+                      borderBottomRadius="2xl"
+                      borderTopRadius={{ base: '2xl', lg: 'none' }}
+                      backgroundColor="white"
+                      borderWidth="1"
+                      borderTopWidth={{ base: '1', lg: '0' }}
+                      borderColor={theme.colors.shared.softer3Gray}
+                    >
+                      <HStack alignItems="center" marginBottom="4">
+                        <Text
+                          flex="1"
+                          marginLeft="3"
+                          fontWeight="medium"
+                          fontSize={{ base: 'lg', sm: 'xl', lg: 'lg' }}
+                        >
+                          {loadingGetStripeCustomerPortal
+                            ? 'Loading...'
+                            : 'Manage billing account.'}
+                        </Text>
+                        <Hidden from="sm">
+                          <Box>
+                            <Pressable
+                              borderWidth="1"
+                              borderColor={theme.colors.shared.soft4Gray}
+                              borderRadius="md"
+                              p={{ base: '6px', sm: '0.3rem' }}
+                              _hover={{
+                                backgroundColor: theme.colors.shared.softerGray
+                              }}
+                            >
+                              <Box w="16px">
+                                <IconMoreVertical />
+                              </Box>
+                            </Pressable>
+                          </Box>
+                        </Hidden>
+                      </HStack>
                       <HStack
                         alignItems="center"
                         justifyContent="space-between"
