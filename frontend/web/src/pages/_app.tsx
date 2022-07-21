@@ -37,13 +37,16 @@ export default function App({ Component, pageProps }: AppProps) {
                 theme={extendTheme({
                   fonts: {
                     body: 'Poppins',
+                    quicksand: 'Quicksand, sans-serif',
+                    dm_sans: 'DM Sans, sans-serif',
+                    tauri: 'Tauri, sans-serif',
                     card: 'Nunito',
                     card_title: 'Sk-Modernist, sans-serif',
                     card_name: 'AirbnbCereal_W_Md'
                   }
                 })}
               >
-                <Component {...pageProps} client={apolloClient} />
+                <Component {...pageProps} />
               </NativeBaseProvider>
             </SafeAreaProvider>
           </DataProvider>

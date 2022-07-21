@@ -1,29 +1,27 @@
 import * as React from 'react'
-import Svg, { Defs, G, Path, Ellipse } from 'react-native-svg'
+import Svg, { Defs, G, Path, Ellipse, Rect, ClipPath } from 'react-native-svg'
 import { theme } from 'shared/styles/theme'
 
 interface MyProps {
   color?: string
-  sizeScale?: number
 }
 
-const IconZap: React.FC<MyProps> = ({
-  color = theme.colors.shared.soft3Gray,
-  sizeScale = 1
+const IconCheck: React.FC<MyProps> = ({
+  color = theme.colors.shared.darkPink2
 }) => {
   return (
     <Svg
       width="100%"
       height="100%"
       preserveAspectRatio="none"
-      viewBox="0 0 24 24"
+      viewBox="0 0 18 18"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <Path
-        d="M13 2L3 14H12L11 22L21 10H12L13 2Z"
+        d="M15 4.5L6.75 12.75L3 9"
         stroke={color}
-        stroke-width="1.5"
+        stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
@@ -31,4 +29,4 @@ const IconZap: React.FC<MyProps> = ({
   )
 }
 
-export default IconZap
+export default IconCheck
