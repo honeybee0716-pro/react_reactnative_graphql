@@ -1,7 +1,7 @@
 import { NextSeo } from 'next-seo'
-import SignIn from 'shared/screens/SignIn'
+import SignIn from 'shared/screens/SignIn/dev'
 
-export default function Page() {
+export default function Page({ client }) {
   return (
     <>
       <NextSeo
@@ -9,7 +9,7 @@ export default function Page() {
         description="Sign in to your account"
         noindex={false}
       />
-      <SignIn />
+      <SignIn client={client} />
     </>
   )
 }
