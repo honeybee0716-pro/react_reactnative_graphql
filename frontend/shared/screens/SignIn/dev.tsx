@@ -348,7 +348,7 @@ export default function SignUp({ client }: any) {
                             setShowPass(!showPass)
                           }}
                         >
-                          <Box>
+                          <Box height="14px">
                             <IconEye color="#6E767E" />
                           </Box>
                         </Button>

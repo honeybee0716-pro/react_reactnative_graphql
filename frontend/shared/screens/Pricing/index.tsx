@@ -22,7 +22,8 @@ import {
   Slider,
   Switch,
   Divider,
-  Tooltip
+  Tooltip,
+  useToast
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
@@ -90,10 +91,27 @@ import LandingPageFooter from 'shared/components/LandingPage/LandingPageFooter'
 import LandingPageTopNavigation from 'shared/components/LandingPage/LandingPageTopNavigation'
 import IconInfo from 'shared/components/icons/IconInfo'
 import IconLine from 'shared/components/icons/IconLine'
+import { gql, useLazyQuery } from '@apollo/client'
 
 const { width, height } = Dimensions.get('window')
 
+const GET_STRIPE_CHECKOUT_LINK = gql`
+  query CreateStripeCheckoutPage($input: createStripeCheckoutPageInput) {
+    createStripeCheckoutPage(input: $input) {
+      message
+      status
+      link
+    }
+  }
+`
+
 export default function PricingPage() {
+  const toast = useToast()
+
+  const [createStripeCheckoutPage, { loading }] = useLazyQuery(
+    GET_STRIPE_CHECKOUT_LINK
+  )
+
   const [listFeature, setListFeature] = useState<any>([
     {
       feature: 'Visitors identified',
@@ -102,6 +120,26 @@ export default function PricingPage() {
       tooltip: "Visitors of your website who's identity we've revealed to you."
     }
   ])
+
+  const handleStandardPlanPress = () => {
+    createStripeCheckoutPage({
+      variables: {
+        input: {
+          plan: 'Standard'
+        }
+      },
+      onCompleted: async ({ createStripeCheckoutPage }) => {
+        document.location = createStripeCheckoutPage.link
+
+        return
+      },
+      onError: (error) => {
+        toast.show({
+          description: `There was an error: ${error}`
+        })
+      }
+    })
+  }
 
   const handleContactUsPress = () => {
     window.open('https://clienteye.com/contact', '_blank')
@@ -153,36 +191,14 @@ export default function PricingPage() {
           <VStack
             zIndex={2}
             alignItems="center"
-            marginTop={{ base: '12', lg: '8' }}
+            marginTop={{ base: '12', lg: '12' }}
           >
             <Text
               fontSize={{ base: '28px', sm: '35px', lg: '45px' }}
               fontWeight="semibold"
               textAlign="center"
             >
-              Affordable pricing to
-              <br />
-              fit all businesses
-            </Text>
-
-            <Text
-              fontSize={{ base: '13px', sm: 'lg', lg: 'xl' }}
-              fontWeight="medium"
-              textAlign="center"
-              marginTop="4"
-            >
-              <Hidden till="sm">
-                <>Choose a plan that’s right for you.</>
-              </Hidden>
-              <Hidden from="sm">
-                <>
-                  Choose a plan that’s right for you. Upgrade
-                  <br />
-                  your account to get unlimited messages and
-                  <br />
-                  campaigns.
-                </>
-              </Hidden>
+              Simplified pricing.
             </Text>
           </VStack>
 
@@ -190,7 +206,7 @@ export default function PricingPage() {
             <Box
               zIndex={2}
               paddingX={{ base: '0', lg: '12' }}
-              marginTop={{ base: '16', lg: '20' }}
+              marginTop={{ base: '16', lg: '16' }}
             >
               <Box
                 backgroundColor={{ base: 'none', lg: '#00000004' }}
@@ -220,7 +236,7 @@ export default function PricingPage() {
                         fontWeight="semibold"
                         color={theme.colors.shared.orange}
                       >
-                        Premium
+                        Standard
                       </Text>
                       <Text fontSize="13px" fontWeight="medium">
                         For small business
@@ -230,7 +246,10 @@ export default function PricingPage() {
                           $
                         </Text>
                         <Text fontSize="48px" fontWeight="medium">
-                          500&nbsp;
+                          500
+                          <Text fontSize="16px" fontWeight="light">
+                            USD
+                          </Text>
                         </Text>
                       </HStack>
                       <Text fontSize="sm">Per month</Text>
@@ -381,6 +400,7 @@ export default function PricingPage() {
                       h="full"
                     >
                       <Pressable
+                        onPress={handleStandardPlanPress}
                         backgroundColor={theme.colors.shared.clientEyePrimary}
                         borderRadius="full"
                         paddingX="7"
