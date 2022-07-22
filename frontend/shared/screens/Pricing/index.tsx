@@ -92,8 +92,26 @@ import LandingPageTopNavigation from 'shared/components/LandingPage/LandingPageT
 import IconInfo from 'shared/components/icons/IconInfo'
 import IconLine from 'shared/components/icons/IconLine'
 import { gql, useLazyQuery } from '@apollo/client'
+import { useRecoilState } from 'recoil'
+import { userSubscriptionDataState } from '../../state'
 
 const { width, height } = Dimensions.get('window')
+
+const GET_USER_SUBSCRIPTION_DATA = gql`
+  query Query {
+    getUserSubscriptionData {
+      message
+      status
+      stripeCustomer
+      activeSubscription
+      remainingCredits
+      isInTrial
+      redirectToPricingPage
+      redirectToOTPPage
+      isCustomPlan
+    }
+  }
+`
 
 const GET_STRIPE_CHECKOUT_LINK = gql`
   query CreateStripeCheckoutPage($input: createStripeCheckoutPageInput) {
@@ -111,27 +129,52 @@ export default function PricingPage() {
   const [createStripeCheckoutPage, { loading }] = useLazyQuery(
     GET_STRIPE_CHECKOUT_LINK
   )
+  const [getUserSubscriptionData, { data }] = useLazyQuery(
+    GET_USER_SUBSCRIPTION_DATA,
+    {
+      fetchPolicy: 'network-only'
+    }
+  )
 
   const [listFeature, setListFeature] = useState<any>([
     {
       feature: 'Visitors identified',
       standard: '300',
       custom: 'Custom',
-      tooltip: "Visitors of your website who's identity we've revealed to you."
+      tooltip: "Visitors of your website whos identity we've revealed to you."
     }
   ])
 
-  const handleStandardPlanPress = () => {
-    createStripeCheckoutPage({
-      variables: {
-        input: {
-          plan: 'Standard'
+  const handleStandardPlanPress = async () => {
+    getUserSubscriptionData({
+      fetchPolicy: 'network-only',
+      onCompleted: async ({ getUserSubscriptionData }) => {
+        console.log({ getUserSubscriptionData })
+        if (getUserSubscriptionData.activeSubscription) {
+          toast.show({
+            description:
+              'Please cancel your current subscription before switching plans.'
+          })
+          return
         }
-      },
-      onCompleted: async ({ createStripeCheckoutPage }) => {
-        document.location = createStripeCheckoutPage.link
 
-        return
+        createStripeCheckoutPage({
+          variables: {
+            input: {
+              plan: 'Standard'
+            }
+          },
+          onCompleted: async ({ createStripeCheckoutPage }) => {
+            document.location = createStripeCheckoutPage.link
+
+            return
+          },
+          onError: (error) => {
+            toast.show({
+              description: `There was an error: ${error}`
+            })
+          }
+        })
       },
       onError: (error) => {
         toast.show({
@@ -239,7 +282,7 @@ export default function PricingPage() {
                         Standard
                       </Text>
                       <Text fontSize="13px" fontWeight="medium">
-                        For small business
+                        For small businesses
                       </Text>
                       <HStack alignItems="start">
                         <Text fontSize="20px" fontWeight="medium">
@@ -269,7 +312,7 @@ export default function PricingPage() {
                         Custom
                       </Text>
                       <Text fontSize="13px" fontWeight="medium">
-                        For enterprise business
+                        For enterprise businesses
                       </Text>
                       <HStack alignItems="start">
                         <Text fontSize="48px" fontWeight="medium">
@@ -488,7 +531,7 @@ export default function PricingPage() {
                         Standard
                       </Text>
                       <Text fontSize="13px" fontWeight="medium">
-                        For small business
+                        For small businesses
                       </Text>
                     </Box>
                   </HStack>
@@ -547,7 +590,7 @@ export default function PricingPage() {
                         Custom
                       </Text>
                       <Text fontSize="13px" fontWeight="medium">
-                        For enterprise business
+                        For enterprise businesses
                       </Text>
                     </Box>
                   </HStack>

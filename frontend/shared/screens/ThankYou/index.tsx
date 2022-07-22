@@ -181,25 +181,15 @@ export default function ThankYouPage() {
                           }}
                         >
                           <HStack alignItems="center">
-                            <Button
+                            <Text
                               p="0"
                               backgroundColor="none"
-                              _hover={{
-                                _text: {
-                                  color: 'white'
-                                }
-                              }}
-                              _text={{
-                                color: 'white',
-                                fontSize: {
-                                  base: 'sm',
-                                  sm: '15px'
-                                },
-                                fontWeight: 'medium'
-                              }}
+                              color="white"
+                              fontSize="15px"
+                              fontWeight="medium"
                             >
                               View dashboard
-                            </Button>
+                            </Text>
                             <Box
                               w={{ base: '18px', sm: '24px' }}
                               marginLeft="2"

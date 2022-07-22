@@ -9,7 +9,7 @@ import {
   Heading
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
 import IconPlus from 'shared/components/icons/IconPlus'
 import IconFileText from 'shared/components/icons/IconFileText'
