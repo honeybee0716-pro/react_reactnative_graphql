@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   StatusBar,
   Box,
@@ -42,6 +43,7 @@ const CREATE_USER = gql`
 `
 
 export default function SignUp({ client }: any) {
+  console.log({ client })
   const toast = useToast()
   const { push } = useRouter()
   const [firstName, setFirstName] = useState('')
@@ -463,7 +465,7 @@ export default function SignUp({ client }: any) {
                             setShowPass(!showPass)
                           }}
                         >
-                          <Box>
+                          <Box height="14px">
                             <IconEye color="#6E767E" />
                           </Box>
                         </Button>

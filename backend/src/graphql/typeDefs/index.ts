@@ -21,6 +21,7 @@ import {getUserSubscriptionDataSchema} from '../resolvers/queries/getUserSubscri
 import {getUsersRemainingCreditsSchema} from '../resolvers/queries/getUsersRemainingCredits';
 import {searchForLeadsSchema} from '../resolvers/queries/searchForLeads';
 import {resendCodeSchema} from '../resolvers/mutations/resendCode';
+import {getStripeCustomerPortalSchema} from '../resolvers/queries/getStripeCustomerPortal';
 
 import {sharedSchema} from './shared';
 
@@ -47,4 +48,5 @@ export const typeDefs = mergeTypeDefs([
   getUsersRemainingCreditsSchema,
   searchForLeadsSchema,
   resendCodeSchema,
+  getStripeCustomerPortalSchema,
 ]) as any;

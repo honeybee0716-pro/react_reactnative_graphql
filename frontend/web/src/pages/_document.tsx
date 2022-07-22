@@ -28,6 +28,18 @@ class Document extends NextDocument {
             rel="stylesheet"
             type="text/css"
           />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+            rel="stylesheet"
+          ></link>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Tauri&display=swap"
+            rel="stylesheet"
+          ></link>
           <link href="/fonts/airbnb-cereal/stylesheet.css" rel="stylesheet" />
         </Head>
         <body>

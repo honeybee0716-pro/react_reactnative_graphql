@@ -11,6 +11,7 @@ import getUserSubscriptionData from './getUserSubscriptionData';
 import cancelSubscription from './cancelSubscription';
 import getUsersRemainingCredits from './getUsersRemainingCredits';
 import searchForLeads from './searchForLeads';
+import getStripeCustomerPortal from './getStripeCustomerPortal';
 
 export const RootQuery = {
   getUserByID,
@@ -26,6 +27,7 @@ export const RootQuery = {
   cancelSubscription,
   getUsersRemainingCredits,
   searchForLeads,
+  getStripeCustomerPortal,
 };
 
 export default RootQuery;

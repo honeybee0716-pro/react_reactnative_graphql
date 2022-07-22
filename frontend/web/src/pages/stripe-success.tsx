@@ -1,5 +1,5 @@
-import StripeSuccess from 'shared/screens/StripeSuccess'
+import ThankYou from 'shared/screens/ThankYou'
 
 export default function Page() {
-  return <StripeSuccess />
+  return <ThankYou />
 }
