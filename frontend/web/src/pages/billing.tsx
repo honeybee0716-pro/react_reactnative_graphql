@@ -1,5 +1,15 @@
 import Billing from 'shared/screens/Billing'
+import { NextSeo } from 'next-seo'
 
 export default function Page() {
-  return <Billing />
+  return (
+    <>
+      <NextSeo
+        title="ClientEye - Manage Billing"
+        description="Create, edit, and manage your billing information."
+        noindex={true}
+      />
+      <Billing />
+    </>
+  )
 }

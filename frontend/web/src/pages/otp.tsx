@@ -1,5 +1,15 @@
-import OTP from 'shared/screens/OTP/dev'
+import { NextSeo } from 'next-seo'
+import OTP from 'shared/screens/OTP'
 
 export default function Page() {
-  return <OTP />
+  return (
+    <>
+      <NextSeo
+        title="ClientEye - OTP"
+        description="Confirm your one time passcode."
+        noindex={true}
+      />
+      <OTP />
+    </>
+  )
 }

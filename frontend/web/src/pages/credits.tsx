@@ -1,5 +1,15 @@
-import Credits from 'shared/screens/Credits'
+import { NextSeo } from 'next-seo'
+import Credits from 'shared/screens/Billing'
 
 export default function Page() {
-  return <Credits />
+  return (
+    <>
+      <NextSeo
+        title="ClientEye - Manage Credits"
+        description="View your credit information."
+        noindex={true}
+      />
+      <Credits />
+    </>
+  )
 }
