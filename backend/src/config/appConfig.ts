@@ -50,6 +50,7 @@ export interface IAppConfig {
   SMTP_PORT: string;
   SMTP_USER: string;
   SMTP_PASSWORD: string;
+  STRIPE_MANAGE_BILLING_CANCEL_URL: string;
 }
 
 export const AppConfig: IAppConfig = {
@@ -81,6 +82,9 @@ export const AppConfig: IAppConfig = {
   STRIPE_CANCEL_URL: loadEnvironmentVariable('STRIPE_CANCEL_URL'),
   STRIPE_PAYMENT_METHOD_TYPES: loadEnvironmentVariable(
     'STRIPE_PAYMENT_METHOD_TYPES',
+  ),
+  STRIPE_MANAGE_BILLING_CANCEL_URL: loadEnvironmentVariable(
+    'STRIPE_MANAGE_BILLING_CANCEL_URL',
   ),
   SMTP_HOST: loadEnvironmentVariable('SMTP_HOST'),
   SMTP_SECURE: loadEnvironmentVariable('SMTP_SECURE'),

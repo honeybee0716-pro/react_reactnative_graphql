@@ -30,7 +30,7 @@ const getStripeCustomerPortal = async (
 
   const session = await stripe.billingPortal.sessions.create({
     customer: user.stripeCustomerID,
-    return_url: 'http://localhost:3000/home',
+    return_url: process.env.STRIPE_MANAGE_BILLING_CANCEL_URL,
   });
 
   console.log('createStripeCheckoutPage', {
