@@ -80,11 +80,11 @@ export const useRouteAuthentication = async () => {
     case '/privacy-policy':
       return await determineAccess(AUTH_STATUS.ANY, undefined)
     case '/sign-in':
-      return await determineAccess(AUTH_STATUS.SIGNED_OUT, '/home')
+      return await determineAccess(AUTH_STATUS.ANY, undefined)
     case '/sign-out':
-      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in')
+      return await determineAccess(AUTH_STATUS.ANY, undefined)
     case '/sign-up':
-      return await determineAccess(AUTH_STATUS.SIGNED_OUT, '/home')
+      return await determineAccess(AUTH_STATUS.ANY, undefined)
     case '/stripe-success':
       return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in')
     case '/terms-and-conditions':
