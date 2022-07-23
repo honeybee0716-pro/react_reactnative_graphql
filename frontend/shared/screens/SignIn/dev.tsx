@@ -1,8 +1,8 @@
+import React from 'react'
 import {
   StatusBar,
   Box,
   Center,
-  Stack,
   Hidden,
   Text,
   Image,
@@ -25,6 +25,7 @@ import IconMail from 'shared/components/icons/IconMail'
 import IconLock from 'shared/components/icons/IconLock'
 import IconEye from 'shared/components/icons/IconEye'
 import { useRecoilState } from 'recoil'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 import { jwtState } from '../../state'
 
 const LOGIN_USER = gql`
@@ -38,6 +39,7 @@ const LOGIN_USER = gql`
 `
 
 export default function SignUp({ client }: any) {
+  useRouteAuthentication()
   const { push } = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -87,9 +89,9 @@ export default function SignUp({ client }: any) {
 
   useEffect(() => {
     ;(async () => {
-      await AsyncStorage.removeItem('jwt')
-      await client.cache.reset()
-      setJWT(undefined)
+      if (!jwt) {
+        await client.cache.reset()
+      }
     })()
   }, [])
 

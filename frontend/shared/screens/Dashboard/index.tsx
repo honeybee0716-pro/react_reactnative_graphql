@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react'
 import {
   Box,
   Center,
@@ -9,7 +10,6 @@ import {
   Heading
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
-import React, { useEffect, useState } from 'react'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
 import IconPlus from 'shared/components/icons/IconPlus'
 import IconFileText from 'shared/components/icons/IconFileText'
@@ -26,6 +26,7 @@ import {
   userSubscriptionDataState,
   searchForLeadsVariablesState
 } from '../../state'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 const SEARCH_FOR_LEADS = gql`
   query SearchForLeads($input: searchForLeadsInput) {
@@ -39,6 +40,7 @@ const SEARCH_FOR_LEADS = gql`
 `
 
 export default function Dashboard() {
+  useRouteAuthentication()
   const [finishedVerifyingAccess, setFinishedVerifyingAccess] =
     useState<boolean>(false)
   const [exportLeads, setExportLeads] = useState<any>([])

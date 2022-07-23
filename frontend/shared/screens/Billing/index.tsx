@@ -1,3 +1,4 @@
+import React, { Fragment, useState } from 'react'
 import {
   Box,
   Center,
@@ -10,7 +11,6 @@ import {
   useToast
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
-import React, { Fragment, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
@@ -26,6 +26,7 @@ import { useRouter } from 'solito/router'
 import { Prompt } from '../../components/Prompt/Prompt'
 import { useRecoilState } from 'recoil'
 import { userSubscriptionDataState } from '../../state'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 const CANCEL_SUBSCRIPTION = gql`
   query CancelSubscription {
@@ -47,6 +48,7 @@ const GET_STRIPE_CUSTOMER_PORTAL = gql`
 `
 
 export default function Billing() {
+  useRouteAuthentication()
   const { push } = useRouter()
   const toast = useToast()
   const [cancelSubscription, { loading }] = useLazyQuery(CANCEL_SUBSCRIPTION)

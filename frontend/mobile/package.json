@@ -66,6 +66,7 @@
     "react-native-svg": "^12.3.0",
     "react-native-web": "0.17.1",
     "recoil": "^0.7.4",
+    "recoil-persist": "^4.2.0",
     "shared": "*",
     "solito": "^0.0.26",
     "styled-components": "^5.3.3"

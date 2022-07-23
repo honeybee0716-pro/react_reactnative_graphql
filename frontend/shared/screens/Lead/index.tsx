@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Box,
   Center,
@@ -25,6 +26,7 @@ import IconPhoneCall from 'shared/components/icons/IconPhoneCall'
 import IconArrowRight from 'shared/components/icons/IconArrowRight'
 import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'solito/router'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 const GET_LEAD = gql`
   query GetLeadByID($input: getLeadByIDInput) {
@@ -45,6 +47,7 @@ const LoadingSpinner = () => {
 }
 
 export default function ProfileScreen({ id }: any) {
+  useRouteAuthentication()
   const router = useRouter()
 
   const { data, error, loading } = useQuery(GET_LEAD, {

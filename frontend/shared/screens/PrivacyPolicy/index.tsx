@@ -1,8 +1,11 @@
 import React from 'react'
 import { Text, VStack } from 'native-base'
 import DashboardLayout from '../../layouts/DashboardLayout'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 export default function PrivacyPolicy() {
+  useRouteAuthentication()
+
   return (
     <DashboardLayout
       title="Terms and Conditions"

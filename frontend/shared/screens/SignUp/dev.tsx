@@ -31,6 +31,7 @@ import IconEye from 'shared/components/icons/IconEye'
 import { useRecoilState } from 'recoil'
 import { Platform } from 'react-native'
 import { jwtState } from '../../state'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 const CREATE_USER = gql`
   mutation CreateUser($input: createUserInput!) {
@@ -43,6 +44,7 @@ const CREATE_USER = gql`
 `
 
 export default function SignUp({ client }: any) {
+  useRouteAuthentication()
   console.log({ client })
   const toast = useToast()
   const { push } = useRouter()

@@ -1,59 +1,24 @@
+import React from 'react'
 import {
-  StatusBar,
   Box,
   Center,
-  Stack,
   Hidden,
   Text,
-  Image,
   HStack,
   VStack,
   Input,
-  InputGroup,
-  Button,
   Checkbox,
-  Link,
-  Icon,
   Pressable,
-  Flex,
-  Select,
-  CheckIcon,
-  Slider,
-  Switch
+  Slider
 } from 'native-base'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { theme } from 'shared/styles/theme'
-import { Link as SolitoLink } from 'solito/link'
-import { Dimensions, View } from 'react-native'
-import { Fragment, useState } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination } from 'swiper'
+import { Fragment } from 'react'
 import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
-import IconCredits from 'shared/components/icons/IconCredits'
-import IconCornerUpRight from 'shared/components/icons/IconCornerUpRight'
-import IconZap from 'shared/components/icons/IconZap'
-import IconDollarSign from 'shared/components/icons/IconDollarSign'
-import IconUploadCloud from 'shared/components/icons/IconUploadCloud'
-import IconBarChart from 'shared/components/icons/IconBarChart'
-import IconCompass from 'shared/components/icons/IconCompass'
 import IconDownload from 'shared/components/icons/IconDownload'
-import IconEye from 'shared/components/icons/IconEye'
 import IconClock from 'shared/components/icons/IconClock'
 import IconCalendar from 'shared/components/icons/IconCalendar'
-import IconShoppingCart from 'shared/components/icons/IconShoppingCart'
 import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
 import IconChevronDown from 'shared/components/icons/IconChevronDown'
-import IconPlayCircle from 'shared/components/icons/IconPlayCircle'
-import IconCreditCard from 'shared/components/icons/IconCreditCard'
-import IconLightcoin from 'shared/components/icons/IconLightcoin'
-import IconNFC from 'shared/components/icons/IconNFC'
-import IconEdit from 'shared/components/icons/IconEdit'
-import IconCornerLeftDown from 'shared/components/icons/IconCornerLeftDown'
-import IconMasterCard from 'shared/components/icons/IconMasterCard'
-import IconVISA from 'shared/components/icons/IconVISA'
-import IconHome from 'shared/components/icons/IconHome'
-import IconGlobe from 'shared/components/icons/IconGlobe'
 import IconPlus from 'shared/components/icons/IconPlus'
 import IconFileText from 'shared/components/icons/IconFileText'
 import IconSliders from 'shared/components/icons/IconSliders'
@@ -65,8 +30,11 @@ import IconFilter from 'shared/components/icons/IconFilter'
 import IconList from 'shared/components/icons/IconList'
 import IconGroup from 'shared/components/icons/IconGroup'
 import IconSearch from 'shared/components/icons/IconSearch'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 export default function Lists() {
+  useRouteAuthentication()
+
   return (
     <>
       <DashboardLayout>

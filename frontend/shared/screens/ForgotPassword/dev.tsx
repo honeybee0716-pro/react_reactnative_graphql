@@ -1,33 +1,29 @@
+import React from 'react'
 import {
   StatusBar,
   Box,
   Center,
-  Stack,
   Hidden,
   Text,
   Image,
   HStack,
-  VStack,
   Input,
-  InputGroup,
-  Button,
   Checkbox,
   Link,
   Pressable,
   IconButton,
   Icon,
-  useColorMode,
   useToast
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { AntDesign, Entypo } from '@expo/vector-icons'
+import { Entypo } from '@expo/vector-icons'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
 import IconLink from 'shared/components/icons/IconLink'
 import { useRouter } from 'solito/router'
 import { gql, useMutation } from '@apollo/client'
-import AsyncStorage from '@react-native-community/async-storage'
 import { useState } from 'react'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 const FORGOT_PASSWORD = gql`
   mutation ForgotPassword($input: forgotPasswordInput) {
@@ -47,7 +43,8 @@ const CONFIRM_FORGOT_PASSWORD = gql`
   }
 `
 
-export default function SignUp(props: any) {
+export default function SignUp() {
+  useRouteAuthentication()
   const { push } = useRouter()
   const toast = useToast()
   const [email, setEmail] = useState('')
@@ -55,7 +52,6 @@ export default function SignUp(props: any) {
   const [code, setCode] = useState('')
   const [showPass, setShowPass] = useState(false)
   const [step, setStep] = useState(1)
-  const { colorMode } = useColorMode()
   const [step1, { loading: loadingStep1 }] = useMutation(FORGOT_PASSWORD)
   const [step2, { loading: loadingStep2 }] = useMutation(
     CONFIRM_FORGOT_PASSWORD
