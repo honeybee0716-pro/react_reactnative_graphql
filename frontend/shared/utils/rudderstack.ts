@@ -2,7 +2,9 @@ import { Platform } from 'react-native'
 
 export const sendRudderstackEvent = () => {
   if (Platform.OS === 'web') {
+    // @ts-ignore
     window.rudderanalytics.page()
-    window.rudderanalytics.track('Track Event')
+    // @ts-ignore
+    // window.rudderanalytics.track('Track Event')
   }
 }

@@ -27,7 +27,6 @@ import IconEye from 'shared/components/icons/IconEye'
 import { useRecoilState } from 'recoil'
 import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 import { jwtState } from '../../state'
-import { sendRudderstackEvent } from '../../utils/rudderstack'
 
 const LOGIN_USER = gql`
   query LoginUserWithPassword($input: loginUserWithPasswordInput) {
@@ -93,7 +92,6 @@ export default function SignUp({ client }: any) {
       if (!jwt) {
         await client.cache.reset()
       }
-      await sendRudderstackEvent()
     })()
   }, [])
 
