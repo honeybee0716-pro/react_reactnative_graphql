@@ -21,6 +21,7 @@ import { LeadRows } from 'shared/components/LeadRows'
 import { useRouter } from 'solito/router'
 import { gql, useLazyQuery } from '@apollo/client'
 import { CSVLink } from 'react-csv'
+import OneSignal from 'react-onesignal'
 import { useRecoilState } from 'recoil'
 import {
   userSubscriptionDataState,
@@ -128,10 +129,32 @@ export default function Dashboard() {
     }
   }, [data?.searchForLeads?.leads])
 
+  const runOneSignal = async () => {
+    if (!process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID) {
+      return
+    }
+
+    await OneSignal.init({
+      appId: process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID,
+      allowLocalhostAsSecureOrigin: true
+    })
+
+    if (userSubscriptionData.userInternalID) {
+      await OneSignal.setExternalUserId(userSubscriptionData.userInternalID)
+    }
+
+    if (userSubscriptionData.userEmail) {
+      await OneSignal.setEmail(userSubscriptionData.userEmail)
+    }
+  }
+
   useEffect(() => {
     ;(async () => {
       // initial search
       await handleSearch(false)
+      if (process.env.NEXT_PUBLIC_PROMPT_TO_ALLOW_NOTIFICATIONS === 'yes') {
+        await runOneSignal()
+      }
     })()
   }, [])
 
