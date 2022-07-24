@@ -85,7 +85,7 @@ const DashboardLayout: React.FC = ({ children }) => {
             >
               <Image
                 w="200px"
-                h="200px"
+                h="42px"
                 resizeMode="contain"
                 source={require('shared/assets/images/clientEyeLogoFull.png')}
               />

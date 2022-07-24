@@ -22,6 +22,7 @@ import {getUsersRemainingCreditsSchema} from '../resolvers/queries/getUsersRemai
 import {searchForLeadsSchema} from '../resolvers/queries/searchForLeads';
 import {resendCodeSchema} from '../resolvers/mutations/resendCode';
 import {getStripeCustomerPortalSchema} from '../resolvers/queries/getStripeCustomerPortal';
+import {verifyUserIsAdminSchema} from '../resolvers/queries/verifyUserIsAdmin';
 
 import {sharedSchema} from './shared';
 
@@ -49,4 +50,5 @@ export const typeDefs = mergeTypeDefs([
   searchForLeadsSchema,
   resendCodeSchema,
   getStripeCustomerPortalSchema,
+  verifyUserIsAdminSchema,
 ]) as any;
