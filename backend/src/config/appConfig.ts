@@ -51,6 +51,8 @@ export interface IAppConfig {
   SMTP_USER: string;
   SMTP_PASSWORD: string;
   STRIPE_MANAGE_BILLING_CANCEL_URL: string;
+  RUDDERSTACK_ID: string;
+  RUDDERSTACK_DATAPLANE: string;
 }
 
 export const AppConfig: IAppConfig = {
@@ -91,4 +93,6 @@ export const AppConfig: IAppConfig = {
   SMTP_PORT: loadEnvironmentVariable('SMTP_PORT'),
   SMTP_USER: loadEnvironmentVariable('SMTP_USER'),
   SMTP_PASSWORD: loadEnvironmentVariable('SMTP_PASSWORD'),
+  RUDDERSTACK_ID: loadEnvironmentVariable('RUDDERSTACK_ID'),
+  RUDDERSTACK_DATAPLANE: loadEnvironmentVariable('RUDDERSTACK_DATAPLANE'),
 };
