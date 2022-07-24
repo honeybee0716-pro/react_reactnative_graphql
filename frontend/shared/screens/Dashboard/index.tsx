@@ -134,18 +134,15 @@ export default function Dashboard() {
       return
     }
 
-    await OneSignal.init({
-      appId: process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID,
-      allowLocalhostAsSecureOrigin: true
-    })
-
-    if (userSubscriptionData.userInternalID) {
+    if (userSubscriptionData?.userInternalID) {
       await OneSignal.setExternalUserId(userSubscriptionData.userInternalID)
     }
 
-    if (userSubscriptionData.userEmail) {
+    if (userSubscriptionData?.userEmail) {
       await OneSignal.setEmail(userSubscriptionData.userEmail)
     }
+
+    await OneSignal.showSlidedownPrompt()
   }
 
   useEffect(() => {

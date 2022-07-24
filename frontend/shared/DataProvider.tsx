@@ -3,6 +3,7 @@ import { useRouter } from 'solito/router'
 // import AsyncStorage from '@react-native-community/async-storage'
 import { gql, useLazyQuery } from '@apollo/client'
 import { useRecoilState } from 'recoil'
+import OneSignal from 'react-onesignal'
 import { userSubscriptionDataState, jwtState } from './state'
 
 const GET_USER_SUBSCRIPTION_DATA = gql`
@@ -40,6 +41,11 @@ export const DataProvider = ({ children }) => {
   React.useEffect(() => {
     // setRoute(document.location.pathname);
     ;(async () => {
+      await OneSignal.init({
+        appId: process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID,
+        allowLocalhostAsSecureOrigin: true
+      })
+
       const jwt = await localStorage.getItem('jwt')
 
       if (jwt) {
