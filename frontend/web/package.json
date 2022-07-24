@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "next",
+    "dev": "yarn open-browser && next",
+    "open-browser": "open http://localhost:3000/home",
     "build": "next build",
     "start": "next start",
     "analyze": "ANALYZE=true yarn build",
@@ -40,6 +41,7 @@
     "next-compose-plugins": "^2.2.1",
     "next-fonts": "^1.5.1",
     "next-images": "^1.8.4",
-    "next-transpile-modules": "^9.0.0"
+    "next-transpile-modules": "^9.0.0",
+    "open": "^8.4.0"
   }
 }

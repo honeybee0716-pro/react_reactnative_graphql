@@ -9,6 +9,7 @@ import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
+import open from 'open';
 // import {createClient} from 'redis';
 
 import {typeDefs} from './graphql/typeDefs/index';
@@ -165,6 +166,9 @@ export const setupServer = async () => {
     console.log(
       `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`,
     );
+    if (process.env.NODE_ENV === 'localhost') {
+      open(`http://localhost:${PORT}${server.graphqlPath}`);
+    }
   });
 
   app.get('/', (req, res) => {
