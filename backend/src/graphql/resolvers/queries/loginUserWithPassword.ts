@@ -20,9 +20,11 @@ export const loginUserWithPasswordSchema = gql`
 `;
 
 const loginUserWithPassword = async (parent: null, args: any) => {
+  const formattedEmail = args.input.email.toLowerCase().trim();
+
   console.log('loginUserWithPassword init');
   const foundUser = await getUserByEmail(undefined, {
-    input: {email: args.input.email},
+    input: {email: formattedEmail},
   });
   console.log('loginUserWithPassword', {foundUser});
 
