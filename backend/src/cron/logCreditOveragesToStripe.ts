@@ -5,8 +5,6 @@ import {stripe} from '../utils/stripe';
 import getUserByID from '../graphql/resolvers/queries/getUserByID';
 import getUserSubscriptionData from '../graphql/resolvers/queries/getUserSubscriptionData';
 
-// add an idempotency key to the request to prevent duplicate charges
-
 const logCreditOveragesToStripe = async () => {
   const leads = await prismaContext.prisma.lead.findMany({
     where: {
@@ -16,6 +14,8 @@ const logCreditOveragesToStripe = async () => {
     },
   });
 
+  console.log({leads});
+
   for (const {userID, id} of leads) {
     try {
       const user = await getUserByID(undefined, {
@@ -24,21 +24,40 @@ const logCreditOveragesToStripe = async () => {
         },
       });
 
+      console.log({user});
+
       const {stripeCustomer} = await getUserSubscriptionData(
         undefined,
         undefined,
         {user: user.data},
       );
 
-      const {subscriptions} = stripeCustomer;
-      const subscriptionItemID = subscriptions?.data[0]?.items?.data[0]?.id;
+      console.log({stripeCustomer});
 
-      if (!subscriptionItemID) {
+      const {subscriptions} = stripeCustomer;
+
+      const subscription = subscriptions?.data[0]?.items?.data.find(
+        (item) => item.plan.tiers_mode === 'graduated',
+      );
+
+      console.log({subscription});
+
+      if (!subscription) {
         return;
       }
 
-      await stripe.subscriptionItems.createUsageRecord(
-        subscriptionItemID,
+      const subscriptionID = subscription?.id;
+
+      console.log({
+        subscriptionID,
+      });
+
+      if (!subscriptionID) {
+        return;
+      }
+
+      const usageRecord = await stripe.subscriptionItems.createUsageRecord(
+        subscriptionID,
         {
           quantity: 1,
           timestamp: Math.round(new Date().getTime() / 1000),
@@ -49,7 +68,9 @@ const logCreditOveragesToStripe = async () => {
         },
       );
 
-      await prismaContext.prisma.lead.update({
+      console.log({usageRecord});
+
+      const update = await prismaContext.prisma.lead.update({
         where: {
           id,
         },
@@ -57,6 +78,8 @@ const logCreditOveragesToStripe = async () => {
           stripeUsageLoggedAt: new Date(),
         },
       });
+
+      console.log({update});
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log({error});
