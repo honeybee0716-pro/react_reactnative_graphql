@@ -74,4 +74,5 @@ model Lead {
   dateAdded                 DateTime
   linkedInSalesNavigatorURL String?
   stripeUsageLoggedAt       DateTime?
+  noSubscriptionFoundForStripeUsage       DateTime?
 }

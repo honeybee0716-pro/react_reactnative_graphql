@@ -12,6 +12,9 @@ const logCreditOveragesToStripe = async () => {
       stripeUsageLoggedAt: {
         isSet: false,
       },
+      noSubscriptionFoundForStripeUsage: {
+        isSet: false,
+      },
     },
   });
 
@@ -49,6 +52,14 @@ const logCreditOveragesToStripe = async () => {
 
       console.log({subscription});
       if (!subscription) {
+        await prismaContext.prisma.lead.update({
+          where: {
+            id,
+          },
+          data: {
+            noSubscriptionFoundForStripeUsage: new Date(),
+          },
+        });
         continue;
       }
 
