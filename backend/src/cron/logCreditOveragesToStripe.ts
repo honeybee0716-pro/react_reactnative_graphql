@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
 import {prismaContext} from '../graphql/prismaContext';
@@ -25,6 +26,9 @@ const logCreditOveragesToStripe = async () => {
       });
 
       console.log({user});
+      if (!user) {
+        continue;
+      }
 
       const {stripeCustomer} = await getUserSubscriptionData(
         undefined,
@@ -33,6 +37,9 @@ const logCreditOveragesToStripe = async () => {
       );
 
       console.log({stripeCustomer});
+      if (!stripeCustomer) {
+        continue;
+      }
 
       const {subscriptions} = stripeCustomer;
 
@@ -41,19 +48,15 @@ const logCreditOveragesToStripe = async () => {
       );
 
       console.log({subscription});
-
       if (!subscription) {
-        return;
+        continue;
       }
 
       const subscriptionID = subscription?.id;
 
-      console.log({
-        subscriptionID,
-      });
-
+      console.log({subscriptionID});
       if (!subscriptionID) {
-        return;
+        continue;
       }
 
       const usageRecord = await stripe.subscriptionItems.createUsageRecord(
@@ -69,6 +72,9 @@ const logCreditOveragesToStripe = async () => {
       );
 
       console.log({usageRecord});
+      if (!usageRecord) {
+        continue;
+      }
 
       const update = await prismaContext.prisma.lead.update({
         where: {
