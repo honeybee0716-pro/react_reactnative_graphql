@@ -71,10 +71,14 @@ export default function ProfileScreen({ id }: any) {
         {loading ? <LoadingSpinner /> : null}
         {error ? <Heading>Error. Please try again.</Heading> : null}
         {lead && !loading ? (
-          <Box flexDirection={{ base: 'column', lg: 'row' }}>
+          <Box
+            flexDirection={{ base: 'column', lg: 'row' }}
+            display="flex"
+            flex="1"
+          >
             <Box
               margin="5"
-              marginRight="0"
+              marginRight={{ base: '5', lg: '0' }}
               paddingX={{ base: '4', sm: '6' }}
               paddingBottom={{ base: '4', sm: '8' }}
               borderTopRadius="2xl"
