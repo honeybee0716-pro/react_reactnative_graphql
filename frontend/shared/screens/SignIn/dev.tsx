@@ -120,7 +120,7 @@ export default function SignUp({ client }: any) {
       <Box
         w={{ base: 'full', lg: 'full' }}
         h="full"
-        backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
+        // backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
       >
         <Box
           flexDirection="row"
@@ -149,24 +149,6 @@ export default function SignUp({ client }: any) {
                   xl: '35rem'
                 }}
               >
-                <Hidden from="lg">
-                  <Center flexDir="row">
-                    {/* <Image
-                        w={{ base: '2.5rem', sm: '3.5rem' }}
-                        h={{ base: '2.5rem', sm: '3.5rem' }}
-                        source={require('shared/assets/images/contact-blaster-blue.png')}
-                      /> */}
-                    <Text
-                      color={theme.colors.shared.softBlack}
-                      fontSize={{ base: 'xl', sm: '2xl' }}
-                      fontWeight="semibold"
-                      marginLeft={'4'}
-                    >
-                      ClientEye
-                    </Text>
-                  </Center>
-                </Hidden>
-
                 <Box
                   bgColor="white"
                   borderRadius="2xl"

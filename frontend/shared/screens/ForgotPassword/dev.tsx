@@ -147,7 +147,6 @@ export default function SignUp() {
         _light={{ bg: 'primary.900' }}
         _dark={{ bg: 'coolGray.900' }}
       />
-
       <Image
         position="absolute"
         w="full"
@@ -162,7 +161,7 @@ export default function SignUp() {
       <Box
         w={{ base: 'full', lg: 'full' }}
         h="full"
-        backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
+        // backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
       >
         <Box
           flexDirection="row"
@@ -191,24 +190,6 @@ export default function SignUp() {
                   xl: '35rem'
                 }}
               >
-                <Hidden from="lg">
-                  <Center flexDir="row">
-                    {/* <Image
-                        w={{ base: '2.5rem', sm: '3.5rem' }}
-                        h={{ base: '2.5rem', sm: '3.5rem' }}
-                        source=clientEyePrimary{require('shared/assets/images/contact-blaster-blue.png')}
-                      /> */}
-                    <Text
-                      color={theme.colors.shared.softBlack}
-                      fontSize={{ base: 'xl', sm: '2xl' }}
-                      fontWeight="semibold"
-                      marginLeft={'4'}
-                    >
-                      ClientEye
-                    </Text>
-                  </Center>
-                </Hidden>
-
                 <Box
                   bgColor="white"
                   borderRadius="2xl"
@@ -428,43 +409,6 @@ export default function SignUp() {
                         </Box>
                       </>
                     )}
-                    {/* remember_me_forgot_pass */}
-                    <Hidden from="lg">
-                      <HStack
-                        justifyContent="space-between"
-                        position="relative"
-                        marginTop="5"
-                      >
-                        <Checkbox
-                          alignItems="center"
-                          defaultIsChecked={false}
-                          value="demo"
-                          colorScheme="primary"
-                          accessibilityLabel="Remember me"
-                        >
-                          <HStack alignItems="center">
-                            <Text
-                              fontSize={{ base: 'sm', sm: 'md' }}
-                              fontWeight="medium"
-                            >
-                              Remember me
-                            </Text>
-                          </HStack>
-                        </Checkbox>
-                        <HStack alignItems="center" space="1">
-                          <Box w="18px">
-                            <IconLink />
-                          </Box>
-                          <Text
-                            fontSize={{ base: 'xs', sm: 'md' }}
-                            fontWeight="medium"
-                            color={theme.colors.shared.softBlack}
-                          >
-                            Forgot Password ?
-                          </Text>
-                        </HStack>
-                      </HStack>
-                    </Hidden>
 
                     {/* button */}
                     <Box marginTop="5">
