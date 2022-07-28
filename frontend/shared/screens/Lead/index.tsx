@@ -79,6 +79,7 @@ export default function ProfileScreen({ id }: any) {
             <Box
               margin="5"
               marginRight={{ base: '5', lg: '0' }}
+              marginBottom={{ sm: '0', md: '0', lg: '5' }}
               paddingX={{ base: '4', sm: '6' }}
               paddingBottom={{ base: '4', sm: '8' }}
               borderTopRadius="2xl"
@@ -109,8 +110,8 @@ export default function ProfileScreen({ id }: any) {
                   justifyContent="center"
                 >
                   <Box
-                    w={{ base: '56px', sm: '85px' }}
-                    h={{ base: '56px', sm: '85px' }}
+                    w={{ base: '100px' }}
+                    h={{ base: '100px' }}
                     borderRadius="full"
                     borderWidth="1"
                     borderColor={theme.colors.shared.darkerGray}

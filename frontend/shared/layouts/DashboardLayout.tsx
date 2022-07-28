@@ -62,11 +62,7 @@ const DashboardLayout: React.FC = ({ children }) => {
           justifyContent="space-between"
           paddingRight={{ base: '0', sm: '5' }}
         >
-          <Center
-            h="84px"
-            borderBottomWidth="1"
-            borderBottomColor={theme.colors.shared.softer2Gray}
-          >
+          <Center>
             <Pressable
               display="flex"
               flexDirection="row"

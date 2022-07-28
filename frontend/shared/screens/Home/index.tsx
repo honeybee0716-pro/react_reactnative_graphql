@@ -2,17 +2,15 @@ import React, { useEffect, useState } from 'react'
 import {
   Box,
   Center,
-  Hidden,
   Text,
   HStack,
-  VStack,
   Checkbox,
   Pressable,
-  Heading
+  Heading,
+  Tooltip
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
-import IconPlus from 'shared/components/icons/IconPlus'
 import IconFileText from 'shared/components/icons/IconFileText'
 import IconUpload from 'shared/components/icons/IconUpload'
 import IconFilter from 'shared/components/icons/IconFilter'
@@ -294,28 +292,30 @@ export default function Home() {
                       </Box>
                     </CSVLink>
                   ) : (
-                    <Box
-                      backgroundColor={theme.colors.shared.clientEyePrimary}
-                      borderRadius="md"
-                      paddingX="3"
-                      paddingY="2"
-                    >
-                      <HStack alignItems="center" space="3">
-                        <Box w="20px">
-                          <IconUpload color="white" />
-                        </Box>
-                        <HStack>
-                          <Text
-                            color="white"
-                            fontSize="xs"
-                            fontWeight="medium"
-                            textDecoration="none"
-                          >
-                            Export
-                          </Text>
+                    <Tooltip label="You must make a selection to export.">
+                      <Box
+                        backgroundColor={theme.colors.shared.clientEyePrimary}
+                        borderRadius="md"
+                        paddingX="3"
+                        paddingY="2"
+                      >
+                        <HStack alignItems="center" space="3">
+                          <Box w="20px">
+                            <IconUpload color="white" />
+                          </Box>
+                          <HStack>
+                            <Text
+                              color="white"
+                              fontSize="xs"
+                              fontWeight="medium"
+                              textDecoration="none"
+                            >
+                              Export
+                            </Text>
+                          </HStack>
                         </HStack>
-                      </HStack>
-                    </Box>
+                      </Box>
+                    </Tooltip>
                   )}
                 </Box>
                 <Box>
