@@ -5,6 +5,7 @@ import {
   Hidden,
   Text,
   HStack,
+  VStack,
   Checkbox,
   Pressable,
   Heading
@@ -40,7 +41,7 @@ const SEARCH_FOR_LEADS = gql`
   }
 `
 
-export default function Dashboard() {
+export default function Home() {
   useRouteAuthentication()
   const [finishedVerifyingAccess, setFinishedVerifyingAccess] =
     useState<boolean>(false)
@@ -175,6 +176,7 @@ export default function Dashboard() {
             Error. Please try again.
           </Heading>
         ) : null}
+
         {(leads.length || data?.searchForLeads) &&
         finishedVerifyingAccess === true ? (
           <Box flexDirection={{ base: 'column', lg: 'column' }}>
@@ -193,7 +195,13 @@ export default function Dashboard() {
                 borderWidth="1"
                 borderColor={theme.colors.shared.softGray}
               >
-                <HStack alignItems="center" marginBottom="4" flex="none">
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  marginBottom="4"
+                  flex="none"
+                >
                   <Center
                     backgroundColor={theme.colors.shared.fireOrange_20}
                     paddingY="2"
@@ -232,63 +240,36 @@ export default function Dashboard() {
                     hasFilters={hasFilters}
                     setHasFilters={setHasFilters}
                   />
-                  <Hidden till="sm">
-                    <Pressable
-                      backgroundColor={theme.colors.shared.clientEyePrimary}
-                      borderRadius="md"
-                      paddingX="3"
-                      paddingY="2"
-                      marginRight="5"
-                      onPress={handleFilterPress}
-                    >
-                      <HStack alignItems="center" space="3">
-                        <Box w="20px">
-                          <IconFilter color="white" />
-                        </Box>
-                        <HStack>
-                          <Text
-                            color="white"
-                            fontSize="xs"
-                            fontWeight="medium"
-                            textDecoration="none"
-                          >
-                            Filter
-                          </Text>
-                        </HStack>
-                      </HStack>
-                    </Pressable>
-                  </Hidden>
-                  <Hidden till="sm">
-                    {enableExportButton && !hideLeads ? (
-                      <CSVLink
-                        data={exportLeads}
-                        filename={'clienteye-export.csv'}
-                        style={{ textDecoration: 'none' }}
-                      >
-                        <Box
-                          backgroundColor={theme.colors.shared.clientEyePrimary}
-                          borderRadius="md"
-                          paddingX="3"
-                          paddingY="2"
+                  <Pressable
+                    backgroundColor={theme.colors.shared.clientEyePrimary}
+                    borderRadius="md"
+                    paddingX="3"
+                    paddingY="2"
+                    marginRight="5"
+                    onPress={handleFilterPress}
+                  >
+                    <HStack alignItems="center" space="3">
+                      <Box w="20px">
+                        <IconFilter color="white" />
+                      </Box>
+                      <HStack>
+                        <Text
+                          color="white"
+                          fontSize="xs"
+                          fontWeight="medium"
+                          textDecoration="none"
                         >
-                          <HStack alignItems="center" space="3">
-                            <Box w="20px">
-                              <IconUpload color="white" />
-                            </Box>
-                            <HStack>
-                              <Text
-                                color="white"
-                                fontSize="xs"
-                                fontWeight="medium"
-                                textDecoration="none"
-                              >
-                                Export
-                              </Text>
-                            </HStack>
-                          </HStack>
-                        </Box>
-                      </CSVLink>
-                    ) : (
+                          Filter
+                        </Text>
+                      </HStack>
+                    </HStack>
+                  </Pressable>
+                  {enableExportButton && !hideLeads ? (
+                    <CSVLink
+                      data={exportLeads}
+                      filename={'clienteye-export.csv'}
+                      style={{ textDecoration: 'none' }}
+                    >
                       <Box
                         backgroundColor={theme.colors.shared.clientEyePrimary}
                         borderRadius="md"
@@ -311,106 +292,112 @@ export default function Dashboard() {
                           </HStack>
                         </HStack>
                       </Box>
-                    )}
-                  </Hidden>
-                  <Hidden from="sm">
-                    <Pressable
-                      backgroundColor="white"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.black_20}
+                    </CSVLink>
+                  ) : (
+                    <Box
+                      backgroundColor={theme.colors.shared.clientEyePrimary}
                       borderRadius="md"
-                      p="0.4rem"
-                    >
-                      <Box w="16px">
-                        <IconPlus />
-                      </Box>
-                    </Pressable>
-                  </Hidden>
-                </HStack>
-                <Hidden till="sm">
-                  <Box>
-                    <HStack
                       paddingX="3"
-                      paddingY="3"
-                      borderBottomWidth="1"
-                      borderBottomColor={theme.colors.shared.softGray}
+                      paddingY="2"
                     >
-                      <Box w="5%" />
-                      <Box w="12%">
-                        <Text fontSize="sm" fontWeight="medium">
-                          Name
-                        </Text>
-                      </Box>
-                      <Box w="27%">
-                        <Text fontSize="sm" fontWeight="medium">
-                          Job Title
-                        </Text>
-                      </Box>
-                      <Box w="20%">
-                        <Text fontSize="sm" fontWeight="medium">
-                          Company Name
-                        </Text>
-                      </Box>
-                      <Box w="20.5%">
-                        <Text fontSize="sm" fontWeight="medium">
-                          Email
-                        </Text>
-                      </Box>
-                      <Box w="13.8%">
-                        <Text fontSize="sm" fontWeight="medium">
-                          Phone Number
-                        </Text>
-                      </Box>
-                      <Box w="16%">
-                        <Checkbox
-                          value=""
-                          onChange={(value) => exportAllLeads(value)}
-                          accessibilityLabel="Select all leads"
-                        />
-                      </Box>
-                    </HStack>
-                    {leads?.length === 0 && !hasFilters ? (
-                      <Text marginTop="4" textAlign="center">
-                        You don't have any leads yet.
-                      </Text>
-                    ) : null}
-                    {leads?.length === 0 && hasFilters ? (
-                      <>
-                        <Text marginTop="4" textAlign="center">
-                          No leads found with those filters.
-                        </Text>
-                        <Center height="50px">
-                          <Pressable
-                            backgroundColor={
-                              theme.colors.shared.clientEyePrimary
-                            }
-                            borderRadius="md"
-                            paddingX="3"
-                            paddingY="2"
-                            marginTop="2"
-                            onPress={clearFilters}
+                      <HStack alignItems="center" space="3">
+                        <Box w="20px">
+                          <IconUpload color="white" />
+                        </Box>
+                        <HStack>
+                          <Text
+                            color="white"
+                            fontSize="xs"
+                            fontWeight="medium"
+                            textDecoration="none"
                           >
-                            <Text
-                              color="white"
-                              fontSize="xs"
-                              fontWeight="medium"
-                              textDecoration="none"
-                            >
-                              Clear Filters
-                            </Text>
-                          </Pressable>
-                        </Center>
-                      </>
-                    ) : null}
-                    <LeadRows
-                      leads={leads}
-                      hideLeads={hideLeads}
-                      exportLeads={exportLeads}
-                      exportLead={exportLead}
-                      push={push}
-                    />
-                  </Box>
-                </Hidden>
+                            Export
+                          </Text>
+                        </HStack>
+                      </HStack>
+                    </Box>
+                  )}
+                </Box>
+                <Box>
+                  <HStack
+                    paddingX="3"
+                    paddingY="3"
+                    borderBottomWidth="1"
+                    borderBottomColor={theme.colors.shared.softGray}
+                  >
+                    <Box w="5%" />
+                    <Box w="12%">
+                      <Text fontSize="sm" fontWeight="medium">
+                        Name
+                      </Text>
+                    </Box>
+                    <Box w="27%">
+                      <Text fontSize="sm" fontWeight="medium">
+                        Job Title
+                      </Text>
+                    </Box>
+                    <Box w="20%">
+                      <Text fontSize="sm" fontWeight="medium">
+                        Company Name
+                      </Text>
+                    </Box>
+                    <Box w="20.5%">
+                      <Text fontSize="sm" fontWeight="medium">
+                        Email
+                      </Text>
+                    </Box>
+                    <Box w="13.8%">
+                      <Text fontSize="sm" fontWeight="medium">
+                        Phone Number
+                      </Text>
+                    </Box>
+                    <Box w="16%">
+                      <Checkbox
+                        value=""
+                        onChange={(value) => exportAllLeads(value)}
+                        accessibilityLabel="Select all leads"
+                      />
+                    </Box>
+                  </HStack>
+                  {leads?.length === 0 && !hasFilters ? (
+                    <Text marginTop="4" textAlign="center">
+                      You don't have any leads yet.
+                    </Text>
+                  ) : null}
+                  {leads?.length === 0 && hasFilters ? (
+                    <>
+                      <Text marginTop="4" textAlign="center">
+                        No leads found with those filters.
+                      </Text>
+                      <Center height="50px">
+                        <Pressable
+                          backgroundColor={theme.colors.shared.clientEyePrimary}
+                          borderRadius="md"
+                          paddingX="3"
+                          paddingY="2"
+                          marginTop="2"
+                          onPress={clearFilters}
+                        >
+                          <Text
+                            color="white"
+                            fontSize="xs"
+                            fontWeight="medium"
+                            textDecoration="none"
+                          >
+                            Clear Filters
+                          </Text>
+                        </Pressable>
+                      </Center>
+                    </>
+                  ) : null}
+                  <LeadRows
+                    leads={leads}
+                    hideLeads={hideLeads}
+                    exportLeads={exportLeads}
+                    exportLead={exportLead}
+                    push={push}
+                  />
+                </Box>
               </Box>
             </Box>
           </Box>

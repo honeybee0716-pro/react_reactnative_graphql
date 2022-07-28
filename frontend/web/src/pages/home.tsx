@@ -1,5 +1,5 @@
 import { NextSeo } from 'next-seo'
-import Dashboard from 'shared/screens/Dashboard'
+import Home from 'shared/screens/Home'
 
 export default function Page() {
   return (
@@ -9,7 +9,7 @@ export default function Page() {
         description="View your Dashboard."
         noindex={false}
       />
-      <Dashboard />
+      <Home />
     </>
   )
 }
