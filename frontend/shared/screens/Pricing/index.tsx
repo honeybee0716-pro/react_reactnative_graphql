@@ -68,7 +68,7 @@ export default function PricingPage() {
     {
       feature: 'Visitors identified',
       standard: '300',
-      custom: 'Custom',
+      custom: 'Visitors identified',
       tooltip: "Visitors of your website whos identity we've revealed to you."
     }
   ])
@@ -133,32 +133,6 @@ export default function PricingPage() {
 
       <DashboardLayout>
         <Box position="relative">
-          {/* <Image
-            zIndex={1}
-            position="absolute"
-            right="0"
-            top="-200px"
-            w="597px"
-            h="679.68px"
-            source={require('./components/Blurred Background.png')}
-            style={{
-              transform: [
-                {
-                  scaleY: '-1'
-                }
-              ]
-            }}
-          />
-          <Image
-            zIndex={1}
-            position="absolute"
-            right="0"
-            top="479.68px"
-            w="597px"
-            h="679.68px"
-            source={require('./components/Blurred Background.png')}
-          /> */}
-
           <VStack
             zIndex={2}
             alignItems="center"
@@ -173,7 +147,7 @@ export default function PricingPage() {
             </Text>
           </VStack>
 
-          <Hidden till="sm">
+          <Hidden till="md">
             <Box
               zIndex={2}
               paddingX={{ base: '0', lg: '12' }}
@@ -187,12 +161,12 @@ export default function PricingPage() {
               >
                 <HStack>
                   <VStack
-                    w={{ base: '25%', lg: '33%' }}
+                    w={{ base: '33%', lg: '33%' }}
                     paddingTop="8"
                     paddingBottom="6"
-                  ></VStack>
+                  />
                   <VStack
-                    w={{ base: '50%', lg: '33%' }}
+                    w={{ base: '33%', lg: '33%' }}
                     borderWidth="1"
                     borderBottomWidth="0"
                     borderColor={theme.colors.shared.black_9}
@@ -227,7 +201,7 @@ export default function PricingPage() {
                     </VStack>
                   </VStack>
                   <VStack
-                    w={{ base: '25%', lg: '33%' }}
+                    w={{ base: '33%', lg: '33%' }}
                     paddingTop="8"
                     paddingBottom="6"
                   >
@@ -242,16 +216,11 @@ export default function PricingPage() {
                       <Text fontSize="13px" fontWeight="medium">
                         For enterprise businesses
                       </Text>
-                      <HStack alignItems="start">
-                        <Text fontSize="48px" fontWeight="medium">
-                          Custom&nbsp;
-                        </Text>
-                      </HStack>
                     </VStack>
                   </VStack>
                 </HStack>
                 <HStack>
-                  <VStack w={{ base: '25%', lg: '33%' }}>
+                  <VStack w={{ base: '33%', lg: '33%' }}>
                     <Text
                       fontSize={{ base: 'sm', lg: 'md' }}
                       fontWeight="semibold"
@@ -261,15 +230,15 @@ export default function PricingPage() {
                     </Text>
                   </VStack>
                   <VStack
-                    w={{ base: '25%', lg: '33%' }}
+                    w={{ base: '33%', lg: '33%' }}
                     borderWidth="1"
                     borderBottomWidth="0"
                     borderTopWidth="0"
                     borderColor={theme.colors.shared.black_9}
                     backgroundColor={theme.colors.shared.white_60}
                   ></VStack>
-                  <VStack w={{ base: '25%', lg: '33%' }}></VStack>
-                  <VStack w={{ base: '25%', lg: '33%' }}></VStack>
+                  <VStack w={{ base: '33%', lg: '33%' }}></VStack>
+                  <VStack w={{ base: '33%', lg: '33%' }}></VStack>
                 </HStack>
                 {listFeature.map((item1, i) => (
                   <Fragment key={`feature${i}`}>
@@ -277,7 +246,7 @@ export default function PricingPage() {
                       borderBottomWidth="1"
                       borderBottomColor={theme.colors.shared.soft4Gray_65}
                     >
-                      <VStack w={{ base: '25%', lg: '33%' }} paddingY="4">
+                      <VStack w={{ base: '33%', lg: '33%' }} paddingY="4">
                         <HStack
                           alignItems="center"
                           paddingRight={{ base: '0', lg: '24' }}
@@ -297,7 +266,7 @@ export default function PricingPage() {
                         </HStack>
                       </VStack>
                       <VStack
-                        w={{ base: '25%', lg: '33%' }}
+                        w={{ base: '33%', lg: '33%' }}
                         borderWidth="1"
                         borderBottomWidth="0"
                         borderTopWidth="0"
@@ -328,7 +297,7 @@ export default function PricingPage() {
                           )}
                         </HStack>
                       </VStack>
-                      <VStack w={{ base: '25%', lg: '33%' }} paddingY="4">
+                      <VStack w={{ base: '33%', lg: '33%' }} paddingY="4">
                         <HStack
                           justifyContent="center"
                           alignItems="center"
@@ -345,7 +314,7 @@ export default function PricingPage() {
                                 fontWeight="semibold"
                                 color={theme.colors.shared.gray}
                               >
-                                {item1.custom}
+                                Custom
                               </Text>
                             </Box>
                           )}
@@ -355,9 +324,9 @@ export default function PricingPage() {
                   </Fragment>
                 ))}
                 <HStack>
-                  <VStack w={{ base: '25%', lg: '33%' }} paddingY="6"></VStack>
+                  <VStack w={{ base: '33%', lg: '33%' }} paddingY="6"></VStack>
                   <VStack
-                    w={{ base: '25%', lg: '33%' }}
+                    w={{ base: '33%', lg: '33%' }}
                     paddingY="6"
                     borderWidth="1"
                     borderTopWidth="0"
@@ -393,7 +362,7 @@ export default function PricingPage() {
                       </Pressable>
                     </HStack>
                   </VStack>
-                  <VStack w={{ base: '25%', lg: '33%' }} paddingY="6">
+                  <VStack w={{ base: '33%', lg: '33%' }} paddingY="6">
                     <HStack
                       justifyContent="center"
                       alignItems="center"
@@ -427,7 +396,7 @@ export default function PricingPage() {
             </Box>
           </Hidden>
 
-          <Hidden from="sm">
+          <Hidden from="md">
             <Box zIndex={2} paddingX="5" marginTop="20">
               <VStack space="12">
                 <Box
@@ -478,9 +447,15 @@ export default function PricingPage() {
                           <Text fontSize="15px" fontWeight="medium">
                             {feature_item.feature}
                           </Text>
-                          {feature_item.premium ? (
-                            <Box w="24px">
-                              <IconCheck color={theme.colors.shared.green4} />
+                          {feature_item.standard ? (
+                            <Box>
+                              <Text
+                                fontSize={{ base: 'sm', lg: 'md' }}
+                                fontWeight="semibold"
+                                color={theme.colors.shared.gray}
+                              >
+                                {feature_item.standard}
+                              </Text>
                             </Box>
                           ) : (
                             <Box w="18px">
@@ -501,14 +476,6 @@ export default function PricingPage() {
                   paddingX="6"
                 >
                   <HStack alignItems="center" justifyContent="space-between">
-                    <Box>
-                      <HStack alignItems="start">
-                        <Text fontSize="48px" fontWeight="medium">
-                          Negotiable
-                        </Text>
-                      </HStack>
-                      <Text fontSize="sm">Per month</Text>
-                    </Box>
                     <Box>
                       <Text
                         fontSize="15px"
@@ -535,11 +502,17 @@ export default function PricingPage() {
                           alignItems="center"
                         >
                           <Text fontSize="15px" fontWeight="medium">
-                            {feature_item.feature}
+                            {feature_item.custom}
                           </Text>
-                          {feature_item.unlimited ? (
-                            <Box w="24px">
-                              <IconCheck color={theme.colors.shared.green4} />
+                          {feature_item.custom ? (
+                            <Box>
+                              <Text
+                                fontSize={{ base: 'sm', lg: 'md' }}
+                                fontWeight="semibold"
+                                color={theme.colors.shared.gray}
+                              >
+                                Custom
+                              </Text>
                             </Box>
                           ) : (
                             <Box w="18px">
