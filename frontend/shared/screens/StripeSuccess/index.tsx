@@ -3,8 +3,10 @@ import { Text, VStack, Hidden } from 'native-base'
 import { useRouter } from 'solito/router'
 import IconBalanceCheckTwo from './components/IconBalanceCheckTwo'
 import DashboardLayout from '../../layouts/DashboardLayout'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 export default function StripeSuccess() {
+  useRouteAuthentication()
   const { push } = useRouter()
 
   React.useEffect(() => {

@@ -1,6 +1,9 @@
 import { atom } from 'recoil'
 import { useEffect } from 'react'
 import { useRecoilSnapshot } from 'recoil'
+import { recoilPersist } from 'recoil-persist'
+
+const { persistAtom } = recoilPersist()
 
 export const DebugObserver = () => {
   const snapshot = useRecoilSnapshot()
@@ -18,45 +21,54 @@ export const DebugObserver = () => {
 
 export const jwtState = atom({
   key: 'jwtState',
-  default: undefined
+  default: undefined,
+  effects_UNSTABLE: [persistAtom]
 })
 
 export const userSubscriptionDataState = atom({
   key: 'userSubscriptionData',
-  default: undefined
+  default: undefined,
+  effects_UNSTABLE: [persistAtom]
 })
 
 export const leadsState = atom({
   key: 'leads',
-  default: []
+  default: [],
+  effects_UNSTABLE: [persistAtom]
 })
 
 export const filterSort = atom({
   key: 'filterSort',
-  default: 'date'
+  default: 'date',
+  effects_UNSTABLE: [persistAtom]
 })
 
 export const filterFirstName = atom({
   key: 'filterFirstName',
-  default: ''
+  default: '',
+  effects_UNSTABLE: [persistAtom]
 })
 
 export const filterLastName = atom({
   key: 'filterLastName',
-  default: ''
+  default: '',
+  effects_UNSTABLE: [persistAtom]
 })
 
 export const filterCompanyName = atom({
   key: 'filterCompanyName',
-  default: ''
+  default: '',
+  effects_UNSTABLE: [persistAtom]
 })
 
 export const filterJobTitle = atom({
   key: 'filterJobTitle',
-  default: ''
+  default: '',
+  effects_UNSTABLE: [persistAtom]
 })
 
 export const searchForLeadsVariablesState = atom({
   key: 'searchForLeadsVariablesState',
-  default: undefined
+  default: undefined,
+  effects_UNSTABLE: [persistAtom]
 })

@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {gql} from 'apollo-server';
 
+import {rudderstack} from '../../../utils/rudderstack';
+
 import getUserByEmail from './getUserByEmail';
 
 export const loginUserWithPasswordSchema = gql`
@@ -18,9 +20,11 @@ export const loginUserWithPasswordSchema = gql`
 `;
 
 const loginUserWithPassword = async (parent: null, args: any) => {
+  const formattedEmail = args.input.email.toLowerCase().trim();
+
   console.log('loginUserWithPassword init');
   const foundUser = await getUserByEmail(undefined, {
-    input: {email: args.input.email},
+    input: {email: formattedEmail},
   });
   console.log('loginUserWithPassword', {foundUser});
 
@@ -35,6 +39,11 @@ const loginUserWithPassword = async (parent: null, args: any) => {
     args.input.password,
     foundUser.data.password,
   );
+
+  rudderstack.track({
+    userId: foundUser.data.id,
+    event: 'loginUserWithPassword',
+  });
 
   if (passwordMatches) {
     const token = jwt.sign(

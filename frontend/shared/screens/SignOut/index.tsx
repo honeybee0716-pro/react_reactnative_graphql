@@ -3,8 +3,10 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { useRouter } from 'solito/router'
 import { useRecoilState } from 'recoil'
 import { jwtState } from '../../state'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 export const SignOut = ({ client }) => {
+  useRouteAuthentication()
   const { push } = useRouter()
   const [jwt, setJWT] = useRecoilState<any>(jwtState)
 

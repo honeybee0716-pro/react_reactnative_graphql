@@ -1,5 +1,15 @@
-import Dashboard from 'shared/screens/Dashboard'
+import { NextSeo } from 'next-seo'
+import Home from 'shared/screens/Home'
 
 export default function Page() {
-  return <Dashboard />
+  return (
+    <>
+      <NextSeo
+        title="ClientEye - Dashboard"
+        description="View your Dashboard."
+        noindex={false}
+      />
+      <Home />
+    </>
+  )
 }

@@ -10,6 +10,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/uuid": "^8.3.4",
+    "concurrently": "^7.3.0",
     "husky": "^8.0.1",
     "jest": "^28.1.0",
     "jscpd": "^3.4.5",
@@ -23,7 +24,8 @@
     "test": "jest",
     "build": "cd backend && npx prisma db push && yarn run tsc",
     "tsc": "tsc",
-    "prisma": "prisma"
+    "prisma": "prisma",
+    "dev": "concurrently -n 'backend,studio,frontend,mobile' -c 'bgBlue.bold,bgGreen.bold,bgMagenta.bold,bgWhite.bold' 'cd backend && yarn run dev' 'cd backend && yarn run studio' 'cd frontend && yarn run web' 'cd frontend && yarn run ios'"
   },
   "husky": {
     "hooks": {

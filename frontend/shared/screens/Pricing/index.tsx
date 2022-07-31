@@ -2,98 +2,24 @@ import React from 'react'
 import {
   StatusBar,
   Box,
-  Center,
-  Stack,
   Hidden,
   Text,
-  Image,
   HStack,
   VStack,
-  Input,
-  InputGroup,
   Button,
-  Checkbox,
-  Link,
-  Icon,
   Pressable,
-  Flex,
-  Select,
-  CheckIcon,
-  Slider,
-  Switch,
-  Divider,
   Tooltip,
   useToast
 } from 'native-base'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { theme } from 'shared/styles/theme'
-import { Link as SolitoLink } from 'solito/link'
-import { Dimensions, View } from 'react-native'
-import { Fragment, useState, useRef } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination } from 'swiper'
+import { Dimensions } from 'react-native'
+import { Fragment, useState } from 'react'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
-import IconCredits from 'shared/components/icons/IconCredits'
-import IconCornerUpRight from 'shared/components/icons/IconCornerUpRight'
-import IconZap from 'shared/components/icons/IconZap'
-import IconDollarSign from 'shared/components/icons/IconDollarSign'
-import IconUploadCloud from 'shared/components/icons/IconUploadCloud'
-import IconBarChart from 'shared/components/icons/IconBarChart'
-import IconCompass from 'shared/components/icons/IconCompass'
-import IconDownload from 'shared/components/icons/IconDownload'
-import IconEye from 'shared/components/icons/IconEye'
-import IconClock from 'shared/components/icons/IconClock'
-import IconCalendar from 'shared/components/icons/IconCalendar'
-import IconShoppingCart from 'shared/components/icons/IconShoppingCart'
-import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
-import IconChevronDown from 'shared/components/icons/IconChevronDown'
-import IconPlayCircle from 'shared/components/icons/IconPlayCircle'
-import IconCreditCard from 'shared/components/icons/IconCreditCard'
-import IconLightcoin from 'shared/components/icons/IconLightcoin'
-import IconNFC from 'shared/components/icons/IconNFC'
-import IconEdit from 'shared/components/icons/IconEdit'
-import IconCornerLeftDown from 'shared/components/icons/IconCornerLeftDown'
-import IconMasterCard from 'shared/components/icons/IconMasterCard'
-import IconVISA from 'shared/components/icons/IconVISA'
-import IconHome from 'shared/components/icons/IconHome'
-import IconGlobe from 'shared/components/icons/IconGlobe'
-import IconPlus from 'shared/components/icons/IconPlus'
-import IconFileText from 'shared/components/icons/IconFileText'
-import IconSliders from 'shared/components/icons/IconSliders'
-import IconTrashBin from 'shared/components/icons/IconTrashBin'
-import IconUpload from 'shared/components/icons/IconUpload'
-import IconTag from 'shared/components/icons/IconTag'
-import IconX from 'shared/components/icons/IconX'
-import IconFilter from 'shared/components/icons/IconFilter'
-import IconList from 'shared/components/icons/IconList'
-import IconGroup from 'shared/components/icons/IconGroup'
-import IconSearch from 'shared/components/icons/IconSearch'
-import IconMessages from 'shared/components/icons/IconMessages'
-import IconGoogleGLogo from 'shared/components/icons/IconGoogleGLogo'
-import IconMicrosoftLogo from 'shared/components/icons/IconMicrosoftLogo'
-import IconMetaLogo from 'shared/components/icons/IconMetaLogo'
-import IconLayers from 'shared/components/icons/IconLayers'
 import IconCheck from 'shared/components/icons/IconCheck'
-import AmazonLogo from 'shared/components/logo/AmazonLogo'
-import SlackTechnologiesLogo from 'shared/components/logo/SlackTechnologiesLogo'
-import DiscordWordmarkLogo from 'shared/components/logo/DiscordWordmarkLogo'
-import SpotifyLogo from 'shared/components/logo/SpotifyLogo'
-import DolbyLogo from 'shared/components/logo/DolbyLogo'
-import IconFlag from 'shared/components/icons/IconFlag'
-import IconLists from 'shared/components/icons/IconLists'
-import IconArrowRight from 'shared/components/icons/IconArrowRight'
-import IconLock from 'shared/components/icons/IconLock'
-import IconCheckCircle from 'shared/components/icons/IconCheckCircle'
-import IconMail from 'shared/components/icons/IconMail'
-import IconMenu from 'shared/components/icons/IconMenu'
-import LandingPageFooter from 'shared/components/LandingPage/LandingPageFooter'
-import LandingPageTopNavigation from 'shared/components/LandingPage/LandingPageTopNavigation'
 import IconInfo from 'shared/components/icons/IconInfo'
 import IconLine from 'shared/components/icons/IconLine'
 import { gql, useLazyQuery } from '@apollo/client'
-import { useRecoilState } from 'recoil'
-import { userSubscriptionDataState } from '../../state'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 const { width, height } = Dimensions.get('window')
 
@@ -124,6 +50,8 @@ const GET_STRIPE_CHECKOUT_LINK = gql`
 `
 
 export default function PricingPage() {
+  useRouteAuthentication()
+
   const toast = useToast()
 
   const [createStripeCheckoutPage, { loading }] = useLazyQuery(
@@ -140,7 +68,7 @@ export default function PricingPage() {
     {
       feature: 'Visitors identified',
       standard: '300',
-      custom: 'Custom',
+      custom: 'Visitors identified',
       tooltip: "Visitors of your website whos identity we've revealed to you."
     }
   ])
@@ -205,32 +133,6 @@ export default function PricingPage() {
 
       <DashboardLayout>
         <Box position="relative">
-          {/* <Image
-            zIndex={1}
-            position="absolute"
-            right="0"
-            top="-200px"
-            w="597px"
-            h="679.68px"
-            source={require('./components/Blurred Background.png')}
-            style={{
-              transform: [
-                {
-                  scaleY: '-1'
-                }
-              ]
-            }}
-          />
-          <Image
-            zIndex={1}
-            position="absolute"
-            right="0"
-            top="479.68px"
-            w="597px"
-            h="679.68px"
-            source={require('./components/Blurred Background.png')}
-          /> */}
-
           <VStack
             zIndex={2}
             alignItems="center"
@@ -245,7 +147,7 @@ export default function PricingPage() {
             </Text>
           </VStack>
 
-          <Hidden till="sm">
+          <Hidden till="md">
             <Box
               zIndex={2}
               paddingX={{ base: '0', lg: '12' }}
@@ -259,12 +161,12 @@ export default function PricingPage() {
               >
                 <HStack>
                   <VStack
-                    w={{ base: '25%', lg: '33%' }}
+                    w={{ base: '33%', lg: '33%' }}
                     paddingTop="8"
                     paddingBottom="6"
-                  ></VStack>
+                  />
                   <VStack
-                    w={{ base: '50%', lg: '33%' }}
+                    w={{ base: '33%', lg: '33%' }}
                     borderWidth="1"
                     borderBottomWidth="0"
                     borderColor={theme.colors.shared.black_9}
@@ -299,7 +201,7 @@ export default function PricingPage() {
                     </VStack>
                   </VStack>
                   <VStack
-                    w={{ base: '25%', lg: '33%' }}
+                    w={{ base: '33%', lg: '33%' }}
                     paddingTop="8"
                     paddingBottom="6"
                   >
@@ -314,16 +216,11 @@ export default function PricingPage() {
                       <Text fontSize="13px" fontWeight="medium">
                         For enterprise businesses
                       </Text>
-                      <HStack alignItems="start">
-                        <Text fontSize="48px" fontWeight="medium">
-                          Custom&nbsp;
-                        </Text>
-                      </HStack>
                     </VStack>
                   </VStack>
                 </HStack>
                 <HStack>
-                  <VStack w={{ base: '25%', lg: '33%' }}>
+                  <VStack w={{ base: '33%', lg: '33%' }}>
                     <Text
                       fontSize={{ base: 'sm', lg: 'md' }}
                       fontWeight="semibold"
@@ -333,15 +230,15 @@ export default function PricingPage() {
                     </Text>
                   </VStack>
                   <VStack
-                    w={{ base: '25%', lg: '33%' }}
+                    w={{ base: '33%', lg: '33%' }}
                     borderWidth="1"
                     borderBottomWidth="0"
                     borderTopWidth="0"
                     borderColor={theme.colors.shared.black_9}
                     backgroundColor={theme.colors.shared.white_60}
                   ></VStack>
-                  <VStack w={{ base: '25%', lg: '33%' }}></VStack>
-                  <VStack w={{ base: '25%', lg: '33%' }}></VStack>
+                  <VStack w={{ base: '33%', lg: '33%' }}></VStack>
+                  <VStack w={{ base: '33%', lg: '33%' }}></VStack>
                 </HStack>
                 {listFeature.map((item1, i) => (
                   <Fragment key={`feature${i}`}>
@@ -349,7 +246,7 @@ export default function PricingPage() {
                       borderBottomWidth="1"
                       borderBottomColor={theme.colors.shared.soft4Gray_65}
                     >
-                      <VStack w={{ base: '25%', lg: '33%' }} paddingY="4">
+                      <VStack w={{ base: '33%', lg: '33%' }} paddingY="4">
                         <HStack
                           alignItems="center"
                           paddingRight={{ base: '0', lg: '24' }}
@@ -369,7 +266,7 @@ export default function PricingPage() {
                         </HStack>
                       </VStack>
                       <VStack
-                        w={{ base: '25%', lg: '33%' }}
+                        w={{ base: '33%', lg: '33%' }}
                         borderWidth="1"
                         borderBottomWidth="0"
                         borderTopWidth="0"
@@ -400,7 +297,7 @@ export default function PricingPage() {
                           )}
                         </HStack>
                       </VStack>
-                      <VStack w={{ base: '25%', lg: '33%' }} paddingY="4">
+                      <VStack w={{ base: '33%', lg: '33%' }} paddingY="4">
                         <HStack
                           justifyContent="center"
                           alignItems="center"
@@ -417,7 +314,7 @@ export default function PricingPage() {
                                 fontWeight="semibold"
                                 color={theme.colors.shared.gray}
                               >
-                                {item1.custom}
+                                Custom
                               </Text>
                             </Box>
                           )}
@@ -427,9 +324,9 @@ export default function PricingPage() {
                   </Fragment>
                 ))}
                 <HStack>
-                  <VStack w={{ base: '25%', lg: '33%' }} paddingY="6"></VStack>
+                  <VStack w={{ base: '33%', lg: '33%' }} paddingY="6"></VStack>
                   <VStack
-                    w={{ base: '25%', lg: '33%' }}
+                    w={{ base: '33%', lg: '33%' }}
                     paddingY="6"
                     borderWidth="1"
                     borderTopWidth="0"
@@ -465,7 +362,7 @@ export default function PricingPage() {
                       </Pressable>
                     </HStack>
                   </VStack>
-                  <VStack w={{ base: '25%', lg: '33%' }} paddingY="6">
+                  <VStack w={{ base: '33%', lg: '33%' }} paddingY="6">
                     <HStack
                       justifyContent="center"
                       alignItems="center"
@@ -499,7 +396,7 @@ export default function PricingPage() {
             </Box>
           </Hidden>
 
-          <Hidden from="sm">
+          <Hidden from="md">
             <Box zIndex={2} paddingX="5" marginTop="20">
               <VStack space="12">
                 <Box
@@ -550,9 +447,15 @@ export default function PricingPage() {
                           <Text fontSize="15px" fontWeight="medium">
                             {feature_item.feature}
                           </Text>
-                          {feature_item.premium ? (
-                            <Box w="24px">
-                              <IconCheck color={theme.colors.shared.green4} />
+                          {feature_item.standard ? (
+                            <Box>
+                              <Text
+                                fontSize={{ base: 'sm', lg: 'md' }}
+                                fontWeight="semibold"
+                                color={theme.colors.shared.gray}
+                              >
+                                {feature_item.standard}
+                              </Text>
                             </Box>
                           ) : (
                             <Box w="18px">
@@ -573,14 +476,6 @@ export default function PricingPage() {
                   paddingX="6"
                 >
                   <HStack alignItems="center" justifyContent="space-between">
-                    <Box>
-                      <HStack alignItems="start">
-                        <Text fontSize="48px" fontWeight="medium">
-                          Negotiable
-                        </Text>
-                      </HStack>
-                      <Text fontSize="sm">Per month</Text>
-                    </Box>
                     <Box>
                       <Text
                         fontSize="15px"
@@ -607,11 +502,17 @@ export default function PricingPage() {
                           alignItems="center"
                         >
                           <Text fontSize="15px" fontWeight="medium">
-                            {feature_item.feature}
+                            {feature_item.custom}
                           </Text>
-                          {feature_item.unlimited ? (
-                            <Box w="24px">
-                              <IconCheck color={theme.colors.shared.green4} />
+                          {feature_item.custom ? (
+                            <Box>
+                              <Text
+                                fontSize={{ base: 'sm', lg: 'md' }}
+                                fontWeight="semibold"
+                                color={theme.colors.shared.gray}
+                              >
+                                Custom
+                              </Text>
                             </Box>
                           ) : (
                             <Box w="18px">
