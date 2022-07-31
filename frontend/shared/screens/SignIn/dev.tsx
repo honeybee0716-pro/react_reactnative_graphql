@@ -397,7 +397,7 @@ export default function SignUp({ client }: any) {
                     </Box>
 
                     {/* already have account */}
-                    <Box
+                    {/* <Box
                       marginTop={{ base: '5', sm: '7' }}
                       marginBottom={{ base: '1', sm: '7', lg: '0' }}
                     >
@@ -422,7 +422,7 @@ export default function SignUp({ client }: any) {
                           </Link>
                         </SolitoLink>
                       </Text>
-                    </Box>
+                    </Box> */}
                   </Box>
                 </Box>
               </Box>

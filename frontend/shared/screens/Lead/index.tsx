@@ -119,7 +119,8 @@ export default function ProfileScreen({ id }: any) {
                   >
                     <Avatar
                       source={{
-                        uri: lead.profileImageURL
+                        // uri: lead.profileImageURL
+                        uri: null
                       }}
                       height="100%"
                       width="100%"

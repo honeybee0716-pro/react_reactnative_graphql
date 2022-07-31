@@ -32,7 +32,8 @@ export const LeadRows = ({
         <Box w="5%">
           <Avatar
             source={{
-              uri: l.profileImageURL
+              // uri: l.profileImageURL
+              uri: null
             }}
           >
             {`${l.firstName?.charAt(0) || ''}${l.lastName?.charAt(0) || ''}`}
