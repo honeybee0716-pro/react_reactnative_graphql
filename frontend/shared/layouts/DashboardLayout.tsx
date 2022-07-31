@@ -51,7 +51,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         paddingLeft={{ base: '0', sm: '0', lg: '20px' }}
         w="full"
         zIndex={10}
-        height={{ base: '69px', sm: '84px' }}
+        height="65px"
         backgroundColor="white"
         borderBottomWidth="1"
         borderBottomColor={theme.colors.shared.softGray}
@@ -317,10 +317,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         left="0"
         right="0"
         bottom="0"
-        marginTop={{
-          base: '69px',
-          sm: '84px'
-        }}
+        marginTop="65px"
       >
         <KeyboardAwareScrollView
           contentContainerStyle={{

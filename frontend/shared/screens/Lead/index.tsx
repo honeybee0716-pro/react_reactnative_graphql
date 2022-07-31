@@ -248,9 +248,8 @@ export default function ProfileScreen({ id }: any) {
             </Box>
             <Box
               margin="5"
-              paddingX={{ base: '4', sm: '6' }}
-              paddingTop={{ base: '4', sm: '6' }}
-              paddingBottom="6"
+              marginLeft="2.5"
+              padding="3"
               borderTopRadius="2xl"
               borderBottomRadius="2xl"
               backgroundColor="white"
@@ -258,10 +257,10 @@ export default function ProfileScreen({ id }: any) {
               borderColor={theme.colors.shared.softGray}
               flex="1"
             >
-              <HStack alignItems="center" marginBottom="6">
+              <HStack alignItems="center" marginBottom="3">
                 <Center
                   backgroundColor={theme.colors.shared.masterCardYellow_15}
-                  paddingY="2"
+                  paddingY="3"
                   paddingX="2"
                   borderRadius="lg"
                 >
@@ -278,7 +277,7 @@ export default function ProfileScreen({ id }: any) {
                   Information
                 </Text>
               </HStack>
-              <VStack space="4">
+              <VStack space="2">
                 <Box
                   flexDirection="row"
                   alignItems="center"
@@ -286,10 +285,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconAtSign />
                     </Box>
@@ -331,10 +330,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconUser />
                     </Box>
@@ -386,10 +385,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconAtSign />
                     </Box>
@@ -431,10 +430,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconMail />
                     </Box>
@@ -500,10 +499,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconPhoneCall />
                     </Box>
@@ -555,10 +554,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconClock />
                     </Box>
@@ -619,10 +618,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconUser />
                     </Box>
