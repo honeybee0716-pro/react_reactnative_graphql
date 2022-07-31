@@ -19,6 +19,8 @@ export const getUserSubscriptionDataSchema = gql`
     redirectToPricingPage: Boolean!
     redirectToOTPPage: Boolean!
     isCustomPlan: Boolean!
+    userInternalID: String!
+    userEmail: String!
   }
 
   type Query {
@@ -94,6 +96,8 @@ const getUserSubscriptionData = async (
   );
   data.remainingCredits = remainingCredits || 0;
   data.isCustomPlan = isCustomPlan || false;
+  data.userInternalID = user.id;
+  data.userEmail = user.email;
 
   return {
     ...data,

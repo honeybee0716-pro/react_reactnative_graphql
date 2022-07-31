@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Box,
   Center,
@@ -25,6 +26,7 @@ import IconPhoneCall from 'shared/components/icons/IconPhoneCall'
 import IconArrowRight from 'shared/components/icons/IconArrowRight'
 import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'solito/router'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 const GET_LEAD = gql`
   query GetLeadByID($input: getLeadByIDInput) {
@@ -45,6 +47,7 @@ const LoadingSpinner = () => {
 }
 
 export default function ProfileScreen({ id }: any) {
+  useRouteAuthentication()
   const router = useRouter()
 
   const { data, error, loading } = useQuery(GET_LEAD, {
@@ -68,10 +71,15 @@ export default function ProfileScreen({ id }: any) {
         {loading ? <LoadingSpinner /> : null}
         {error ? <Heading>Error. Please try again.</Heading> : null}
         {lead && !loading ? (
-          <Box flexDirection={{ base: 'column', lg: 'row' }}>
+          <Box
+            flexDirection={{ base: 'column', lg: 'row' }}
+            display="flex"
+            flex="1"
+          >
             <Box
               margin="5"
-              marginRight="0"
+              marginRight={{ base: '5', lg: '0' }}
+              marginBottom={{ sm: '0', md: '0', lg: '5' }}
               paddingX={{ base: '4', sm: '6' }}
               paddingBottom={{ base: '4', sm: '8' }}
               borderTopRadius="2xl"
@@ -102,8 +110,8 @@ export default function ProfileScreen({ id }: any) {
                   justifyContent="center"
                 >
                   <Box
-                    w={{ base: '56px', sm: '85px' }}
-                    h={{ base: '56px', sm: '85px' }}
+                    w={{ base: '100px' }}
+                    h={{ base: '100px' }}
                     borderRadius="full"
                     borderWidth="1"
                     borderColor={theme.colors.shared.darkerGray}
@@ -111,7 +119,8 @@ export default function ProfileScreen({ id }: any) {
                   >
                     <Avatar
                       source={{
-                        uri: lead.profileImageURL
+                        // uri: lead.profileImageURL
+                        uri: null
                       }}
                       height="100%"
                       width="100%"
@@ -240,9 +249,8 @@ export default function ProfileScreen({ id }: any) {
             </Box>
             <Box
               margin="5"
-              paddingX={{ base: '4', sm: '6' }}
-              paddingTop={{ base: '4', sm: '6' }}
-              paddingBottom="6"
+              marginLeft="2.5"
+              padding="3"
               borderTopRadius="2xl"
               borderBottomRadius="2xl"
               backgroundColor="white"
@@ -250,10 +258,10 @@ export default function ProfileScreen({ id }: any) {
               borderColor={theme.colors.shared.softGray}
               flex="1"
             >
-              <HStack alignItems="center" marginBottom="6">
+              <HStack alignItems="center" marginBottom="3">
                 <Center
                   backgroundColor={theme.colors.shared.masterCardYellow_15}
-                  paddingY="2"
+                  paddingY="3"
                   paddingX="2"
                   borderRadius="lg"
                 >
@@ -270,7 +278,7 @@ export default function ProfileScreen({ id }: any) {
                   Information
                 </Text>
               </HStack>
-              <VStack space="4">
+              <VStack space="2">
                 <Box
                   flexDirection="row"
                   alignItems="center"
@@ -278,10 +286,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconAtSign />
                     </Box>
@@ -289,7 +297,7 @@ export default function ProfileScreen({ id }: any) {
                   <HStack flex="1" h="full">
                     <Hidden till="sm">
                       <Box
-                        w="1/4"
+                        w="1/5"
                         h="full"
                         borderRightWidth="1"
                         borderRightColor={theme.colors.shared.softer7Gray_25}
@@ -323,10 +331,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconUser />
                     </Box>
@@ -334,7 +342,7 @@ export default function ProfileScreen({ id }: any) {
                   <HStack flex="1" h="full">
                     <Hidden till="sm">
                       <Box
-                        w="1/4"
+                        w="1/5"
                         h="full"
                         borderRightWidth="1"
                         borderRightColor={theme.colors.shared.softer7Gray_25}
@@ -378,10 +386,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconAtSign />
                     </Box>
@@ -389,7 +397,7 @@ export default function ProfileScreen({ id }: any) {
                   <HStack flex="1" h="full">
                     <Hidden till="sm">
                       <Box
-                        w="1/4"
+                        w="1/5"
                         h="full"
                         borderRightWidth="1"
                         borderRightColor={theme.colors.shared.softer7Gray_25}
@@ -423,10 +431,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconMail />
                     </Box>
@@ -434,7 +442,7 @@ export default function ProfileScreen({ id }: any) {
                   <HStack flex="1" h="full">
                     <Hidden till="sm">
                       <Box
-                        w="1/4"
+                        w="1/5"
                         h="full"
                         borderRightWidth="1"
                         borderRightColor={theme.colors.shared.softer7Gray_25}
@@ -447,7 +455,7 @@ export default function ProfileScreen({ id }: any) {
                       </Box>
                     </Hidden>
                     <Box
-                      w={{ base: 'full', sm: '3/4' }}
+                      w="2/5"
                       flexDirection="row"
                       alignItems="center"
                       paddingLeft={{ base: '0', sm: '4' }}
@@ -469,6 +477,20 @@ export default function ProfileScreen({ id }: any) {
                         </Text>
                       </Pressable>
                     </Box>
+                    <Box
+                      w="2/5"
+                      flexDirection="row"
+                      alignItems="center"
+                      paddingLeft={{ base: '0', sm: '4' }}
+                    >
+                      <Text
+                        fontSize={{ base: 'sm', sm: '15px' }}
+                        fontWeight="medium"
+                      >
+                        Email Verification Status:{' '}
+                        {lead.verificationStatus || 'Unknown'}
+                      </Text>
+                    </Box>
                   </HStack>
                 </Box>
                 <Box
@@ -478,10 +500,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconPhoneCall />
                     </Box>
@@ -489,7 +511,7 @@ export default function ProfileScreen({ id }: any) {
                   <HStack flex="1" h="full">
                     <Hidden till="sm">
                       <Box
-                        w="1/4"
+                        w="1/5"
                         h="full"
                         borderRightWidth="1"
                         borderRightColor={theme.colors.shared.softer7Gray_25}
@@ -533,10 +555,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconClock />
                     </Box>
@@ -544,7 +566,7 @@ export default function ProfileScreen({ id }: any) {
                   <HStack flex="1" h="full">
                     <Hidden till="sm">
                       <Box
-                        w="1/4"
+                        w="1/5"
                         h="full"
                         borderRightWidth="1"
                         borderRightColor={theme.colors.shared.softer7Gray_25}
@@ -552,12 +574,12 @@ export default function ProfileScreen({ id }: any) {
                         alignItems="center"
                       >
                         <Text fontSize="15px" fontWeight="medium">
-                          Duration in company
+                          Duration:
                         </Text>
                       </Box>
                     </Hidden>
                     <Box
-                      w={{ base: 'full', sm: '3/4' }}
+                      w="2/5"
                       flexDirection="row"
                       alignItems="center"
                       paddingLeft={{ base: '0', sm: '4' }}
@@ -566,7 +588,26 @@ export default function ProfileScreen({ id }: any) {
                         fontSize={{ base: 'sm', sm: '15px' }}
                         fontWeight="medium"
                       >
-                        {lead.durationInCompany || 'Unknown'}
+                        Company:{' '}
+                        {lead.durationInCompany
+                          ? lead.durationInCompany.split(' in company')[0]
+                          : 'Unknown'}
+                      </Text>
+                    </Box>
+                    <Box
+                      w="1/5"
+                      flexDirection="row"
+                      alignItems="center"
+                      paddingLeft={{ base: '0', sm: '4' }}
+                    >
+                      <Text
+                        fontSize={{ base: 'sm', sm: '15px' }}
+                        fontWeight="medium"
+                      >
+                        Role:{' '}
+                        {lead.durationInRole
+                          ? lead.durationInRole.split(' in role')[0]
+                          : 'Unknown'}
                       </Text>
                     </Box>
                   </HStack>
@@ -578,100 +619,10 @@ export default function ProfileScreen({ id }: any) {
                   borderWidth="1"
                   borderColor={theme.colors.shared.softer7Gray_25}
                   borderRadius="lg"
-                  paddingLeft="4"
+                  paddingLeft="2"
                   paddingRight="5"
                 >
-                  <Box paddingY="4">
-                    <Box w="18px" marginRight="3">
-                      <IconClock />
-                    </Box>
-                  </Box>
-                  <HStack flex="1" h="full">
-                    <Hidden till="sm">
-                      <Box
-                        w="1/4"
-                        h="full"
-                        borderRightWidth="1"
-                        borderRightColor={theme.colors.shared.softer7Gray_25}
-                        flexDirection="row"
-                        alignItems="center"
-                      >
-                        <Text fontSize="15px" fontWeight="medium">
-                          Duration in role
-                        </Text>
-                      </Box>
-                    </Hidden>
-                    <Box
-                      w={{ base: 'full', sm: '3/4' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingLeft={{ base: '0', sm: '4' }}
-                    >
-                      <Text
-                        fontSize={{ base: 'sm', sm: '15px' }}
-                        fontWeight="medium"
-                      >
-                        {lead.durationInRole || 'Unknown'}
-                      </Text>
-                    </Box>
-                  </HStack>
-                </Box>
-                <Box
-                  flexDirection="row"
-                  alignItems="center"
-                  backgroundColor={theme.colors.shared.softer6Gray}
-                  borderWidth="1"
-                  borderColor={theme.colors.shared.softer7Gray_25}
-                  borderRadius="lg"
-                  paddingLeft="4"
-                  paddingRight="5"
-                >
-                  <Box paddingY="4">
-                    <Box w="18px" marginRight="3">
-                      <IconShield />
-                    </Box>
-                  </Box>
-                  <HStack flex="1" h="full">
-                    <Hidden till="sm">
-                      <Box
-                        w="1/4"
-                        h="full"
-                        borderRightWidth="1"
-                        borderRightColor={theme.colors.shared.softer7Gray_25}
-                        flexDirection="row"
-                        alignItems="center"
-                      >
-                        <Text fontSize="15px" fontWeight="medium">
-                          Is Premium
-                        </Text>
-                      </Box>
-                    </Hidden>
-                    <Box
-                      w={{ base: 'full', sm: '3/4' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingLeft={{ base: '0', sm: '4' }}
-                    >
-                      <Text
-                        fontSize={{ base: 'sm', sm: '15px' }}
-                        fontWeight="medium"
-                      >
-                        {lead.isPremium === 1 ? 'Yes' : 'No'}
-                      </Text>
-                    </Box>
-                  </HStack>
-                </Box>
-                <Box
-                  flexDirection="row"
-                  alignItems="center"
-                  backgroundColor={theme.colors.shared.softer6Gray}
-                  borderWidth="1"
-                  borderColor={theme.colors.shared.softer7Gray_25}
-                  borderRadius="lg"
-                  paddingLeft="4"
-                  paddingRight="5"
-                >
-                  <Box paddingY="4">
+                  <Box paddingY="3">
                     <Box w="18px" marginRight="3">
                       <IconUser />
                     </Box>
@@ -679,40 +630,66 @@ export default function ProfileScreen({ id }: any) {
                   <HStack flex="1" h="full">
                     <Hidden till="sm">
                       <Box
-                        w="1/4"
+                        w="1/5"
                         h="full"
                         borderRightWidth="1"
                         borderRightColor={theme.colors.shared.softer7Gray_25}
                         flexDirection="row"
                         alignItems="center"
                       >
-                        <Text fontSize="15px" fontWeight="medium">
-                          Sales Navigator URL
-                        </Text>
+                        <Pressable
+                          onPress={() => {
+                            window.open(`${lead.linkedInSalesNavigatorURL}`)
+                          }}
+                          disabled={!lead.linkedInSalesNavigatorURL}
+                        >
+                          <Text
+                            fontSize="15px"
+                            fontWeight="medium"
+                            color={
+                              lead.linkedInSalesNavigatorURL
+                                ? theme.colors.shared.brightBlue
+                                : ''
+                            }
+                          >
+                            Sales Navigator View
+                          </Text>
+                        </Pressable>
                       </Box>
                     </Hidden>
                     <Box
-                      w={{ base: 'full', sm: '3/4' }}
+                      w="2/5"
+                      flexDirection="row"
+                      alignItems="center"
+                      paddingLeft={{ base: '0', sm: '4' }}
+                    >
+                      <Text
+                        fontSize={{ base: 'sm', sm: '15px' }}
+                        fontWeight="medium"
+                      >
+                        Premium LinkedIn? {lead.isPremium === 1 ? 'Yes' : 'No'}
+                      </Text>
+                    </Box>
+                    <Box
                       flexDirection="row"
                       alignItems="center"
                       paddingLeft={{ base: '0', sm: '4' }}
                     >
                       <Pressable
                         onPress={() => {
-                          window.open(`${lead.linkedInSalesNavigatorURL}`)
+                          window.open(lead.companyURL)
                         }}
-                        disabled={!lead.linkedInSalesNavigatorURL}
                       >
                         <Text
-                          fontSize={{ base: 'sm', sm: '15px' }}
+                          fontSize="15px"
                           fontWeight="medium"
                           color={
-                            lead.linkedInSalesNavigatorURL
+                            lead.companyURL
                               ? theme.colors.shared.brightBlue
                               : ''
                           }
                         >
-                          {lead.linkedInSalesNavigatorURL ? 'Visit' : 'Unknown'}
+                          Company LinkedIn
                         </Text>
                       </Pressable>
                     </Box>

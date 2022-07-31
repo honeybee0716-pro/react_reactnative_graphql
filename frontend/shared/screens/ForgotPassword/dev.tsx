@@ -1,33 +1,29 @@
+import React from 'react'
 import {
   StatusBar,
   Box,
   Center,
-  Stack,
   Hidden,
   Text,
   Image,
   HStack,
-  VStack,
   Input,
-  InputGroup,
-  Button,
   Checkbox,
   Link,
   Pressable,
   IconButton,
   Icon,
-  useColorMode,
   useToast
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { AntDesign, Entypo } from '@expo/vector-icons'
+import { Entypo } from '@expo/vector-icons'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
 import IconLink from 'shared/components/icons/IconLink'
 import { useRouter } from 'solito/router'
 import { gql, useMutation } from '@apollo/client'
-import AsyncStorage from '@react-native-community/async-storage'
 import { useState } from 'react'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 const FORGOT_PASSWORD = gql`
   mutation ForgotPassword($input: forgotPasswordInput) {
@@ -47,7 +43,8 @@ const CONFIRM_FORGOT_PASSWORD = gql`
   }
 `
 
-export default function SignUp(props: any) {
+export default function SignUp() {
+  useRouteAuthentication()
   const { push } = useRouter()
   const toast = useToast()
   const [email, setEmail] = useState('')
@@ -55,7 +52,6 @@ export default function SignUp(props: any) {
   const [code, setCode] = useState('')
   const [showPass, setShowPass] = useState(false)
   const [step, setStep] = useState(1)
-  const { colorMode } = useColorMode()
   const [step1, { loading: loadingStep1 }] = useMutation(FORGOT_PASSWORD)
   const [step2, { loading: loadingStep2 }] = useMutation(
     CONFIRM_FORGOT_PASSWORD
@@ -151,7 +147,6 @@ export default function SignUp(props: any) {
         _light={{ bg: 'primary.900' }}
         _dark={{ bg: 'coolGray.900' }}
       />
-
       <Image
         position="absolute"
         w="full"
@@ -166,7 +161,7 @@ export default function SignUp(props: any) {
       <Box
         w={{ base: 'full', lg: 'full' }}
         h="full"
-        backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
+        // backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
       >
         <Box
           flexDirection="row"
@@ -195,24 +190,6 @@ export default function SignUp(props: any) {
                   xl: '35rem'
                 }}
               >
-                <Hidden from="lg">
-                  <Center flexDir="row">
-                    {/* <Image
-                        w={{ base: '2.5rem', sm: '3.5rem' }}
-                        h={{ base: '2.5rem', sm: '3.5rem' }}
-                        source=clientEyePrimary{require('shared/assets/images/contact-blaster-blue.png')}
-                      /> */}
-                    <Text
-                      color={theme.colors.shared.softBlack}
-                      fontSize={{ base: 'xl', sm: '2xl' }}
-                      fontWeight="semibold"
-                      marginLeft={'4'}
-                    >
-                      ClientEye
-                    </Text>
-                  </Center>
-                </Hidden>
-
                 <Box
                   bgColor="white"
                   borderRadius="2xl"
@@ -432,43 +409,6 @@ export default function SignUp(props: any) {
                         </Box>
                       </>
                     )}
-                    {/* remember_me_forgot_pass */}
-                    <Hidden from="lg">
-                      <HStack
-                        justifyContent="space-between"
-                        position="relative"
-                        marginTop="5"
-                      >
-                        <Checkbox
-                          alignItems="center"
-                          defaultIsChecked={false}
-                          value="demo"
-                          colorScheme="primary"
-                          accessibilityLabel="Remember me"
-                        >
-                          <HStack alignItems="center">
-                            <Text
-                              fontSize={{ base: 'sm', sm: 'md' }}
-                              fontWeight="medium"
-                            >
-                              Remember me
-                            </Text>
-                          </HStack>
-                        </Checkbox>
-                        <HStack alignItems="center" space="1">
-                          <Box w="18px">
-                            <IconLink />
-                          </Box>
-                          <Text
-                            fontSize={{ base: 'xs', sm: 'md' }}
-                            fontWeight="medium"
-                            color={theme.colors.shared.softBlack}
-                          >
-                            Forgot Password ?
-                          </Text>
-                        </HStack>
-                      </HStack>
-                    </Hidden>
 
                     {/* button */}
                     <Box marginTop="5">

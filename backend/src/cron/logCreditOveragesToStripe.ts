@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
 import {prismaContext} from '../graphql/prismaContext';
@@ -5,16 +6,19 @@ import {stripe} from '../utils/stripe';
 import getUserByID from '../graphql/resolvers/queries/getUserByID';
 import getUserSubscriptionData from '../graphql/resolvers/queries/getUserSubscriptionData';
 
-// add an idempotency key to the request to prevent duplicate charges
-
 const logCreditOveragesToStripe = async () => {
   const leads = await prismaContext.prisma.lead.findMany({
     where: {
       stripeUsageLoggedAt: {
         isSet: false,
       },
+      noSubscriptionFoundForStripeUsage: {
+        isSet: false,
+      },
     },
   });
+
+  console.log({leads});
 
   for (const {userID, id} of leads) {
     try {
@@ -24,21 +28,50 @@ const logCreditOveragesToStripe = async () => {
         },
       });
 
+      console.log({user});
+      if (!user) {
+        continue;
+      }
+
       const {stripeCustomer} = await getUserSubscriptionData(
         undefined,
         undefined,
         {user: user.data},
       );
 
-      const {subscriptions} = stripeCustomer;
-      const subscriptionItemID = subscriptions?.data[0]?.items?.data[0]?.id;
-
-      if (!subscriptionItemID) {
-        return;
+      console.log({stripeCustomer});
+      if (!stripeCustomer) {
+        continue;
       }
 
-      await stripe.subscriptionItems.createUsageRecord(
-        subscriptionItemID,
+      const {subscriptions} = stripeCustomer;
+
+      const subscription = subscriptions?.data[0]?.items?.data.find(
+        (item) => item.plan.tiers_mode === 'graduated',
+      );
+
+      console.log({subscription});
+      if (!subscription) {
+        await prismaContext.prisma.lead.update({
+          where: {
+            id,
+          },
+          data: {
+            noSubscriptionFoundForStripeUsage: new Date(),
+          },
+        });
+        continue;
+      }
+
+      const subscriptionID = subscription?.id;
+
+      console.log({subscriptionID});
+      if (!subscriptionID) {
+        continue;
+      }
+
+      const usageRecord = await stripe.subscriptionItems.createUsageRecord(
+        subscriptionID,
         {
           quantity: 1,
           timestamp: Math.round(new Date().getTime() / 1000),
@@ -49,7 +82,12 @@ const logCreditOveragesToStripe = async () => {
         },
       );
 
-      await prismaContext.prisma.lead.update({
+      console.log({usageRecord});
+      if (!usageRecord) {
+        continue;
+      }
+
+      const update = await prismaContext.prisma.lead.update({
         where: {
           id,
         },
@@ -57,6 +95,8 @@ const logCreditOveragesToStripe = async () => {
           stripeUsageLoggedAt: new Date(),
         },
       });
+
+      console.log({update});
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log({error});

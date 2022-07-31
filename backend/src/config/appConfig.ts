@@ -50,6 +50,9 @@ export interface IAppConfig {
   SMTP_PORT: string;
   SMTP_USER: string;
   SMTP_PASSWORD: string;
+  STRIPE_MANAGE_BILLING_CANCEL_URL: string;
+  RUDDERSTACK_ID: string;
+  RUDDERSTACK_DATAPLANE: string;
 }
 
 export const AppConfig: IAppConfig = {
@@ -82,9 +85,14 @@ export const AppConfig: IAppConfig = {
   STRIPE_PAYMENT_METHOD_TYPES: loadEnvironmentVariable(
     'STRIPE_PAYMENT_METHOD_TYPES',
   ),
+  STRIPE_MANAGE_BILLING_CANCEL_URL: loadEnvironmentVariable(
+    'STRIPE_MANAGE_BILLING_CANCEL_URL',
+  ),
   SMTP_HOST: loadEnvironmentVariable('SMTP_HOST'),
   SMTP_SECURE: loadEnvironmentVariable('SMTP_SECURE'),
   SMTP_PORT: loadEnvironmentVariable('SMTP_PORT'),
   SMTP_USER: loadEnvironmentVariable('SMTP_USER'),
   SMTP_PASSWORD: loadEnvironmentVariable('SMTP_PASSWORD'),
+  RUDDERSTACK_ID: loadEnvironmentVariable('RUDDERSTACK_ID'),
+  RUDDERSTACK_DATAPLANE: loadEnvironmentVariable('RUDDERSTACK_DATAPLANE'),
 };

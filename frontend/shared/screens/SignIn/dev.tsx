@@ -1,8 +1,8 @@
+import React from 'react'
 import {
   StatusBar,
   Box,
   Center,
-  Stack,
   Hidden,
   Text,
   Image,
@@ -25,6 +25,7 @@ import IconMail from 'shared/components/icons/IconMail'
 import IconLock from 'shared/components/icons/IconLock'
 import IconEye from 'shared/components/icons/IconEye'
 import { useRecoilState } from 'recoil'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 import { jwtState } from '../../state'
 
 const LOGIN_USER = gql`
@@ -38,6 +39,7 @@ const LOGIN_USER = gql`
 `
 
 export default function SignUp({ client }: any) {
+  useRouteAuthentication()
   const { push } = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -87,9 +89,9 @@ export default function SignUp({ client }: any) {
 
   useEffect(() => {
     ;(async () => {
-      await AsyncStorage.removeItem('jwt')
-      await client.cache.reset()
-      setJWT(undefined)
+      if (!jwt) {
+        await client.cache.reset()
+      }
     })()
   }, [])
 
@@ -118,7 +120,7 @@ export default function SignUp({ client }: any) {
       <Box
         w={{ base: 'full', lg: 'full' }}
         h="full"
-        backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
+        // backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
       >
         <Box
           flexDirection="row"
@@ -147,24 +149,6 @@ export default function SignUp({ client }: any) {
                   xl: '35rem'
                 }}
               >
-                <Hidden from="lg">
-                  <Center flexDir="row">
-                    {/* <Image
-                        w={{ base: '2.5rem', sm: '3.5rem' }}
-                        h={{ base: '2.5rem', sm: '3.5rem' }}
-                        source={require('shared/assets/images/contact-blaster-blue.png')}
-                      /> */}
-                    <Text
-                      color={theme.colors.shared.softBlack}
-                      fontSize={{ base: 'xl', sm: '2xl' }}
-                      fontWeight="semibold"
-                      marginLeft={'4'}
-                    >
-                      ClientEye
-                    </Text>
-                  </Center>
-                </Hidden>
-
                 <Box
                   bgColor="white"
                   borderRadius="2xl"
@@ -348,7 +332,7 @@ export default function SignUp({ client }: any) {
                             setShowPass(!showPass)
                           }}
                         >
-                          <Box height="14px">
+                          <Box height="14px" width="14px">
                             <IconEye color="#6E767E" />
                           </Box>
                         </Button>
@@ -413,7 +397,7 @@ export default function SignUp({ client }: any) {
                     </Box>
 
                     {/* already have account */}
-                    <Box
+                    {/* <Box
                       marginTop={{ base: '5', sm: '7' }}
                       marginBottom={{ base: '1', sm: '7', lg: '0' }}
                     >
@@ -438,7 +422,7 @@ export default function SignUp({ client }: any) {
                           </Link>
                         </SolitoLink>
                       </Text>
-                    </Box>
+                    </Box> */}
                   </Box>
                 </Box>
               </Box>

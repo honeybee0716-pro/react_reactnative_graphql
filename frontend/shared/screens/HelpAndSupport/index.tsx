@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Box,
   Center,
@@ -31,6 +32,7 @@ import IconSmile from 'shared/components/icons/IconSmile'
 import IconInsertMore from 'shared/components/icons/IconInsertMore'
 import IconUndo from 'shared/components/icons/IconUndo'
 import IconRedo from 'shared/components/icons/IconRedo'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 type CustomElement = { type: 'paragraph'; children: CustomText[] }
 type CustomText = { text: string }
@@ -44,6 +46,8 @@ declare module 'slate' {
 }
 
 export default function Credits() {
+  useRouteAuthentication()
+
   const toast = useToast()
   // const [editor] = useState(() => withReact(createEditor()))
 

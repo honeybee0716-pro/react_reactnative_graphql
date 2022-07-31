@@ -1,5 +1,4 @@
 import {gql} from 'apollo-server';
-import {ObjectID} from 'bson';
 
 import {prismaContext} from '../../prismaContext';
 

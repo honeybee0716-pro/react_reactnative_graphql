@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
-import {gql} from 'apollo-server';
+import {ApolloError, gql} from 'apollo-server';
 import jwt from 'jsonwebtoken';
-
 // import {sendEmail} from '../../../utils/sendgrid';
+import isEmail from 'isemail';
+
 import {nodemailer} from '../../../utils/nodemailer';
 import {stripe} from '../../../utils/stripe';
 import {prismaContext} from '../../prismaContext';
@@ -32,12 +33,20 @@ export const createUserSchema = gql`
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createUser = async (parent: null, args: any, context: any, info: any) => {
+  const formattedEmail = args.input.email.toLowerCase().trim();
+
+  const validEmail = isEmail.validate(formattedEmail);
+
+  if (!validEmail) {
+    throw new ApolloError('That does not appear to be a valid email address.');
+  }
+
   const foundEmail = await prismaContext.prisma.user.findUnique({
     select: {
       id: true,
     },
     where: {
-      email: args.input.email.toLowerCase().trim(),
+      email: formattedEmail,
     },
   });
 
@@ -56,7 +65,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
 
   // create stripe customer
   const stripeCustomer = await stripe.customers.create({
-    email: args.input.email,
+    email: formattedEmail,
     name: `${args.input.firstName} ${args.input.lastName}`,
     balance: 0,
     metadata: {
@@ -100,7 +109,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
 
   await nodemailer.sendMail({
     from: '"ClientEye Alerts" <alerts@clienteye.com>', // sender address
-    to: args.input.email, // list of receivers
+    to: formattedEmail, // list of receivers
     subject: 'Please verify your email.', // Subject line
     text: `Please use this code to verify your account: ${verifyEmailCode}`, // plain text body
     html: `

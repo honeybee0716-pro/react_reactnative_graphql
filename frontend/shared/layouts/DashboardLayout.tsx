@@ -48,10 +48,10 @@ const DashboardLayout: React.FC = ({ children }) => {
       <HStack
         position="fixed"
         top="0"
-        paddingLeft={{ base: '0', sm: '90px', lg: '20px' }}
+        paddingLeft={{ base: '0', sm: '0', lg: '20px' }}
         w="full"
         zIndex={10}
-        height={{ base: '69px', sm: '84px' }}
+        height="65px"
         backgroundColor="white"
         borderBottomWidth="1"
         borderBottomColor={theme.colors.shared.softGray}
@@ -62,11 +62,7 @@ const DashboardLayout: React.FC = ({ children }) => {
           justifyContent="space-between"
           paddingRight={{ base: '0', sm: '5' }}
         >
-          <Center
-            h="84px"
-            borderBottomWidth="1"
-            borderBottomColor={theme.colors.shared.softer2Gray}
-          >
+          <Center>
             <Pressable
               display="flex"
               flexDirection="row"
@@ -85,7 +81,7 @@ const DashboardLayout: React.FC = ({ children }) => {
             >
               <Image
                 w="200px"
-                h="200px"
+                h="42px"
                 resizeMode="contain"
                 source={require('shared/assets/images/clientEyeLogoFull.png')}
               />
@@ -284,36 +280,34 @@ const DashboardLayout: React.FC = ({ children }) => {
               </Center>
             </HStack>
           </Center>
-
-          <Hidden till="sm">
-            <Tooltip
-              label="Your credits will reset at the start of your billing cycle."
-              openDelay={100}
-            >
-              <Center>
-                <Pressable
-                  alignItems="center"
-                  display="flex"
-                  flexDirection="row"
-                  backgroundColor={theme.colors.shared.clientEyePrimary}
-                  paddingY="2"
-                  paddingX="6"
-                  rounded="full"
-                  justifyContent="center"
-                  onPress={() => push('/billing')}
-                  height="40px"
-                  width="105px"
-                >
-                  <Box w="21px" marginRight="2">
-                    <IconCredits />
-                  </Box>
-                  <Text color="white" fontWeight="semibold">
-                    {userSubscriptionData?.remainingCredits}
-                  </Text>
-                </Pressable>
-              </Center>
-            </Tooltip>
-          </Hidden>
+          <Tooltip
+            label="Your credits will reset at the start of your billing cycle."
+            openDelay={100}
+          >
+            <Center>
+              <Pressable
+                alignItems="center"
+                display="flex"
+                flexDirection="row"
+                backgroundColor={theme.colors.shared.clientEyePrimary}
+                paddingY="2"
+                paddingX="6"
+                rounded="full"
+                justifyContent="center"
+                onPress={() => push('/billing')}
+                height="40px"
+                width="105px"
+                marginRight={{ base: '0px', sm: '20px', lg: '0px' }}
+              >
+                <Box w="21px" marginRight="2">
+                  <IconCredits />
+                </Box>
+                <Text color="white" fontWeight="semibold">
+                  {userSubscriptionData?.remainingCredits}
+                </Text>
+              </Pressable>
+            </Center>
+          </Tooltip>
         </HStack>
       </HStack>
       {/* Left Navbar */}
@@ -323,10 +317,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         left="0"
         right="0"
         bottom="0"
-        marginTop={{
-          base: '69px',
-          sm: '84px'
-        }}
+        marginTop="65px"
       >
         <KeyboardAwareScrollView
           contentContainerStyle={{

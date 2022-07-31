@@ -14,6 +14,7 @@ import {
 } from 'native-base'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import DashboardLayout from '../../layouts/DashboardLayout'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 type RateStar = {
   id: number
@@ -267,6 +268,8 @@ function FeedbackInput() {
   )
 }
 export default function () {
+  useRouteAuthentication()
+
   return (
     <DashboardLayout title={'Feedback'} displayScreenTitle={false}>
       <ScrollView>

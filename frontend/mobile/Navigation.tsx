@@ -3,8 +3,8 @@ import { NavigationContainer } from '@react-navigation/native'
 import * as Linking from 'expo-linking'
 import { useMemo } from 'react'
 
-import { Landing } from '../shared/screens/Landing'
-import { SignIn } from '../shared/screens/SignIn'
+import Home from '../shared/screens/Home'
+import SignIn from '../shared/screens/SignIn'
 
 export function NavigationProvider({
   children
@@ -44,7 +44,7 @@ export const Navigation = () => {
         animation: 'none'
       }}
     >
-      <Stack.Screen name="/home" component={Landing} />
+      <Stack.Screen name="/home" component={Home} />
       <Stack.Screen name="/sign-in" component={SignIn} />
     </Stack.Navigator>
   )

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import '../styles/global.scss'
 import 'raf/polyfill'
 // @ts-ignore
@@ -15,8 +16,13 @@ import 'swiper/css/pagination'
 import { RecoilRoot } from 'recoil'
 import { DataProvider } from 'shared/DataProvider'
 import { DebugObserver } from 'shared/state'
+import { sendRudderstackEvent } from '../../../shared/utils/rudderstack'
 
 export default function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    sendRudderstackEvent()
+  }, [Component])
+
   return (
     <>
       <Head>

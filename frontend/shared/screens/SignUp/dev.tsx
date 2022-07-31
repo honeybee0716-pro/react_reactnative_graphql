@@ -31,6 +31,7 @@ import IconEye from 'shared/components/icons/IconEye'
 import { useRecoilState } from 'recoil'
 import { Platform } from 'react-native'
 import { jwtState } from '../../state'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 const CREATE_USER = gql`
   mutation CreateUser($input: createUserInput!) {
@@ -43,6 +44,7 @@ const CREATE_USER = gql`
 `
 
 export default function SignUp({ client }: any) {
+  useRouteAuthentication()
   console.log({ client })
   const toast = useToast()
   const { push } = useRouter()
@@ -143,7 +145,7 @@ export default function SignUp({ client }: any) {
       <Box
         w={{ base: 'full', lg: 'full' }}
         h="full"
-        backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
+        // backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
       >
         <Box
           flexDirection="row"
@@ -172,19 +174,6 @@ export default function SignUp({ client }: any) {
                   xl: '35rem'
                 }}
               >
-                <Hidden from="lg">
-                  <Center flexDir="row">
-                    <Text
-                      color={theme.colors.shared.softBlack}
-                      fontSize={{ base: 'xl', sm: '2xl' }}
-                      fontWeight="semibold"
-                      marginLeft={'4'}
-                    >
-                      ClientEye
-                    </Text>
-                  </Center>
-                </Hidden>
-
                 <Box
                   bgColor="white"
                   borderRadius="2xl"
@@ -465,7 +454,7 @@ export default function SignUp({ client }: any) {
                             setShowPass(!showPass)
                           }}
                         >
-                          <Box height="14px">
+                          <Box height="14px" width="14px">
                             <IconEye color="#6E767E" />
                           </Box>
                         </Button>
@@ -513,44 +502,6 @@ export default function SignUp({ client }: any) {
                           </HStack>
                         </Checkbox>
                       </Box>
-                    </Hidden>
-
-                    {/* remember_me_forgot_pass */}
-                    <Hidden from="lg">
-                      <HStack
-                        justifyContent="space-between"
-                        position="relative"
-                        marginTop="5"
-                      >
-                        <Checkbox
-                          alignItems="center"
-                          defaultIsChecked={false}
-                          value="demo"
-                          colorScheme="primary"
-                          accessibilityLabel="Remember me"
-                        >
-                          <HStack alignItems="center">
-                            <Text
-                              fontSize={{ base: 'sm', sm: 'md' }}
-                              fontWeight="medium"
-                            >
-                              Remember me
-                            </Text>
-                          </HStack>
-                        </Checkbox>
-                        <HStack alignItems="center" space="1">
-                          <Box w="18px">
-                            <IconLink />
-                          </Box>
-                          <Text
-                            fontSize={{ base: 'xs', sm: 'md' }}
-                            fontWeight="medium"
-                            color={theme.colors.shared.softBlack}
-                          >
-                            Forgot Password ?
-                          </Text>
-                        </HStack>
-                      </HStack>
                     </Hidden>
 
                     {/* button */}

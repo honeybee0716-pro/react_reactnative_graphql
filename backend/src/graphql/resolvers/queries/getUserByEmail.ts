@@ -26,7 +26,7 @@ const getUserByEmail = async (parent: any, args: any) => {
 
   const foundUser = await prismaContext.prisma.user.findUnique({
     where: {
-      email,
+      email: email.toLowerCase().trim(),
     },
   });
 
