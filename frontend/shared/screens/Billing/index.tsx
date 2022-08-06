@@ -47,9 +47,18 @@ const GET_STRIPE_CUSTOMER_PORTAL = gql`
   }
 `
 
-const RowItem = ({ text, onPress }: { text: string; onPress: any }) => {
+const RowItem = ({
+  text,
+  disabled,
+  onPress
+}: {
+  text: string
+  disabled: boolean
+  onPress: any
+}) => {
   return (
     <Pressable
+      disabled={disabled}
       onPress={onPress}
       marginX="3"
       marginTop="3"
@@ -138,7 +147,12 @@ export default function Billing() {
         {userSubscriptionData ? (
           <>
             <RowItem
-              onPress={handleCancelSubscription}
+              onPress={
+                userSubscriptionData?.isInTrial
+                  ? null
+                  : handleCancelSubscription
+              }
+              disabled={userSubscriptionData?.isInTrial}
               text={
                 userSubscriptionData?.isInTrial
                   ? 'You are on a trial plan. You can upgrade your plan at anytime.'
