@@ -20,7 +20,6 @@ import FloatingLabelInput from '../../components/FloatingLabelInput'
 import GuestLayout from '../../layouts/GuestLayout'
 import { gql, useMutation } from '@apollo/client'
 import { useRouter } from 'solito/router'
-import AsyncStorage from '@react-native-community/async-storage'
 
 const FORGOT_PASSWORD = gql`
   mutation ForgotPassword($input: forgotPasswordInput) {

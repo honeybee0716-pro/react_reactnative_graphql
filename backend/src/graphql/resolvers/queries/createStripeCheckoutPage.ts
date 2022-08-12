@@ -36,7 +36,7 @@ const createStripeCheckoutPage = async (
     plan,
   });
 
-  const session = await stripe.checkout.sessions.create({
+  const data: any = {
     mode: 'subscription',
     line_items: [
       {
@@ -52,7 +52,9 @@ const createStripeCheckoutPage = async (
     success_url: <string>process.env.STRIPE_SUCCESS_URL,
     cancel_url: <string>process.env.STRIPE_CANCEL_URL,
     payment_method_types: ['card'],
-  });
+  };
+
+  const session = await stripe.checkout.sessions.create(data);
 
   console.log('createStripeCheckoutPage', {
     userID: user.id,

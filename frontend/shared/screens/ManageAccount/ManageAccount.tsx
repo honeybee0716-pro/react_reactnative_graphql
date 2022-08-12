@@ -13,8 +13,11 @@ import {
 } from 'native-base'
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'
 import DashboardLayout from '../../layouts/DashboardLayout'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 function Dropdown() {
+  useRouteAuthentication()
+
   return (
     <VStack>
       <Radio.Group defaultValue="1" name="MyRadioGroup">

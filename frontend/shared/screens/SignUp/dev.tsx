@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   StatusBar,
   Box,
@@ -30,6 +31,7 @@ import IconEye from 'shared/components/icons/IconEye'
 import { useRecoilState } from 'recoil'
 import { Platform } from 'react-native'
 import { jwtState } from '../../state'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 const CREATE_USER = gql`
   mutation CreateUser($input: createUserInput!) {
@@ -42,6 +44,8 @@ const CREATE_USER = gql`
 `
 
 export default function SignUp({ client }: any) {
+  useRouteAuthentication()
+  console.log({ client })
   const toast = useToast()
   const { push } = useRouter()
   const [firstName, setFirstName] = useState('')
@@ -141,7 +145,7 @@ export default function SignUp({ client }: any) {
       <Box
         w={{ base: 'full', lg: 'full' }}
         h="full"
-        backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
+        // backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
       >
         <Box
           flexDirection="row"
@@ -170,19 +174,6 @@ export default function SignUp({ client }: any) {
                   xl: '35rem'
                 }}
               >
-                <Hidden from="lg">
-                  <Center flexDir="row">
-                    <Text
-                      color={theme.colors.shared.softBlack}
-                      fontSize={{ base: 'xl', sm: '2xl' }}
-                      fontWeight="semibold"
-                      marginLeft={'4'}
-                    >
-                      ClientEye
-                    </Text>
-                  </Center>
-                </Hidden>
-
                 <Box
                   bgColor="white"
                   borderRadius="2xl"
@@ -463,7 +454,7 @@ export default function SignUp({ client }: any) {
                             setShowPass(!showPass)
                           }}
                         >
-                          <Box>
+                          <Box height="14px" width="14px">
                             <IconEye color="#6E767E" />
                           </Box>
                         </Button>
@@ -511,44 +502,6 @@ export default function SignUp({ client }: any) {
                           </HStack>
                         </Checkbox>
                       </Box>
-                    </Hidden>
-
-                    {/* remember_me_forgot_pass */}
-                    <Hidden from="lg">
-                      <HStack
-                        justifyContent="space-between"
-                        position="relative"
-                        marginTop="5"
-                      >
-                        <Checkbox
-                          alignItems="center"
-                          defaultIsChecked={false}
-                          value="demo"
-                          colorScheme="primary"
-                          accessibilityLabel="Remember me"
-                        >
-                          <HStack alignItems="center">
-                            <Text
-                              fontSize={{ base: 'sm', sm: 'md' }}
-                              fontWeight="medium"
-                            >
-                              Remember me
-                            </Text>
-                          </HStack>
-                        </Checkbox>
-                        <HStack alignItems="center" space="1">
-                          <Box w="18px">
-                            <IconLink />
-                          </Box>
-                          <Text
-                            fontSize={{ base: 'xs', sm: 'md' }}
-                            fontWeight="medium"
-                            color={theme.colors.shared.softBlack}
-                          >
-                            Forgot Password ?
-                          </Text>
-                        </HStack>
-                      </HStack>
                     </Hidden>
 
                     {/* button */}
@@ -615,57 +568,6 @@ export default function SignUp({ client }: any) {
           </KeyboardAwareScrollView>
         </Box>
       </Box>
-      <Hidden till="lg">
-        <Box
-          position="relative"
-          w="1/2"
-          h="full"
-          overflow="hidden"
-          borderBottomLeftRadius="9.375rem"
-        >
-          <Image
-            position="absolute"
-            w="full"
-            h="full"
-            top={0}
-            left={0}
-            right={0}
-            bottom={0}
-            source={require('shared/assets/wallpaper.jpeg')}
-          />
-          <Box
-            flexDirection={'column'}
-            justifyContent={'center'}
-            alignItems={'center'}
-            w="full"
-            h="90%"
-          >
-            <Box
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="center"
-              w="full"
-              h="full"
-            >
-              {/* <Box flexDir="row" justifyContent="center">
-                  <Image
-                    w="128px"
-                    h="128px"
-                    source={require('shared/assets/images/contact-blaster-white.png')}
-                  />
-                </Box> */}
-              <Text
-                color="white"
-                textAlign="center"
-                fontSize={{ base: '4xl', xl: '5xl' }}
-                fontWeight="semibold"
-              >
-                ClientEye
-              </Text>
-            </Box>
-          </Box>
-        </Box>
-      </Hidden>
     </>
   )
 }

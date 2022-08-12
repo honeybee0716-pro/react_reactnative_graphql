@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   StatusBar,
   Box,
@@ -17,6 +18,7 @@ import { gql, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 import { useRouter } from 'solito/router'
 import { useEffect } from 'react'
+import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 const CONFIRM_EMAIL_VALIDATION_CODE = gql`
   mutation ConfirmEmailValidationCode($input: confirmEmailValidationCodeInput) {
@@ -37,6 +39,8 @@ const RESEND_CODE = gql`
 `
 
 export default function OTP(props: any) {
+  useRouteAuthentication()
+
   const { push } = useRouter()
   const [code, setCode] = useState('')
   const [codeJustSent, setCodeJustSent] = useState(false)

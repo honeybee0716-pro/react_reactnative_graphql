@@ -16,12 +16,12 @@ export const LeadRows = ({
         display="flex"
         flexDirection="row"
         key={i}
-        marginTop="3"
+        marginTop="1.5"
         borderWidth="1"
         borderColor={theme.colors.shared.softGray}
         borderRadius="md"
         paddingX="3"
-        paddingY="3"
+        paddingY="1.5"
         alignItems="center"
         backgroundColor={theme.colors.shared.aliceBlue}
         _hover={{
@@ -32,7 +32,8 @@ export const LeadRows = ({
         <Box w="5%">
           <Avatar
             source={{
-              uri: l.profileImageURL
+              // uri: l.profileImageURL
+              uri: null
             }}
           >
             {`${l.firstName?.charAt(0) || ''}${l.lastName?.charAt(0) || ''}`}

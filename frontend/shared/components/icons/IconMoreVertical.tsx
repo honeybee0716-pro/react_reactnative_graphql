@@ -4,11 +4,16 @@ import { theme } from 'shared/styles/theme'
 
 interface MyProps {
   color?: string
+  rotation?: number
 }
 
-const IconMoreVertical: React.FC<MyProps> = ({ color = '#545658' }) => {
+const IconMoreVertical: React.FC<MyProps> = ({
+  color = '#545658',
+  rotation = 0
+}) => {
   return (
     <Svg
+      rotation={rotation}
       width="100%"
       height="100%"
       preserveAspectRatio="none"

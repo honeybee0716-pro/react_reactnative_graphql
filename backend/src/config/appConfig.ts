@@ -41,6 +41,7 @@ export interface IAppConfig {
   REDISCLOUD_URL: string;
   STRIPE_STANDARD_FLAT_PRICE_ID: string;
   STRIPE_STANDARD_METERED_PRICE_ID: string;
+  STRIPE_TEMP_CUSTOM_PLAN_ID: string;
   STRIPE_SUCCESS_URL: string;
   STRIPE_CANCEL_URL: string;
   STRIPE_PAYMENT_METHOD_TYPES: string;
@@ -49,6 +50,9 @@ export interface IAppConfig {
   SMTP_PORT: string;
   SMTP_USER: string;
   SMTP_PASSWORD: string;
+  STRIPE_MANAGE_BILLING_CANCEL_URL: string;
+  RUDDERSTACK_ID: string;
+  RUDDERSTACK_DATAPLANE: string;
 }
 
 export const AppConfig: IAppConfig = {
@@ -73,14 +77,22 @@ export const AppConfig: IAppConfig = {
   STRIPE_STANDARD_METERED_PRICE_ID: loadEnvironmentVariable(
     'STRIPE_STANDARD_METERED_PRICE_ID',
   ),
+  STRIPE_TEMP_CUSTOM_PLAN_ID: loadEnvironmentVariable(
+    'STRIPE_TEMP_CUSTOM_PLAN_ID',
+  ),
   STRIPE_SUCCESS_URL: loadEnvironmentVariable('STRIPE_SUCCESS_URL'),
   STRIPE_CANCEL_URL: loadEnvironmentVariable('STRIPE_CANCEL_URL'),
   STRIPE_PAYMENT_METHOD_TYPES: loadEnvironmentVariable(
     'STRIPE_PAYMENT_METHOD_TYPES',
+  ),
+  STRIPE_MANAGE_BILLING_CANCEL_URL: loadEnvironmentVariable(
+    'STRIPE_MANAGE_BILLING_CANCEL_URL',
   ),
   SMTP_HOST: loadEnvironmentVariable('SMTP_HOST'),
   SMTP_SECURE: loadEnvironmentVariable('SMTP_SECURE'),
   SMTP_PORT: loadEnvironmentVariable('SMTP_PORT'),
   SMTP_USER: loadEnvironmentVariable('SMTP_USER'),
   SMTP_PASSWORD: loadEnvironmentVariable('SMTP_PASSWORD'),
+  RUDDERSTACK_ID: loadEnvironmentVariable('RUDDERSTACK_ID'),
+  RUDDERSTACK_DATAPLANE: loadEnvironmentVariable('RUDDERSTACK_DATAPLANE'),
 };
