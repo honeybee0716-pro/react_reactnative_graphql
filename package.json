@@ -25,8 +25,8 @@
     "build": "cd backend && npx prisma db push && yarn run tsc",
     "tsc": "tsc",
     "prisma": "prisma",
-    "prep": "concurrently -n 'backend,frontend,mobile' -c 'bgBlue.bold,bgMagenta.bold,bgWhite.bold' 'cd backend && rm -rf yarn.lock && nvm use && yarn' 'cd frontend/web && rm -rf yarn.lock && yarn' 'cd frontend/mobile && rm -rf yarn.lock && yarn'",
-    "launch": "concurrently -n 'backend,studio,frontend,mobile' -c 'bgBlue.bold,bgGreen.bold,bgMagenta.bold,bgWhite.bold' 'cd backend && nvm use && yarn run dev' 'cd backend && yarn run studio' 'cd frontend && yarn run web' 'cd frontend && yarn run ios'",
+    "prep": "concurrently -n 'backend,frontend,mobile' -c 'bgBlue.bold,bgMagenta.bold,bgWhite.bold' 'cd backend && yarn' 'cd frontend/web && yarn' 'cd frontend/mobile && yarn'",
+    "launch": "concurrently -n 'backend,studio,frontend,mobile' -c 'bgBlue.bold,bgGreen.bold,bgMagenta.bold,bgWhite.bold' 'cd backend && yarn run dev' 'cd backend && yarn run studio' 'cd frontend && yarn run web' 'cd frontend && yarn run ios'",
     "dev": "yarn prep && yarn launch"
   },
   "husky": {

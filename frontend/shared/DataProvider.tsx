@@ -1,4 +1,5 @@
 import React from 'react'
+import { Platform } from 'react-native'
 import { useRouter } from 'solito/router'
 // import AsyncStorage from '@react-native-community/async-storage'
 import { gql, useLazyQuery } from '@apollo/client'
@@ -41,10 +42,14 @@ export const DataProvider = ({ children }) => {
   React.useEffect(() => {
     // setRoute(document.location.pathname);
     ;(async () => {
-      await OneSignal.init({
-        appId: process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID,
-        allowLocalhostAsSecureOrigin: true
-      })
+      if (Platform.OS === 'web') {
+        const ONESIGNAL_APP_ID: string =
+          process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID || ''
+        await OneSignal.init({
+          appId: ONESIGNAL_APP_ID,
+          allowLocalhostAsSecureOrigin: true
+        })
+      }
 
       const jwt = await localStorage.getItem('jwt')
 
