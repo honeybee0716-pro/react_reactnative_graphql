@@ -337,7 +337,7 @@ export default function OTP(props: any) {
                         <Image
                           w="6"
                           h="6"
-                          source={require('shared/images/icons/mail 1.png')}
+                          source={require('shared/images/mail 1.png')}
                         />
                       </Box>
                     </Box>

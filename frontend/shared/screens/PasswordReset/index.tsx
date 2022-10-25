@@ -358,7 +358,7 @@ export default function PasswordReset(props: any) {
               left={0}
               right={0}
               bottom={0}
-              source={require('shared/assets/pexels-gradienta-7135120 1.png')}
+              source={require('shared/images/pexels-gradienta-7135120 1.png')}
             />
             <Box
               flexDirection={'column'}
@@ -378,7 +378,7 @@ export default function PasswordReset(props: any) {
                   <Image
                     w="128px"
                     h="128px"
-                    source={require('shared/assets/images/contact-blaster-white.png')}
+                    source={require('shared/images/contact-blaster-white.png')}
                   />
                 </Box>
                 <Text

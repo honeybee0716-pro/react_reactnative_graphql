@@ -52,7 +52,7 @@ export default function ManageLists() {
                 <Image
                   borderRadius="xl"
                   height={{ base: '174px', sm: '261px' }}
-                  source={require('./components/pexels-mo-8657160 1.png')}
+                  source={require('./images/pexels-mo-8657160 1.png')}
                 />
                 <Pressable
                   position="absolute"
