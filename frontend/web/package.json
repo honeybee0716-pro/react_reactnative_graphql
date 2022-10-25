@@ -9,8 +9,7 @@
     "build": "next build",
     "start": "next start",
     "analyze": "ANALYZE=true yarn build",
-    "deploy": "yarn --cwd .. deploy",
-    "postinstall": "cd .. && yarn patch-package"
+    "deploy": "yarn --cwd .. deploy"
   },
   "dependencies": {
     "@next/bundle-analyzer": "11.1.2",
