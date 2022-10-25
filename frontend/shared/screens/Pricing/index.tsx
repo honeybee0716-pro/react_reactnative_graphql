@@ -88,7 +88,7 @@ export default function PricingPage() {
           top="-200px"
           w="597px"
           h="679.68px"
-          source={require('./images/Blurred Background.png')}
+          source={require('../../images/Blurred Background.png')}
           style={{
             transform: [
               {
@@ -104,7 +104,7 @@ export default function PricingPage() {
           top="479.68px"
           w="597px"
           h="679.68px"
-          source={require('./components/Blurred Background.png')}
+          source={require('../../images/Blurred Background.png')}
         />
 
         <VStack

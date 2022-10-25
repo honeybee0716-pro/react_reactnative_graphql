@@ -14,7 +14,7 @@ import { theme } from 'shared/styles/theme'
 import { Dimensions } from 'react-native'
 import IconArrowRight from 'shared/components/icons/IconArrowRight'
 import LandingPageTopNavigation from 'shared/components/LandingPage/LandingPageTopNavigation'
-import IconPartyPopper from './components/IconPartyPopper'
+import IconPartyPopper from '../../components/icons/IconPartyPopper'
 
 const { width, height } = Dimensions.get('window')
 
@@ -39,7 +39,7 @@ export default function ThankYouPage() {
           top="0"
           w={1252}
           h="full"
-          source={require('./components/ThankYouBlurredBackground.png')}
+          source={require('../../images/ThankYouBlurredBackground.png')}
           // style={{
           //   transform: [
           //     {
