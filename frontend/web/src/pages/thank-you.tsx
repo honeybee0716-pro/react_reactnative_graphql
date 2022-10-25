@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="ClientEye - Thank You"
+        title="SaaS Template - Thank You"
         description="Thank you for signing up."
         noindex={true}
       />

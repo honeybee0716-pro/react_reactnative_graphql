@@ -151,12 +151,12 @@ export const setupServer = async () => {
     app,
     cors: {
       origin: [
-        'https://www.dash.clienteye.com',
-        'https://dash.clienteye.com',
-        'https://staging.dash.clienteye.com',
-        'https://www.staging.dash.clienteye.com',
-        'https://www.development.dash.clienteye.com',
-        'https://development.dash.clienteye.com',
+        'https://development.saastemplate.io',
+        'https://www.development.saastemplate.io',
+        'https://staging.saastemplate.io',
+        'https://www.staging.saastemplate.io',
+        'https://saastemplate.io',
+        'https://www.saastemplate.io',
         'http://localhost:3000',
       ],
     },

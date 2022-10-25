@@ -1,434 +1,26 @@
-import React, { useState } from 'react'
 import {
-  Button,
-  Checkbox,
-  HStack,
-  VStack,
-  Text,
-  Link,
-  Icon,
-  IconButton,
-  useColorModeValue,
-  Hidden,
-  Center,
   StatusBar,
   Box,
+  Center,
   Stack,
-  useToast
+  Hidden,
+  Text,
+  Image,
+  HStack,
+  Input,
+  Button,
+  Checkbox,
+  Link,
+  Pressable
 } from 'native-base'
-import AsyncStorage from '@react-native-community/async-storage'
-import { Link as SolitoLink } from 'solito/link'
-import { useRouter } from 'solito/router'
-import { AntDesign, Entypo } from '@expo/vector-icons'
-// import IconGoogle from './components/IconGoogle'
-// import IconFacebook from './components/IconFacebook'
-import FloatingLabelInput from './components/FloatingLabelInput'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { gql, useMutation } from '@apollo/client'
-import { useRecoilState } from 'recoil'
-import { jwtState } from '../../state'
-
-const CREATE_USER = gql`
-  mutation CreateUser($input: createUserInput!) {
-    createUser(input: $input) {
-      message
-      status
-      jwt
-    }
-  }
-`
-
-function SignUpForm() {
-  const { push } = useRouter()
-  const toast = useToast()
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [companyName, setCompanyName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [showPass, setShowPass] = React.useState(false)
-  const [showConfirmPass, setShowConfirmPass] = React.useState(false)
-  const [jwt, setJWT] = useRecoilState<any>(jwtState)
-
-  const [createUser, { loading }] = useMutation(CREATE_USER)
-
-  const handleSignUp = async (e) => {
-    createUser({
-      variables: {
-        input: {
-          firstName,
-          lastName,
-          companyName,
-          email,
-          password
-        }
-      },
-      onCompleted: async ({ createUser }) => {
-        if (createUser?.status === 'success' && createUser?.jwt) {
-          await AsyncStorage.setItem('jwt', createUser.jwt)
-          setJWT(createUser.jwt)
-          push('/otp')
-          return
-        }
-        if (createUser?.message) {
-          toast.show({
-            description: createUser.message
-          })
-          return
-        }
-        toast.show({
-          description: 'There was an error'
-        })
-        return
-      },
-      onError: (error) => {
-        toast.show({
-          description: `There was an error: ${error}`
-        })
-      }
-    })
-  }
-
-  return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={{
-        flexGrow: 1
-      }}
-      style={{ flex: 1 }}
-    >
-      <VStack
-        flex="1"
-        px="6"
-        py="9"
-        _light={{ bg: 'white' }}
-        _dark={{ bg: 'coolGray.800' }}
-        justifyContent="space-between"
-        space="3"
-        borderTopRightRadius={{ base: '2xl', md: 'xl' }}
-        borderBottomRightRadius={{ base: '0', md: 'xl' }}
-        borderTopLeftRadius={{ base: '2xl', md: '0' }}
-      >
-        <VStack space="7">
-          <Hidden till="md">
-            <Text fontSize="lg" fontWeight="normal">
-              Sign up to continue!
-            </Text>
-          </Hidden>
-          <VStack>
-            <VStack space="8">
-              <VStack space={{ base: '7', md: '4' }}>
-                <FloatingLabelInput
-                  isRequired
-                  label="First Name"
-                  labelColor="#9ca3af"
-                  labelBGColor={useColorModeValue('#fff', '#1f2937')}
-                  borderRadius="4"
-                  defaultValue={firstName}
-                  onChangeText={(txt: any) => setFirstName(txt)}
-                  _text={{
-                    fontSize: 'sm',
-                    fontWeight: 'medium'
-                  }}
-                  _dark={{
-                    borderColor: 'coolGray.700'
-                  }}
-                  _light={{
-                    borderColor: 'coolGray.300'
-                  }}
-                />
-                <FloatingLabelInput
-                  isRequired
-                  label="Last Name"
-                  labelColor="#9ca3af"
-                  labelBGColor={useColorModeValue('#fff', '#1f2937')}
-                  borderRadius="4"
-                  defaultValue={lastName}
-                  onChangeText={(txt: any) => setLastName(txt)}
-                  _text={{
-                    fontSize: 'sm',
-                    fontWeight: 'medium'
-                  }}
-                  _dark={{
-                    borderColor: 'coolGray.700'
-                  }}
-                  _light={{
-                    borderColor: 'coolGray.300'
-                  }}
-                />
-                <FloatingLabelInput
-                  isRequired
-                  label="Company Name"
-                  labelColor="#9ca3af"
-                  labelBGColor={useColorModeValue('#fff', '#1f2937')}
-                  borderRadius="4"
-                  defaultValue={companyName}
-                  onChangeText={(txt: any) => setCompanyName(txt)}
-                  _text={{
-                    fontSize: 'sm',
-                    fontWeight: 'medium'
-                  }}
-                  _dark={{
-                    borderColor: 'coolGray.700'
-                  }}
-                  _light={{
-                    borderColor: 'coolGray.300'
-                  }}
-                />
-                <FloatingLabelInput
-                  isRequired
-                  label="Email"
-                  labelColor="#9ca3af"
-                  labelBGColor={useColorModeValue('#fff', '#1f2937')}
-                  borderRadius="4"
-                  defaultValue={email}
-                  onChangeText={(txt: any) => setEmail(txt)}
-                  _text={{
-                    fontSize: 'sm',
-                    fontWeight: 'medium'
-                  }}
-                  _dark={{
-                    borderColor: 'coolGray.700'
-                  }}
-                  _light={{
-                    borderColor: 'coolGray.300'
-                  }}
-                />
-                <FloatingLabelInput
-                  isRequired
-                  type={showPass ? '' : 'password'}
-                  label="Password"
-                  borderRadius="4"
-                  labelColor="#9ca3af"
-                  labelBGColor={useColorModeValue('#fff', '#1f2937')}
-                  defaultValue={password}
-                  onChangeText={(txt: any) => setPassword(txt)}
-                  InputRightElement={
-                    <IconButton
-                      variant="unstyled"
-                      icon={
-                        <Icon
-                          size="4"
-                          color="coolGray.400"
-                          as={Entypo}
-                          name={showPass ? 'eye-with-line' : 'eye'}
-                        />
-                      }
-                      onPress={() => {
-                        setShowPass(!showPass)
-                      }}
-                    />
-                  }
-                  _text={{
-                    fontSize: 'sm',
-                    fontWeight: 'medium'
-                  }}
-                  _dark={{
-                    borderColor: 'coolGray.700'
-                  }}
-                  _light={{
-                    borderColor: 'coolGray.300'
-                  }}
-                />
-
-                <FloatingLabelInput
-                  isRequired
-                  type={showConfirmPass ? '' : 'password'}
-                  label="Confirm Password"
-                  borderRadius="4"
-                  labelColor="#9ca3af"
-                  labelBGColor={useColorModeValue('#fff', '#1f2937')}
-                  defaultValue={confirmPassword}
-                  onChangeText={(txt: any) => setConfirmPassword(txt)}
-                  InputRightElement={
-                    <IconButton
-                      variant="unstyled"
-                      icon={
-                        <Icon
-                          size="4"
-                          color="coolGray.400"
-                          as={Entypo}
-                          name={showConfirmPass ? 'eye-with-line' : 'eye'}
-                        />
-                      }
-                      onPress={() => {
-                        setShowConfirmPass(!showConfirmPass)
-                      }}
-                    />
-                  }
-                  _text={{
-                    fontSize: 'sm',
-                    fontWeight: 'medium'
-                  }}
-                  _dark={{
-                    borderColor: 'coolGray.700'
-                  }}
-                  _light={{
-                    borderColor: 'coolGray.300'
-                  }}
-                />
-              </VStack>
-              <Checkbox
-                alignItems="flex-start"
-                defaultIsChecked
-                value="demo"
-                colorScheme="primary"
-                accessibilityLabel="Remember me"
-              >
-                <HStack alignItems="center">
-                  <Text fontSize="sm" color="coolGray.400" pl="2">
-                    I accept the{' '}
-                  </Text>
-
-                  <SolitoLink href="/terms-of-use">
-                    <Link
-                      _text={{
-                        fontSize: 'sm',
-                        fontWeight: 'semibold',
-                        textDecoration: 'none'
-                      }}
-                      _light={{
-                        _text: {
-                          color: 'coolGray.700'
-                        }
-                      }}
-                      _dark={{
-                        _text: {
-                          color: 'coolGray.4000'
-                        }
-                      }}
-                      // onPress={(e) => e.preventDefault()}
-                    >
-                      Terms of Use
-                    </Link>
-                  </SolitoLink>
-
-                  <Text fontSize="sm"> & </Text>
-
-                  <SolitoLink href="/privacy-policy">
-                    <Link
-                      _text={{
-                        fontSize: 'sm',
-                        fontWeight: 'semibold',
-                        textDecoration: 'none'
-                      }}
-                      _light={{
-                        _text: {
-                          color: 'coolGray.700'
-                        }
-                      }}
-                      _dark={{
-                        _text: {
-                          color: 'coolGray.4000'
-                        }
-                      }}
-                      // onPress={(e) => e.preventDefault()}
-                    >
-                      Privacy Policy
-                    </Link>
-                  </SolitoLink>
-                </HStack>
-              </Checkbox>
-              <Button
-                size="md"
-                borderRadius="4"
-                _text={{
-                  fontSize: 'sm',
-                  fontWeight: 'medium'
-                }}
-                _hover={{ bg: 'coolGray.600' }}
-                _light={{
-                  bg: 'coolGray.700'
-                }}
-                _dark={{
-                  bg: 'coolGray.700'
-                }}
-                onPress={handleSignUp}
-              >
-                {loading ? 'Loading...' : 'SIGN UP'}
-              </Button>
-              {/* <HStack
-                space="2"
-                mb={{ base: '6', md: '7' }}
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Divider
-                  w="30%"
-                  _light={{ bg: 'coolGray.400' }}
-                  _dark={{ bg: 'coolGray.700' }}
-                ></Divider>
-                <Text
-                  fontSize="sm"
-                  fontWeight="medium"
-                  _light={{ color: 'coolGray.300' }}
-                  _dark={{ color: 'coolGray.500' }}
-                >
-                  or
-                </Text>
-                <Divider
-                  w="30%"
-                  _light={{ bg: 'coolGray.400' }}
-                  _dark={{ bg: 'coolGray.700' }}
-                ></Divider>
-              </HStack> */}
-            </VStack>
-            {/* <Center>
-              <HStack space="4">
-                <Pressable>
-                  <IconFacebook />
-                </Pressable>
-                <Pressable>
-                  <IconGoogle />
-                </Pressable>
-              </HStack>
-            </Center> */}
-          </VStack>
-        </VStack>
-        <HStack
-          mb="4"
-          space="1"
-          alignItems="center"
-          justifyContent="center"
-          mt={{ base: 'auto', md: '8' }}
-        >
-          <Text
-            fontSize="sm"
-            _light={{ color: 'coolGray.800' }}
-            _dark={{ color: 'coolGray.400' }}
-          >
-            Already have an account?
-          </Text>
-          {/* Opening Link Tag navigateTo:"SignIn" */}
-          <SolitoLink href="/sign-in">
-            <Link
-              _text={{
-                fontSize: 'sm',
-                fontWeight: 'bold',
-                textDecoration: 'none'
-              }}
-              _light={{
-                _text: {
-                  color: 'coolGray.700'
-                }
-              }}
-              _dark={{
-                _text: {
-                  color: 'coolGray.4000'
-                }
-              }}
-            >
-              Sign in
-            </Link>
-          </SolitoLink>
-          {/* Closing Link Tag */}
-        </HStack>
-      </VStack>
-    </KeyboardAwareScrollView>
-  )
-}
+import { theme } from 'shared/styles/theme'
+import { Link as SolitoLink } from 'solito/link'
+import React, { useState } from 'react'
 
 export default function SignUp(props: any) {
+  const [showPass, setShowPass] = useState(false)
+
   return (
     <>
       <StatusBar
@@ -438,79 +30,494 @@ export default function SignUp(props: any) {
       />
       <Box
         safeAreaTop
-        _light={{ bg: 'coolGray.400' }}
-        _dark={{ bg: 'coolGray.400' }}
+        _light={{ bg: 'primary.900' }}
+        _dark={{ bg: 'coolGray.900' }}
       />
-      <Center
-        my="auto"
-        _dark={{ bg: 'coolGray.400' }}
-        _light={{ bg: 'coolGray.400' }}
-        flex="1"
+
+      <Stack
+        flexDirection={{ base: 'column', md: 'row' }}
+        w="full"
+        h="full"
+        backgroundColor="white"
       >
-        <Stack
-          flexDirection={{ base: 'column', md: 'row' }}
-          w="100%"
-          maxW={{ md: '1016px' }}
-          flex={{ base: '1', md: 'none' }}
+        <Box
+          w={{ base: 'full', lg: '1/2' }}
+          h="full"
+          backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
         >
-          <Hidden from="md">
-            <VStack px="4" mt="4" mb="5" space="9">
-              <HStack space="2" alignItems="center">
-                <IconButton
-                  pl="0"
-                  variant="unstyled"
-                  onPress={() => {}}
-                  icon={
-                    <Icon
-                      size="6"
-                      as={AntDesign}
-                      name="arrowleft"
-                      color="coolGray.50"
-                    />
-                  }
-                />
-                <Text color="coolGray.50" fontSize="lg">
-                  Sign Up
-                </Text>
-              </HStack>
-              <VStack space="2">
-                <Text fontSize="3xl" fontWeight="bold" color="coolGray.50">
-                  Welcome
-                </Text>
-                <Text
-                  fontSize="md"
-                  fontWeight="normal"
-                  _dark={{
-                    color: 'coolGray.400'
-                  }}
-                  _light={{
-                    color: 'primary.300'
+          <Box
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            h="full"
+          >
+            <KeyboardAwareScrollView
+              contentContainerStyle={{
+                flexGrow: 1
+              }}
+              style={{ flex: 1 }}
+            >
+              <Center>
+                <Box
+                  width={{
+                    base: `${(11 / 12) * 100}%`,
+                    sm: `${(9 / 12) * 100}%`,
+                    lg: '30rem',
+                    xl: '35rem'
                   }}
                 >
-                  Sign up to continue
-                </Text>
-              </VStack>
-            </VStack>
-          </Hidden>
-          {/* <Hidden till="md">
-            <Center
-              flex="1"
-              bg="coolGray.700"
-              borderTopLeftRadius={{ base: '0', md: 'xl' }}
-              borderBottomLeftRadius={{ base: '0', md: 'xl' }}
+                  <Hidden from="lg">
+                    <Center flexDir="row">
+                      <Image
+                        w={{ base: '2.5rem', sm: '3.5rem' }}
+                        h={{ base: '2.5rem', sm: '3.5rem' }}
+                        source={require('shared/images/contact-blaster-blue.png')}
+                      />
+                      <Text
+                        color={theme.colors.shared.softBlack}
+                        fontSize={{ base: 'xl', sm: '2xl' }}
+                        fontWeight="semibold"
+                        marginLeft={'4'}
+                      >
+                        SaaS Template
+                      </Text>
+                    </Center>
+                  </Hidden>
+
+                  <Box
+                    bgColor="white"
+                    borderRadius="2xl"
+                    paddingY="4"
+                    paddingX={{ base: '4', sm: '8' }}
+                    marginTop={{ base: '4', sm: '7', lg: '6' }}
+                  >
+                    <Text
+                      fontWeight="semibold"
+                      color={theme.colors.shared.softBlack}
+                      textAlign="center"
+                      fontSize={{ base: '2xl', sm: '4xl' }}
+                      marginTop={{ base: '1', sm: '9', lg: '0' }}
+                      fontFamily="body"
+                    >
+                      Create an account
+                    </Text>
+                    <HStack
+                      justifyContent="center"
+                      marginTop="7"
+                      space={{ base: '5', sm: '7' }}
+                    >
+                      <Box
+                        flexDirection="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        color={theme.colors.shared.softBlack}
+                        borderWidth="2"
+                        borderColor={theme.colors.shared.softGray}
+                        w="47%"
+                        py="0.375rem"
+                        borderRadius="lg"
+                      >
+                        <Image
+                          w="5"
+                          h="5"
+                          mr="2"
+                          source={require('shared/images/Google__G__Logo 1.png')}
+                        />
+                        <Text
+                          color={theme.colors.shared.softBlack}
+                          fontSize={{ base: 'xs', sm: 'md' }}
+                          fontWeight="medium"
+                        >
+                          Google
+                        </Text>
+                      </Box>
+                      <Box
+                        flexDirection="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        color={theme.colors.shared.softBlack}
+                        borderWidth="2"
+                        borderColor={theme.colors.shared.softGray}
+                        w="47%"
+                        py="0.375rem"
+                        borderRadius="lg"
+                      >
+                        <Image
+                          w="4"
+                          h="4"
+                          mr="2"
+                          source={require('shared/images/Apple_logo_black 1.png')}
+                        />
+                        <Text
+                          color={theme.colors.shared.softBlack}
+                          fontSize={{ base: 'xs', sm: 'md' }}
+                          fontWeight="medium"
+                        >
+                          Apple ID
+                        </Text>
+                      </Box>
+                    </HStack>
+                    <Box position="relative">
+                      <HStack justifyContent="center" mt="7" space="10">
+                        <Box
+                          w="45%"
+                          borderBottomWidth="2"
+                          borderColor={theme.colors.shared.softGray}
+                        ></Box>
+                        <Box
+                          w="45%"
+                          borderBottomWidth="2"
+                          borderColor={theme.colors.shared.softGray}
+                        ></Box>
+                      </HStack>
+                      <Box
+                        position="absolute"
+                        w="full"
+                        flexDir="row"
+                        justifyContent="center"
+                      >
+                        <Text
+                          position="absolute"
+                          top={{ base: '5', sm: '4' }}
+                          textAlign="center"
+                          fontWeight="medium"
+                          fontSize={{ base: 'xs', sm: 'md' }}
+                        >
+                          Or
+                        </Text>
+                      </Box>
+                    </Box>
+                    <Box>
+                      {/* input first last name */}
+                      <HStack
+                        position="relative"
+                        justifyContent="center"
+                        mt="7"
+                        space={{ base: '5', sm: '7' }}
+                      >
+                        <Box position="relative" w="47%">
+                          <Input
+                            paddingLeft="12"
+                            paddingTop="3"
+                            paddingRight="3"
+                            paddingBottom="3"
+                            w="full"
+                            borderRadius="xl"
+                            borderWidth="2"
+                            borderColor={theme.colors.shared.softerGray}
+                            fontSize={{ base: 'xs', sm: 'md' }}
+                            fontWeight="medium"
+                            backgroundColor={theme.colors.shared.aliceBlue}
+                            placeholder="Firstname"
+                          />
+                          <Box
+                            position="absolute"
+                            left="4"
+                            h="full"
+                            flexDir="row"
+                            alignItems="center"
+                          >
+                            <Image
+                              w="6"
+                              h="6"
+                              source={require('shared/images/user (1) 1.png')}
+                            />
+                          </Box>
+                        </Box>
+                        <Box position="relative" w="47%">
+                          <Input
+                            paddingLeft="12"
+                            paddingTop="3"
+                            paddingRight="3"
+                            paddingBottom="3"
+                            w="full"
+                            borderRadius="xl"
+                            borderWidth="2"
+                            borderColor={theme.colors.shared.softerGray}
+                            fontSize={{ base: 'xs', sm: 'md' }}
+                            fontWeight="medium"
+                            backgroundColor={theme.colors.shared.aliceBlue}
+                            placeholder="Lastname"
+                          />
+                          <Box
+                            position="absolute"
+                            left="4"
+                            h="full"
+                            flexDir="row"
+                            alignItems="center"
+                          >
+                            <Image
+                              w="6"
+                              h="6"
+                              source={require('shared/images/user (1) 1.png')}
+                            />
+                          </Box>
+                        </Box>
+                      </HStack>
+                      {/* input email */}
+                      <Box position="relative" w="full" marginTop="5">
+                        <Input
+                          paddingLeft="12"
+                          paddingTop="3"
+                          paddingRight="3"
+                          paddingBottom="3"
+                          w="full"
+                          borderRadius="xl"
+                          borderWidth="2"
+                          borderColor={theme.colors.shared.softerGray}
+                          fontSize={{ base: 'xs', sm: 'md' }}
+                          fontWeight="medium"
+                          backgroundColor={theme.colors.shared.aliceBlue}
+                          placeholder="eg: johndoe@gmail.com"
+                        />
+                        <Box
+                          position="absolute"
+                          left="4"
+                          h="full"
+                          flexDir="row"
+                          alignItems="center"
+                        >
+                          <Image
+                            w="6"
+                            h="6"
+                            source={require('shared/images/mail 1.png')}
+                          />
+                        </Box>
+                      </Box>
+                      {/* input password */}
+                      <Box position="relative" w="full" marginTop="5">
+                        <Input
+                          type={showPass ? 'text' : 'password'}
+                          paddingLeft="12"
+                          paddingTop="3"
+                          paddingRight="3"
+                          paddingBottom="3"
+                          w="full"
+                          borderRadius="xl"
+                          borderWidth="2"
+                          borderColor={theme.colors.shared.softerGray}
+                          fontSize={{ base: 'xs', sm: 'md' }}
+                          fontWeight="medium"
+                          backgroundColor={theme.colors.shared.aliceBlue}
+                          placeholder="Enter your password"
+                        />
+                        <Box
+                          position="absolute"
+                          left="4"
+                          h="full"
+                          flexDir="row"
+                          alignItems="center"
+                        >
+                          <Image
+                            w="6"
+                            h="6"
+                            source={require('shared/images/lock 1.png')}
+                          />
+                        </Box>
+                        <Box
+                          position="absolute"
+                          right="2"
+                          h="full"
+                          flexDirection="row"
+                          alignItems="center"
+                        >
+                          <Button
+                            backgroundColor="white"
+                            _hover={{
+                              backgroundColor: 'gray.100'
+                            }}
+                            borderWidth="2"
+                            borderColor={theme.colors.shared.softGray}
+                            borderRadius="lg"
+                            padding="2"
+                            onPress={() => {
+                              setShowPass(!showPass)
+                            }}
+                          >
+                            <Image
+                              w="4"
+                              h="4"
+                              source={require('shared/images/eye (1) 1.png')}
+                            />
+                          </Button>
+                        </Box>
+                      </Box>
+
+                      {/* terms_condition */}
+                      <Hidden till="lg">
+                        <Box position="relative" marginTop="5" marginLeft="1">
+                          <Checkbox
+                            alignItems="center"
+                            defaultIsChecked={false}
+                            value="demo"
+                            colorScheme="primary"
+                            accessibilityLabel="Terms and Conditions"
+                          >
+                            <HStack alignItems="center">
+                              <Text fontSize="md" fontWeight="medium">
+                                I agree to the{' '}
+                                <SolitoLink href="/terms-and-conditions">
+                                  <Text fontSize="md" fontWeight="bold">
+                                    Terms and Conditions
+                                  </Text>
+                                </SolitoLink>
+                                .
+                              </Text>
+                            </HStack>
+                          </Checkbox>
+                        </Box>
+                      </Hidden>
+
+                      {/* remember_me_forgot_pass */}
+                      <Hidden from="lg">
+                        <HStack
+                          justifyContent="space-between"
+                          position="relative"
+                          marginTop="5"
+                        >
+                          <Checkbox
+                            alignItems="center"
+                            defaultIsChecked={false}
+                            value="demo"
+                            colorScheme="primary"
+                            accessibilityLabel="Remember me"
+                          >
+                            <HStack alignItems="center">
+                              <Text
+                                fontSize={{ base: 'sm', sm: 'md' }}
+                                fontWeight="medium"
+                              >
+                                Remember me
+                              </Text>
+                            </HStack>
+                          </Checkbox>
+                          <HStack alignItems="center" space="1">
+                            <Image
+                              w="4"
+                              h="4"
+                              source={require('shared/images/link-2 1.png')}
+                            />
+                            <Text
+                              fontSize={{ base: 'xs', sm: 'md' }}
+                              fontWeight="medium"
+                              color={theme.colors.shared.softBlack}
+                            >
+                              Forgot Password ?
+                            </Text>
+                          </HStack>
+                        </HStack>
+                      </Hidden>
+
+                      {/* button */}
+                      <Box marginTop="5">
+                        <Box
+                          backgroundColor={theme.colors.shared.brightBlue}
+                          paddingY="3"
+                          paddingX="2"
+                          borderRadius="xl"
+                        >
+                          <Text
+                            textAlign="center"
+                            fontWeight="semibold"
+                            color="white"
+                            fontSize={{ base: 'sm', sm: 'md' }}
+                          >
+                            <Hidden till="lg">
+                              <>Sign in to your account</>
+                            </Hidden>
+                            <Hidden from="lg">
+                              <>Create a new account</>
+                            </Hidden>
+                          </Text>
+                        </Box>
+                      </Box>
+
+                      {/* already have account */}
+                      <Box
+                        marginTop={{ base: '5', sm: '7' }}
+                        marginBottom={{ base: '1', sm: '7', lg: '0' }}
+                      >
+                        <Text
+                          textAlign="center"
+                          fontSize={{ base: 'sm', sm: 'md' }}
+                        >
+                          Already have an account ?{' '}
+                          <SolitoLink href="/sign-in">
+                            <Link
+                              _text={{
+                                fontSize: 'md'
+                              }}
+                              fontWeight="semibold"
+                            >
+                              <Hidden till="lg">
+                                <>Sign in</>
+                              </Hidden>
+                              <Hidden from="lg">
+                                <>Sign in now</>
+                              </Hidden>
+                            </Link>
+                          </SolitoLink>
+                        </Text>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Center>
+            </KeyboardAwareScrollView>
+          </Box>
+        </Box>
+        <Hidden till="lg">
+          <Box
+            position="relative"
+            w="1/2"
+            h="full"
+            overflow="hidden"
+            borderBottomLeftRadius="9.375rem"
+          >
+            <Image
+              position="absolute"
+              w="full"
+              h="full"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              source={require('shared/images/pexels-gradienta-7135120 1.png')}
+            />
+            <Box
+              flexDirection={'column'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              w="full"
+              h="90%"
             >
-              <Image
-                h="24"
-                size="80"
-                alt="NativeBase Startup+ "
-                resizeMode={'contain'}
-                source={require('../../assets/clientEyeLogo.jpeg')}
-              />
-            </Center>
-          </Hidden> */}
-          <SignUpForm props={props} />
-        </Stack>
-      </Center>
+              <Box
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                w="full"
+                h="full"
+              >
+                <Box flexDir="row" justifyContent="center">
+                  <Image
+                    w="128px"
+                    h="128px"
+                    source={require('shared/images/contact-blaster-white.png')}
+                  />
+                </Box>
+                <Text
+                  color="white"
+                  textAlign="center"
+                  fontSize={{ base: '4xl', xl: '5xl' }}
+                  fontWeight="semibold"
+                >
+                  SaaS Template
+                </Text>
+              </Box>
+            </Box>
+          </Box>
+        </Hidden>
+      </Stack>
     </>
   )
 }

@@ -1,27 +1,6 @@
-import {
-  StatusBar,
-  Box,
-  Center,
-  Stack,
-  Hidden,
-  Text,
-  Image,
-  HStack,
-  VStack,
-  Input,
-  InputGroup,
-  Button,
-  Checkbox,
-  Link,
-  Icon,
-  Pressable,
-  Flex,
-  Select,
-  CheckIcon,
-  Slider,
-  Switch,
-  Divider
-} from 'native-base'
+import { Box, Hidden, Text, Image, HStack, Pressable } from 'native-base'
+import { Link as SolitoLink } from 'solito/link'
+import React from 'react'
 import { theme } from 'shared/styles/theme'
 import IconMenu from 'shared/components/icons/IconMenu'
 
@@ -49,7 +28,7 @@ export default function LandingPageTopNavigation() {
               <Image
                 w="50px"
                 h="50px"
-                source={require('shared/assets/images/contact-blaster-blue.png')}
+                source={require('shared/images/contact-blaster-blue.png')}
               />
               <Text
                 color={theme.colors.shared.softBlack}
@@ -73,15 +52,6 @@ export default function LandingPageTopNavigation() {
                 }}
               >
                 <Text fontSize="md" fontWeight="medium">
-                  Home
-                </Text>
-              </Pressable>
-              <Pressable
-                _hover={{
-                  textDecoration: 'underline'
-                }}
-              >
-                <Text fontSize="md" fontWeight="medium">
                   Features
                 </Text>
               </Pressable>
@@ -91,16 +61,7 @@ export default function LandingPageTopNavigation() {
                 }}
               >
                 <Text fontSize="md" fontWeight="medium">
-                  About Us
-                </Text>
-              </Pressable>
-              <Pressable
-                _hover={{
-                  textDecoration: 'underline'
-                }}
-              >
-                <Text fontSize="md" fontWeight="medium">
-                  Support
+                  Pricing
                 </Text>
               </Pressable>
             </HStack>
@@ -116,21 +77,23 @@ export default function LandingPageTopNavigation() {
         </HStack>
         <Hidden till="sm">
           <Box>
-            <Pressable
-              backgroundColor={theme.colors.shared.blueGentianFlower}
-              borderRadius="full"
-              paddingX="7"
-              paddingY="2"
-              _hover={{
-                backgroundColor: theme.colors.shared.brightBlue
-              }}
-            >
-              <HStack alignItems="center">
-                <Text color="white" fontSize="15px" fontWeight="medium">
-                  Sign Up
-                </Text>
-              </HStack>
-            </Pressable>
+            <SolitoLink href={`/sign-up`}>
+              <Box
+                backgroundColor={theme.colors.shared.blueGentianFlower}
+                borderRadius="full"
+                paddingX="7"
+                paddingY="2"
+                _hover={{
+                  backgroundColor: theme.colors.shared.brightBlue
+                }}
+              >
+                <HStack alignItems="center">
+                  <Text color="white" fontSize="15px" fontWeight="medium">
+                    Sign Up
+                  </Text>
+                </HStack>
+              </Box>
+            </SolitoLink>
           </Box>
         </Hidden>
       </HStack>

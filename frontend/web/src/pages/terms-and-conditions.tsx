@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="ClientEye - Terms and Conditions"
+        title="SaaS Template - Terms and Conditions"
         description="Terms and Conditions"
         noindex={false}
       />

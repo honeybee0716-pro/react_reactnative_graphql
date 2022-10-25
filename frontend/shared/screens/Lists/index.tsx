@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Box,
   Center,
@@ -12,8 +11,8 @@ import {
   Slider
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
-import { Fragment } from 'react'
-import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
+import React, { Fragment } from 'react'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 import IconDownload from 'shared/components/icons/IconDownload'
 import IconClock from 'shared/components/icons/IconClock'
 import IconCalendar from 'shared/components/icons/IconCalendar'
@@ -30,11 +29,8 @@ import IconFilter from 'shared/components/icons/IconFilter'
 import IconList from 'shared/components/icons/IconList'
 import IconGroup from 'shared/components/icons/IconGroup'
 import IconSearch from 'shared/components/icons/IconSearch'
-import { useRouteAuthentication } from '../../hooks/useRouteAuthentication/useRouteAuthentication'
 
 export default function Lists() {
-  useRouteAuthentication()
-
   return (
     <>
       <DashboardLayout>

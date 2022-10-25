@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="ClientEye - Admin"
+        title="SaaS Template - Admin"
         description="Admin portal"
         noindex={true}
       />

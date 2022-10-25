@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="ClientEye - Privacy Policy"
+        title="SaaS Template - Privacy Policy"
         description="View our privacy policy."
         noindex={false}
       />

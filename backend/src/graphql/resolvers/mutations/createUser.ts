@@ -108,7 +108,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
   // });
 
   await nodemailer.sendMail({
-    from: '"ClientEye Alerts" <alerts@clienteye.com>', // sender address
+    from: '"SaaS Template Alerts" <alerts@saastemplates.io>', // sender address
     to: formattedEmail, // list of receivers
     subject: 'Please verify your email.', // Subject line
     text: `Please use this code to verify your account: ${verifyEmailCode}`, // plain text body

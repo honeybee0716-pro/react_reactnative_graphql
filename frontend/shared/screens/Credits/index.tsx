@@ -390,7 +390,7 @@ export default function Credits() {
               marginRight={{ base: '5', lg: '0' }}
               paddingX={{ base: '4', sm: '5' }}
               paddingTop={{ base: '4', sm: '5' }}
-              paddingBottom="4"
+              paddingBottom={{ base: '4', sm: '5' }}
               borderBottomRadius="2xl"
               borderTopRadius={{ base: '2xl', lg: 'none' }}
               backgroundColor="white"
@@ -464,7 +464,7 @@ export default function Credits() {
                 <Box>
                   <HStack paddingX="3" paddingY="3">
                     <Box w="5%">
-                      <Checkbox value="" accessibilityLabel="Date" />
+                      <Checkbox value="" />
                     </Box>
                     <Box w="24%">
                       <Text fontSize="sm" fontWeight="medium">
@@ -517,7 +517,7 @@ export default function Credits() {
                       alignItems="center"
                     >
                       <Box w="5%">
-                        <Checkbox value="" accessibilityLabel="unknown" />
+                        <Checkbox value="" />
                       </Box>
                       <Box w="24%">
                         <Text fontSize="sm" fontWeight="medium">
@@ -789,6 +789,9 @@ export default function Credits() {
                     borderColor={theme.colors.shared.soft4Gray}
                     borderRadius="md"
                     p={{ base: '6px', sm: '0.3rem' }}
+                    _hover={{
+                      backgroundColor: theme.colors.shared.softerGray
+                    }}
                   >
                     <Box w="16px">
                       <IconMoreVertical />

@@ -49,7 +49,7 @@ const loginUserWithMagicLink = async (parent: null, args: any) => {
   // });
 
   await nodemailer.sendMail({
-    from: '"ClientEye Alerts" <alerts@clienteye.com>', // sender address
+    from: '"SaaS Template Alerts" <alerts@saastemplate.io>', // sender address
     to: args.input.email, // list of receivers
     subject: 'Here is your magic login link.', // Subject line
     text: `Here is your magic login link: ${process.env.PROTOCOL}://${process.env.DOMAIN}/login?token=${token}`,

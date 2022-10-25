@@ -56,7 +56,7 @@ const forgotPassword = async (parent: any, args: any) => {
     // });
 
     await nodemailer.sendMail({
-      from: '"ClientEye Alerts" <alerts@clienteye.com>', // sender address
+      from: '"SaaS Template Alerts" <alerts@saastemplate.io>', // sender address
       to: email, // list of receivers
       subject: 'Password Reset',
       text: `Please use this code to reset your password: ${passwordResetCode}`,

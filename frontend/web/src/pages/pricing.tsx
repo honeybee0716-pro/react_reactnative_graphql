@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="ClientEye - Pricing"
+        title="SaaS Template - Pricing"
         description="View our pricing options."
         noindex={true}
       />

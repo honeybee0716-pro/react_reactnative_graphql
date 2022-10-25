@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="ClientEye - Manage Billing"
+        title="SaaS Template - Manage Billing"
         description="Create, edit, and manage your billing information."
         noindex={true}
       />

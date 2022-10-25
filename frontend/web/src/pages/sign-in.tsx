@@ -5,7 +5,7 @@ export default function Page({ client }) {
   return (
     <>
       <NextSeo
-        title="ClientEye - Sign In"
+        title="SaaS Template - Sign In"
         description="Sign in to your account"
         noindex={false}
       />

@@ -1,11 +1,11 @@
 import { NextSeo } from 'next-seo'
-import ForgotPassword from 'shared/screens/ForgotPassword/dev'
+import ForgotPassword from 'shared/screens/ForgotPassword'
 
 export default function Page() {
   return (
     <>
       <NextSeo
-        title="ClientEye - Forgot Password"
+        title="SaaS Template - Forgot Password"
         description="Reset your password"
         noindex={false}
       />

@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="ClientEye - Dashboard"
+        title="SaaS Template - Dashboard"
         description="View your Dashboard."
         noindex={false}
       />

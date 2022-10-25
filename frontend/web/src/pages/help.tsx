@@ -5,8 +5,8 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="ClientEye - Help and Support"
-        description="Get help using ClientEye"
+        title="SaaS Template - Help and Support"
+        description="Get help using SaaS Template"
         noindex={false}
       />
       <HelpAndSupport />

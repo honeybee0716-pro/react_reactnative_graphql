@@ -1,27 +1,16 @@
 import {
-  StatusBar,
   Box,
   Center,
-  Stack,
   Hidden,
   Text,
   Image,
   HStack,
   VStack,
   Input,
-  InputGroup,
-  Button,
-  Checkbox,
-  Link,
-  Icon,
-  Pressable,
-  Flex,
-  Select,
-  CheckIcon,
-  Slider,
-  Switch,
-  Divider
+  Pressable
 } from 'native-base'
+import { Link as SolitoLink } from 'solito/link'
+import React from 'react'
 import { theme } from 'shared/styles/theme'
 import IconMail from 'shared/components/icons/IconMail'
 import IconArrowRight from 'shared/components/icons/IconArrowRight'
@@ -59,7 +48,7 @@ export default function LandingPageFooter() {
                 <Image
                   w={{ base: '40px', lg: '50px' }}
                   h={{ base: '40px', lg: '50px' }}
-                  source={require('shared/assets/images/contact-blaster-blue.png')}
+                  source={require('shared/images/contact-blaster-blue.png')}
                 />
                 <Text
                   color={theme.colors.shared.softBlack}
@@ -130,14 +119,16 @@ export default function LandingPageFooter() {
                     </Hidden>
                   </VStack>
                   <VStack>
-                    <Pressable>
-                      <Text
-                        fontSize={{ base: 'sm', lg: 'md' }}
-                        fontWeight="medium"
-                      >
-                        Terms & Conditions
-                      </Text>
-                    </Pressable>
+                    <SolitoLink href={`/terms-and-conditions`}>
+                      <Box>
+                        <Text
+                          fontSize={{ base: 'sm', lg: 'md' }}
+                          fontWeight="medium"
+                        >
+                          Terms & Conditions
+                        </Text>
+                      </Box>
+                    </SolitoLink>
                     <Pressable marginTop={{ base: '3', lg: '6' }}>
                       <Text
                         fontSize={{ base: 'sm', lg: 'md' }}

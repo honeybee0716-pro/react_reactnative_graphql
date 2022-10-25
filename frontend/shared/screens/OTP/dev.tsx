@@ -193,7 +193,7 @@ export default function OTP(props: any) {
                     <Image
                       w={{ base: '2.5rem', sm: '3.5rem' }}
                       h={{ base: '2.5rem', sm: '3.5rem' }}
-                      source={require('shared/assets/images/contact-blaster-blue.png')}
+                      source={require('shared/images/contact-blaster-blue.png')}
                     />
                     <Text
                       color={theme.colors.shared.softBlack}
@@ -201,7 +201,7 @@ export default function OTP(props: any) {
                       fontWeight="semibold"
                       marginLeft={'4'}
                     >
-                      ClientEye
+                      SaaS Template
                     </Text>
                   </Center>
                 </Hidden>

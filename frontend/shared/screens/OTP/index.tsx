@@ -14,7 +14,6 @@ import {
   FormControl,
   StatusBar,
   Stack,
-  Input,
   useColorModeValue,
   useToast
 } from 'native-base'

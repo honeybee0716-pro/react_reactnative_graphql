@@ -1,249 +1,146 @@
 import React from 'react'
 import {
-  Box,
-  HStack,
   Icon,
   Text,
-  Avatar,
-  Image,
-  useColorMode,
+  HStack,
   IconButton,
   Divider,
-  Hidden,
+  Box,
+  Pressable,
+  useColorMode,
+  Image,
+  Avatar,
   Menu,
-  useToast
+  StatusBar,
+  Hidden
 } from 'native-base'
-import { useRouter } from 'solito/router'
+import { Ionicons, FontAwesome, AntDesign } from '@expo/vector-icons'
 
-import {
-  AntDesign,
-  Feather,
-  FontAwesome,
-  Ionicons,
-  MaterialCommunityIcons
-} from '@expo/vector-icons'
-
-type HeaderProps = {
-  title: string
-  showIcons: boolean
-  toggleSidebar: () => void
-}
-
-export default function Header({ ...props }: HeaderProps) {
-  const { push } = useRouter()
-  const toast = useToast()
-
+export const Header = () => {
   const { colorMode } = useColorMode()
-
-  const handleLogoPress = () => {
-    toast.show({
-      description: 'test'
-    })
-    push('/home')
-  }
-
   return (
-    <Box
-      px={{ base: '4', md: '8' }}
-      pt={{ base: '4', md: '4' }}
-      pb={{ base: '4', md: '4' }}
-      borderBottomWidth={{ md: '1' }}
-      _dark={{ bg: 'coolGray.400', borderColor: 'coolGray.800' }}
-      _light={{
-        bg: { base: 'coolGray.400', md: 'white' },
-        borderColor: 'coolGray.400'
-      }}
-    >
-      {/* Mobile header */}
-      <Hidden from="md">
-        <HStack space="2" justifyContent="space-between">
-          <HStack
-            flex="1"
-            space="2"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <>
-              <HStack alignItems="center" space="1">
-                <IconButton
-                  variant="ghost"
-                  colorScheme="light"
-                  icon={
-                    <Icon
-                      size="6"
-                      as={AntDesign}
-                      name="arrowleft"
-                      color="coolGray.50"
-                    />
-                  }
-                />
-                <Text color="coolGray.50" fontSize="lg">
-                  {props.title}
-                </Text>
-              </HStack>
+    <>
+      <StatusBar
+        translucent
+        barStyle="light-content"
+        backgroundColor="transparent"
+      />
+      <Box
+        px={{ base: '1', md: '8' }}
+        pt={{ base: '4', md: '4' }}
+        pb={{ base: '32', md: '4' }}
+        _dark={{ bg: 'coolGray.900', borderColor: 'coolGray.700' }}
+        _light={{
+          bg: { base: 'primary.900', md: 'coolGray.50' },
+          borderColor: 'coolGray.200'
+        }}
+        borderBottomWidth={{ md: '1' }}
+      >
+        {/* Mobile header */}
+        <Hidden from="md">
+          <HStack space="2" justifyContent="space-between">
+            <HStack space="2" alignItems="center">
               <IconButton
                 variant="ghost"
                 colorScheme="light"
-                alignSelf="flex-end"
                 icon={
                   <Icon
                     size="6"
-                    as={MaterialCommunityIcons}
-                    name="dots-vertical"
+                    as={AntDesign}
+                    name="arrowleft"
                     color="coolGray.50"
                   />
                 }
               />
-            </>
+              <Text color="coolGray.50" fontSize="lg">
+                {/* Mobile Screen Name */}
+              </Text>
+            </HStack>
           </HStack>
-        </HStack>
-      </Hidden>
-      {/* Desktop header */}
-      <Hidden till="md">
-        <HStack alignItems="center" justifyContent="space-between">
-          <HStack space="4" alignItems="center">
-            <IconButton
-              variant="ghost"
-              colorScheme="light"
-              onPress={props.toggleSidebar}
-              icon={
-                <Icon
-                  size="6"
-                  name="menu-sharp"
-                  as={Ionicons}
-                  _light={{ color: 'coolGray.800' }}
-                  _dark={{ color: 'coolGray.50' }}
-                />
-              }
-            />
-            {colorMode === 'light' ? (
-              <Image
-                h="10"
-                w="56"
-                alt="NativeBase Startup+"
-                resizeMode="contain"
-                source={require('../../assets/clientEyeLogo.jpeg')}
+        </Hidden>
+        {/* Desktop header */}
+        <Hidden from="base" till="md">
+          <HStack alignItems="center" justifyContent="space-between">
+            <HStack space="0" alignItems="center">
+              <IconButton
+                variant="ghost"
+                colorScheme="light"
+                icon={
+                  <Icon
+                    size="6"
+                    name="menu-sharp"
+                    as={Ionicons}
+                    _light={{ color: 'coolGray.800' }}
+                    _dark={{ color: 'coolGray.50' }}
+                  />
+                }
               />
-            ) : (
-              <Image
-                h="10"
-                w="56"
-                alt="NativeBase Startup+"
-                resizeMode="contain"
-                source={require('../../assets/clientEyeLogo.jpeg')}
+              {colorMode === 'light' ? (
+                <Image
+                  h="10"
+                  w="72"
+                  alt="NativeBase Startup+"
+                  resizeMode="contain"
+                  source={require('../../../assets/header_logo_light.png')}
+                />
+              ) : (
+                <Image
+                  h="10"
+                  w="72"
+                  alt="NativeBase Startup+"
+                  resizeMode="contain"
+                  source={require('../../../assets/header_logo_dark.png')}
+                />
+              )}
+            </HStack>
+            <HStack space="8" alignItems="center">
+              <IconButton
+                variant="ghost"
+                colorScheme="light"
+                icon={
+                  <Icon
+                    size="6"
+                    name="bell"
+                    as={FontAwesome}
+                    color="coolGray.400"
+                  />
+                }
               />
-            )}
-          </HStack>
-
-          <HStack space="2" alignItems="center">
-            {props.showIcons && (
-              <>
-                <IconButton
-                  variant="ghost"
-                  colorScheme="light"
-                  icon={
-                    <Icon
-                      size="6"
-                      name="search1"
-                      as={AntDesign}
-                      _dark={{
-                        color: 'coolGray.400'
-                      }}
-                      _light={{
-                        color: 'coolGray.400'
-                      }}
-                    />
-                  }
-                />
-                <IconButton
-                  variant="ghost"
-                  colorScheme="light"
-                  icon={
-                    <Icon
-                      size="6"
-                      name="bell"
-                      as={FontAwesome}
-                      _dark={{
-                        color: 'coolGray.400'
-                      }}
-                      _light={{
-                        color: 'coolGray.400'
-                      }}
-                    />
-                  }
-                />
-                <IconButton
-                  icon={
-                    <Icon
-                      size="6"
-                      name={'heart'}
-                      as={FontAwesome}
-                      _dark={{
-                        color: 'coolGray.400'
-                      }}
-                      _light={{
-                        color: 'coolGray.400'
-                      }}
-                    />
-                  }
-                />
-                <IconButton
-                  icon={
-                    <Icon
-                      size="6"
-                      _dark={{
-                        color: 'coolGray.400'
-                      }}
-                      _light={{
-                        color: 'coolGray.400'
-                      }}
-                      as={Feather}
-                      name={'shopping-cart'}
-                    />
-                  }
-                />
-              </>
-            )}
-
-            <Menu
-              closeOnSelect={false}
-              w="190"
-              onOpen={() => console.log('opened')}
-              onClose={() => console.log('closed')}
-              trigger={(triggerProps) => {
-                return (
-                  <IconButton
-                    {...triggerProps}
-                    variant="ghost"
-                    colorScheme="light"
-                    icon={
+              <Menu
+                closeOnSelect={false}
+                w="190"
+                onOpen={() => console.log('opened')}
+                onClose={() => console.log('closed')}
+                trigger={(triggerProps) => {
+                  return (
+                    <Pressable {...triggerProps}>
                       <Avatar
                         w="8"
                         h="8"
-                        _dark={{ borderColor: 'coolGray.800' }}
-                        source={require('../assets/women.jpg')}
+                        _dark={{ borderColor: 'primary.700' }}
+                        source={{
+                          uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+                        }}
                       />
-                    }
-                  />
-                )
-              }}
-              //@ts-ignore
-              _dark={{ bg: 'coolGray.800', borderColor: 'coolGray.700' }}
-            >
-              <Menu.Group title="Profile">
-                <Menu.Item>Account</Menu.Item>
-                <Menu.Item>Billing</Menu.Item>
-                <Menu.Item>Security</Menu.Item>
-              </Menu.Group>
-              <Divider mt="3" w="100%" _dark={{ bg: 'coolGray.700' }} />
-              <Menu.Group title="Shortcuts">
-                <Menu.Item>Settings</Menu.Item>
-                <Menu.Item>Logout</Menu.Item>
-              </Menu.Group>
-            </Menu>
+                    </Pressable>
+                  )
+                }}
+              >
+                <Menu.OptionGroup title="Profile" type="checkbox">
+                  <Menu.Item>Account</Menu.Item>
+                  <Menu.Item>Billing</Menu.Item>
+                  <Menu.Item>Security</Menu.Item>
+                </Menu.OptionGroup>
+                <Divider mt="3" w="100%" />
+                <Menu.OptionGroup title="Shortcuts" type="checkbox">
+                  <Menu.Item>Settings</Menu.Item>
+                  <Menu.Item>Logout</Menu.Item>
+                </Menu.OptionGroup>
+              </Menu>
+            </HStack>
           </HStack>
-        </HStack>
-      </Hidden>
-    </Box>
+        </Hidden>
+      </Box>
+    </>
   )
 }

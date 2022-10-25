@@ -17,7 +17,7 @@ import {
   useToast
 } from 'native-base'
 import { AntDesign, Entypo } from '@expo/vector-icons'
-import FloatingLabelInput from './components/FloatingLabelInput'
+import FloatingLabelInput from '../../components/FloatingLabelInput'
 import { Link as SolitoLink } from 'solito/link'
 import { gql, useLazyQuery } from '@apollo/client'
 import { useRouter } from 'solito/router'
@@ -377,7 +377,7 @@ export default function SignIn(props: any) {
                 size="80"
                 alt="NativeBase Startup+ "
                 resizeMode={'contain'}
-                source={require('../../assets/clientEyeLogo.jpeg')}
+                source={require('shared/images/contact-blaster-white.png')}
               />
             </Center>
           </Hidden>
