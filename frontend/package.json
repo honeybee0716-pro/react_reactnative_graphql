@@ -14,9 +14,9 @@
     "ios": "yarn workspace mobile start:ios",
     "android": "yarn workspace mobile start:android",
     "web": "yarn workspace web dev",
+    "web:prod": "yarn workspace web start",
     "build": "yarn workspace web build",
-    "deploy": "vercel --prod --no-clipboard",
-    "postinstall": "patch-package"
+    "deploy": "vercel --prod --no-clipboard"
   },
   "resolutions": {
     "babel-preset-expo": "^8.5.1"
