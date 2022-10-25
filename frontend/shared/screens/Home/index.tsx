@@ -34,7 +34,7 @@ import {
 } from 'react-native-chart-kit'
 import { Dimensions, View } from 'react-native'
 import { useState } from 'react'
-import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 import IconCredits from 'shared/components/icons/IconCredits'
 import IconCornerUpRight from 'shared/components/icons/IconCornerUpRight'
 import IconZap from 'shared/components/icons/IconZap'
