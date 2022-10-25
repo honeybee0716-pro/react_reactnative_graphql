@@ -14,4 +14,4 @@ RUN cd ./web && yarn build
 
 CMD ["yarn", "web:prod"]
 
-EXPOSE 3000
+EXPOSE 3413
