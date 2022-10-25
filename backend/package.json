@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev": "yarn prisma db push && tsc && nodemon -r dotenv/config --watch 'src/**/*.ts' --exec \"ts-node\" src/index.ts dotenv_config_path=./.env",
-    "build": "npx prisma db push && tsc",
+    "build": "npx prisma db push && yarn run tsc",
     "test": "jest --runInBand --detectOpenHandles",
     "prettier": "prettier --write \"**/*.{tsx,ts,css,md,js,html}\"",
     "eslint": "eslint ./src/**/*.ts --fix",

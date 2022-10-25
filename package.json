@@ -22,7 +22,6 @@
     "prepare": "husky install",
     "precommit": "yarn lint-staged && yarn jest --passWithNoTests",
     "test": "jest",
-    "build": "cd backend && npx prisma db push && yarn run tsc",
     "tsc": "tsc",
     "prisma": "prisma",
     "prep": "concurrently -n 'backend,frontend,mobile' -c 'bgBlue.bold,bgMagenta.bold,bgWhite.bold' 'cd backend && source ~/.nvm/nvm.sh && nvm use && yarn' 'cd frontend/web && yarn' 'cd frontend/mobile && yarn'",
