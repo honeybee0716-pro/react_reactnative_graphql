@@ -12,7 +12,7 @@ import {
 import { theme } from 'shared/styles/theme'
 import { Dimensions } from 'react-native'
 import { Fragment, useState, useRef } from 'react'
-import DashboardLayout from 'shared/layouts/DashboardLayout'
+import DashboardLayout from 'shared/layouts/DashboardLayout.dev'
 import IconZap from 'shared/components/icons/IconZap'
 import IconDownload from 'shared/components/icons/IconDownload'
 import IconCalendar from 'shared/components/icons/IconCalendar'
