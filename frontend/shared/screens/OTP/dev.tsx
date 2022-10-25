@@ -153,7 +153,7 @@ export default function OTP(props: any) {
         left={0}
         right={0}
         bottom={0}
-        source={require('shared/assets/wallpaper.jpeg')}
+        source={require('shared/images/wallpaper.jpeg')}
       />
 
       <Box
@@ -178,7 +178,7 @@ export default function OTP(props: any) {
                 height="100px"
                 width="250px"
                 resizeMode="contain"
-                source={require('shared/assets/images/clientEyeLogoWhite.png')}
+                source={require('shared/images/clientEyeLogoWhite.png')}
               />
               <Box
                 width={{
@@ -243,7 +243,7 @@ export default function OTP(props: any) {
                           w="5"
                           h="5"
                           mr="2"
-                          source={require('shared/assets/icons/Google__G__Logo 1.png')}
+                          source={require('shared/images/icons/Google__G__Logo 1.png')}
                         />
                         <Text
                           color={theme.colors.shared.softBlack}
@@ -268,7 +268,7 @@ export default function OTP(props: any) {
                           w="4"
                           h="4"
                           mr="2"
-                          source={require('shared/assets/icons/Apple_logo_black 1.png')}
+                          source={require('shared/images/icons/Apple_logo_black 1.png')}
                         />
                         <Text
                           color={theme.colors.shared.softBlack}
@@ -337,7 +337,7 @@ export default function OTP(props: any) {
                         <Image
                           w="6"
                           h="6"
-                          source={require('shared/assets/icons/mail 1.png')}
+                          source={require('shared/images/icons/mail 1.png')}
                         />
                       </Box>
                     </Box>

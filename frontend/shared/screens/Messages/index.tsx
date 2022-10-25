@@ -32,7 +32,7 @@ import IconGoogleGLogo from 'shared/components/icons/IconGoogleGLogo'
 import IconMicrosoftLogo from 'shared/components/icons/IconMicrosoftLogo'
 import IconMetaLogo from 'shared/components/icons/IconMetaLogo'
 import IconLayers from 'shared/components/icons/IconLayers'
-import CreateNewMessageModal from './components/CreateNewMessageModal'
+// import CreateNewMessageModal from './components/CreateNewMessageModal'
 
 const { width, height } = Dimensions.get('window')
 
@@ -43,11 +43,11 @@ export default function Messages() {
 
   return (
     <>
-      <CreateNewMessageModal
+      {/* <CreateNewMessageModal
         refCreateNewMessageModal={refCreateNewMessageModal}
         openCreateNewMessageModal={openCreateNewMessageModal}
         setOpenCreateNewMessageModal={setOpenCreateNewMessageModal}
-      />
+      /> */}
 
       <DashboardLayout>
         <Box flexDirection={{ base: 'column', lg: 'row' }}>

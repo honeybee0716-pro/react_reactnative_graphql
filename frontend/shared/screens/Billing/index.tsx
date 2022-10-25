@@ -429,7 +429,7 @@ export default function Billing() {
                                 <Image
                                   h="210px"
                                   borderRadius="xl"
-                                  source={require('shared/assets/images/saved-card.png')}
+                                  source={require('shared/images/saved-card.png')}
                                 />
                                 <Box
                                   position="absolute"
