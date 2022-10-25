@@ -129,7 +129,7 @@ export default function SignUp(props: any) {
                         fontWeight="semibold"
                         marginLeft={'4'}
                       >
-                        Contact Blaster
+                        SaaS Template
                       </Text>
                     </Center>
                   </Hidden>

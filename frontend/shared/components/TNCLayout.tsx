@@ -18,7 +18,7 @@ export default function TNCLayout({ children }) {
         borderBottomWidth="1"
         borderBottomColor={theme.colors.shared.softGray}
       >
-        {/* Logo Contact Blaster */}
+        {/* Logo SaaS Template */}
         <Center
           flex={{ base: '1', sm: 'unset' }}
           w={{ base: 'auto', sm: '86px', lg: '310px' }}

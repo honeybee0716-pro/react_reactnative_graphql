@@ -123,7 +123,7 @@ export default function TermsAndConditions() {
                 fontSize={{ base: 'sm', sm: 'md', lg: 'xl' }}
                 fontWeight="medium"
               >
-                Contact Blaster
+                SaaS Template
               </Text>
               <Text
                 fontSize={{ base: '22px', sm: '2xl', lg: '40px' }}
@@ -144,9 +144,9 @@ export default function TermsAndConditions() {
                 marginTop="5"
               >
                 These terms of service ("Terms") apply to your access and use of
-                Contact Blaster. Please read this Terms and Conditions agreement
-                carefully before accessing or using Contact Blaster. Because it
-                is such an important contract between us and our users, we have
+                SaaS Template. Please read this Terms and Conditions agreement
+                carefully before accessing or using SaaS Template. Because it is
+                such an important contract between us and our users, we have
                 tried to make it as clear as possible
               </Text>
             </Box>
@@ -228,9 +228,9 @@ export default function TermsAndConditions() {
                     </Text>
                   </Pressable>
                 </SolitoLink>
-                &nbsp;for changes to these Terms. Use of the Contact Blaster may
-                be subject to additional terms and conditions presented by
-                Contact Blaster.
+                &nbsp;for changes to these Terms. Use of the SaaS Template may
+                be subject to additional terms and conditions presented by SaaS
+                Template.
               </Text>
               <Text
                 fontSize={{ base: 'md', lg: '22px' }}

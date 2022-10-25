@@ -710,7 +710,7 @@ export default function PricingPage() {
             >
               <Hidden till="lg">
                 <>
-                  Join Contact Blaster community now to get free updates and
+                  Join SaaS Template community now to get free updates and
                   <br />
                   also a lot of offers are waiting for you
                 </>
@@ -718,7 +718,7 @@ export default function PricingPage() {
               <Hidden till="sm">
                 <Hidden from="lg">
                   <>
-                    Join Contact Blaster community now to get free updates and
+                    Join SaaS Template community now to get free updates and
                     also a
                     <br />
                     lot of offers are waiting for you
@@ -727,7 +727,7 @@ export default function PricingPage() {
               </Hidden>
               <Hidden from="sm">
                 <>
-                  Join Contact Blaster community now to get free
+                  Join SaaS Template community now to get free
                   <br />
                   updates and also a lot of offers are waiting for you
                 </>

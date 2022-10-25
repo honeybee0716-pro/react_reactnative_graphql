@@ -66,7 +66,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         borderBottomWidth="1"
         borderBottomColor={theme.colors.shared.softGray}
       >
-        {/* Logo Contact Blaster */}
+        {/* Logo SaaS Template */}
         <Hidden from="sm">
           <Center
             flex="1"
@@ -86,7 +86,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                 fontWeight="semibold"
                 marginLeft={'2'}
               >
-                Contact Blaster
+                SaaS Template
               </Text>
             </Box>
           </Center>
@@ -243,7 +243,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                     fontWeight="semibold"
                     marginLeft={'4'}
                   >
-                    Contact Blaster
+                    SaaS Template
                   </Text>
                 </Hidden>
               </Center>

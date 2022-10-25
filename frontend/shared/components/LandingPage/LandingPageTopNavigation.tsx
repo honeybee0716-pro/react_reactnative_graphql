@@ -36,7 +36,7 @@ export default function LandingPageTopNavigation() {
                 fontWeight="semibold"
                 marginLeft={'2'}
               >
-                Contact Blaster
+                SaaS Template
               </Text>
             </Box>
           </Box>
