@@ -11,13 +11,13 @@ This contains the command that Heroku should use to start the app after a deploy
 
 Prisma:
 You can update the models/schema by changing the schema as you desire then running this command in the root directory but put your own name for it
-```yarn prisma migrate dev --name "your migration note here"```
+`yarn prisma migrate dev --name "your migration note here"`
 
 If you get the error:
 The table (not available) does not exist in the current database #10771
 
 you may need to run the command:
-```npx prisma db push```
+`npx prisma db push`
 
 View the prisma studio for easy database reading/writing
-```yarn prisma studio```
+`yarn prisma studio`
