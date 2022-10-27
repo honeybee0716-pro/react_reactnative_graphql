@@ -1,4 +1,4 @@
-Duplicate .env.example and rename it .env.local and pass change any api keys as needed.
+Duplicate the .env.example file and rename it .env.local and pass change any api keys as needed.
 
 To run the server, first run 'yarn' to install the dependencies and then run 'yarn run dev' to start the local server.
 
