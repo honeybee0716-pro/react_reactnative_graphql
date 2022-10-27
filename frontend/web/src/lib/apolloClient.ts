@@ -3,7 +3,7 @@ import { onError } from '@apollo/client/link/error'
 import { setContext } from '@apollo/client/link/context'
 
 const httpLink = createHttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT
+  uri: 'https://yahoofas1234.com/asdgasdf'
 })
 
 const authLink = setContext((_, { headers }) => {
