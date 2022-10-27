@@ -4,10 +4,6 @@ WORKDIR /backend
 
 COPY ./ /backend
 
-RUN yarn add global typescript
-
-RUN yarn tsc
-
 ARG DATABASE_URL=mongodb+srv://clienteye-db1:6d8Cjuyiyf7xlu8s@cluster0.hl4lb.mongodb.net/clienteye-staging
 ENV DATABASE_URL=${DATABASE_URL}
 
@@ -94,6 +90,10 @@ ENV RUDDERSTACK_ID=${RUDDERSTACK_ID}
 
 ARG RUDDERSTACK_DATAPLANE=https://outsmartedadwa.dataplane.rudderstack.com
 ENV RUDDERSTACK_DATAPLANE=${RUDDERSTACK_DATAPLANE}
+
+RUN yarn add global typescript
+
+RUN yarn tsc
 
 CMD ["node", "./dist/src/index.js"]
 
