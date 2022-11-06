@@ -14,7 +14,6 @@ import open from 'open';
 
 import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
-import {AppConfig} from './config/appConfig';
 import getUserByID from './graphql/resolvers/queries/getUserByID';
 
 if (process.env.NODE_ENV !== 'localhost') {
@@ -127,8 +126,6 @@ const schema = applyMiddleware(
 );
 
 export const setupServer = async () => {
-  const {PORT, NODE_ENV} = AppConfig;
-
   const server = new ApolloServer({
     schema: applyMiddleware(schema, permissions),
     context: createContext,
@@ -162,12 +159,12 @@ export const setupServer = async () => {
     },
   });
 
-  await app.listen({port: PORT}, () => {
+  await app.listen({port: process.env.PORT}, () => {
     console.log(
-      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`,
+      `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`,
     );
     if (process.env.NODE_ENV === 'localhost') {
-      open(`http://localhost:${PORT}${server.graphqlPath}`);
+      open(`http://localhost:${process.env.PORT}${server.graphqlPath}`);
     }
   });
 

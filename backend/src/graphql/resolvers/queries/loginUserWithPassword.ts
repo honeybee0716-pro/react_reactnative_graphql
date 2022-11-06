@@ -2,8 +2,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {gql} from 'apollo-server';
 
-import {rudderstack} from '../../../utils/rudderstack';
-
 import getUserByEmail from './getUserByEmail';
 
 export const loginUserWithPasswordSchema = gql`
@@ -39,11 +37,6 @@ const loginUserWithPassword = async (parent: null, args: any) => {
     args.input.password,
     foundUser.data.password,
   );
-
-  rudderstack.track({
-    userId: foundUser.data.id,
-    event: 'loginUserWithPassword',
-  });
 
   if (passwordMatches) {
     const token = jwt.sign(
