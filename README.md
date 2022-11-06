@@ -1,3 +1,6 @@
+Please see
+https://www.notion.so/joeyfenny/How-to-get-our-codebase-running-locally-2b7619234fb34f689298260a123ba641
+
 This is a Next.js app and a React Native app monorepo that shares one codebase.
 It is built using https://solito.dev/
 Please read more about Solito there to learn how this works.
