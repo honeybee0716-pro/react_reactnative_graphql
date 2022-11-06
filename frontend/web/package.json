@@ -7,7 +7,7 @@
     "dev": "yarn open-browser && next",
     "open-browser": "open http://localhost:3000/home",
     "build": "next build",
-    "start": "next start -p 3413",
+    "start": "next start -p 3000",
     "analyze": "ANALYZE=true yarn build",
     "deploy": "yarn --cwd .. deploy"
   },
