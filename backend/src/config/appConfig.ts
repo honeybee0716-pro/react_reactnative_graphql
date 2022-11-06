@@ -41,7 +41,6 @@ export interface IAppConfig {
   REDISCLOUD_URL: string;
   STRIPE_STANDARD_FLAT_PRICE_ID: string;
   STRIPE_STANDARD_METERED_PRICE_ID: string;
-  STRIPE_TEMP_CUSTOM_PLAN_ID: string;
   STRIPE_SUCCESS_URL: string;
   STRIPE_CANCEL_URL: string;
   STRIPE_PAYMENT_METHOD_TYPES: string;
@@ -76,9 +75,6 @@ export const AppConfig: IAppConfig = {
   ),
   STRIPE_STANDARD_METERED_PRICE_ID: loadEnvironmentVariable(
     'STRIPE_STANDARD_METERED_PRICE_ID',
-  ),
-  STRIPE_TEMP_CUSTOM_PLAN_ID: loadEnvironmentVariable(
-    'STRIPE_TEMP_CUSTOM_PLAN_ID',
   ),
   STRIPE_SUCCESS_URL: loadEnvironmentVariable('STRIPE_SUCCESS_URL'),
   STRIPE_CANCEL_URL: loadEnvironmentVariable('STRIPE_CANCEL_URL'),
