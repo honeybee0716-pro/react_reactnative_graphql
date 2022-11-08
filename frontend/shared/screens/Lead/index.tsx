@@ -40,7 +40,7 @@ const GET_LEAD = gql`
 const LoadingSpinner = () => {
   return (
     <HStack space={8} flex="1" justifyContent="center" alignItems="center">
-      <Spinner size="lg" color={theme.colors.shared.clientEyePrimary} />
+      <Spinner size="lg" color={theme.colors.shared.SaleSpinPrimary} />
     </HStack>
   )
 }

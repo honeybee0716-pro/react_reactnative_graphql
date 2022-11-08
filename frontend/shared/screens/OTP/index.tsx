@@ -132,7 +132,7 @@ export default function OTP(props: any) {
                         fontWeight="semibold"
                         marginLeft={'4'}
                       >
-                        ClientEye
+                        SaleSpin
                       </Text>
                     </Center>
                   </Hidden>
