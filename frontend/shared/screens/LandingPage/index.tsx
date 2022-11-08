@@ -1947,19 +1947,19 @@ export default function LandingPage() {
             <VStack alignItems="center" space="3">
               {[
                 {
-                  text: 'How to create and schedule campaign ?'
+                  text: 'How to create and schedule a new campaign?'
                 },
                 {
-                  text: 'How can i add a new list ?'
+                  text: 'How can I add a new list?'
                 },
                 {
-                  text: 'How can i add a new list ?'
+                  text: 'How can I add a new list?'
                 },
                 {
-                  text: 'How to change my account password ?'
+                  text: 'How to change my account password?'
                 },
                 {
-                  text: 'How to add a new team member ?'
+                  text: 'How to add a new team member?'
                 }
               ].map((item2, i) => (
                 <Fragment key={`item2${i}`}>
