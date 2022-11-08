@@ -18,37 +18,40 @@ import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
 import React, { useState } from 'react'
 import { useRouter } from 'solito/router'
-import { gql, useLazyQuery, useMutation } from '@apollo/client'
+import { gql, useLazyQuery,useMutation } from '@apollo/client';
 import AsyncStorage from '@react-native-community/async-storage'
 
+
 const CREATE_USER = gql`
-  mutation Mutation($createUserInput: createUserInput) {
-    createUser(input: $createUserInput) {
-      jwt
-      message
-      status
-    }
+mutation Mutation($createUserInput: createUserInput) {
+  createUser(input: $createUserInput) {
+    jwt
+    message
+    status
   }
-`
+}
+`;
 
 export default function SignUp(props: any) {
+
   const { push } = useRouter()
   const [showPass, setShowPass] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [firstname, setFirstname] = useState('')
-  const [lastname, setLastname] = useState('')
-  const [companyName, setCompanyName] = useState('')
+  const [email,setEmail] =  useState("");
+  const [password,setPassword] =  useState("");
+  const [firstname,setFirstname] =  useState("");
+  const [lastname,setLastname] =  useState("");
+  const [companyName,setCompanyName] =  useState("");
 
-  const [signUpUser, { data, loading, error }] = useMutation(CREATE_USER)
+  const [signUpUser,{data,loading,error}]=useMutation(CREATE_USER)
 
-  if (loading) {
+  if(loading){}
+  if(error){
+    console.log(error.message);
   }
-  if (error) {
-    console.log(error.message)
-  }
-  if (data) {
-    console.log(data)
+  if(data)
+  {
+    console.log(data);
+    
   }
 
   const handleSignUp = async () => {
@@ -59,12 +62,12 @@ export default function SignUp(props: any) {
         createUserInput: {
           email,
           password,
-          firstName: firstname,
-          lastName: lastname,
+          firstName:firstname,
+          lastName:lastname,
           companyName
         }
       },
-      onCompleted: async (signUpUserWithData) => {
+      onCompleted: async ( signUpUserWithData ) => {
         console.log(signUpUserWithData)
         if (
           signUpUserWithData?.createUser?.status === 'success' &&
@@ -145,7 +148,7 @@ export default function SignUp(props: any) {
                         fontWeight="semibold"
                         marginLeft={'4'}
                       >
-                        SaleSpin
+                        SaaS Template
                       </Text>
                     </Center>
                   </Hidden>
@@ -172,7 +175,7 @@ export default function SignUp(props: any) {
                       marginTop="7"
                       space={{ base: '5', sm: '7' }}
                     >
-                      <Box
+                      {/*<Box
                         flexDirection="row"
                         justifyContent="center"
                         alignItems="center"
@@ -221,9 +224,9 @@ export default function SignUp(props: any) {
                         >
                           Apple ID
                         </Text>
-                      </Box>
+                      </Box>*/}
                     </HStack>
-                    <Box position="relative">
+                    {/*<Box position="relative">
                       <HStack justifyContent="center" mt="7" space="10">
                         <Box
                           w="45%"
@@ -252,7 +255,7 @@ export default function SignUp(props: any) {
                           Or
                         </Text>
                       </Box>
-                    </Box>
+                    </Box>*/}
                     <Box>
                       {/* input first last name */}
                       <HStack
@@ -274,7 +277,7 @@ export default function SignUp(props: any) {
                             fontSize={{ base: 'xs', sm: 'md' }}
                             fontWeight="medium"
                             backgroundColor={theme.colors.shared.aliceBlue}
-                            placeholder="Firstname"
+                            placeholder="First Name"
                             onChangeText={(text) => setFirstname(text)}
                           />
                           <Box
@@ -291,9 +294,10 @@ export default function SignUp(props: any) {
                             />
                           </Box>
                         </Box>
-
-                        <Box position="relative" w="47%">
-                          <Input
+                        
+                          
+                          <Box position="relative" w="47%">
+                           <Input
                             paddingLeft="12"
                             paddingTop="3"
                             paddingRight="3"
@@ -305,7 +309,7 @@ export default function SignUp(props: any) {
                             fontSize={{ base: 'xs', sm: 'md' }}
                             fontWeight="medium"
                             backgroundColor={theme.colors.shared.aliceBlue}
-                            placeholder="Lastname"
+                            placeholder="Last Name"
                             onChangeText={(text) => setLastname(text)}
                           />
                           <Box
@@ -326,7 +330,7 @@ export default function SignUp(props: any) {
                       {/*input company name*/}
                       <Box position="relative" w="full" marginTop="5">
                         <Input
-                          isRequired={true}
+                        isRequired={true}
                           paddingLeft="12"
                           paddingTop="3"
                           paddingRight="3"
@@ -338,7 +342,7 @@ export default function SignUp(props: any) {
                           fontSize={{ base: 'xs', sm: 'md' }}
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="company name"
+                          placeholder="Company name"
                           onChangeText={(text) => setCompanyName(text)}
                         />
                         <Box
@@ -351,7 +355,7 @@ export default function SignUp(props: any) {
                           <Image
                             w="6"
                             h="6"
-                            source={require('shared/images/mail 1.png')}
+                            source={require('shared/images/company.svg')}
                           />
                         </Box>
                       </Box>
@@ -369,7 +373,7 @@ export default function SignUp(props: any) {
                           fontSize={{ base: 'xs', sm: 'md' }}
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="eg: johndoe@gmail.com"
+                          placeholder="you@example.com"
                           onChangeText={(text) => setEmail(text)}
                         />
                         <Box
@@ -520,19 +524,23 @@ export default function SignUp(props: any) {
                           borderRadius="xl"
                         >
                           <Pressable onPress={handleSignUp}>
-                            <Text
-                              textAlign="center"
-                              fontWeight="semibold"
-                              color="white"
-                              fontSize={{ base: 'sm', sm: 'md' }}
-                            >
-                              <Hidden till="lg">
-                                <>Sign in to your account here</>
-                              </Hidden>
-                              <Hidden from="lg">
-                                <>Create a new account</>
-                              </Hidden>
-                            </Text>
+                          <Text
+                            textAlign="center"
+                            fontWeight="semibold"
+                            color="white"
+                            fontSize={{ base: 'sm', sm: 'md' }}
+                          >
+                            <Hidden till="lg">
+                             <>
+                              {loading
+                                    ? 'Loading...'
+                                    : 'Sign up'}
+                                    </>
+                            </Hidden>
+                            <Hidden from="lg">
+                              <>Create a new account</>
+                            </Hidden>
+                          </Text>
                           </Pressable>
                         </Box>
                       </Box>
@@ -616,7 +624,7 @@ export default function SignUp(props: any) {
                   fontSize={{ base: '4xl', xl: '5xl' }}
                   fontWeight="semibold"
                 >
-                  SaleSpin
+                  SaaS Template
                 </Text>
               </Box>
             </Box>

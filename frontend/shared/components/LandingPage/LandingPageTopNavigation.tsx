@@ -21,8 +21,8 @@ export default function LandingPageTopNavigation() {
         >
           <Box
             paddingRight="6"
-            borderRightWidth={{ base: '0', lg: '1' }}
-            borderRightColor={theme.colors.shared.soft4Gray_50}
+            //borderRightWidth={{ base: '0', lg: '1' }}
+            //borderRightColor={theme.colors.shared.soft4Gray_50}
           >
             <Box flexDir="row" alignItems="center" w="full">
               <Image
@@ -36,7 +36,7 @@ export default function LandingPageTopNavigation() {
                 fontWeight="semibold"
                 marginLeft={'2'}
               >
-                SaleSpin
+                SaaS Template
               </Text>
             </Box>
           </Box>
@@ -46,7 +46,7 @@ export default function LandingPageTopNavigation() {
               alignItems="center"
               space={{ base: '6', lg: '8' }}
             >
-              <Pressable
+              {/*<Pressable
                 _hover={{
                   textDecoration: 'underline'
                 }}
@@ -63,7 +63,7 @@ export default function LandingPageTopNavigation() {
                 <Text fontSize="md" fontWeight="medium">
                   Pricing
                 </Text>
-              </Pressable>
+              </Pressable>*/}
             </HStack>
           </Hidden>
 

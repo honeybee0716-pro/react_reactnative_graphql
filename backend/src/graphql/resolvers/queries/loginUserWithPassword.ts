@@ -30,6 +30,7 @@ const loginUserWithPassword = async (parent: null, args: any) => {
   
   if (!foundUser) {
     return {
+      jwt: "",
       message: 'There was an issue with your login.',
       status: 'failed',
     };
@@ -64,6 +65,7 @@ const loginUserWithPassword = async (parent: null, args: any) => {
   }
 
   return {
+    jwt:"",
     message: 'There was an issue with your login.',
     status: 'failed',
   };

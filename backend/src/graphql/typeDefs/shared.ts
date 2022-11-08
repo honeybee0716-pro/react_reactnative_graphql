@@ -7,6 +7,6 @@ export const sharedSchema = gql`
     jwt: String!
     message: String!
     status: String!
-    verified:Boolean!
+    verified:Boolean
   }
 `;

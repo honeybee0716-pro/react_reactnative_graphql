@@ -38,7 +38,8 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
 
   const validEmail = isEmail.validate(formattedEmail);
 
-  if (cname === '') {
+  if(cname==="")
+  {
     throw new ApolloError('kindly provide a company name');
   }
 
@@ -68,6 +69,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
 
   const verifyEmailCode = generateRandomNumber();
 
+  
   // create stripe customer
   const stripeCustomer = await stripe.customers.create({
     email: formattedEmail,
@@ -81,6 +83,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
     },
   });
 
+  
   // need to create stripeCustomer before db user because db user requires field stripeCustomerID
   const createdUser = await prismaContext.prisma.user.create({
     data: {
@@ -93,6 +96,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
     },
   });
 
+ 
   // update stripeCustomer with userID
   await stripe.customers.update(stripeCustomer.id, {
     metadata: {userID: createdUser.id},
@@ -112,13 +116,14 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
   // `,
   // });
 
-  if (process.env.NODE_ENV === 'production') {
-    await nodemailer.sendMail({
-      from: '"SaleSpin Alerts" <alerts@salespin.co>', // sender address
-      to: formattedEmail, // list of receivers
-      subject: 'Please verify your email.', // Subject line
-      text: `Please use this code to verify your account: ${verifyEmailCode}`, // plain text body
-      html: `
+  if(process.env.NODE_ENV==="production")
+  {
+  await nodemailer.sendMail({
+    from: '"SaaS Template Alerts" <alerts@saastemplates.io>', // sender address
+    to: formattedEmail, // list of receivers
+    subject: 'Please verify your email.', // Subject line
+    text: `Please use this code to verify your account: ${verifyEmailCode}`, // plain text body
+    html: `
       <p>
         You've just signed up for an account on ${process.env.PROTOCOL}://${process.env.DOMAIN}.
       </p>
@@ -126,14 +131,14 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
         Please use this code to verify your account: ${verifyEmailCode}
       </p>
     `,
-    });
-  }
+  });
+}
 
   const token = jwt.sign({id: createdUser.id}, <string>process.env.JWT_SECRET, {
     expiresIn: '1d',
   });
 
-  // token
+  //token
 
   return {
     jwt: token,
