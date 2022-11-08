@@ -45,7 +45,7 @@ const resendCode = async (parent: any, args: any, context: any) => {
   // });
 
   await nodemailer.sendMail({
-    from: '"SaaS Template Alerts" <alerts@saastemplate.io>', // sender address
+    from: '"SaleSpin Alerts" <alerts@salespin.co>', // sender address
     to: user.email, // list of receivers
     subject: 'Verification Code', // Subject line
     text: `Please use this code to verify your account: ${verifyEmailCode}`, // plain text body

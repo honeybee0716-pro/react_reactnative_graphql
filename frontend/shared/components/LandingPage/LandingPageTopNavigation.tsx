@@ -36,7 +36,7 @@ export default function LandingPageTopNavigation() {
                 fontWeight="semibold"
                 marginLeft={'2'}
               >
-                SaaS Template
+                SaleSpin
               </Text>
             </Box>
           </Box>

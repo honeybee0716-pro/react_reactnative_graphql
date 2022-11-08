@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="SaaS Template - Privacy Policy"
+        title="SaleSpin - Privacy Policy"
         description="View our privacy policy."
         noindex={false}
       />

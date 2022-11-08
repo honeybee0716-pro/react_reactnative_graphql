@@ -350,7 +350,7 @@ export default function OTP(props: any) {
                   fontSize={{ base: '4xl', xl: '5xl' }}
                   fontWeight="semibold"
                 >
-                  SaaS Template
+                  SaleSpin
                 </Text>
               </Box>
             </Box>

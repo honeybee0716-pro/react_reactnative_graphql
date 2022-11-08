@@ -148,12 +148,12 @@ export const setupServer = async () => {
     app,
     cors: {
       origin: [
-        'https://development.saastemplate.io',
-        'https://www.development.saastemplate.io',
-        'https://staging.saastemplate.io',
-        'https://www.staging.saastemplate.io',
-        'https://saastemplate.io',
-        'https://www.saastemplate.io',
+        'https://developmentsalespin.co',
+        'https://www.development.salespin.co',
+        'https://staging.salespin.co',
+        'https://www.staging.salespin.co',
+        'https://app.salespin.co',
+        'https://www.app.salespin.co',
         'http://localhost:3000',
       ],
     },

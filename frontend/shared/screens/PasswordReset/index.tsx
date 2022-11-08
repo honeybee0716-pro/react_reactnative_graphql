@@ -82,7 +82,7 @@ export default function PasswordReset(props: any) {
                         fontWeight="semibold"
                         marginLeft={'4'}
                       >
-                        SaaS Template
+                        SaleSpin
                       </Text>
                     </Center>
                   </Hidden>
@@ -387,7 +387,7 @@ export default function PasswordReset(props: any) {
                   fontSize={{ base: '4xl', xl: '5xl' }}
                   fontWeight="semibold"
                 >
-                  SaaS Template
+                  SaleSpin
                 </Text>
               </Box>
             </Box>

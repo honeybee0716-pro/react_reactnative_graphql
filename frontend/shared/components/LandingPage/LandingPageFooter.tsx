@@ -56,7 +56,7 @@ export default function LandingPageFooter() {
                   fontWeight="semibold"
                   marginLeft={'2'}
                 >
-                  SaaS Template
+                  SaleSpin
                 </Text>
               </Box>
               <Box
@@ -246,7 +246,7 @@ export default function LandingPageFooter() {
             textAlign={{ base: 'center', sm: 'left' }}
             w={{ base: 'full', sm: 'auto' }}
           >
-            Copyright © 2022 SaaS Template. All rights reserved
+            Copyright © 2022 SaleSpin. All rights reserved
           </Text>
           <Hidden till="sm">
             <HStack space={{ base: '6', lg: '8' }}>

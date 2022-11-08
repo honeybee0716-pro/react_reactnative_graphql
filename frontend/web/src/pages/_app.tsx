@@ -26,8 +26,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>SaaS Template</title>
-        <meta key="title" name="title" content="SaaS Template" />
+        <title>SaleSpin</title>
+        <meta key="title" name="title" content="SaleSpin" />
         <link rel="shortcut icon" type="image/x-icon" href="/favicon.png" />
         <meta
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"

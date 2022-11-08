@@ -24,14 +24,15 @@ import { useRouter } from 'solito/router'
 import AsyncStorage from '@react-native-community/async-storage'
 
 const LOGIN_USER = gql`
-query LoginUserWithPassword($input: loginUserWithPasswordInput) {
-  loginUserWithPassword(input: $input) {
-    message
-    status
-    jwt
-    verified
+  query LoginUserWithPassword($input: loginUserWithPasswordInput) {
+    loginUserWithPassword(input: $input) {
+      message
+      status
+      jwt
+      verified
+    }
   }
-}`;
+`
 
 export default function SignUp(props: any) {
   const { push } = useRouter()
@@ -56,10 +57,8 @@ export default function SignUp(props: any) {
         ) {
           await AsyncStorage.setItem('jwt', loginUserWithPassword.jwt)
           console.log(loginUserWithPassword)
-          if(loginUserWithPassword.verified)
-          push('/home')
-          else
-          push("/otp")
+          if (loginUserWithPassword.verified) push('/home')
+          else push('/otp')
           return
         }
         if (loginUserWithPassword?.message) {
@@ -133,7 +132,7 @@ export default function SignUp(props: any) {
                         fontWeight="semibold"
                         marginLeft={'4'}
                       >
-                        SaaS Template
+                        SaleSpin
                       </Text>
                     </Center>
                   </Hidden>
@@ -483,7 +482,7 @@ export default function SignUp(props: any) {
                   fontSize={{ base: '4xl', xl: '5xl' }}
                   fontWeight="semibold"
                 >
-                  SaaS Template
+                  SaleSpin
                 </Text>
               </Box>
             </Box>

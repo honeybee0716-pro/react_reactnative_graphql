@@ -5,7 +5,7 @@ export default function Page({ client }) {
   return (
     <>
       <NextSeo
-        title="SaaS Template - Sign Out"
+        title="SaleSpin - Sign Out"
         description="Sign our of your account"
         noindex={true}
       />

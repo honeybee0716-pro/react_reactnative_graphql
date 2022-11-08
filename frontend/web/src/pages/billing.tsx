@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="SaaS Template - Manage Billing"
+        title="SaleSpin - Manage Billing"
         description="Create, edit, and manage your billing information."
         noindex={true}
       />

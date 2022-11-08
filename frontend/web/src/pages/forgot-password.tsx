@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="SaaS Template - Forgot Password"
+        title="SaleSpin - Forgot Password"
         description="Reset your password"
         noindex={false}
       />

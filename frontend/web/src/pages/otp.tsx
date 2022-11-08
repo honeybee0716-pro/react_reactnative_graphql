@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="SaaS Template - OTP"
+        title="SaleSpin - OTP"
         description="Confirm your one time passcode."
         noindex={true}
       />

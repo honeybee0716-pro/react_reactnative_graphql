@@ -18,7 +18,7 @@ export default function TNCLayout({ children }) {
         borderBottomWidth="1"
         borderBottomColor={theme.colors.shared.softGray}
       >
-        {/* Logo SaaS Template */}
+        {/* Logo SaleSpin */}
         <Center
           flex={{ base: '1', sm: 'unset' }}
           w={{ base: 'auto', sm: '86px', lg: '310px' }}
@@ -43,7 +43,7 @@ export default function TNCLayout({ children }) {
                   fontWeight="semibold"
                   marginLeft={'2'}
                 >
-                  SaaS Template
+                  SaleSpin
                 </Text>
               </Hidden>
             </Box>

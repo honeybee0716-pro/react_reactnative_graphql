@@ -66,7 +66,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         borderBottomWidth="1"
         borderBottomColor={theme.colors.shared.softGray}
       >
-        {/* Logo SaaS Template */}
+        {/* Logo SaleSpin */}
         <Hidden from="sm">
           <Center
             flex="1"
@@ -86,7 +86,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                 fontWeight="semibold"
                 marginLeft={'2'}
               >
-                SaaS Template
+                SaleSpin
               </Text>
             </Box>
           </Center>
@@ -243,7 +243,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                     fontWeight="semibold"
                     marginLeft={'4'}
                   >
-                    SaaS Template
+                    SaleSpin
                   </Text>
                 </Hidden>
               </Center>
