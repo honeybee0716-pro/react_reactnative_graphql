@@ -34,8 +34,14 @@ export const createUserSchema = gql`
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createUser = async (parent: null, args: any, context: any, info: any) => {
   const formattedEmail = args.input.email.toLowerCase().trim();
+  const cname = args.input.companyName.trim();
 
   const validEmail = isEmail.validate(formattedEmail);
+
+  if(cname==="")
+  {
+    throw new ApolloError('kindly provide a company name');
+  }
 
   if (!validEmail) {
     throw new ApolloError('That does not appear to be a valid email address.');
@@ -53,7 +59,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
   if (foundEmail) {
     return {
       message:
-        'An account with this email already exists. Please sign in instead.',
+        'An account with this email already exists here. Please sign in instead.',
       status: 'failed',
     };
   }
@@ -63,6 +69,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
 
   const verifyEmailCode = generateRandomNumber();
 
+  
   // create stripe customer
   const stripeCustomer = await stripe.customers.create({
     email: formattedEmail,
@@ -76,6 +83,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
     },
   });
 
+  
   // need to create stripeCustomer before db user because db user requires field stripeCustomerID
   const createdUser = await prismaContext.prisma.user.create({
     data: {
@@ -88,6 +96,7 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
     },
   });
 
+ 
   // update stripeCustomer with userID
   await stripe.customers.update(stripeCustomer.id, {
     metadata: {userID: createdUser.id},
@@ -107,6 +116,8 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
   // `,
   // });
 
+  if(process.env.NODE_ENV==="production")
+  {
   await nodemailer.sendMail({
     from: '"SaaS Template Alerts" <alerts@saastemplates.io>', // sender address
     to: formattedEmail, // list of receivers
@@ -121,10 +132,13 @@ const createUser = async (parent: null, args: any, context: any, info: any) => {
       </p>
     `,
   });
+}
 
   const token = jwt.sign({id: createdUser.id}, <string>process.env.JWT_SECRET, {
     expiresIn: '1d',
   });
+
+  //token
 
   return {
     jwt: token,
