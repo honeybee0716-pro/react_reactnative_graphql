@@ -618,7 +618,7 @@ export default function LandingPage() {
                   textAlign="center"
                   marginTop="4"
                 >
-                  Manage your Campaigns
+                  Manage your campaigns
                 </Text>
               </Box>
               <Box
@@ -647,7 +647,7 @@ export default function LandingPage() {
                   textAlign="center"
                   marginTop="4"
                 >
-                  Manage your Billing
+                  Manage your billing
                 </Text>
               </Box>
             </HStack>
