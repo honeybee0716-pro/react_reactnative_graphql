@@ -18,40 +18,37 @@ import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
 import React, { useState } from 'react'
 import { useRouter } from 'solito/router'
-import { gql, useLazyQuery,useMutation } from '@apollo/client';
+import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 
-
 const CREATE_USER = gql`
-mutation Mutation($createUserInput: createUserInput) {
-  createUser(input: $createUserInput) {
-    jwt
-    message
-    status
+  mutation Mutation($createUserInput: createUserInput) {
+    createUser(input: $createUserInput) {
+      jwt
+      message
+      status
+    }
   }
-}
-`;
+`
 
 export default function SignUp(props: any) {
-
   const { push } = useRouter()
   const [showPass, setShowPass] = useState(false)
-  const [email,setEmail] =  useState("");
-  const [password,setPassword] =  useState("");
-  const [firstname,setFirstname] =  useState("");
-  const [lastname,setLastname] =  useState("");
-  const [companyName,setCompanyName] =  useState("");
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [firstname, setFirstname] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [companyName, setCompanyName] = useState('')
 
-  const [signUpUser,{data,loading,error}]=useMutation(CREATE_USER)
+  const [signUpUser, { data, loading, error }] = useMutation(CREATE_USER)
 
-  if(loading){}
-  if(error){
-    console.log(error.message);
+  if (loading) {
   }
-  if(data)
-  {
-    console.log(data);
-    
+  if (error) {
+    console.log(error.message)
+  }
+  if (data) {
+    console.log(data)
   }
 
   const handleSignUp = async () => {
@@ -62,12 +59,12 @@ export default function SignUp(props: any) {
         createUserInput: {
           email,
           password,
-          firstName:firstname,
-          lastName:lastname,
+          firstName: firstname,
+          lastName: lastname,
           companyName
         }
       },
-      onCompleted: async ( signUpUserWithData ) => {
+      onCompleted: async (signUpUserWithData) => {
         console.log(signUpUserWithData)
         if (
           signUpUserWithData?.createUser?.status === 'success' &&
@@ -140,7 +137,7 @@ export default function SignUp(props: any) {
                       <Image
                         w={{ base: '2.5rem', sm: '3.5rem' }}
                         h={{ base: '2.5rem', sm: '3.5rem' }}
-                        source={require('shared/images/contact-blaster-blue.png')}
+                        source={require('shared/images/salespinLogo.png')}
                       />
                       <Text
                         color={theme.colors.shared.softBlack}
@@ -294,10 +291,9 @@ export default function SignUp(props: any) {
                             />
                           </Box>
                         </Box>
-                        
-                          
-                          <Box position="relative" w="47%">
-                           <Input
+
+                        <Box position="relative" w="47%">
+                          <Input
                             paddingLeft="12"
                             paddingTop="3"
                             paddingRight="3"
@@ -330,7 +326,7 @@ export default function SignUp(props: any) {
                       {/*input company name*/}
                       <Box position="relative" w="full" marginTop="5">
                         <Input
-                        isRequired={true}
+                          isRequired={true}
                           paddingLeft="12"
                           paddingTop="3"
                           paddingRight="3"
@@ -524,23 +520,19 @@ export default function SignUp(props: any) {
                           borderRadius="xl"
                         >
                           <Pressable onPress={handleSignUp}>
-                          <Text
-                            textAlign="center"
-                            fontWeight="semibold"
-                            color="white"
-                            fontSize={{ base: 'sm', sm: 'md' }}
-                          >
-                            <Hidden till="lg">
-                             <>
-                              {loading
-                                    ? 'Loading...'
-                                    : 'Sign up'}
-                                    </>
-                            </Hidden>
-                            <Hidden from="lg">
-                              <>Create a new account</>
-                            </Hidden>
-                          </Text>
+                            <Text
+                              textAlign="center"
+                              fontWeight="semibold"
+                              color="white"
+                              fontSize={{ base: 'sm', sm: 'md' }}
+                            >
+                              <Hidden till="lg">
+                                <>{loading ? 'Loading...' : 'Sign up'}</>
+                              </Hidden>
+                              <Hidden from="lg">
+                                <>Create a new account</>
+                              </Hidden>
+                            </Text>
                           </Pressable>
                         </Box>
                       </Box>

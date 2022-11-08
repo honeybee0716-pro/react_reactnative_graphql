@@ -28,7 +28,7 @@ export default function LandingPageTopNavigation() {
               <Image
                 w="50px"
                 h="50px"
-                source={require('shared/images/contact-blaster-blue.png')}
+                source={require('shared/images/salespinLogo.png')}
               />
               <Text
                 color={theme.colors.shared.softBlack}

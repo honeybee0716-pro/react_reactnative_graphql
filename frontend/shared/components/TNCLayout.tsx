@@ -34,7 +34,7 @@ export default function TNCLayout({ children }) {
               {/* <Image
                 w={{ base: '41px', sm: '50px' }}
                 h={{ base: '41px', sm: '50px' }}
-                source={require('shared/images/contact-blaster-blue.png')}
+                source={require('shared/images/salespinLogo.png')}
               /> */}
               <Hidden till="lg" from="sm">
                 <Text

@@ -24,14 +24,15 @@ import { useRouter } from 'solito/router'
 import AsyncStorage from '@react-native-community/async-storage'
 
 const LOGIN_USER = gql`
-query LoginUserWithPassword($input: loginUserWithPasswordInput) {
-  loginUserWithPassword(input: $input) {
-    message
-    status
-    jwt
-    verified
+  query LoginUserWithPassword($input: loginUserWithPasswordInput) {
+    loginUserWithPassword(input: $input) {
+      message
+      status
+      jwt
+      verified
+    }
   }
-}`;
+`
 
 export default function SignUp(props: any) {
   const { push } = useRouter()
@@ -56,10 +57,8 @@ export default function SignUp(props: any) {
         ) {
           await AsyncStorage.setItem('jwt', loginUserWithPassword.jwt)
           console.log(loginUserWithPassword)
-          if(loginUserWithPassword.verified)
-          push('/home')
-          else
-          push("/otp")
+          if (loginUserWithPassword.verified) push('/home')
+          else push('/otp')
           return
         }
         if (loginUserWithPassword?.message) {
@@ -125,7 +124,7 @@ export default function SignUp(props: any) {
                       <Image
                         w={{ base: '2.5rem', sm: '3.5rem' }}
                         h={{ base: '2.5rem', sm: '3.5rem' }}
-                        source={require('shared/images/contact-blaster-blue.png')}
+                        source={require('shared/images/salespinLogo.png')}
                       />
                       <Text
                         color={theme.colors.shared.softBlack}

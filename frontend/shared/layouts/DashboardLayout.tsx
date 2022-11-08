@@ -78,7 +78,7 @@ const DashboardLayout: React.FC = ({ children }) => {
               <Image
                 w="2.5rem"
                 h="2.5rem"
-                source={require('shared/images/contact-blaster-blue.png')}
+                source={require('shared/images/salespinLogo.png')}
               />
               <Text
                 color={theme.colors.shared.softBlack}
@@ -234,7 +234,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                 <Image
                   w={{ base: '2.5rem', sm: '3.1rem' }}
                   h={{ base: '2.5rem', sm: '3.1rem' }}
-                  source={require('shared/images/contact-blaster-blue.png')}
+                  source={require('shared/images/salespinLogo.png')}
                 />
                 <Hidden till="lg">
                   <Text

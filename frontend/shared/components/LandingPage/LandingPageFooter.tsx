@@ -48,7 +48,7 @@ export default function LandingPageFooter() {
                 <Image
                   w={{ base: '40px', lg: '50px' }}
                   h={{ base: '40px', lg: '50px' }}
-                  source={require('shared/images/contact-blaster-blue.png')}
+                  source={require('shared/images/salespinLogo.png')}
                 />
                 <Text
                   color={theme.colors.shared.softBlack}

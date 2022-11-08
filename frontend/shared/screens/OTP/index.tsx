@@ -124,7 +124,7 @@ export default function OTP(props: any) {
                       <Image
                         w={{ base: '2.5rem', sm: '3.5rem' }}
                         h={{ base: '2.5rem', sm: '3.5rem' }}
-                        source={require('shared/images/contact-blaster-blue.png')}
+                        source={require('shared/images/salespinLogo.png')}
                       />
                       <Text
                         color={theme.colors.shared.softBlack}
