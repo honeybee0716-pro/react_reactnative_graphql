@@ -179,7 +179,7 @@ export default function PricingPage() {
                       Free Trial
                     </Text>
                     <Text fontSize="13px" fontWeight="medium">
-                      14 days of free trial
+                      1 month free trial
                     </Text>
                     <HStack alignItems="start">
                       <Text fontSize="20px" fontWeight="medium">
@@ -461,7 +461,7 @@ export default function PricingPage() {
                       Free Trial
                     </Text>
                     <Text fontSize="13px" fontWeight="medium">
-                      14 days of free trial
+                      1 month free trial
                     </Text>
                   </Box>
                 </HStack>
@@ -692,7 +692,7 @@ export default function PricingPage() {
               fontWeight="medium"
               color={theme.colors.shared.gray2}
             >
-              learn how to get started
+              Learn how to get started
             </Text>
             <Text
               fontSize={{ base: '28px', sm: '35px', lg: '45px' }}

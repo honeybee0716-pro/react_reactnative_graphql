@@ -168,14 +168,14 @@ export default function LandingPage() {
           >
             <Hidden till="sm">
               <>
-                A Comprehensive dashboard allowing you to manage all
+                A comprehensive dashboard allowing you to manage all
                 <br />
                 aspects of your business in one platform
               </>
             </Hidden>
             <Hidden from="sm">
               <>
-                A Comprehensive dashboard allowing you
+                A comprehensive dashboard allowing you
                 <br />
                 to manage all aspects of your business in
                 <br />
@@ -272,7 +272,7 @@ export default function LandingPage() {
             marginTop="16"
             textAlign="center"
           >
-            Trusted by many companies worldwide
+            Trusted by some of the world's biggest companies
           </Text>
           <Hidden till="sm">
             <HStack
@@ -851,7 +851,7 @@ export default function LandingPage() {
                     Free Trial
                   </Text>
                   <Text fontSize="13px" fontWeight="medium">
-                    14 days of free trial
+                    1 month free trial
                   </Text>
                   <HStack alignItems="start">
                     <Text fontSize="20px" fontWeight="medium">
@@ -1133,7 +1133,7 @@ export default function LandingPage() {
                     Free Trial
                   </Text>
                   <Text fontSize="13px" fontWeight="medium">
-                    14 days of free trial
+                    1 month free trial
                   </Text>
                 </Box>
               </HStack>
@@ -1802,7 +1802,7 @@ export default function LandingPage() {
             fontWeight="medium"
             color={theme.colors.shared.gray2}
           >
-            learn how to get started
+            Learn how to get started
           </Text>
           <Text
             fontSize={{ base: '28px', sm: '35px', lg: '45px' }}
