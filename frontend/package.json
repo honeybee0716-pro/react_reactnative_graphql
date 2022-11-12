@@ -1,0 +1,24 @@
+{
+  "name": "improve",
+  "private": true,
+  "license": "MIT",
+  "devDependencies": {
+    "patch-package": "^6.4.7"
+  },
+  "workspaces": [
+    "mobile",
+    "shared",
+    "web"
+  ],
+  "scripts": {
+    "ios": "yarn workspace mobile start:ios",
+    "android": "yarn workspace mobile start:android",
+    "web": "yarn workspace web dev",
+    "web:prod": "yarn workspace web start",
+    "build": "yarn workspace web build",
+    "deploy": "vercel --prod --no-clipboard"
+  },
+  "resolutions": {
+    "babel-preset-expo": "^8.5.1"
+  }
+}

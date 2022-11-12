@@ -1,0 +1,50 @@
+{
+  "name": "saas-starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/JoeyFenny/saas-starter.git",
+  "author": "Joey Fenny <16143306+JoeyFenny@users.noreply.github.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/uuid": "^8.3.4",
+    "concurrently": "^7.3.0",
+    "husky": "^8.0.1",
+    "jest": "^28.1.0",
+    "jscpd": "^3.4.5",
+    "lint-staged": "^13.0.1",
+    "prettier": "^2.6.2"
+  },
+  "scripts": {
+    "postinstall": "yarn build && husky install",
+    "prepare": "husky install",
+    "precommit": "yarn lint-staged && yarn jest --passWithNoTests",
+    "test": "jest",
+    "tsc": "tsc",
+    "prisma": "prisma",
+    "prep": "concurrently -n 'backend,frontend,mobile' -c 'bgBlue.bold,bgMagenta.bold,bgWhite.bold' 'cd backend && source ~/.nvm/nvm.sh && nvm use && yarn' 'cd frontend/web && yarn' 'cd frontend/mobile && yarn'",
+    "launch.all": "concurrently -n 'backend,studio,frontend,mobile' -c 'bgBlue.bold,bgGreen.bold,bgMagenta.bold,bgWhite.bold' 'cd backend && source ~/.nvm/nvm.sh && nvm use && yarn run dev' 'cd backend && source ~/.nvm/nvm.sh && nvm use && yarn run studio' 'cd frontend && yarn run web' 'cd frontend && yarn run ios'",
+    "launch.web": "concurrently -n 'backend,studio,frontend' -c 'bgBlue.bold,bgGreen.bold,bgMagenta.bold' 'cd backend && source ~/.nvm/nvm.sh && nvm use && yarn run dev' 'cd backend && source ~/.nvm/nvm.sh && nvm use && yarn run studio' 'cd frontend && yarn run web'",
+    "all": "cd backend && source ~/.nvm/nvm.sh && nvm use && cd .. && yarn prep && yarn launch.all",
+    "web": "cd backend && source ~/.nvm/nvm.sh && nvm use && cd .. && yarn prep && yarn launch.web"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn precommit --bailOnLintError true"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js}": [
+      "prettier --write"
+    ],
+    "*.{md,css}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "prisma": "^3.14.0",
+    "typescript": "^4.7.2"
+  }
+}

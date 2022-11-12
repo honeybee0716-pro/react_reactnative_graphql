@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model PrismaInfo {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  prismaIsConnected Boolean @default(true)
+}
+
+model User {
+  id                         String    @id @default(auto()) @map("_id") @db.ObjectId
+  stripeCustomerID           String    @unique
+  firstName                  String
+  lastName                   String
+  companyName                String?
+  email                      String    @unique
+  emailIsVerified            Boolean   @default(false)
+  password                   String
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @default(now())
+  deletedAt                  DateTime?
+  bannedAt                   DateTime?
+  allowMarketingEmails       Boolean   @default(true)
+  createdIPAddress           String
+  knownIPAddresses           String[]
+  passwordResetCode          Int?
+  passwordResetCodeTimestamp DateTime?
+  verifyEmailCode            Int?
+  verifyEmailCodeTimestamp   DateTime?
+  trialCreatedAt             DateTime?
+  role                       Role      @default(BASIC)
+}
+
+enum Role {
+  BASIC
+  ADMIN
+}

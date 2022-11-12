@@ -1,0 +1,16 @@
+**/node_modules
+node_modules
+./web/node_modules
+**/yarn-error.log
+**/.git
+.git
+.husky
+docker
+.expo
+**/.expo
+**/.expo-shared
+web/.next
+mobile/ios
+mobile/android
+mobile/.expo
+mobile/node_modules

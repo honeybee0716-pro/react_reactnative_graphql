@@ -1,0 +1,25 @@
+{
+    "threshold": 0,
+    "absolute": false,
+    "mode": "strict",
+    "blame": true,
+    "path": ["./"],
+    "ignore": [
+        "**/*/node_modules",
+        "**/*/.next",
+        "**/*/public",
+        "**/*/data",
+        "**/*/pages",
+        "**/*/shared/screens",
+        "**/*/dist",
+        "**/*/coverage",
+        "/**/*/tests",
+        "/**/*/prisma",
+        "/**/*/tsconfig.json",
+        "/**/*/posts.ts",
+        "/**/*/*.svg",
+        "/**/*/formFields.ts",
+        "/**/*/footerLinks.ts",
+        "/**/*/SaaS Starter.postman_collection.json"
+    ]
+}
