@@ -66,20 +66,6 @@ const getUserSubscriptionData = (parent, args, context) => __awaiter(void 0, voi
         stripeCustomer,
         activeSubscription,
     };
-    { /*const {remainingCredits, isCustomPlan} = await getUsersRemainingCredits(
-      null,
-      {
-        input: {
-          user,
-          ...data,
-        },
-      },
-      {user},
-    );*/
-    }
-    //data.remainingCredits = remainingCredits || 0;
-    //data.isCustomPlan = isCustomPlan || false;
-    data.remainingCredits = 0;
     data.isCustomPlan = false;
     data.userInternalID = user.id;
     data.userEmail = user.email;

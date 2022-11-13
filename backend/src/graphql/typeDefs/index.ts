@@ -13,13 +13,9 @@ import {loginUserWithPasswordSchema} from '../resolvers/queries/loginUserWithPas
 import {banUserSchema} from '../resolvers/mutations/banUser';
 import {getUserStripeInfoSchema} from '../resolvers/queries/getUserStripeInfo';
 import {confirmEmailValidationCodeSchema} from '../resolvers/mutations/confirmEmailValidationCode';
-import {getUserLeadsSchema} from '../resolvers/queries/getUserLeads';
-import {getLeadByIDSchema} from '../resolvers/queries/getLeadByID';
 import {createStripeCheckoutPageSchema} from '../resolvers/queries/createStripeCheckoutPage';
 import {cancelSubscriptionSchema} from '../resolvers/queries/cancelSubscription';
 import {getUserSubscriptionDataSchema} from '../resolvers/queries/getUserSubscriptionData';
-import {getUsersRemainingCreditsSchema} from '../resolvers/queries/getUsersRemainingCredits';
-import {searchForLeadsSchema} from '../resolvers/queries/searchForLeads';
 import {resendCodeSchema} from '../resolvers/mutations/resendCode';
 import {getStripeCustomerPortalSchema} from '../resolvers/queries/getStripeCustomerPortal';
 import {verifyUserIsAdminSchema} from '../resolvers/queries/verifyUserIsAdmin';
@@ -41,13 +37,9 @@ export const typeDefs = mergeTypeDefs([
   banUserSchema,
   getUserStripeInfoSchema,
   confirmEmailValidationCodeSchema,
-  getUserLeadsSchema,
-  getLeadByIDSchema,
   createStripeCheckoutPageSchema,
   getUserSubscriptionDataSchema,
   cancelSubscriptionSchema,
-  getUsersRemainingCreditsSchema,
-  searchForLeadsSchema,
   resendCodeSchema,
   getStripeCustomerPortalSchema,
   verifyUserIsAdminSchema,

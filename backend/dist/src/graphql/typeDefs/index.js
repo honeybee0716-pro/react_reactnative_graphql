@@ -15,13 +15,9 @@ const loginUserWithPassword_1 = require("../resolvers/queries/loginUserWithPassw
 const banUser_1 = require("../resolvers/mutations/banUser");
 const getUserStripeInfo_1 = require("../resolvers/queries/getUserStripeInfo");
 const confirmEmailValidationCode_1 = require("../resolvers/mutations/confirmEmailValidationCode");
-const getUserLeads_1 = require("../resolvers/queries/getUserLeads");
-const getLeadByID_1 = require("../resolvers/queries/getLeadByID");
 const createStripeCheckoutPage_1 = require("../resolvers/queries/createStripeCheckoutPage");
 const cancelSubscription_1 = require("../resolvers/queries/cancelSubscription");
 const getUserSubscriptionData_1 = require("../resolvers/queries/getUserSubscriptionData");
-const getUsersRemainingCredits_1 = require("../resolvers/queries/getUsersRemainingCredits");
-const searchForLeads_1 = require("../resolvers/queries/searchForLeads");
 const resendCode_1 = require("../resolvers/mutations/resendCode");
 const getStripeCustomerPortal_1 = require("../resolvers/queries/getStripeCustomerPortal");
 const verifyUserIsAdmin_1 = require("../resolvers/queries/verifyUserIsAdmin");
@@ -41,13 +37,9 @@ exports.typeDefs = (0, merge_1.mergeTypeDefs)([
     banUser_1.banUserSchema,
     getUserStripeInfo_1.getUserStripeInfoSchema,
     confirmEmailValidationCode_1.confirmEmailValidationCodeSchema,
-    getUserLeads_1.getUserLeadsSchema,
-    getLeadByID_1.getLeadByIDSchema,
     createStripeCheckoutPage_1.createStripeCheckoutPageSchema,
     getUserSubscriptionData_1.getUserSubscriptionDataSchema,
     cancelSubscription_1.cancelSubscriptionSchema,
-    getUsersRemainingCredits_1.getUsersRemainingCreditsSchema,
-    searchForLeads_1.searchForLeadsSchema,
     resendCode_1.resendCodeSchema,
     getStripeCustomerPortal_1.getStripeCustomerPortalSchema,
     verifyUserIsAdmin_1.verifyUserIsAdminSchema,

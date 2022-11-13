@@ -10,13 +10,9 @@ const verifyUser_1 = __importDefault(require("./verifyUser"));
 const loginUserWithPassword_1 = __importDefault(require("./loginUserWithPassword"));
 const loginUserWithMagicLink_1 = __importDefault(require("./loginUserWithMagicLink"));
 const getUserStripeInfo_1 = __importDefault(require("./getUserStripeInfo"));
-const getUserLeads_1 = __importDefault(require("./getUserLeads"));
-const getLeadByID_1 = __importDefault(require("./getLeadByID"));
 const createStripeCheckoutPage_1 = __importDefault(require("./createStripeCheckoutPage"));
 const getUserSubscriptionData_1 = __importDefault(require("./getUserSubscriptionData"));
 const cancelSubscription_1 = __importDefault(require("./cancelSubscription"));
-const getUsersRemainingCredits_1 = __importDefault(require("./getUsersRemainingCredits"));
-const searchForLeads_1 = __importDefault(require("./searchForLeads"));
 const getStripeCustomerPortal_1 = __importDefault(require("./getStripeCustomerPortal"));
 const verifyUserIsAdmin_1 = __importDefault(require("./verifyUserIsAdmin"));
 exports.RootQuery = {
@@ -26,13 +22,9 @@ exports.RootQuery = {
     loginUserWithMagicLink: loginUserWithMagicLink_1.default,
     verifyUser: verifyUser_1.default,
     getUserStripeInfo: getUserStripeInfo_1.default,
-    getUserLeads: getUserLeads_1.default,
-    getLeadByID: getLeadByID_1.default,
     createStripeCheckoutPage: createStripeCheckoutPage_1.default,
     getUserSubscriptionData: getUserSubscriptionData_1.default,
     cancelSubscription: cancelSubscription_1.default,
-    getUsersRemainingCredits: getUsersRemainingCredits_1.default,
-    searchForLeads: searchForLeads_1.default,
     getStripeCustomerPortal: getStripeCustomerPortal_1.default,
     verifyUserIsAdmin: verifyUserIsAdmin_1.default,
 };
