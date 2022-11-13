@@ -71,20 +71,17 @@ export default function SignUp(props: any) {
             return
           }
           if (forgotPassword?.message) {
-            //alert(forgotPassword.message)
             toast.show({
               description: forgotPassword.message
             })
             return
           }
-          //alert('There was an error')
           toast.show({
             description: 'There was an error'
           })
           return
         },
         onError: (error) => {
-          //alert(`There was an error: ${error}`)
           toast.show({
             description: `There was an error: ${error}`
           })
@@ -93,7 +90,6 @@ export default function SignUp(props: any) {
     }
     if (step === 2) {
       if (!code) {
-        //alert('Please enter a code.')
         toast.show({
           description: 'Please enter a code.'
         })
@@ -102,7 +98,6 @@ export default function SignUp(props: any) {
       try {
         Number(code)
       } catch (e) {
-        //alert('Please enter a valid code.')
         toast.show({
           description: 'Please enter a valid code.'
         })
@@ -119,19 +114,19 @@ export default function SignUp(props: any) {
         onCompleted: async ({ confirmForgotPasswordCode }) => {
           if (confirmForgotPasswordCode?.status === 'success') {
             if (confirmForgotPasswordCode?.message) {
-              alert(confirmForgotPasswordCode.message)
+              toast.show({
+                description: confirmForgotPasswordCode.message
+              })
             }
             push('/sign-in')
             return
           }
-          //alert('There was an error')
           toast.show({
             description: 'There was an error'
           })
           return
         },
         onError: (error) => {
-          //alert(`There was an error: ${error}`)
           toast.show({
             description: `There was an error: ${error}`
           })

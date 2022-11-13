@@ -83,20 +83,17 @@ export default function SignUp(props: any) {
           toast.show({
             description: signUpUserWithData.createUser.message
           })
-          //alert(signUpUserWithData.createUser.message)
           return
         }
         toast.show({
           description: "There was an error"
         })
-        //alert('There was an error')
         return
       },
       onError: (error) => {
         toast.show({
           description: `${error.message}`
         })
-        //alert(`${error.message}`)
       }
     })
   }

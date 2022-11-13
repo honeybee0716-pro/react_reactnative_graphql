@@ -66,17 +66,17 @@ export default function SignUp(props: any) {
           return
         }
         if (loginUserWithPassword?.message) {
-          //alert(loginUserWithPassword.message)
-          //return
+          toast.show({
+            description: loginUserWithPassword.message
+          })
+          return
+        } else {
+          toast.show({
+            description: "There was a problem logging in, please try again..."
+          })
         }
-        toast.show({
-          description: "There was a problem logging in, please try again..."
-        })
-        //alert('There was a problem logging in, please try again...')
-        return
       },
       onError: (error) => {
-        //alert(`${error.message}`)
         toast.show({
           description: `${error.message}`
         })

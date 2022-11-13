@@ -11,7 +11,8 @@ import {
   Button,
   Checkbox,
   Link,
-  Pressable
+  Pressable,
+  useToast,
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
@@ -42,6 +43,7 @@ export default function SignUp(props: any) {
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [companyName, setCompanyName] = useState('')
+  const toast = useToast();
 
   const [signUpUser, { data, loading, error }] = useMutation(CREATE_USER)
 
@@ -78,14 +80,20 @@ export default function SignUp(props: any) {
           return
         }
         if (signUpUserWithData?.createUser?.message) {
-          alert(signUpUserWithData.createUser.message)
+          toast.show({
+            description: signUpUserWithData.createUser.message
+          })
           return
         }
-        alert('There was an error')
+        toast.show({
+          description: 'There was an error',
+        })
         return
       },
       onError: (error) => {
-        alert(`${error.message}`)
+        toast.show({
+          description: `${error.message}`,
+        })
       }
     })
   }

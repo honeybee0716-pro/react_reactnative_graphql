@@ -11,7 +11,8 @@ import {
   Button,
   Checkbox,
   Link,
-  Pressable
+  Pressable,
+  useToast,
 } from 'native-base'
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -42,6 +43,7 @@ export default function SignUp(props: any) {
   const [password, setPassword] = useState('')
   const [showPass, setShowPass] = useState(false)
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER)
+  const toast = useToast();
 
   const handleSignIn = async () => {
     await AsyncStorage.removeItem('jwt')
@@ -64,14 +66,20 @@ export default function SignUp(props: any) {
           return
         }
         if (loginUserWithPassword?.message) {
-          //alert(loginUserWithPassword.message)
-          //return
+          toast.show({
+            description: loginUserWithPassword.message
+          })
+          return
         }
-        alert('There was a problem logging in, please try again...')
+        toast.show({
+          description: 'There was a problem logging in, please try again...'
+        })
         return
       },
       onError: (error) => {
-        alert(`${error.message}`)
+        toast.show({
+          description: `${error.message}`
+        })
       }
     })
   }
