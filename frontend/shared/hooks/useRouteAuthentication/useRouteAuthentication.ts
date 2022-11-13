@@ -60,23 +60,43 @@ export const useRouteAuthentication = async () => {
     case '/':
       return true
     case '/billing':
-      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in')
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
+    case '/campaigns':
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
+    case '/help':
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
+    case '/account':
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
     case '/credits':
-      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in')
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
     case '/forgot-password':
       return await determineAccess(AUTH_STATUS.SIGNED_OUT, '/home')
     case '/goodbye':
-      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in')
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
     case '/help':
       return await determineAccess(AUTH_STATUS.ANY, undefined)
     case '/home':
-      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in')
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
+    case '/transactions':
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
+    case '/customers':
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
+    case '/tiers':
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
+    case '/automation':
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
+    case '/products':
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
+    case '/reports':
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
+    case '/branding':
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
     case '/':
       return await determineAccess(AUTH_STATUS.ANY, undefined)
     case '/otp':
-      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in')
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
     case '/pricing':
-      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in')
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
     case '/privacy-policy':
       return await determineAccess(AUTH_STATUS.ANY, undefined)
     case '/sign-in':
@@ -86,12 +106,12 @@ export const useRouteAuthentication = async () => {
     case '/sign-up':
       return await determineAccess(AUTH_STATUS.ANY, undefined)
     case '/stripe-success':
-      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in')
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
     case '/terms-and-conditions':
       return await determineAccess(AUTH_STATUS.ANY, undefined)
     case '/thank-you':
-      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in')
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
     default:
-      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in')
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
   }
 }

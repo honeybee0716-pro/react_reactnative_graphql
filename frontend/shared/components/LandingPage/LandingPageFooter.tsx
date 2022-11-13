@@ -46,8 +46,8 @@ export default function LandingPageFooter() {
                 marginBottom={{ base: '6', sm: '4' }}
               >
                 <Image
-                  w={{ base: '40px', lg: '50px' }}
-                  h={{ base: '40px', lg: '50px' }}
+                  w="80px"
+                  h="40px"
                   source={require('shared/images/salespinLogo.png')}
                 />
                 <Text

@@ -191,6 +191,7 @@ export default function DashBoard() {
                         height={chartContactHeight}
                         data={chartContactData}
                         width={chartContactWidth}
+                        style={{ position: 'fixed' }}
                         chartConfig={{
                           backgroundGradientFrom: '#ffffff',
                           backgroundGradientFromOpacity: 0,

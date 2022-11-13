@@ -11,7 +11,8 @@ import {
   Checkbox,
   Pressable,
   IconButton,
-  Icon
+  Icon,
+  useToast
   // useColorMode
 } from 'native-base'
 import React from 'react'
@@ -42,6 +43,7 @@ const CONFIRM_FORGOT_PASSWORD = gql`
 `
 
 export default function SignUp(props: any) {
+  const toast = useToast()
   const { push } = useRouter()
   const [email, setEmail] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -68,26 +70,36 @@ export default function SignUp(props: any) {
             return
           }
           if (forgotPassword?.message) {
-            alert(forgotPassword.message)
+            toast.show({
+              description: forgotPassword.message
+            })
             return
           }
-          alert('There was an error')
+          toast.show({
+            description: 'There was an error'
+          })
           return
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }
     if (step === 2) {
       if (!code) {
-        alert('Please enter a code.')
+        toast.show({
+          description: 'Please enter a code.'
+        })
         return
       }
       try {
         Number(code)
       } catch (e) {
-        alert('Please enter a valid code.')
+        toast.show({
+          description: 'Please enter a valid code.'
+        })
         return
       }
       step2({
@@ -101,16 +113,22 @@ export default function SignUp(props: any) {
         onCompleted: async ({ confirmForgotPasswordCode }) => {
           if (confirmForgotPasswordCode?.status === 'success') {
             if (confirmForgotPasswordCode?.message) {
-              alert(confirmForgotPasswordCode.message)
+              toast.show({
+                description: confirmForgotPasswordCode.message
+              })
             }
             push('/sign-in')
             return
           }
-          alert('There was an error')
+          toast.show({
+            description: 'There was an error'
+          })
           return
         },
         onError: (error) => {
-          alert(`There was an error: ${error}`)
+          toast.show({
+            description: `There was an error: ${error}`
+          })
         }
       })
     }
@@ -164,8 +182,8 @@ export default function SignUp(props: any) {
                   <Hidden from="lg">
                     <Center flexDir="row">
                       <Image
-                        w={{ base: '2.5rem', sm: '3.5rem' }}
-                        h={{ base: '2.5rem', sm: '3.5rem' }}
+                        w="80px"
+                        h="40px"
                         source={require('shared/images/salespinLogo.png')}
                       />
                       <Text
@@ -514,9 +532,9 @@ export default function SignUp(props: any) {
               >
                 <Box flexDir="row" justifyContent="center">
                   <Image
-                    w="128px"
+                    w="200px"
                     h="128px"
-                    source={require('shared/images/contact-blaster-white.png')}
+                    source={require('shared/images/salespinLogo.png')}
                   />
                 </Box>
                 <Text

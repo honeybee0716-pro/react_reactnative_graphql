@@ -59,9 +59,19 @@ export const DataProvider = ({ children }) => {
       } else {
         if (
           document.location.href.includes('/home') ||
-          document.location.href.includes('/billing')
+          document.location.href.includes('/billing') ||
+          document.location.href.includes('transactions') ||
+          document.location.href.includes('customers') ||
+          document.location.href.includes('tiers') ||
+          document.location.href.includes('automation') ||
+          document.location.href.includes('products') ||
+          document.location.href.includes('reports') ||
+          document.location.href.includes('branding') ||
+          document.location.href.includes('campaigns') ||
+          document.location.href.includes('help') ||
+          document.location.href.includes('account')
         ) {
-          push('/sign-in')
+          push('/sign-in-business')
         }
       }
     })()

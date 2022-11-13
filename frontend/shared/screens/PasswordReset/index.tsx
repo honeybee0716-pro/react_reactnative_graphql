@@ -72,8 +72,8 @@ export default function PasswordReset(props: any) {
                   <Hidden from="lg">
                     <Center flexDir="row">
                       <Image
-                        w={{ base: '2.5rem', sm: '3.5rem' }}
-                        h={{ base: '2.5rem', sm: '3.5rem' }}
+                        w="80px"
+                        h="40px"
                         source={require('shared/images/salespinLogo.png')}
                       />
                       <Text

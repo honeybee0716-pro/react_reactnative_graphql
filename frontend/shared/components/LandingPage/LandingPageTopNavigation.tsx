@@ -26,8 +26,8 @@ export default function LandingPageTopNavigation() {
           >
             <Box flexDir="row" alignItems="center" w="full">
               <Image
-                w="50px"
-                h="50px"
+                w="80px"
+                h="40px"
                 source={require('shared/images/salespinLogo.png')}
               />
               <Text
@@ -36,7 +36,7 @@ export default function LandingPageTopNavigation() {
                 fontWeight="semibold"
                 marginLeft={'2'}
               >
-                SaaS Template
+                SaleSpin
               </Text>
             </Box>
           </Box>
@@ -77,7 +77,7 @@ export default function LandingPageTopNavigation() {
         </HStack>
         <Hidden till="sm">
           <Box>
-            <SolitoLink href={`/sign-up`}>
+            <SolitoLink href={`/sign-up-business`}>
               <Box
                 backgroundColor={theme.colors.shared.blueGentianFlower}
                 borderRadius="full"

@@ -5,7 +5,8 @@ import {
   Text,
   HStack,
   VStack,
-  Pressable
+  Pressable,
+  Link
 } from 'native-base'
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -14,6 +15,7 @@ import { Link as SolitoLink } from 'solito/link'
 import { useState } from 'react'
 import IconChevronDown from 'shared/components/icons/IconChevronDown'
 import TNCLayout from '../../components/TNCLayout'
+import { useRouter } from 'solito/router'
 
 export default function TermsAndConditions() {
   const [listContent, setListContent] = useState([
@@ -125,6 +127,7 @@ export default function TermsAndConditions() {
               >
                 SaleSpin
               </Text>
+
               <Text
                 fontSize={{ base: '22px', sm: '2xl', lg: '40px' }}
                 fontWeight="semibold"

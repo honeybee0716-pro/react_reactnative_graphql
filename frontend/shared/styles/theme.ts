@@ -5,6 +5,7 @@ export const theme = {
     shared: {
       SaleSpinPrimary: '#355DFF',
       SaleSpinSecondary: '#000000',
+      transparent: 'rgba(0, 0, 0, 0)',
       white: '#FFFFFF',
       blue: '#355DFF',
       purple: '#9757D7',

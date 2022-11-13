@@ -33,8 +33,11 @@ import LandingPageFooter from 'shared/components/LandingPage/LandingPageFooter'
 import LandingPageTopNavigation from 'shared/components/LandingPage/LandingPageTopNavigation'
 import IconInfo from 'shared/components/icons/IconInfo'
 import IconLine from 'shared/components/icons/IconLine'
+import { useTranslation } from 'react-i18next'
 
 export default function LandingPage() {
+  const { t, i18n } = useTranslation()
+
   const [listFeature, setListFeature] = useState([
     {
       feature: 'Manage Campaigns',
@@ -80,6 +83,10 @@ export default function LandingPage() {
     }
   ])
 
+  const changeLanguage = (e) => {
+    i18n.changeLanguage(e.target.value)
+  }
+
   return (
     <>
       <StatusBar
@@ -94,6 +101,15 @@ export default function LandingPage() {
       />
 
       <LandingPageTopNavigation />
+
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <button value={'ar'} onClick={changeLanguage}>
+          {'Arabic'}
+        </button>
+        <button value={'en'} onClick={changeLanguage}>
+          {'English'}
+        </button>
+      </div>
 
       <Box position="relative">
         <Image
@@ -168,7 +184,7 @@ export default function LandingPage() {
           >
             <Hidden till="sm">
               <>
-                A comprehensive dashboard allowing you to manage all
+                {t('A comprehensive dashboard allowing you to manage all')}
                 <br />
                 aspects of your business in one platform
               </>

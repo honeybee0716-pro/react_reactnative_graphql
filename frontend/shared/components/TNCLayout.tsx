@@ -1,4 +1,4 @@
-import { Box, Center, Hidden, Text, HStack } from 'native-base'
+import { Box, Center, Hidden, Text, HStack, Link } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
@@ -37,14 +37,23 @@ export default function TNCLayout({ children }) {
                 source={require('shared/images/salespinLogo.png')}
               /> */}
               <Hidden till="lg" from="sm">
-                <Text
-                  color={theme.colors.shared.softBlack}
-                  fontSize={{ base: '19px', sm: '2xl' }}
-                  fontWeight="semibold"
-                  marginLeft={'2'}
-                >
-                  SaleSpin
-                </Text>
+                <SolitoLink href="/">
+                  <Link
+                    _text={{
+                      fontSize: 'md'
+                    }}
+                    fontWeight="semibold"
+                  >
+                    <Text
+                      color={theme.colors.shared.softBlack}
+                      fontSize={{ base: '19px', sm: '2xl' }}
+                      fontWeight="semibold"
+                      marginLeft={'2'}
+                    >
+                      SaleSpin
+                    </Text>
+                  </Link>
+                </SolitoLink>
               </Hidden>
             </Box>
           </Center>
