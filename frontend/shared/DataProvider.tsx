@@ -68,7 +68,8 @@ export const DataProvider = ({ children }) => {
           document.location.href.includes('reports')||
           document.location.href.includes('branding') || 
           document.location.href.includes('campaigns')|| 
-          document.location.href.includes('help')
+          document.location.href.includes('help') || 
+          document.location.href.includes('account')
         ) {
           push('/sign-in-business')
         }
