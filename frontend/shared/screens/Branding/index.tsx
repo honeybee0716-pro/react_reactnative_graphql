@@ -24,7 +24,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 export default function Branding(props: any) {
   return (
     <>
-      <h1>branding page</h1>
+      <h1>this is branding page</h1>
     </>
   )
 }
