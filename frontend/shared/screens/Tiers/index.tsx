@@ -20,11 +20,12 @@ import React, { useState } from 'react'
 import { useRouter } from 'solito/router'
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
+import DashboardLayout from 'shared/layouts/DashboardLayout'
 
 export default function Tiers(props: any) {
   return (
     <>
-      <h1>Tiers page</h1>
+      <DashboardLayout></DashboardLayout>
     </>
   )
 }

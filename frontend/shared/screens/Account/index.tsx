@@ -30,10 +30,11 @@ import IconHome from 'shared/components/icons/IconHome'
 import IconGlobe from 'shared/components/icons/IconGlobe'
 import IconPlus from 'shared/components/icons/IconPlus'
 
+
 export default function Account() {
   return (
     <>
-      <h1>account page</h1>
+      <DashboardLayout></DashboardLayout>
     </>
   )
 }
