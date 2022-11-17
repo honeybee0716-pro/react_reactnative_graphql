@@ -23,6 +23,8 @@ import IconLink from 'shared/components/icons/IconLink'
 import { gql, useLazyQuery } from '@apollo/client'
 import { useRouter } from 'solito/router'
 import AsyncStorage from '@react-native-community/async-storage'
+import { useRecoilState } from 'recoil'
+import { userSubscriptionDataState} from '../../state'
 
 const LOGIN_USER = gql`
   query LoginCustomerWithPassword($input: loginUserWithPasswordInput) {
@@ -35,6 +37,24 @@ const LOGIN_USER = gql`
   }
 `
 
+const GET_BUSINESS_SUBSCRIPTION_DATA = gql`
+  query Query {
+    getBusinessSubscriptionData {
+      message
+      status
+      stripeCustomer
+      activeSubscription
+      remainingCredits
+      isInTrial
+      redirectToPricingPage
+      redirectToOTPPage
+      isCustomPlan
+      userInternalID
+      userEmail
+    }
+  }
+`
+
 export default function SignUp(props: any) {
   const { push } = useRouter()
   const [email, setEmail] = useState('')
@@ -42,6 +62,24 @@ export default function SignUp(props: any) {
   const [showPass, setShowPass] = useState(false)
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER)
   const toast = useToast()
+
+  const [userSubscriptionData, setUserSubscriptionData] = useRecoilState<any>(
+    userSubscriptionDataState
+  )
+
+  const [getBusinessSubscriptionData, { data }] = useLazyQuery(
+    GET_BUSINESS_SUBSCRIPTION_DATA,
+    {
+      fetchPolicy: 'network-only'
+    }
+  )
+
+  React.useEffect(() => {
+    //console.log("data:",data)
+    if (data?.getBusinessSubscriptionData) {
+      setUserSubscriptionData(data.getBusinessSubscriptionData)
+    }
+  }, [data])
 
   const handleSignIn = async () => {
     await AsyncStorage.removeItem('jwt')
@@ -59,6 +97,7 @@ export default function SignUp(props: any) {
         ) {
           await AsyncStorage.setItem('jwt', loginCustomerWithPassword.jwt)
           console.log(loginCustomerWithPassword)
+          await getBusinessSubscriptionData()
           if (loginCustomerWithPassword.verified) push('/home')
           else push('/otp-customer')
           return

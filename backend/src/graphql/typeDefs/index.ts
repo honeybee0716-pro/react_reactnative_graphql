@@ -32,6 +32,8 @@ import {resendCodeCustomerSchema} from '../resolvers/mutations/resendCodeCustome
 import {getStripeCustomerPortalSchema} from '../resolvers/queries/getStripeCustomerPortal';
 import {verifyBusinessIsAdminSchema} from '../resolvers/queries/verifyBusinessIsAdmin';
 import {verifyCustomerIsAdminSchema} from '../resolvers/queries/verifyCustomerIsAdmin';
+import { getBusinessDetailsSchema } from '../resolvers/queries/getBusinessDetails';
+import { getCustomerDetailsSchema } from '../resolvers/queries/getCustomerDetails';
 
 import {sharedSchema} from './shared';
 
@@ -69,4 +71,6 @@ export const typeDefs = mergeTypeDefs([
   getStripeCustomerPortalSchema,
   verifyBusinessIsAdminSchema,
   verifyCustomerIsAdminSchema,
+  getBusinessDetailsSchema,
+  getCustomerDetailsSchema
 ]) as any;

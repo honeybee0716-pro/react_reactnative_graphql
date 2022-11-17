@@ -128,6 +128,8 @@ const permissions = shield(
       createStripeCheckoutPage: isAuthenticated,
       getBusinessSubscriptionData: isAuthenticated,
       cancelSubscription: isAuthenticated,
+      getBusinessDetails:isAuthenticated,
+      getCustomerDetails:isAuthenticated
     },
     Mutation: {
       changePassword: isAuthenticated,

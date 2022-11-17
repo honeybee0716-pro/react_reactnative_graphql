@@ -15,6 +15,8 @@ import cancelSubscription from './cancelSubscription';
 import getStripeCustomerPortal from './getStripeCustomerPortal';
 import verifyBusinessIsAdmin from './verifyBusinessIsAdmin';
 import verifyCustomerIsAdmin from './verifyCustomerIsAdmin';
+import getBusinessDetails from './getBusinessDetails';
+import getCustomerDetails from './getCustomerDetails';
 
 export const RootQuery = {
   getBusinessByID,
@@ -34,6 +36,8 @@ export const RootQuery = {
   getStripeCustomerPortal,
   verifyBusinessIsAdmin,
   verifyCustomerIsAdmin,
+  getBusinessDetails,
+  getCustomerDetails
 };
 
 export default RootQuery;
