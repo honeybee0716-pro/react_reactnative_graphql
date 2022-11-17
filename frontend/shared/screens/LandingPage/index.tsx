@@ -102,14 +102,14 @@ export default function LandingPage() {
 
       <LandingPageTopNavigation />
 
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      {/*<div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <button value={'ar'} onClick={changeLanguage}>
           {'Arabic'}
         </button>
         <button value={'en'} onClick={changeLanguage}>
           {'English'}
         </button>
-      </div>
+      </div>*/}
 
       <Box position="relative">
         <Image
