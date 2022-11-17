@@ -175,7 +175,7 @@ export default function SignUp(props: any) {
                       marginTop={{ base: '1', sm: '9', lg: '0' }}
                       fontFamily="body"
                     >
-                      {t('Create an account')} Customer
+                      {t('Create an account')}
                     </Text>
                     <HStack
                       justifyContent="center"
