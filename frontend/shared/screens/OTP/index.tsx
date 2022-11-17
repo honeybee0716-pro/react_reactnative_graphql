@@ -27,6 +27,8 @@ const CONFIRM_EMAIL_VALIDATION_CODE = gql`
   }
 `
 
+
+
 export default function OTP(props: any) {
   const toast = useToast()
   const { push } = useRouter()
@@ -81,9 +83,11 @@ export default function OTP(props: any) {
         return
       },
       onError: (error) => {
-        toast.show({
+        /*toast.show({
           description: error
-        })
+        })*/
+        console.log(error)
+        return
       }
     })
   }

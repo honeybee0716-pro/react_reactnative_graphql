@@ -5,7 +5,7 @@ import {generateRandomNumber} from '../../../utils/generateRandomNumber';
 // import {sendEmail} from '../../../utils/sendgrid';
 import {nodemailer} from '../../../utils/nodemailer';
 
-export const resendCodeSchema = gql`
+export const resendCodeCustomerSchema = gql`
   scalar JSON
 
   type resendCodeResponse {
@@ -14,16 +14,16 @@ export const resendCodeSchema = gql`
   }
 
   type Mutation {
-    resendCode: resendCodeResponse!
+    resendCodeCustomer: resendCodeResponse!
   }
 `;
 
-const resendCode = async (parent: any, args: any, context: any) => {
+const resendCodeCustomer = async (parent: any, args: any, context: any) => {
   const {user} = context;
 
   const verifyEmailCode = generateRandomNumber();
 
-  await prismaContext.prisma.business.update({
+  await prismaContext.prisma.customer.update({
     where: {
       email: user.email,
     },
@@ -58,4 +58,4 @@ const resendCode = async (parent: any, args: any, context: any) => {
   };
 };
 
-export default resendCode;
+export default resendCodeCustomer;

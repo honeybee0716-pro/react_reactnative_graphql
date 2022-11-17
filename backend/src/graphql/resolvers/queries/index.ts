@@ -1,27 +1,39 @@
-import getUserByID from './getUserByID';
-import getUserByEmail from './getUserByEmail';
-import verifyUser from './verifyUser';
-import loginUserWithPassword from './loginUserWithPassword';
-import loginUserWithMagicLink from './loginUserWithMagicLink';
-import getUserStripeInfo from './getUserStripeInfo';
+import getBusinessByID from './getBusinessByID';
+import getCustomerByID from './getCustomerByID';
+import getBusinessByEmail from './getBusinessByEmail';
+import getCustomerByEmail from './getCustomerByEmail';
+import verifyBusiness from './verifyBusiness';
+import verifyCustomer from './verifyCustomer';
+import loginBusinessWithPassword from './loginBusinessWithPassword';
+import loginCustomerWithPassword from './loginCustomerWithPassword';
+import loginBusinessWithMagicLink from './loginBusinessWithMagicLink';
+import loginCustomerWithMagicLink from './loginCustomerWithMagicLink';
+import getBusinessStripeInfo from './getBusinessStripeInfo';
 import createStripeCheckoutPage from './createStripeCheckoutPage';
-import getUserSubscriptionData from './getUserSubscriptionData';
+import getBusinessSubscriptionData from './getBusinessSubscriptionData';
 import cancelSubscription from './cancelSubscription';
 import getStripeCustomerPortal from './getStripeCustomerPortal';
-import verifyUserIsAdmin from './verifyUserIsAdmin';
+import verifyBusinessIsAdmin from './verifyBusinessIsAdmin';
+import verifyCustomerIsAdmin from './verifyCustomerIsAdmin';
 
 export const RootQuery = {
-  getUserByID,
-  getUserByEmail,
-  loginUserWithPassword,
-  loginUserWithMagicLink,
-  verifyUser,
-  getUserStripeInfo,
+  getBusinessByID,
+  getCustomerByID,
+  getBusinessByEmail,
+  getCustomerByEmail,
+  loginBusinessWithPassword,
+  loginCustomerWithPassword,
+  loginBusinessWithMagicLink,
+  loginCustomerWithMagicLink,
+  verifyBusiness,
+  verifyCustomer,
+  getBusinessStripeInfo,
   createStripeCheckoutPage,
-  getUserSubscriptionData,
+  getBusinessSubscriptionData,
   cancelSubscription,
   getStripeCustomerPortal,
-  verifyUserIsAdmin,
+  verifyBusinessIsAdmin,
+  verifyCustomerIsAdmin,
 };
 
 export default RootQuery;

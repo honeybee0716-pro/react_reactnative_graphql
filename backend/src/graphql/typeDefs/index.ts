@@ -1,46 +1,72 @@
 import {mergeTypeDefs} from '@graphql-tools/merge';
 
-import {createUserSchema} from '../resolvers/mutations/createUser';
+import {createBusinessSchema} from '../resolvers/mutations/createBusiness';
+import {createCustomerSchema} from '../resolvers/mutations/createCustomer';
 import {forgotPasswordSchema} from '../resolvers/mutations/forgotPassword';
+import {forgotPasswordCustomerSchema} from '../resolvers/mutations/forgotPasswordCustomer';
 import {confirmForgotPasswordCodeSchema} from '../resolvers/mutations/confirmForgotPasswordCode';
-import {updateUserSchema} from '../resolvers/mutations/updateUser';
+import {confirmForgotPasswordCodeCustomerSchema} from '../resolvers/mutations/confirmForgotPasswordCodeCustomer';
+import {updateBusinessSchema} from '../resolvers/mutations/updateBusiness';
+import {updateCustomerSchema} from '../resolvers/mutations/updateCustomer';
 import {changePasswordSchema} from '../resolvers/mutations/changePassword';
-import {getUserByIDSchema} from '../resolvers/queries/getUserByID';
-import {getUserByEmailSchema} from '../resolvers/queries/getUserByEmail';
-import {verifyUserSchema} from '../resolvers/queries/verifyUser';
-import {loginUserWithMagicLinkSchema} from '../resolvers/queries/loginUserWithMagicLink';
-import {loginUserWithPasswordSchema} from '../resolvers/queries/loginUserWithPassword';
-import {banUserSchema} from '../resolvers/mutations/banUser';
-import {getUserStripeInfoSchema} from '../resolvers/queries/getUserStripeInfo';
+import {getBusinessByIDSchema} from '../resolvers/queries/getBusinessByID';
+import {getCustomerByIDSchema} from '../resolvers/queries/getCustomerByID';
+import {getBusinessByEmailSchema} from '../resolvers/queries/getBusinessByEmail';
+import {getCustomerByEmailSchema} from '../resolvers/queries/getCustomerByEmail';
+import {verifyBusinessSchema} from '../resolvers/queries/verifyBusiness';
+import {verifyCustomerSchema} from '../resolvers/queries/verifyCustomer';
+import {loginBusinessWithMagicLinkSchema} from '../resolvers/queries/loginBusinessWithMagicLink';
+import {loginCustomerWithMagicLinkSchema} from '../resolvers/queries/loginCustomerWithMagicLink';
+import {loginBusinessWithPasswordSchema} from '../resolvers/queries/loginBusinessWithPassword';
+import {loginCustomerWithPasswordSchema} from '../resolvers/queries/loginCustomerWithPassword';
+import {banBusinessSchema} from '../resolvers/mutations/banBusiness';
+import {banCustomerSchema} from '../resolvers/mutations/banCustomer';
+import {getBusinessStripeInfoSchema} from '../resolvers/queries/getBusinessStripeInfo';
 import {confirmEmailValidationCodeSchema} from '../resolvers/mutations/confirmEmailValidationCode';
+import {confirmEmailValidationCodeCustomerSchema} from '../resolvers/mutations/confirmEmailValidationCodeCustomer';
 import {createStripeCheckoutPageSchema} from '../resolvers/queries/createStripeCheckoutPage';
 import {cancelSubscriptionSchema} from '../resolvers/queries/cancelSubscription';
-import {getUserSubscriptionDataSchema} from '../resolvers/queries/getUserSubscriptionData';
+import {getBusinessSubscriptionDataSchema} from '../resolvers/queries/getBusinessSubscriptionData';
 import {resendCodeSchema} from '../resolvers/mutations/resendCode';
+import {resendCodeCustomerSchema} from '../resolvers/mutations/resendCodeCustomer';
 import {getStripeCustomerPortalSchema} from '../resolvers/queries/getStripeCustomerPortal';
-import {verifyUserIsAdminSchema} from '../resolvers/queries/verifyUserIsAdmin';
+import {verifyBusinessIsAdminSchema} from '../resolvers/queries/verifyBusinessIsAdmin';
+import {verifyCustomerIsAdminSchema} from '../resolvers/queries/verifyCustomerIsAdmin';
 
 import {sharedSchema} from './shared';
 
 export const typeDefs = mergeTypeDefs([
   sharedSchema,
-  createUserSchema,
-  loginUserWithMagicLinkSchema,
-  loginUserWithPasswordSchema,
-  getUserByIDSchema,
-  getUserByEmailSchema,
+  createBusinessSchema,
+  createCustomerSchema,
+  loginBusinessWithMagicLinkSchema,
+  loginCustomerWithMagicLinkSchema,
+  loginBusinessWithPasswordSchema,
+  loginCustomerWithPasswordSchema,
+  getBusinessByIDSchema,
+  getCustomerByIDSchema,
+  getBusinessByEmailSchema,
+  getCustomerByEmailSchema,
   changePasswordSchema,
-  verifyUserSchema,
+  verifyBusinessSchema,
+  verifyCustomerSchema,
   forgotPasswordSchema,
+  forgotPasswordCustomerSchema,
   confirmForgotPasswordCodeSchema,
-  updateUserSchema,
-  banUserSchema,
-  getUserStripeInfoSchema,
+  confirmForgotPasswordCodeCustomerSchema,
+  updateBusinessSchema,
+  updateCustomerSchema,
+  banBusinessSchema,
+  banCustomerSchema,
+  getBusinessStripeInfoSchema,
   confirmEmailValidationCodeSchema,
+  confirmEmailValidationCodeCustomerSchema,
   createStripeCheckoutPageSchema,
-  getUserSubscriptionDataSchema,
+  getBusinessSubscriptionDataSchema,
   cancelSubscriptionSchema,
   resendCodeSchema,
+  resendCodeCustomerSchema,
   getStripeCustomerPortalSchema,
-  verifyUserIsAdminSchema,
+  verifyBusinessIsAdminSchema,
+  verifyCustomerIsAdminSchema,
 ]) as any;

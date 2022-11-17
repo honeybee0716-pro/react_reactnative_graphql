@@ -2,9 +2,9 @@ import {gql} from 'apollo-server';
 import bcrypt from 'bcrypt';
 
 import {prismaContext} from '../../prismaContext';
-import getUserByEmail from '../queries/getBusinessByEmail';
+import getUserByEmail from '../queries/getCustomerByEmail';
 
-export const confirmForgotPasswordCodeSchema = gql`
+export const confirmForgotPasswordCodeCustomerSchema = gql`
   scalar JSON
 
   type confirmForgotPasscodeCodeResponse {
@@ -19,14 +19,14 @@ export const confirmForgotPasswordCodeSchema = gql`
   }
 
   type Mutation {
-    confirmForgotPasswordCode(
+    confirmForgotPasswordCodeCustomer(
       input: confirmForgotPasscodeCodeInput
     ): confirmForgotPasscodeCodeResponse!
   }
 `;
 
 /* jscpd:ignore-start */
-const confirmForgotPasswordCode = async (parent: null, args: any) => {
+const confirmForgotPasswordCodeCustomer = async (parent: null, args: any) => {
   const foundUser = await getUserByEmail(undefined, {
     input: {email: args.input.email},
   });
@@ -46,7 +46,7 @@ const confirmForgotPasswordCode = async (parent: null, args: any) => {
   const hashedPassword = await bcrypt.hash(args.input.newPassword, salt);
 
   if (args.input.code === passwordResetCode && !isExpired) {
-    await prismaContext.prisma.business.update({
+    await prismaContext.prisma.customer.update({
       where: {
         email: args.input.email,
       },
@@ -70,4 +70,4 @@ const confirmForgotPasswordCode = async (parent: null, args: any) => {
 };
 /* jscpd:ignore-end */
 
-export default confirmForgotPasswordCode;
+export default confirmForgotPasswordCodeCustomer;

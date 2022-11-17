@@ -14,7 +14,8 @@ import open from 'open';
 
 import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
-import getUserByID from './graphql/resolvers/queries/getUserByID';
+import getBusinessByID from './graphql/resolvers/queries/getBusinessByID';
+import getCustomerByID from './graphql/resolvers/queries/getCustomerByID';
 
 if (process.env.NODE_ENV !== 'localhost') {
   Sentry.init({
@@ -57,15 +58,43 @@ const createContext = async ({req}: any) => {
   } catch (err) {
     throw new AuthenticationError(errorMessage);
   }
+  
+  let user = await getBusinessByID(undefined, {input: {id: decodedJWT.id}}).then(res=>{return res}).catch(err=>
+    {
+      console.log(err)
+      return null
+  });
 
-  const user = await getUserByID(undefined, {input: {id: decodedJWT.id}});
-
-  if (!user) {
-    throw new AuthenticationError(errorMessage);
+  if(user==null)
+  {
+    user = await getCustomerByID(undefined, {input: {id: decodedJWT.id}}).then(res=>res).catch(err=>
+      {
+        console.log(err)
+        return null
+    });
+  
   }
 
+  if(user==null)
+  {
+    throw new AuthenticationError("request not susccessful");
+  }
+
+  /*try{
+  let user = await getBusinessByID(undefined, {input: {id: decodedJWT.id}});
+
+  if (!user) {
+    user = await getCustomerByID(undefined, {input: {id: decodedJWT.id}});
+    if(!user)
+        throw new AuthenticationError(errorMessage);
+  }
+}catch(err){
+  console.log("error here:",err)
+  user = await getCustomerByID(undefined, {input: {id: decodedJWT.id}});
+}*/
+
   return {
-    user: user.data,
+    user: user?.data,
     ipAddress: req.ip,
     req,
   };
@@ -86,24 +115,36 @@ const isAdmin = rule()(
 const permissions = shield(
   {
     Query: {
-      getUserByID: isAuthenticated,
-      getUserByEmail: isAuthenticated,
-      loginUserWithPassword: any,
-      loginUserWithMagicLink: any,
-      verifyUser: isAuthenticated,
+      getBusinessByID: isAuthenticated,
+      getCustomerByID: isAuthenticated,
+      getBusinessByEmail: isAuthenticated,
+      getCustomerByEmail: isAuthenticated,
+      loginBusinessWithPassword: any,
+      loginCustomerWithPassword: any,
+      loginBusinessWithMagicLink: any,
+      loginCustomerWithMagicLink: any,
+      verifyBusiness: isAuthenticated,
+      verifyCustomer: isAuthenticated,
       createStripeCheckoutPage: isAuthenticated,
-      getUserSubscriptionData: isAuthenticated,
+      getBusinessSubscriptionData: isAuthenticated,
       cancelSubscription: isAuthenticated,
     },
     Mutation: {
       changePassword: isAuthenticated,
       confirmForgotPasswordCode: isNotAuthenticated,
-      createUser: isNotAuthenticated,
+      confirmForgotPasswordCodeCustomer: isNotAuthenticated,
+      createBusiness: isNotAuthenticated,
+      createCustomer: isNotAuthenticated,
       forgotPassword: isNotAuthenticated,
-      updateUser: isAuthenticated,
-      banUser: isAdmin,
+      forgotPasswordCustomer: isNotAuthenticated,
+      updateBusiness: isAuthenticated,
+      updateCustomer: isAuthenticated,
+      banBusiness: isAdmin,
+      banCustomer: isAdmin,
       confirmEmailValidationCode: isAuthenticated,
+      confirmEmailValidationCodeCustomer: isAuthenticated,
       resendCode: isAuthenticated,
+      resendCodeCustomer: isAuthenticated,
     },
   },
   {

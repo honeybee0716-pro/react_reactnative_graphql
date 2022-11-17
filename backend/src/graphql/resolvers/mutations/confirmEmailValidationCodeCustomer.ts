@@ -1,9 +1,9 @@
 import {gql} from 'apollo-server';
 
 import {prismaContext} from '../../prismaContext';
-import getBusinessByID from '../queries/getBusinessByID';
+import getCustomerByID from '../queries/getCustomerByID';
 
-export const confirmEmailValidationCodeSchema = gql`
+export const confirmEmailValidationCodeCustomerSchema = gql`
   scalar JSON
 
   type confirmEmailValidationCodeResponse {
@@ -17,19 +17,19 @@ export const confirmEmailValidationCodeSchema = gql`
   }
 
   type Mutation {
-    confirmEmailValidationCode(
+    confirmEmailValidationCodeCustomer(
       input: confirmEmailValidationCodeInput
     ): confirmEmailValidationCodeResponse!
   }
 `;
 
 /* jscpd:ignore-start */
-const confirmEmailValidationCode = async (
+const confirmEmailValidationCodeCustomer = async (
   parent: null,
   args: any,
   context: any,
 ) => {
-  const foundUser = await getBusinessByID(undefined, {
+  const foundUser = await getCustomerByID(undefined, {
     input: {id: context.user.id},
   });
 
@@ -44,7 +44,7 @@ const confirmEmailValidationCode = async (
   const isExpired = Date.now() - timestampInMilliseconds > 1000 * 60 * 100;
 
   if (args.input.code === verifyEmailCode && !isExpired) {
-    await prismaContext.prisma.business.update({
+    await prismaContext.prisma.customer.update({
       where: {
         id: context.user.id,
       },
@@ -68,4 +68,4 @@ const confirmEmailValidationCode = async (
 };
 /* jscpd:ignore-end */
 
-export default confirmEmailValidationCode;
+export default confirmEmailValidationCodeCustomer;

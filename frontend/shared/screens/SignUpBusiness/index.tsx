@@ -25,7 +25,7 @@ import { useTranslation } from 'react-i18next'
 
 const CREATE_USER = gql`
   mutation Mutation($createUserInput: createUserInput) {
-    createUser(input: $createUserInput) {
+    createBusiness(input: $createUserInput) {
       jwt
       message
       status
@@ -52,7 +52,7 @@ export default function SignUp(props: any) {
     console.log(error.message)
   }
   if (data) {
-    console.log(data)
+    //console.log(data)
   }
 
   const handleSignUp = async () => {
@@ -71,16 +71,16 @@ export default function SignUp(props: any) {
       onCompleted: async (signUpUserWithData) => {
         console.log(signUpUserWithData)
         if (
-          signUpUserWithData?.createUser?.status === 'success' &&
-          signUpUserWithData?.createUser?.jwt
+          signUpUserWithData?.createBusiness?.status === 'success' &&
+          signUpUserWithData?.createBusiness?.jwt
         ) {
-          await AsyncStorage.setItem('jwt', signUpUserWithData.createUser.jwt)
+          await AsyncStorage.setItem('jwt', signUpUserWithData.createBusiness.jwt)
           push('/otp')
           return
         }
-        if (signUpUserWithData?.createUser?.message) {
+        if (signUpUserWithData?.createBusiness?.message) {
           toast.show({
-            description: signUpUserWithData.createUser.message
+            description: signUpUserWithData.createBusiness.message
           })
           return
         }

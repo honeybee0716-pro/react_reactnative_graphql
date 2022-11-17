@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   StatusBar,
   Box,
@@ -6,78 +7,87 @@ import {
   Hidden,
   Text,
   Image,
-  HStack,
   Input,
-  Button,
-  Checkbox,
-  Link,
   Pressable,
   useToast
 } from 'native-base'
-import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
-import { Link as SolitoLink } from 'solito/link'
 import { useState } from 'react'
-import IconLink from 'shared/components/icons/IconLink'
-import { gql, useLazyQuery } from '@apollo/client'
-import { useRouter } from 'solito/router'
+import { gql, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
+import { useRouter } from 'solito/router'
 
-const LOGIN_USER = gql`
-  query LoginCustomerWithPassword($input: loginUserWithPasswordInput) {
-    loginCustomerWithPassword(input: $input) {
+const CONFIRM_EMAIL_VALIDATION_CODE_CUSTOMER = gql`
+  mutation ConfirmEmailValidationCodeCustomer($input: confirmEmailValidationCodeInput) {
+    confirmEmailValidationCodeCustomer(input: $input) {
       message
       status
-      jwt
-      verified
     }
   }
 `
 
-export default function SignUp(props: any) {
-  const { push } = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPass, setShowPass] = useState(false)
-  const [loginUser, { loading }] = useLazyQuery(LOGIN_USER)
-  const toast = useToast()
 
-  const handleSignIn = async () => {
-    await AsyncStorage.removeItem('jwt')
-    loginUser({
+
+export default function OTPCUST(props: any) {
+  const toast = useToast()
+  const { push } = useRouter()
+  const [code, setCode] = useState('')
+
+  const [confirmEmailValidationCodeCustomer, { loading }] = useMutation(
+    CONFIRM_EMAIL_VALIDATION_CODE_CUSTOMER
+  )
+
+  const handleSubmitOTP = async () => {
+    if (!code) {
+      toast.show({
+        description: 'Please enter a code.'
+      })
+      return
+    }
+    try {
+      Number(code)
+    } catch (e) {
+      toast.show({
+        description: 'Please enter a valid code.'
+      })
+      return
+    }
+    const jwt = await AsyncStorage.getItem('jwt')
+    if (!jwt) {
+      toast.show({
+        description: 'There was an error. Please try again.'
+      })
+      return
+    }
+    confirmEmailValidationCodeCustomer({
       variables: {
         input: {
-          email,
-          password
+          code: Number(code)
         }
       },
-      onCompleted: async ({ loginCustomerWithPassword }) => {
-        if (
-          loginCustomerWithPassword?.status === 'success' &&
-          loginCustomerWithPassword?.jwt
-        ) {
-          await AsyncStorage.setItem('jwt', loginCustomerWithPassword.jwt)
-          console.log(loginCustomerWithPassword)
-          if (loginCustomerWithPassword.verified) push('/home')
-          else push('/otp-customer')
+      onCompleted: ({ confirmEmailValidationCodeCustomer }) => {
+        if (confirmEmailValidationCodeCustomer?.status === 'success') {
+          push('/home')
           return
         }
-        if (loginCustomerWithPassword?.message) {
+        if (confirmEmailValidationCodeCustomer?.message) {
           toast.show({
-            description: loginCustomerWithPassword.message
+            description: confirmEmailValidationCodeCustomer.message
           })
           return
         }
         toast.show({
-          description: 'There was a problem logging in, please try again...'
+          description: 'There was an error'
         })
         return
       },
       onError: (error) => {
-        toast.show({
-          description: `${error.message}`
-        })
+        //toast.show({
+          //description: error
+        //})
+        console.log(error)
+        return
       }
     })
   }
@@ -140,7 +150,7 @@ export default function SignUp(props: any) {
                         fontWeight="semibold"
                         marginLeft={'4'}
                       >
-                        SaaS Template
+                        SaleSpin
                       </Text>
                     </Center>
                   </Hidden>
@@ -160,7 +170,7 @@ export default function SignUp(props: any) {
                       marginTop={{ base: '1', sm: '9', lg: '0' }}
                       fontFamily="body"
                     >
-                      Sign in
+                      Verify code
                     </Text>
                     {/* <HStack
                       justifyContent="center"
@@ -249,6 +259,7 @@ export default function SignUp(props: any) {
                       </Box>
                     </Box> */}
                     <Box>
+                      {/* input email */}
                       <Box position="relative" w="full" marginTop="5">
                         <Input
                           paddingLeft="12"
@@ -262,43 +273,8 @@ export default function SignUp(props: any) {
                           fontSize={{ base: 'xs', sm: 'md' }}
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="you@example.com"
-                          onChangeText={(text) => setEmail(text)}
-                          focusOutlineColor={theme.colors.shared.transparent}
-                        />
-                        <Box
-                          position="absolute"
-                          left="4"
-                          h="full"
-                          flexDir="row"
-                          alignItems="center"
-                        >
-                          <Image
-                            w="5"
-                            h="5"
-                            source={require('shared/images/mail.svg')}
-                          />
-                        </Box>
-                      </Box>
-
-                      {/* input password */}
-                      <Box position="relative" w="full" marginTop="5">
-                        <Input
-                          type={showPass ? 'text' : 'password'}
-                          paddingLeft="12"
-                          paddingTop="3"
-                          paddingRight="3"
-                          paddingBottom="3"
-                          w="full"
-                          borderRadius="xl"
-                          borderWidth="2"
-                          borderColor={theme.colors.shared.softerGray}
-                          fontSize={{ base: 'xs', sm: 'md' }}
-                          fontWeight="medium"
-                          backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="Enter your password"
-                          onChangeText={(text) => setPassword(text)}
-                          focusOutlineColor={theme.colors.shared.transparent}
+                          placeholder="eg: 123456"
+                          onChangeText={(text) => setCode(text)}
                         />
                         <Box
                           position="absolute"
@@ -310,75 +286,10 @@ export default function SignUp(props: any) {
                           <Image
                             w="6"
                             h="6"
-                            source={require('shared/images/lock.svg')}
+                            source={require('shared/images/mail 1.png')}
                           />
                         </Box>
-                        <Box
-                          position="absolute"
-                          right="2"
-                          h="full"
-                          flexDirection="row"
-                          alignItems="center"
-                        >
-                          <Button
-                            backgroundColor="white"
-                            _hover={{
-                              backgroundColor: 'gray.100'
-                            }}
-                            borderWidth="2"
-                            borderColor={theme.colors.shared.softGray}
-                            borderRadius="lg"
-                            padding="2"
-                            onPress={() => {
-                              setShowPass(!showPass)
-                            }}
-                          >
-                            <Image
-                              w="4"
-                              h="4"
-                              source={require('shared/images/eye (1) 1.png')}
-                            />
-                          </Button>
-                        </Box>
                       </Box>
-
-                      {/* remember_me_forgot_pass */}
-                      <Hidden from="lg">
-                        <HStack
-                          justifyContent="space-between"
-                          position="relative"
-                          marginTop="5"
-                        >
-                          <Checkbox
-                            alignItems="center"
-                            defaultIsChecked={false}
-                            value="demo"
-                            colorScheme="primary"
-                            accessibilityLabel="Remember me"
-                          >
-                            <HStack alignItems="center">
-                              <Text
-                                fontSize={{ base: 'sm', sm: 'md' }}
-                                fontWeight="medium"
-                              >
-                                Remember me
-                              </Text>
-                            </HStack>
-                          </Checkbox>
-                          <HStack alignItems="center" space="1">
-                            <Box w="18px">
-                              <IconLink />
-                            </Box>
-                            <Text
-                              fontSize={{ base: 'xs', sm: 'md' }}
-                              fontWeight="medium"
-                              color={theme.colors.shared.softBlack}
-                            >
-                              Forgot Password ?
-                            </Text>
-                          </HStack>
-                        </HStack>
-                      </Hidden>
 
                       {/* button */}
                       <Box marginTop="5">
@@ -388,58 +299,22 @@ export default function SignUp(props: any) {
                           paddingX="2"
                           borderRadius="xl"
                         >
-                          <Pressable onPress={handleSignIn}>
-                            <Text
-                              textAlign="center"
-                              fontWeight="semibold"
-                              color="white"
-                              fontSize={{ base: 'sm', sm: 'md' }}
-                            >
+                          <Text
+                            textAlign="center"
+                            fontWeight="semibold"
+                            color="white"
+                            fontSize={{ base: 'sm', sm: 'md' }}
+                          >
+                            <Pressable onPress={handleSubmitOTP}>
                               <Hidden till="lg">
-                                <>
-                                  {loading
-                                    ? 'Loading...'
-                                    : 'Sign in to your account'}
-                                </>
+                                <>{loading ? 'Loading...' : 'Verify code'}</>
                               </Hidden>
                               <Hidden from="lg">
-                                <>
-                                  {loading
-                                    ? 'Loading...'
-                                    : 'Sign in to your account'}
-                                </>
+                                <>{loading ? 'Loading...' : 'Verify code'}</>
                               </Hidden>
-                            </Text>
-                          </Pressable>
+                            </Pressable>
+                          </Text>
                         </Box>
-                      </Box>
-
-                      {/* already have account */}
-                      <Box
-                        marginTop={{ base: '5', sm: '7' }}
-                        marginBottom={{ base: '1', sm: '7', lg: '0' }}
-                      >
-                        <Text
-                          textAlign="center"
-                          fontSize={{ base: 'sm', sm: 'md' }}
-                        >
-                          Don't have an account yet?{' '}
-                          <SolitoLink href="/sign-up-customer">
-                            <Link
-                              _text={{
-                                fontSize: 'md'
-                              }}
-                              fontWeight="semibold"
-                            >
-                              <Hidden till="lg">
-                                <>Sign up</>
-                              </Hidden>
-                              <Hidden from="lg">
-                                <>Sign up now</>
-                              </Hidden>
-                            </Link>
-                          </SolitoLink>
-                        </Text>
                       </Box>
                     </Box>
                   </Box>
@@ -464,7 +339,7 @@ export default function SignUp(props: any) {
               left={0}
               right={0}
               bottom={0}
-              source={require('../../images/pexels-gradienta-7135120 1.png')}
+              source={require('shared/images/pexels-gradienta-7135120 1.png')}
             />
             <Box
               flexDirection={'column'}

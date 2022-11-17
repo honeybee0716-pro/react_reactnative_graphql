@@ -5,7 +5,7 @@ import {generateRandomNumber} from '../../../utils/generateRandomNumber';
 // import {sendEmail} from '../../../utils/sendgrid';
 import {nodemailer} from '../../../utils/nodemailer';
 
-export const forgotPasswordSchema = gql`
+export const forgotPasswordCustomerSchema = gql`
   scalar JSON
 
   input forgotPasswordInput {
@@ -18,23 +18,23 @@ export const forgotPasswordSchema = gql`
   }
 
   type Mutation {
-    forgotPassword(input: forgotPasswordInput): forgotPasswordResponse!
+    forgotPasswordCustomer(input: forgotPasswordInput): forgotPasswordResponse!
   }
 `;
 
-const forgotPassword = async (parent: any, args: any) => {
+const forgotPasswordCustomer = async (parent: any, args: any) => {
   const {email} = args.input;
 
   const passwordResetCode = generateRandomNumber();
 
-  const user = await prismaContext.prisma.business.findFirst({
+  const user = await prismaContext.prisma.customer.findFirst({
     where: {
       email,
     },
   });
 
   if (user) {
-    await prismaContext.prisma.business.update({
+    await prismaContext.prisma.customer.update({
       where: {
         email,
       },
@@ -75,4 +75,4 @@ const forgotPassword = async (parent: any, args: any) => {
   };
 };
 
-export default forgotPassword;
+export default forgotPasswordCustomer;
