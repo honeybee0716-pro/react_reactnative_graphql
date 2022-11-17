@@ -122,7 +122,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         paddingLeft={{ base: '0', sm: '90px', lg: '310px' }}
         w="full"
         zIndex={10}
-        height={{ base: '69px', sm: '84px' }}
+        height={{ base: '69px', sm: '74px' }}
         backgroundColor="white"
         borderBottomWidth="1"
         borderBottomColor={theme.colors.shared.softGray}
@@ -307,7 +307,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         >
           <VStack h="full">
             <Center
-              h="84px"
+              h="74px"
               borderBottomWidth="1"
               borderBottomColor={theme.colors.shared.softer2Gray}
             >
@@ -921,7 +921,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         backgroundColor={theme.colors.shared.aliceBlue}
         marginTop={{
           base: '69px',
-          sm: '84px'
+          sm: '74px'
         }}
         marginLeft={{
           base: '0',

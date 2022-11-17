@@ -103,18 +103,14 @@ const isNotAuthenticated = (0, graphql_shield_1.rule)()((parent, args, context) 
 const isAdmin = (0, graphql_shield_1.rule)()((parent, args, context) => __awaiter(void 0, void 0, void 0, function* () { return context.user.role === 'ADMIN'; }));
 const permissions = (0, graphql_shield_1.shield)({
     Query: {
-        getLeadByID: isAuthenticated,
         getUserByID: isAuthenticated,
-        getUsersRemainingCredits: isAuthenticated,
         getUserByEmail: isAuthenticated,
         loginUserWithPassword: any,
         loginUserWithMagicLink: any,
         verifyUser: isAuthenticated,
-        getUserLeads: isAuthenticated,
         createStripeCheckoutPage: isAuthenticated,
         getUserSubscriptionData: isAuthenticated,
         cancelSubscription: isAuthenticated,
-        searchForLeads: isAuthenticated,
     },
     Mutation: {
         changePassword: isAuthenticated,
