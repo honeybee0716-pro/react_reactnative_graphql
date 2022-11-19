@@ -99,7 +99,8 @@ const DashboardLayout: React.FC = ({ children }) => {
   }
 
   const goToHelp = async () => {
-    push('/help')
+    //push('/help')
+    window.location.href="mailto:support@salespin.co"
   }
 
   return (
@@ -851,6 +852,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                   <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
                       onPress={goToHelp}
+                      
                       w={{ lg: 'full' }}
                       flexDirection="row"
                       alignItems="center"
