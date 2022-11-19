@@ -102,14 +102,14 @@ export default function LandingPage() {
 
       <LandingPageTopNavigation />
 
-      {/*<div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <button value={'ar'} onClick={changeLanguage}>
-          {'Arabic'}
-        </button>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <button value={'en'} onClick={changeLanguage}>
           {'English'}
         </button>
-      </div>*/}
+        <button value={'tha'} onClick={changeLanguage}>
+          {'Thai'}
+        </button>
+      </div>
 
       <Box position="relative">
         <Image
@@ -186,7 +186,7 @@ export default function LandingPage() {
               <>
                 {t('A comprehensive dashboard allowing you to manage all')}
                 <br />
-                aspects of your business in one platform
+                {t("aspects of your business in one platform")}
               </>
             </Hidden>
             <Hidden from="sm">

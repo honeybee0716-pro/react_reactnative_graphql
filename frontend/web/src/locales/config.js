@@ -16,14 +16,14 @@ i18n
       en: {
         translations: require('./en.json')
       },
-      ar: {
-        translations: require('./ar.json')
+      thai: {
+        translations: require('./thai.json')
       }
     },
     ns: ['translations'],
     defaultNS: 'translations'
   })
 
-i18n.languages = ['en', 'ar']
+i18n.languages = ['en', 'thai']
 
 export default i18n
