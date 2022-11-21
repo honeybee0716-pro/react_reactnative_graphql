@@ -63,6 +63,8 @@ export const useRouteAuthentication = async () => {
       return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
     case '/campaigns':
       return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
+    case '/shopping':
+      return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')  
     case '/help':
       return await determineAccess(AUTH_STATUS.SIGNED_IN, '/sign-in-business')
     case '/account':

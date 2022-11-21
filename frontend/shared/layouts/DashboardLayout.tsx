@@ -41,14 +41,29 @@ import IconArrowRight from 'shared/components/icons/IconArrowRight'
 import IconMenu from 'shared/components/icons/IconMenu'
 import IconExit from '../components/icons/IconExit'
 import { useRouter } from 'solito/router'
+import { useRecoilState } from 'recoil'
+import { userSubscriptionDataState, jwtState } from '../state'
 
 const { width, height } = Dimensions.get('window')
 
 const DashboardLayout: React.FC = ({ children }) => {
   const [shouldOverlapWithTrigger] = useState(false)
   const [position, setPosition] = React.useState('auto')
-
+  const  [control,setControl]=React.useState("")
   const { push } = useRouter()
+  const [userSubscriptionData, setUserSubscriptionData] = useRecoilState<any>(
+    userSubscriptionDataState
+  )
+
+  React.useEffect(()=>{
+    if(userSubscriptionData.stripeCustomer.metadata.accountType==="business")
+    {
+      setControl("business")
+    }else if (userSubscriptionData.stripeCustomer.metadata.accountType==="customer")
+    {
+      setControl("customer")
+    }
+  },[userSubscriptionData])
 
   const handleSignOut = async () => {
     push('/sign-out')
@@ -84,6 +99,10 @@ const DashboardLayout: React.FC = ({ children }) => {
 
   const goToBilling = async () => {
     push('/billing')
+  }
+
+  const goToShopping = async () => {
+    push('/shopping')
   }
 
   const goToHome = async () => {
@@ -414,43 +433,46 @@ const DashboardLayout: React.FC = ({ children }) => {
                       </Hidden>
                     </Pressable>
                   </Center>*/}
+                  {control==="business"&& (
                     <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={goToCampaigns}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        justifyContent="space-between"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box flexDirection="row" alignItems="center">
-                          <Box w={{ base: '20px', lg: '24px' }}>
-                            <IconFlag />
-                          </Box>
-                          <Hidden till="lg">
-                            <Text
-                              color={theme.colors.shared.soft2Gray}
-                              fontWeight="semibold"
-                              paddingLeft="4"
-                            >
-                              Campaigns
-                            </Text>
-                          </Hidden>
+                    <Pressable
+                      onPress={goToCampaigns}
+                      w={{ lg: 'full' }}
+                      flexDirection="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      paddingX={{ base: '3', lg: '6' }}
+                      paddingY="3"
+                      borderRadius="lg"
+                      _hover={{
+                        backgroundColor: theme.colors.shared.softer2Gray
+                      }}
+                    >
+                      <Box flexDirection="row" alignItems="center">
+                        <Box w={{ base: '20px', lg: '24px' }}>
+                          <IconFlag />
                         </Box>
-                        {/*<Hidden till="lg">
-                        <Center>
-                          <Box w="20px">
-                            <IconChevronDown rotation={180} />
-                          </Box>
-                        </Center>
-                      </Hidden>*/}
-                      </Pressable>
-                    </Center>
+                        <Hidden till="lg">
+                          <Text
+                            color={theme.colors.shared.soft2Gray}
+                            fontWeight="semibold"
+                            paddingLeft="4"
+                          >
+                            Campaigns
+                          </Text>
+                        </Hidden>
+                      </Box>
+                      {/*<Hidden till="lg">
+                      <Center>
+                        <Box w="20px">
+                          <IconChevronDown rotation={180} />
+                        </Box>
+                      </Center>
+                    </Hidden>*/}
+                    </Pressable>
+                  </Center>
+                  )}
+                    
                     {/*<Hidden till="lg">
                     <Box marginLeft="33px">
                       <Box
@@ -530,6 +552,9 @@ const DashboardLayout: React.FC = ({ children }) => {
                       </Hidden>
                     </Pressable>
                   </Center>*/}
+                  
+                    
+                  
                     <Center marginY={{ base: '2', lg: '0' }}>
                       <Pressable
                         onPress={GotoTransaction}
@@ -562,6 +587,40 @@ const DashboardLayout: React.FC = ({ children }) => {
                         </Hidden>
                       </Pressable>
                     </Center>
+                    {control==="customer" && (
+                  <Center marginY={{ base: '2', lg: '0' }}>
+                    <Pressable
+                      onPress={goToShopping}
+                      w={{ lg: 'full' }}
+                      flexDirection="row"
+                      alignItems="center"
+                      paddingX={{ base: '3', lg: '6' }}
+                      paddingY="3"
+                      borderRadius="lg"
+                      _hover={{
+                        backgroundColor: theme.colors.shared.softer2Gray
+                      }}
+                    >
+                      <Box w={{ base: '20px', lg: '24px' }}>
+                      <Image
+                            w="6"
+                            h="6"
+                            source={require('shared/images/shopping.svg')}
+                          />
+                      </Box>
+                      <Hidden till="lg">
+                        <Text
+                          color={theme.colors.shared.soft2Gray}
+                          fontWeight="semibold"
+                          paddingLeft="4"
+                        >
+                          Shopping
+                        </Text>
+                      </Hidden>
+                    </Pressable>
+                  </Center>)}
+                    {control==="business" && (
+                      <>
                     <Center marginY={{ base: '2', lg: '0' }}>
                       <Pressable
                         onPress={GotoCustomers}
@@ -748,6 +807,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                         </Hidden>
                       </Pressable>
                     </Center>
+                    </>)}
                   </ScrollView>
                 </Box>
                 <br />
@@ -795,6 +855,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                       ></Box>
                     </>
                   </Hidden>
+                 
                   <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
                       onPress={goToBilling}

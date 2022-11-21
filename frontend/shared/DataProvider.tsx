@@ -69,7 +69,8 @@ export const DataProvider = ({ children }) => {
           document.location.href.includes('branding') ||
           document.location.href.includes('campaigns') ||
           document.location.href.includes('help') ||
-          document.location.href.includes('account')
+          document.location.href.includes('account') ||
+          document.location.href.includes('shopping')
         ) {
           push('/sign-in-business')
         }
@@ -90,6 +91,19 @@ export const DataProvider = ({ children }) => {
         push('/otp')
         else
         push('/otp-customer')
+      }else{
+        if(data.getBusinessSubscriptionData.stripeCustomer.metadata.accountType==="customer" && 
+          document.location.href.includes('customers') ||
+          document.location.href.includes('tiers') ||
+          document.location.href.includes('automation') ||
+          document.location.href.includes('products') ||
+          document.location.href.includes('reports') ||
+          document.location.href.includes('branding') ||
+          document.location.href.includes('campaigns'))
+          push('/home')
+        else if(data.getBusinessSubscriptionData.stripeCustomer.metadata.accountType==="business" && 
+        document.location.href.includes('shopping'))
+        push('/home')  
       }
     }
   }, [data])
