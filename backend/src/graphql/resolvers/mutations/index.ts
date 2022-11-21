@@ -1,5 +1,6 @@
 import createBusiness from './createBusiness';
 import createCustomer from './createCustomer';
+import createCustomerWithBusiness from './createCustomerWithBusiness';
 import forgotPassword from './forgotPassword';
 import forgotPasswordCustomer from './forgotPasswordCustomer';
 import confirmForgotPasswordCode from './confirmForgotPasswordCode';
@@ -15,6 +16,7 @@ import resendCodeCustomer from './resendCodeCustomer';
 const RootMutation = {
   createBusiness,
   createCustomer,
+  createCustomerWithBusiness,
   forgotPassword,
   forgotPasswordCustomer,
   changePassword,

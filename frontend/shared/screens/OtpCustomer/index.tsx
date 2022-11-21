@@ -14,9 +14,11 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { useState } from 'react'
-import { gql, useMutation } from '@apollo/client'
+import { gql, useMutation, useLazyQuery  } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 import { useRouter } from 'solito/router'
+import { useRecoilState } from 'recoil'
+import { userSubscriptionDataState} from '../../state'
 
 const CONFIRM_EMAIL_VALIDATION_CODE_CUSTOMER = gql`
   mutation ConfirmEmailValidationCodeCustomer($input: confirmEmailValidationCodeInput) {
@@ -27,16 +29,50 @@ const CONFIRM_EMAIL_VALIDATION_CODE_CUSTOMER = gql`
   }
 `
 
-
+const GET_BUSINESS_SUBSCRIPTION_DATA = gql`
+  query Query {
+    getBusinessSubscriptionData {
+      message
+      status
+      stripeCustomer
+      activeSubscription
+      remainingCredits
+      isInTrial
+      redirectToPricingPage
+      redirectToOTPPage
+      isCustomPlan
+      userInternalID
+      userEmail
+    }
+  }
+`
 
 export default function OTPCUST(props: any) {
   const toast = useToast()
   const { push } = useRouter()
   const [code, setCode] = useState('')
 
+  const [getBusinessSubscriptionData ,{ data }] = useLazyQuery(
+    GET_BUSINESS_SUBSCRIPTION_DATA,
+    {
+      fetchPolicy: 'network-only'
+    }
+  )
+
   const [confirmEmailValidationCodeCustomer, { loading }] = useMutation(
     CONFIRM_EMAIL_VALIDATION_CODE_CUSTOMER
   )
+
+  const [userSubscriptionData, setUserSubscriptionData] = useRecoilState<any>(
+    userSubscriptionDataState
+  )
+
+  React.useEffect(() => {
+    
+    if (data?.getBusinessSubscriptionData) {
+      setUserSubscriptionData(data.getBusinessSubscriptionData)
+    }
+  }, [data])
 
   const handleSubmitOTP = async () => {
     if (!code) {
@@ -66,8 +102,9 @@ export default function OTPCUST(props: any) {
           code: Number(code)
         }
       },
-      onCompleted: ({ confirmEmailValidationCodeCustomer }) => {
+      onCompleted: async ({ confirmEmailValidationCodeCustomer }) => {
         if (confirmEmailValidationCodeCustomer?.status === 'success') {
+          await getBusinessSubscriptionData()
           push('/home')
           return
         }

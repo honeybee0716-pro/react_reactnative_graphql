@@ -16,19 +16,19 @@ model PrismaInfo {
 }
 
 model Business {
-  id                         String    @id @default(auto()) @map("_id") @db.ObjectId
-  stripeCustomerID           String    @unique
+  id                         String     @id @default(auto()) @map("_id") @db.ObjectId
+  stripeCustomerID           String     @unique
   firstName                  String
   lastName                   String
   companyName                String?
-  email                      String    @unique
-  emailIsVerified            Boolean   @default(false)
+  email                      String     @unique
+  emailIsVerified            Boolean    @default(false)
   password                   String
-  createdAt                  DateTime  @default(now())
-  updatedAt                  DateTime  @default(now())
+  createdAt                  DateTime   @default(now())
+  updatedAt                  DateTime   @default(now())
   deletedAt                  DateTime?
   bannedAt                   DateTime?
-  allowMarketingEmails       Boolean   @default(true)
+  allowMarketingEmails       Boolean    @default(true)
   createdIPAddress           String
   knownIPAddresses           String[]
   passwordResetCode          Int?
@@ -36,7 +36,8 @@ model Business {
   verifyEmailCode            Int?
   verifyEmailCodeTimestamp   DateTime?
   trialCreatedAt             DateTime?
-  role                       Role      @default(BASIC)
+  role                       Role       @default(BASIC)
+  Customer                   Customer[]
 }
 
 model Customer {
@@ -61,6 +62,8 @@ model Customer {
   verifyEmailCodeTimestamp   DateTime?
   trialCreatedAt             DateTime?
   role                       Role      @default(BASIC)
+  business                   Business? @relation(fields: [businessId], references: [id])
+  businessId                 String?
 }
 
 enum Role {

@@ -17,6 +17,7 @@ import verifyBusinessIsAdmin from './verifyBusinessIsAdmin';
 import verifyCustomerIsAdmin from './verifyCustomerIsAdmin';
 import getBusinessDetails from './getBusinessDetails';
 import getCustomerDetails from './getCustomerDetails';
+import getCustomerDetailsBusiness from './getCustomerDetailsBusiness';
 
 export const RootQuery = {
   getBusinessByID,
@@ -37,7 +38,8 @@ export const RootQuery = {
   verifyBusinessIsAdmin,
   verifyCustomerIsAdmin,
   getBusinessDetails,
-  getCustomerDetails
+  getCustomerDetails,
+  getCustomerDetailsBusiness
 };
 
 export default RootQuery;

@@ -2,6 +2,7 @@ import {mergeTypeDefs} from '@graphql-tools/merge';
 
 import {createBusinessSchema} from '../resolvers/mutations/createBusiness';
 import {createCustomerSchema} from '../resolvers/mutations/createCustomer';
+import { createCustomerWithBusinessSchema } from '../resolvers/mutations/createCustomerWithBusiness';
 import {forgotPasswordSchema} from '../resolvers/mutations/forgotPassword';
 import {forgotPasswordCustomerSchema} from '../resolvers/mutations/forgotPasswordCustomer';
 import {confirmForgotPasswordCodeSchema} from '../resolvers/mutations/confirmForgotPasswordCode';
@@ -34,6 +35,7 @@ import {verifyBusinessIsAdminSchema} from '../resolvers/queries/verifyBusinessIs
 import {verifyCustomerIsAdminSchema} from '../resolvers/queries/verifyCustomerIsAdmin';
 import { getBusinessDetailsSchema } from '../resolvers/queries/getBusinessDetails';
 import { getCustomerDetailsSchema } from '../resolvers/queries/getCustomerDetails';
+import { getCustomerDetailsBusinessSchema } from '../resolvers/queries/getCustomerDetailsBusiness';
 
 import {sharedSchema} from './shared';
 
@@ -41,6 +43,7 @@ export const typeDefs = mergeTypeDefs([
   sharedSchema,
   createBusinessSchema,
   createCustomerSchema,
+  createCustomerWithBusinessSchema,
   loginBusinessWithMagicLinkSchema,
   loginCustomerWithMagicLinkSchema,
   loginBusinessWithPasswordSchema,
@@ -72,5 +75,6 @@ export const typeDefs = mergeTypeDefs([
   verifyBusinessIsAdminSchema,
   verifyCustomerIsAdminSchema,
   getBusinessDetailsSchema,
-  getCustomerDetailsSchema
+  getCustomerDetailsSchema,
+  getCustomerDetailsBusinessSchema
 ]) as any;
