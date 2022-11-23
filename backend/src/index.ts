@@ -130,8 +130,8 @@ const permissions = shield(
       cancelSubscription: isAuthenticated,
       getBusinessDetails:isAuthenticated,
       getCustomerDetails:isAuthenticated,
-      getCustomerDetailsBusiness:isAuthenticated,
-      //createCustomerWithBusiness: isAuthenticated,
+      getProductDetailsBusiness:isAuthenticated,
+      getProductById:isAuthenticated
     },
     Mutation: {
       changePassword: isAuthenticated,
@@ -140,6 +140,9 @@ const permissions = shield(
       createBusiness: isNotAuthenticated,
       createCustomer: isNotAuthenticated,
       createCustomerWithBusiness: isAuthenticated,
+      createProduct:isAuthenticated,
+      deleteProduct:isAuthenticated,
+      updateProduct:isAuthenticated,
       forgotPassword: isNotAuthenticated,
       forgotPasswordCustomer: isNotAuthenticated,
       updateBusiness: isAuthenticated,

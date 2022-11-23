@@ -1,6 +1,7 @@
 import createBusiness from './createBusiness';
 import createCustomer from './createCustomer';
 import createCustomerWithBusiness from './createCustomerWithBusiness';
+import createProduct from './createProduct';
 import forgotPassword from './forgotPassword';
 import forgotPasswordCustomer from './forgotPasswordCustomer';
 import confirmForgotPasswordCode from './confirmForgotPasswordCode';
@@ -12,11 +13,14 @@ import confirmEmailValidationCode from './confirmEmailValidationCode';
 import confirmEmailValidationCodeCustomer from './confirmEmailValidationCodeCustomer';
 import resendCode from './resendCode';
 import resendCodeCustomer from './resendCodeCustomer';
+import deleteProduct from './deleteProduct';
+import updateProduct from './updateProduct';
 
 const RootMutation = {
   createBusiness,
   createCustomer,
   createCustomerWithBusiness,
+  createProduct,
   forgotPassword,
   forgotPasswordCustomer,
   changePassword,
@@ -28,6 +32,8 @@ const RootMutation = {
   confirmForgotPasswordCodeCustomer,
   resendCode,
   resendCodeCustomer,
+  deleteProduct,
+  updateProduct
 };
 
 export default RootMutation;

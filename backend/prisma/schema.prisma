@@ -38,6 +38,7 @@ model Business {
   trialCreatedAt             DateTime?
   role                       Role       @default(BASIC)
   Customer                   Customer[]
+  Product                    Product[]
 }
 
 model Customer {
@@ -64,6 +65,17 @@ model Customer {
   role                       Role      @default(BASIC)
   business                   Business? @relation(fields: [businessId], references: [id])
   businessId                 String?
+}
+
+model Product {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  price       Float
+  description String
+  img         String
+  isDeleted   Boolean  @default(false)
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id])
 }
 
 enum Role {
