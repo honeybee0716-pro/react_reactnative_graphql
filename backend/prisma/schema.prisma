@@ -36,6 +36,7 @@ model Business {
   verifyEmailCode            Int?
   verifyEmailCodeTimestamp   DateTime?
   trialCreatedAt             DateTime?
+  companyLogo                String     @default("")
   role                       Role       @default(BASIC)
   Customer                   Customer[]
   Product                    Product[]

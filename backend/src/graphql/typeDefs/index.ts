@@ -36,11 +36,13 @@ import {verifyBusinessIsAdminSchema} from '../resolvers/queries/verifyBusinessIs
 import {verifyCustomerIsAdminSchema} from '../resolvers/queries/verifyCustomerIsAdmin';
 import {getBusinessDetailsSchema} from '../resolvers/queries/getBusinessDetails';
 import {getCustomerDetailsSchema} from '../resolvers/queries/getCustomerDetails';
-import {getCustomerDetailsBusinessSchema} from '../resolvers/queries/getCustomerDetailsBusiness';
 import {getProductDetailsBusinessSchema} from '../resolvers/queries/getProductDetailsBusiness';
 import {deleteProductSchema} from '../resolvers/mutations/deleteProduct';
 import {updateProductSchema} from '../resolvers/mutations/updateProduct';
 import {getProductByIdSchema} from '../resolvers/queries/getProductById';
+import {getCustomerDetailsBusinessSchema} from '../resolvers/queries/getCustomerDetailsBusiness';
+import {getCompanyLogoSchema} from '../resolvers/queries/getCompanyLogo';
+import {addCompanyLogoSchema} from '../resolvers/mutations/addCompanyLogo';
 
 import {sharedSchema} from './shared';
 
@@ -84,7 +86,9 @@ export const typeDefs = mergeTypeDefs([
   getProductDetailsBusinessSchema,
   getCustomerDetailsSchema,
   getCustomerDetailsBusinessSchema,
+  addCompanyLogoSchema,
   updateProductSchema,
   getProductByIdSchema,
   deleteProductSchema,
+  getCompanyLogoSchema,
 ]) as any;

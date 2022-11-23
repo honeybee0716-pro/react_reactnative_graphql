@@ -58,29 +58,32 @@ const createContext = async ({req}: any) => {
   } catch (err) {
     throw new AuthenticationError(errorMessage);
   }
-  
-  let user = await getBusinessByID(undefined, {input: {id: decodedJWT.id}}).then(res=>{return res}).catch(err=>
-    {
-      console.log(err)
-      return null
-  });
 
-  if(user==null)
-  {
-    user = await getCustomerByID(undefined, {input: {id: decodedJWT.id}}).then(res=>res).catch(err=>
-      {
-        console.log(err)
-        return null
+  let user = await getBusinessByID(undefined, {input: {id: decodedJWT.id}})
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
+
+      return null;
     });
-  
+
+  if (user == null) {
+    user = await getCustomerByID(undefined, {input: {id: decodedJWT.id}})
+      .then((res) => res)
+      .catch((err) => {
+        console.log(err);
+
+        return null;
+      });
   }
 
-  if(user==null)
-  {
-    throw new AuthenticationError("request not susccessful");
+  if (user == null) {
+    throw new AuthenticationError('request not susccessful');
   }
 
-  /*try{
+  /* try{
   let user = await getBusinessByID(undefined, {input: {id: decodedJWT.id}});
 
   if (!user) {
@@ -91,7 +94,7 @@ const createContext = async ({req}: any) => {
 }catch(err){
   console.log("error here:",err)
   user = await getCustomerByID(undefined, {input: {id: decodedJWT.id}});
-}*/
+} */
 
   return {
     user: user?.data,
@@ -128,10 +131,12 @@ const permissions = shield(
       createStripeCheckoutPage: isAuthenticated,
       getBusinessSubscriptionData: isAuthenticated,
       cancelSubscription: isAuthenticated,
-      getBusinessDetails:isAuthenticated,
-      getCustomerDetails:isAuthenticated,
-      getProductDetailsBusiness:isAuthenticated,
-      getProductById:isAuthenticated
+      getBusinessDetails: isAuthenticated,
+      getCustomerDetails: isAuthenticated,
+      getProductDetailsBusiness: isAuthenticated,
+      getProductById: isAuthenticated,
+      getCompanyLogo: isAuthenticated,
+      getCustomerDetailsBusiness: isAuthenticated,
     },
     Mutation: {
       changePassword: isAuthenticated,
@@ -140,13 +145,14 @@ const permissions = shield(
       createBusiness: isNotAuthenticated,
       createCustomer: isNotAuthenticated,
       createCustomerWithBusiness: isAuthenticated,
-      createProduct:isAuthenticated,
-      deleteProduct:isAuthenticated,
-      updateProduct:isAuthenticated,
+      createProduct: isAuthenticated,
+      deleteProduct: isAuthenticated,
+      updateProduct: isAuthenticated,
       forgotPassword: isNotAuthenticated,
       forgotPasswordCustomer: isNotAuthenticated,
       updateBusiness: isAuthenticated,
       updateCustomer: isAuthenticated,
+      addCompanyLogo: isAuthenticated,
       banBusiness: isAdmin,
       banCustomer: isAdmin,
       confirmEmailValidationCode: isAuthenticated,
