@@ -21,14 +21,14 @@ export default function LandingPageTopNavigation() {
         >
           <Box
             paddingRight="6"
-            borderRightWidth={{ base: '0', lg: '1' }}
-            borderRightColor={theme.colors.shared.soft4Gray_50}
+            //borderRightWidth={{ base: '0', lg: '1' }}
+            //borderRightColor={theme.colors.shared.soft4Gray_50}
           >
             <Box flexDir="row" alignItems="center" w="full">
               <Image
-                w="50px"
-                h="50px"
-                source={require('shared/images/contact-blaster-blue.png')}
+                w="80px"
+                h="40px"
+                source={require('shared/images/salespinLogo.png')}
               />
               <Text
                 color={theme.colors.shared.softBlack}
@@ -36,7 +36,7 @@ export default function LandingPageTopNavigation() {
                 fontWeight="semibold"
                 marginLeft={'2'}
               >
-                SaaS Template
+                SaleSpin
               </Text>
             </Box>
           </Box>
@@ -46,7 +46,7 @@ export default function LandingPageTopNavigation() {
               alignItems="center"
               space={{ base: '6', lg: '8' }}
             >
-              <Pressable
+              {/*<Pressable
                 _hover={{
                   textDecoration: 'underline'
                 }}
@@ -63,7 +63,7 @@ export default function LandingPageTopNavigation() {
                 <Text fontSize="md" fontWeight="medium">
                   Pricing
                 </Text>
-              </Pressable>
+              </Pressable>*/}
             </HStack>
           </Hidden>
 
@@ -77,7 +77,7 @@ export default function LandingPageTopNavigation() {
         </HStack>
         <Hidden till="sm">
           <Box>
-            <SolitoLink href={`/sign-up`}>
+            <SolitoLink href={`/sign-up-business`}>
               <Box
                 backgroundColor={theme.colors.shared.blueGentianFlower}
                 borderRadius="full"

@@ -116,13 +116,13 @@ export const FilterModal = ({
                 paddingY="0.35rem"
                 backgroundColor={
                   sortBy === 'date'
-                    ? theme.colors.shared.clientEyePrimary
+                    ? theme.colors.shared.SaleSpinPrimary
                     : theme.colors.shared.aliceBlue
                 }
                 _hover={{
                   backgroundColor:
                     sortBy === 'date'
-                      ? theme.colors.shared.clientEyePrimary
+                      ? theme.colors.shared.SaleSpinPrimary
                       : theme.colors.shared.softerGray
                 }}
                 onPress={handleSortByDate}
@@ -146,13 +146,13 @@ export const FilterModal = ({
                 paddingY="0.35rem"
                 backgroundColor={
                   sortBy === 'name'
-                    ? theme.colors.shared.clientEyePrimary
+                    ? theme.colors.shared.SaleSpinPrimary
                     : theme.colors.shared.aliceBlue
                 }
                 _hover={{
                   backgroundColor:
                     sortBy === 'name'
-                      ? theme.colors.shared.clientEyePrimary
+                      ? theme.colors.shared.SaleSpinPrimary
                       : theme.colors.shared.softerGray
                 }}
                 onPress={handleSortByName}
@@ -266,7 +266,7 @@ export const FilterModal = ({
                 flex="1"
                 marginRight="2"
                 paddingY="2"
-                backgroundColor={theme.colors.shared.clientEyePrimary}
+                backgroundColor={theme.colors.shared.SaleSpinPrimary}
                 onPress={() =>
                   handleSearch(hasFilters, {
                     input: {

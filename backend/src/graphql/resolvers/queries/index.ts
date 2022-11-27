@@ -1,35 +1,55 @@
-import getUserByID from './getUserByID';
-import getUserByEmail from './getUserByEmail';
-import verifyUser from './verifyUser';
-import loginUserWithPassword from './loginUserWithPassword';
-import loginUserWithMagicLink from './loginUserWithMagicLink';
-import getUserStripeInfo from './getUserStripeInfo';
-import getUserLeads from './getUserLeads';
-import getLeadByID from './getLeadByID';
+import getBusinessByID from './getBusinessByID';
+import getCustomerByID from './getCustomerByID';
+import getBusinessByEmail from './getBusinessByEmail';
+import getCustomerByEmail from './getCustomerByEmail';
+import verifyBusiness from './verifyBusiness';
+import verifyCustomer from './verifyCustomer';
+import loginBusinessWithPassword from './loginBusinessWithPassword';
+import loginCustomerWithPassword from './loginCustomerWithPassword';
+import loginBusinessWithMagicLink from './loginBusinessWithMagicLink';
+import loginCustomerWithMagicLink from './loginCustomerWithMagicLink';
+import getBusinessStripeInfo from './getBusinessStripeInfo';
 import createStripeCheckoutPage from './createStripeCheckoutPage';
-import getUserSubscriptionData from './getUserSubscriptionData';
+import getBusinessSubscriptionData from './getBusinessSubscriptionData';
 import cancelSubscription from './cancelSubscription';
-import getUsersRemainingCredits from './getUsersRemainingCredits';
-import searchForLeads from './searchForLeads';
 import getStripeCustomerPortal from './getStripeCustomerPortal';
-import verifyUserIsAdmin from './verifyUserIsAdmin';
+import verifyBusinessIsAdmin from './verifyBusinessIsAdmin';
+import verifyCustomerIsAdmin from './verifyCustomerIsAdmin';
+import getBusinessDetails from './getBusinessDetails';
+import getCustomerDetails from './getCustomerDetails';
+import getProductDetailsBusiness from './getProductDetailsBusiness';
+import getCustomerDetailsBusiness from './getCustomerDetailsBusiness';
+import getAllTransactions from './getAllTransactions';
+import getCompanyLogo from './getCompanyLogo';
+import getProductById from './getProductById';
+import getIntegrationSettings from './getIntegrationSettings';
 
 export const RootQuery = {
-  getUserByID,
-  getUserByEmail,
-  loginUserWithPassword,
-  loginUserWithMagicLink,
-  verifyUser,
-  getUserStripeInfo,
-  getUserLeads,
-  getLeadByID,
+  getBusinessByID,
+  getCustomerByID,
+  getBusinessByEmail,
+  getCustomerByEmail,
+  loginBusinessWithPassword,
+  loginCustomerWithPassword,
+  loginBusinessWithMagicLink,
+  loginCustomerWithMagicLink,
+  verifyBusiness,
+  verifyCustomer,
+  getBusinessStripeInfo,
   createStripeCheckoutPage,
-  getUserSubscriptionData,
+  getBusinessSubscriptionData,
   cancelSubscription,
-  getUsersRemainingCredits,
-  searchForLeads,
   getStripeCustomerPortal,
-  verifyUserIsAdmin,
+  verifyBusinessIsAdmin,
+  verifyCustomerIsAdmin,
+  getBusinessDetails,
+  getProductDetailsBusiness,
+  getCustomerDetails,
+  getAllTransactions,
+  getCustomerDetailsBusiness,
+  getCompanyLogo,
+  getProductById,
+  getIntegrationSettings,
 };
 
 export default RootQuery;

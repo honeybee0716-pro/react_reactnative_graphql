@@ -1,4 +1,4 @@
-import { Box, Center, Hidden, Text, HStack } from 'native-base'
+import { Box, Center, Hidden, Text, HStack, Link } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
@@ -18,7 +18,7 @@ export default function TNCLayout({ children }) {
         borderBottomWidth="1"
         borderBottomColor={theme.colors.shared.softGray}
       >
-        {/* Logo SaaS Template */}
+        {/* Logo SaleSpin */}
         <Center
           flex={{ base: '1', sm: 'unset' }}
           w={{ base: 'auto', sm: '86px', lg: '310px' }}
@@ -34,17 +34,26 @@ export default function TNCLayout({ children }) {
               {/* <Image
                 w={{ base: '41px', sm: '50px' }}
                 h={{ base: '41px', sm: '50px' }}
-                source={require('shared/images/contact-blaster-blue.png')}
+                source={require('shared/images/salespinLogo.png')}
               /> */}
               <Hidden till="lg" from="sm">
-                <Text
-                  color={theme.colors.shared.softBlack}
-                  fontSize={{ base: '19px', sm: '2xl' }}
-                  fontWeight="semibold"
-                  marginLeft={'2'}
-                >
-                  SaaS Template
-                </Text>
+                <SolitoLink href="/">
+                  <Link
+                    _text={{
+                      fontSize: 'md'
+                    }}
+                    fontWeight="semibold"
+                  >
+                    <Text
+                      color={theme.colors.shared.softBlack}
+                      fontSize={{ base: '19px', sm: '2xl' }}
+                      fontWeight="semibold"
+                      marginLeft={'2'}
+                    >
+                      SaleSpin
+                    </Text>
+                  </Link>
+                </SolitoLink>
               </Hidden>
             </Box>
           </Center>

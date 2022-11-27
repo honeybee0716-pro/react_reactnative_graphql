@@ -26,9 +26,10 @@ import AsyncStorage from '@react-native-community/async-storage'
 const LOGIN_USER = gql`
   query LoginUserWithPassword($input: loginUserWithPasswordInput) {
     loginUserWithPassword(input: $input) {
-      jwt
       message
       status
+      jwt
+      verified
     }
   }
 `
@@ -55,14 +56,16 @@ export default function SignUp(props: any) {
           loginUserWithPassword?.jwt
         ) {
           await AsyncStorage.setItem('jwt', loginUserWithPassword.jwt)
-          push('/home')
+          console.log(loginUserWithPassword)
+          if (loginUserWithPassword.verified) push('/home')
+          else push('/otp')
           return
         }
         if (loginUserWithPassword?.message) {
-          alert(loginUserWithPassword.message)
-          return
+          //alert(loginUserWithPassword.message)
+          //return
         }
-        alert('There was an error')
+        alert('There was a problem logging in, please try again...')
         return
       },
       onError: (error) => {
@@ -121,7 +124,7 @@ export default function SignUp(props: any) {
                       <Image
                         w={{ base: '2.5rem', sm: '3.5rem' }}
                         h={{ base: '2.5rem', sm: '3.5rem' }}
-                        source={require('shared/images/contact-blaster-blue.png')}
+                        source={require('shared/images/salespinLogo.png')}
                       />
                       <Text
                         color={theme.colors.shared.softBlack}
@@ -251,7 +254,7 @@ export default function SignUp(props: any) {
                           fontSize={{ base: 'xs', sm: 'md' }}
                           fontWeight="medium"
                           backgroundColor={theme.colors.shared.aliceBlue}
-                          placeholder="eg: johndoe@gmail.com"
+                          placeholder="you@example.com"
                           onChangeText={(text) => setEmail(text)}
                         />
                         <Box

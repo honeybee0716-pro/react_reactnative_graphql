@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="SaaS Template - Manage Credits"
+        title="SaleSpin - Manage Credits"
         description="View your credit information."
         noindex={true}
       />

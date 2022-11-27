@@ -7,9 +7,9 @@ import { useRecoilState } from 'recoil'
 import OneSignal from 'react-onesignal'
 import { userSubscriptionDataState, jwtState } from './state'
 
-const GET_USER_SUBSCRIPTION_DATA = gql`
+const GET_BUSINESS_SUBSCRIPTION_DATA = gql`
   query Query {
-    getUserSubscriptionData {
+    getBusinessSubscriptionData {
       message
       status
       stripeCustomer
@@ -28,8 +28,8 @@ const GET_USER_SUBSCRIPTION_DATA = gql`
 export const DataProvider = ({ children }) => {
   const { push } = useRouter()
   // const [route, setRoute] = React.useState<string | undefined>()
-  const [getUserSubscriptionData, { data, loading }] = useLazyQuery(
-    GET_USER_SUBSCRIPTION_DATA,
+  const [getBusinessSubscriptionData, { data, loading }] = useLazyQuery(
+    GET_BUSINESS_SUBSCRIPTION_DATA,
     {
       fetchPolicy: 'network-only'
     }
@@ -55,27 +55,57 @@ export const DataProvider = ({ children }) => {
 
       if (jwt) {
         // caches the request
-        await getUserSubscriptionData()
+        await getBusinessSubscriptionData()
       } else {
         if (
           document.location.href.includes('/home') ||
-          document.location.href.includes('/billing')
+          document.location.href.includes('/billing') ||
+          document.location.href.includes('transactions') ||
+          document.location.href.includes('customers') ||
+          document.location.href.includes('tiers') ||
+          document.location.href.includes('automation') ||
+          document.location.href.includes('products') ||
+          document.location.href.includes('reports') ||
+          document.location.href.includes('branding') ||
+          document.location.href.includes('campaigns') ||
+          document.location.href.includes('help') ||
+          document.location.href.includes('account') ||
+          document.location.href.includes('shopping') ||
+          document.location.href.includes('integrations')
         ) {
-          push('/sign-in')
+          push('/sign-in-business')
         }
       }
     })()
   }, [])
 
   React.useEffect(() => {
-    if (data?.getUserSubscriptionData) {
-      setUserSubscriptionData(data.getUserSubscriptionData)
+    console.log("data:",data)
+    if (data?.getBusinessSubscriptionData) {
+      setUserSubscriptionData(data.getBusinessSubscriptionData)
       // will need to change the line below to not look for document.location.href once we have mobile app
       if (
-        data.getUserSubscriptionData.redirectToOTPPage &&
+        data.getBusinessSubscriptionData.redirectToOTPPage &&
         !document.location.href.includes('otp')
       ) {
+        if(data.getBusinessSubscriptionData.stripeCustomer.metadata.accountType==="business")
         push('/otp')
+        else
+        push('/otp-customer')
+      }else{
+        if(data.getBusinessSubscriptionData.stripeCustomer.metadata.accountType==="customer" && 
+          ( document.location.href.includes('customers') ||
+          document.location.href.includes('tiers') ||
+          document.location.href.includes('automation') ||
+          document.location.href.includes('products') ||
+          document.location.href.includes('reports') ||
+          document.location.href.includes('branding') ||
+          document.location.href.includes('campaigns') ||
+          document.location.href.includes('integrations') ))
+          push('/home')
+        else if(data.getBusinessSubscriptionData.stripeCustomer.metadata.accountType==="business" && 
+        document.location.href.includes('shopping'))
+        push('/home')  
       }
     }
   }, [data])
@@ -83,7 +113,7 @@ export const DataProvider = ({ children }) => {
   React.useEffect(() => {
     if (jwt) {
       ;(async () => {
-        await getUserSubscriptionData()
+        await getBusinessSubscriptionData()
       })()
     }
   }, [jwt])

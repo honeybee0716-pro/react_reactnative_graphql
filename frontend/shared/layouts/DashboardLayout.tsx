@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   StatusBar,
   Box,
@@ -15,7 +15,9 @@ import {
   Checkbox,
   Link,
   Icon,
-  Pressable
+  Pressable,
+  ScrollView,
+  Menu
 } from 'native-base'
 import { Dimensions, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -37,10 +39,93 @@ import IconHelpCircle from 'shared/components/icons/IconHelpCircle'
 import IconChevronDown from 'shared/components/icons/IconChevronDown'
 import IconArrowRight from 'shared/components/icons/IconArrowRight'
 import IconMenu from 'shared/components/icons/IconMenu'
+import IconExit from '../components/icons/IconExit'
+import { useRouter } from 'solito/router'
+import { useRecoilState } from 'recoil'
+import { userSubscriptionDataState, jwtState } from '../state'
 
 const { width, height } = Dimensions.get('window')
 
 const DashboardLayout: React.FC = ({ children }) => {
+  const [shouldOverlapWithTrigger] = useState(false)
+  const [position, setPosition] = React.useState('auto')
+  const  [control,setControl]=React.useState("")
+  const { push } = useRouter()
+  const [userSubscriptionData, setUserSubscriptionData] = useRecoilState<any>(
+    userSubscriptionDataState
+  )
+
+  React.useEffect(()=>{
+    if(userSubscriptionData.stripeCustomer.metadata.accountType==="business")
+    {
+      setControl("business")
+    }else if (userSubscriptionData.stripeCustomer.metadata.accountType==="customer")
+    {
+      setControl("customer")
+    }
+  },[userSubscriptionData])
+
+  const handleSignOut = async () => {
+    push('/sign-out')
+  }
+
+  const GotoTransaction = async () => {
+    push('/transactions')
+  }
+
+  const GotoCustomers = async () => {
+    push('/customers')
+  }
+
+  const GotoTiers = async () => {
+    push('/tiers')
+  }
+
+  const GotoAutomation = async () => {
+    push('/automation')
+  }
+
+  const GotoReports = async () => {
+    push('/reports')
+  }
+
+  const GotoProducts = async () => {
+    push('/products')
+  }
+
+  const GotoBranding = async () => {
+    push('/branding')
+  }
+
+  const goToBilling = async () => {
+    push('/billing')
+  }
+
+  const goToShopping = async () => {
+    push('/shopping')
+  }
+
+  const goToHome = async () => {
+    push('/home')
+  }
+
+  const goToCampaigns = async () => {
+    push('/campaigns')
+  }
+
+  const goToAccount = async () => {
+    push('/account')
+  }
+
+  const goToHelp = async () => {
+    //push('/help')
+    window.location.href="mailto:support@salespin.co"
+  }
+
+  const GotoIntegration = async () =>{
+    push('/integrations')
+  }
+
   return (
     <>
       <StatusBar
@@ -61,12 +146,12 @@ const DashboardLayout: React.FC = ({ children }) => {
         paddingLeft={{ base: '0', sm: '90px', lg: '310px' }}
         w="full"
         zIndex={10}
-        height={{ base: '69px', sm: '84px' }}
+        height={{ base: '69px', sm: '74px' }}
         backgroundColor="white"
         borderBottomWidth="1"
         borderBottomColor={theme.colors.shared.softGray}
       >
-        {/* Logo SaaS Template */}
+        {/* Logo SaleSpin */}
         <Hidden from="sm">
           <Center
             flex="1"
@@ -76,9 +161,9 @@ const DashboardLayout: React.FC = ({ children }) => {
           >
             <Box flexDir="row" alignItems="center" w="full">
               <Image
-                w="2.5rem"
-                h="2.5rem"
-                source={require('shared/images/contact-blaster-blue.png')}
+                w="80px"
+                h="40px"
+                source={require('shared/images/salespinLogo.png')}
               />
               <Text
                 color={theme.colors.shared.softBlack}
@@ -86,13 +171,13 @@ const DashboardLayout: React.FC = ({ children }) => {
                 fontWeight="semibold"
                 marginLeft={'2'}
               >
-                SaaS Template
+                SaleSpin
               </Text>
             </Box>
           </Center>
         </Hidden>
         {/* Search here */}
-        <Hidden till="sm">
+        {/*<Hidden till="sm">
           <Center flex="1" paddingLeft="6">
             <Input
               borderRadius="lg"
@@ -144,14 +229,15 @@ const DashboardLayout: React.FC = ({ children }) => {
               placeholder="Search here"
             />
           </Center>
-        </Hidden>
+        </Hidden>*/}
         <HStack
           marginLeft={{ base: '5', lg: '0' }}
           width={{ lg: '430px' }}
           justifyContent="end"
           paddingRight={{ base: '4', sm: '5' }}
+          style={{ width: '100%' }}
         >
-          <Hidden till="sm">
+          {/*<Hidden till="sm">
             <Center>
               <HStack
                 alignItems="center"
@@ -185,16 +271,40 @@ const DashboardLayout: React.FC = ({ children }) => {
                 <IconNotificationBell />
               </Box>
             </Pressable>
-          </Center>
-          <Center marginLeft={{ base: '4', sm: '8' }}>
-            <Image
-              w={{ base: '35px', sm: '12' }}
-              h={{ base: '35px', sm: '12' }}
-              borderRadius="full"
-              borderWidth="1"
-              borderColor={theme.colors.shared.darkerGray}
-              source={require('shared/images/eclipse4.jpeg')}
-            />
+      </Center>*/}
+          <Center
+            marginLeft={{ base: '4', sm: '8' }}
+            style={{ marginRight: '10px' }}
+          >
+            <Menu
+              w="160"
+              shouldOverlapWithTrigger={shouldOverlapWithTrigger} // @ts-ignore
+              placement={position == 'auto' ? undefined : position}
+              trigger={(triggerProps) => {
+                return (
+                  <Button
+                    variant="solid"
+                    {...triggerProps}
+                    style={{ backgroundColor: 'none' }}
+                  >
+                    <Image
+                      w={{ base: '35px', sm: '12' }}
+                      h={{ base: '35px', sm: '12' }}
+                      borderRadius="full"
+                      borderWidth="1"
+                      borderColor={theme.colors.shared.darkerGray}
+                      source={require('shared/images/eclipse4.jpeg')}
+                    />
+                  </Button>
+                )
+              }}
+            >
+              <Menu.Item>
+                <Pressable onPress={handleSignOut}>
+                  <Text>Sign Out</Text>
+                </Pressable>
+              </Menu.Item>
+            </Menu>
           </Center>
           <Hidden from="lg">
             <Center marginLeft={{ base: '4', sm: '8' }}>
@@ -221,20 +331,21 @@ const DashboardLayout: React.FC = ({ children }) => {
         >
           <VStack h="full">
             <Center
-              h="84px"
+              h="74px"
               borderBottomWidth="1"
               borderBottomColor={theme.colors.shared.softer2Gray}
             >
               <Center
                 flexDir="row"
                 w="full"
+                h="full"
                 borderRightWidth="1"
                 borderRightColor={theme.colors.shared.softer2Gray}
               >
                 <Image
-                  w={{ base: '2.5rem', sm: '3.1rem' }}
-                  h={{ base: '2.5rem', sm: '3.1rem' }}
-                  source={require('shared/images/contact-blaster-blue.png')}
+                  w="80px"
+                  h="40px"
+                  source={require('shared/images/salespinLogo.png')}
                 />
                 <Hidden till="lg">
                   <Text
@@ -243,12 +354,12 @@ const DashboardLayout: React.FC = ({ children }) => {
                     fontWeight="semibold"
                     marginLeft={'4'}
                   >
-                    SaaS Template
+                    SaleSpin
                   </Text>
                 </Hidden>
               </Center>
             </Center>
-            <Box flex="1" paddingY="3">
+            <Box flex="1" paddingY="0">
               <VStack
                 h="full"
                 paddingY={{ base: '0', lg: '4' }}
@@ -257,56 +368,34 @@ const DashboardLayout: React.FC = ({ children }) => {
                 borderRightColor={theme.colors.shared.softer2Gray}
               >
                 <Box flex="1">
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      backgroundColor={theme.colors.shared.brightBlue}
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconHome color="white" />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color="white"
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Home
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconLists />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={theme.colors.shared.soft2Gray}
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Lists
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
+                  <ScrollView>
+                    <Center marginY={{ base: '2', lg: '0' }}>
+                      <Pressable
+                        onPress={goToHome}
+                        w={{ lg: 'full' }}
+                        flexDirection="row"
+                        backgroundColor={theme.colors.shared.brightBlue}
+                        alignItems="center"
+                        paddingX={{ base: '3', lg: '6' }}
+                        paddingY="3"
+                        borderRadius="lg"
+                      >
+                        <Box w={{ base: '20px', lg: '24px' }}>
+                          <IconHome color="white" />
+                        </Box>
+                        <Hidden till="lg">
+                          <Text
+                            color="white"
+                            fontWeight="semibold"
+                            paddingLeft="4"
+                          >
+                            Home
+                          </Text>
+                        </Hidden>
+                      </Pressable>
+                    </Center>
+
+                    {/*
                   <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
                       w={{ lg: 'full' }}
@@ -347,9 +436,11 @@ const DashboardLayout: React.FC = ({ children }) => {
                         </Center>
                       </Hidden>
                     </Pressable>
-                  </Center>
-                  <Center marginY={{ base: '2', lg: '0' }}>
+                  </Center>*/}
+                  {control==="business"&& (
+                    <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
+                      onPress={goToCampaigns}
                       w={{ lg: 'full' }}
                       flexDirection="row"
                       alignItems="center"
@@ -375,16 +466,18 @@ const DashboardLayout: React.FC = ({ children }) => {
                           </Text>
                         </Hidden>
                       </Box>
-                      <Hidden till="lg">
-                        <Center>
-                          <Box w="20px">
-                            <IconChevronDown rotation={180} />
-                          </Box>
-                        </Center>
-                      </Hidden>
+                      {/*<Hidden till="lg">
+                      <Center>
+                        <Box w="20px">
+                          <IconChevronDown rotation={180} />
+                        </Box>
+                      </Center>
+                    </Hidden>*/}
                     </Pressable>
                   </Center>
-                  <Hidden till="lg">
+                  )}
+                    
+                    {/*<Hidden till="lg">
                     <Box marginLeft="33px">
                       <Box
                         marginLeft="2px"
@@ -436,8 +529,8 @@ const DashboardLayout: React.FC = ({ children }) => {
                       </HStack>
                       <Box marginLeft="2px" w="1px" h="7"></Box>
                     </Box>
-                  </Hidden>
-                  <Center marginY={{ base: '2', lg: '0' }}>
+                  </Hidden>*/}
+                    {/*<Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
                       w={{ lg: 'full' }}
                       flexDirection="row"
@@ -462,8 +555,293 @@ const DashboardLayout: React.FC = ({ children }) => {
                         </Text>
                       </Hidden>
                     </Pressable>
-                  </Center>
+                  </Center>*/}
+                  
+                    
+                  
+                    <Center marginY={{ base: '2', lg: '0' }}>
+                      <Pressable
+                        onPress={GotoTransaction}
+                        w={{ lg: 'full' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingX={{ base: '3', lg: '6' }}
+                        paddingY="3"
+                        borderRadius="lg"
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }}
+                      >
+                        <Box w={{ base: '20px', lg: '24px' }}>
+                          {/*<IconLists />*/}
+                          <Image
+                            w="6"
+                            h="6"
+                            source={require('shared/images/transaction.svg')}
+                          />
+                        </Box>
+                        <Hidden till="lg">
+                          <Text
+                            color={theme.colors.shared.soft2Gray}
+                            fontWeight="semibold"
+                            paddingLeft="4"
+                          >
+                            Transactions
+                          </Text>
+                        </Hidden>
+                      </Pressable>
+                    </Center>
+                    {control==="customer" && (
+                  <Center marginY={{ base: '2', lg: '0' }}>
+                    <Pressable
+                      onPress={goToShopping}
+                      w={{ lg: 'full' }}
+                      flexDirection="row"
+                      alignItems="center"
+                      paddingX={{ base: '3', lg: '6' }}
+                      paddingY="3"
+                      borderRadius="lg"
+                      _hover={{
+                        backgroundColor: theme.colors.shared.softer2Gray
+                      }}
+                    >
+                      <Box w={{ base: '20px', lg: '24px' }}>
+                      <Image
+                            w="6"
+                            h="6"
+                            source={require('shared/images/shopping.svg')}
+                          />
+                      </Box>
+                      <Hidden till="lg">
+                        <Text
+                          color={theme.colors.shared.soft2Gray}
+                          fontWeight="semibold"
+                          paddingLeft="4"
+                        >
+                          Shopping
+                        </Text>
+                      </Hidden>
+                    </Pressable>
+                  </Center>)}
+                    {control==="business" && (
+                      <>
+                    <Center marginY={{ base: '2', lg: '0' }}>
+                      <Pressable
+                        onPress={GotoCustomers}
+                        w={{ lg: 'full' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingX={{ base: '3', lg: '6' }}
+                        paddingY="3"
+                        borderRadius="lg"
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }}
+                      >
+                        <Box w={{ base: '20px', lg: '24px' }}>
+                          <Image
+                            w="6"
+                            h="6"
+                            source={require('shared/images/company.svg')}
+                          />
+                        </Box>
+                        <Hidden till="lg">
+                          <Text
+                            color={theme.colors.shared.soft2Gray}
+                            fontWeight="semibold"
+                            paddingLeft="4"
+                          >
+                            Customers
+                          </Text>
+                        </Hidden>
+                      </Pressable>
+                    </Center>
+                    <Center marginY={{ base: '2', lg: '0' }}>
+                      <Pressable
+                        onPress={GotoTiers}
+                        w={{ lg: 'full' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingX={{ base: '3', lg: '6' }}
+                        paddingY="3"
+                        borderRadius="lg"
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }}
+                      >
+                        <Box w={{ base: '20px', lg: '24px' }}>
+                          <Image
+                            w="6"
+                            h="6"
+                            source={require('shared/images/tiers.svg')}
+                          />
+                        </Box>
+                        <Hidden till="lg">
+                          <Text
+                            color={theme.colors.shared.soft2Gray}
+                            fontWeight="semibold"
+                            paddingLeft="4"
+                          >
+                            Tiers
+                          </Text>
+                        </Hidden>
+                      </Pressable>
+                    </Center>
+                    <Center marginY={{ base: '2', lg: '0' }}>
+                      <Pressable
+                        onPress={GotoAutomation}
+                        w={{ lg: 'full' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingX={{ base: '3', lg: '6' }}
+                        paddingY="3"
+                        borderRadius="lg"
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }}
+                      >
+                        <Box w={{ base: '20px', lg: '24px' }}>
+                          <Image
+                            w="6"
+                            h="6"
+                            source={require('shared/images/automation.svg')}
+                          />
+                        </Box>
+                        <Hidden till="lg">
+                          <Text
+                            color={theme.colors.shared.soft2Gray}
+                            fontWeight="semibold"
+                            paddingLeft="4"
+                          >
+                            Automation
+                          </Text>
+                        </Hidden>
+                      </Pressable>
+                    </Center>
+                    <Center marginY={{ base: '2', lg: '0' }}>
+                      <Pressable
+                        onPress={GotoProducts}
+                        w={{ lg: 'full' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingX={{ base: '3', lg: '6' }}
+                        paddingY="3"
+                        borderRadius="lg"
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }}
+                      >
+                        <Box w={{ base: '20px', lg: '24px' }}>
+                          <Image
+                            w="6"
+                            h="6"
+                            source={require('shared/images/products.svg')}
+                          />
+                        </Box>
+                        <Hidden till="lg">
+                          <Text
+                            color={theme.colors.shared.soft2Gray}
+                            fontWeight="semibold"
+                            paddingLeft="4"
+                          >
+                            Products
+                          </Text>
+                        </Hidden>
+                      </Pressable>
+                    </Center>
+                    <Center marginY={{ base: '2', lg: '0' }}>
+                      <Pressable
+                        onPress={GotoReports}
+                        w={{ lg: 'full' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingX={{ base: '3', lg: '6' }}
+                        paddingY="3"
+                        borderRadius="lg"
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }}
+                      >
+                        <Box w={{ base: '20px', lg: '24px' }}>
+                          <Image
+                            w="6"
+                            h="6"
+                            source={require('shared/images/reports.svg')}
+                          />
+                        </Box>
+                        <Hidden till="lg">
+                          <Text
+                            color={theme.colors.shared.soft2Gray}
+                            fontWeight="semibold"
+                            paddingLeft="4"
+                          >
+                            Reports
+                          </Text>
+                        </Hidden>
+                      </Pressable>
+                    </Center>
+                    <Center marginY={{ base: '2', lg: '0' }}>
+                      <Pressable
+                        onPress={GotoBranding}
+                        w={{ lg: 'full' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingX={{ base: '3', lg: '6' }}
+                        paddingY="3"
+                        borderRadius="lg"
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }}
+                      >
+                        <Box w={{ base: '20px', lg: '24px' }}>
+                          <Image
+                            w="3"
+                            h="4"
+                            source={require('shared/images/b.svg')}
+                          />
+                        </Box>
+                        <Hidden till="lg">
+                          <Text
+                            color={theme.colors.shared.soft2Gray}
+                            fontWeight="semibold"
+                            paddingLeft="4"
+                          >
+                            Branding
+                          </Text>
+                        </Hidden>
+                      </Pressable>
+                    </Center>
+                    <Center marginY={{ base: '2', lg: '0' }}>
+                      <Pressable
+                        onPress={GotoIntegration}
+                        w={{ lg: 'full' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingX={{ base: '3', lg: '6' }}
+                        paddingY="3"
+                        borderRadius="lg"
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }}
+                      >
+                        <Box w={{ base: '20px', lg: '24px' }}>
+                         <Text>I</Text>
+                        </Box>
+                        <Hidden till="lg">
+                          <Text
+                            color={theme.colors.shared.soft2Gray}
+                            fontWeight="semibold"
+                            paddingLeft="4"
+                          >
+                            Integrations
+                          </Text>
+                        </Hidden>
+                      </Pressable>
+                    </Center>
+                    </>)}
+                  </ScrollView>
                 </Box>
+                <br />
                 <Box>
                   <Hidden from="lg">
                     <>
@@ -508,8 +886,10 @@ const DashboardLayout: React.FC = ({ children }) => {
                       ></Box>
                     </>
                   </Hidden>
+                 
                   <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
+                      onPress={goToBilling}
                       w={{ lg: 'full' }}
                       flexDirection="row"
                       alignItems="center"
@@ -536,6 +916,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                   </Center>
                   <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
+                      onPress={goToAccount}
                       w={{ lg: 'full' }}
                       flexDirection="row"
                       alignItems="center"
@@ -562,6 +943,8 @@ const DashboardLayout: React.FC = ({ children }) => {
                   </Center>
                   <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
+                      onPress={goToHelp}
+                      
                       w={{ lg: 'full' }}
                       flexDirection="row"
                       alignItems="center"
@@ -586,6 +969,37 @@ const DashboardLayout: React.FC = ({ children }) => {
                       </Hidden>
                     </Pressable>
                   </Center>
+                  {/*<Center marginY={{ base: '2', lg: '0' }}>
+                    <Pressable
+                    onPress={handleSignOut}
+                      w={{ lg: 'full' }}
+                      flexDirection="row"
+                      alignItems="center"
+                      paddingX={{ base: '3', lg: '6' }}
+                      paddingY="3"
+                      borderRadius="lg"
+                      _hover={{
+                        backgroundColor: theme.colors.shared.softer2Gray
+                      }}
+                    >
+                      <Box w={{ base: '20px', lg: '24px' }}>
+                      <Image
+                            w="5"
+                            h="5"
+                            source={require('shared/images/exit-1.svg')}
+                          />
+                      </Box>
+                      <Hidden till="lg">
+                        <Text
+                          color={theme.colors.shared.soft2Gray}
+                          fontWeight="semibold"
+                          paddingLeft="4"
+                        >
+                          {`Sign out`}
+                        </Text>
+                      </Hidden>
+                    </Pressable>
+                  </Center>*/}
                 </Box>
               </VStack>
             </Box>
@@ -598,9 +1012,10 @@ const DashboardLayout: React.FC = ({ children }) => {
         left="0"
         right="0"
         bottom="0"
+        backgroundColor={theme.colors.shared.aliceBlue}
         marginTop={{
           base: '69px',
-          sm: '84px'
+          sm: '74px'
         }}
         marginLeft={{
           base: '0',

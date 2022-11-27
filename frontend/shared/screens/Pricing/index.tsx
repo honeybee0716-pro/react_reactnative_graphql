@@ -179,7 +179,7 @@ export default function PricingPage() {
                       Free Trial
                     </Text>
                     <Text fontSize="13px" fontWeight="medium">
-                      14 days of free trial
+                      1 month free trial
                     </Text>
                     <HStack alignItems="start">
                       <Text fontSize="20px" fontWeight="medium">
@@ -461,7 +461,7 @@ export default function PricingPage() {
                       Free Trial
                     </Text>
                     <Text fontSize="13px" fontWeight="medium">
-                      14 days of free trial
+                      1 month free trial
                     </Text>
                   </Box>
                 </HStack>
@@ -692,7 +692,7 @@ export default function PricingPage() {
               fontWeight="medium"
               color={theme.colors.shared.gray2}
             >
-              learn how to get started
+              Learn how to get started
             </Text>
             <Text
               fontSize={{ base: '28px', sm: '35px', lg: '45px' }}
@@ -710,7 +710,7 @@ export default function PricingPage() {
             >
               <Hidden till="lg">
                 <>
-                  Join SaaS Template community now to get free updates and
+                  Join SaleSpin community now to get free updates and
                   <br />
                   also a lot of offers are waiting for you
                 </>
@@ -718,8 +718,7 @@ export default function PricingPage() {
               <Hidden till="sm">
                 <Hidden from="lg">
                   <>
-                    Join SaaS Template community now to get free updates and
-                    also a
+                    Join SaleSpin community now to get free updates and also a
                     <br />
                     lot of offers are waiting for you
                   </>
@@ -727,7 +726,7 @@ export default function PricingPage() {
               </Hidden>
               <Hidden from="sm">
                 <>
-                  Join SaaS Template community now to get free
+                  Join SaleSpin community now to get free
                   <br />
                   updates and also a lot of offers are waiting for you
                 </>
@@ -837,19 +836,19 @@ export default function PricingPage() {
               <VStack alignItems="center" space="3">
                 {[
                   {
-                    text: 'How to create and schedule campaign ?'
+                    text: 'How to create and schedule a new campaign?'
                   },
                   {
-                    text: 'How can i add a new list ?'
+                    text: 'How can I add a new list?'
                   },
                   {
-                    text: 'How can i add a new list ?'
+                    text: 'How can I add a new list?'
                   },
                   {
-                    text: 'How to change my account password ?'
+                    text: 'How to change my account password?'
                   },
                   {
-                    text: 'How to add a new team member ?'
+                    text: 'How to add a new team member?'
                   }
                 ].map((item2, i) => (
                   <Fragment key={`item2${i}`}>

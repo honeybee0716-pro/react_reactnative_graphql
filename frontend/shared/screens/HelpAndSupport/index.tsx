@@ -508,7 +508,7 @@ export default function Credits() {
                       fontSize="sm"
                       fontWeight="medium"
                     >
-                      How to create and schedule campaign ?
+                      How to create and schedule a new campaign?
                     </Text>
                     <Box w="20px">
                       <IconPlus />

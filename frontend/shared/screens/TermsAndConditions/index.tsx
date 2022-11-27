@@ -5,7 +5,8 @@ import {
   Text,
   HStack,
   VStack,
-  Pressable
+  Pressable,
+  Link
 } from 'native-base'
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -14,6 +15,7 @@ import { Link as SolitoLink } from 'solito/link'
 import { useState } from 'react'
 import IconChevronDown from 'shared/components/icons/IconChevronDown'
 import TNCLayout from '../../components/TNCLayout'
+import { useRouter } from 'solito/router'
 
 export default function TermsAndConditions() {
   const [listContent, setListContent] = useState([
@@ -123,8 +125,9 @@ export default function TermsAndConditions() {
                 fontSize={{ base: 'sm', sm: 'md', lg: 'xl' }}
                 fontWeight="medium"
               >
-                SaaS Template
+                SaleSpin
               </Text>
+
               <Text
                 fontSize={{ base: '22px', sm: '2xl', lg: '40px' }}
                 fontWeight="semibold"
@@ -144,10 +147,10 @@ export default function TermsAndConditions() {
                 marginTop="5"
               >
                 These terms of service ("Terms") apply to your access and use of
-                SaaS Template. Please read this Terms and Conditions agreement
-                carefully before accessing or using SaaS Template. Because it is
-                such an important contract between us and our users, we have
-                tried to make it as clear as possible
+                SaleSpin. Please read this Terms and Conditions agreement
+                carefully before accessing or using SaleSpin. Because it is such
+                an important contract between us and our users, we have tried to
+                make it as clear as possible
               </Text>
             </Box>
             <Hidden till="lg">
@@ -175,7 +178,7 @@ export default function TermsAndConditions() {
                 please read all of the terms. If you don't agree to all of the
                 terms below, please do not use the Service. Also, if a term does
                 not make sense to you, please let us know by e-mailing&nbsp;
-                <SolitoLink href={'mailto:info@saastemplate.io'}>
+                <SolitoLink href={'mailto:info@salespin.co'}>
                   <Pressable
                     _hover={{
                       textDecoration: 'underline',
@@ -183,7 +186,7 @@ export default function TermsAndConditions() {
                     }}
                   >
                     <Text color={theme.colors.shared.blueLink}>
-                      team@saastemplate.io
+                      team@salespin.co
                     </Text>
                   </Pressable>
                 </SolitoLink>
@@ -216,7 +219,7 @@ export default function TermsAndConditions() {
                 immediate acceptance of the revised Terms (such as a
                 click-through confirmation or acceptance button). It is your
                 responsibility to check&nbsp;
-                <SolitoLink href={'https://www.saastemplate.io'}>
+                <SolitoLink href={'https://www.salespin.co'}>
                   <Pressable
                     _hover={{
                       textDecoration: 'underline',
@@ -224,12 +227,12 @@ export default function TermsAndConditions() {
                     }}
                   >
                     <Text color={theme.colors.shared.blueLink}>
-                      www.saastemplate.io
+                      www.salespin.co
                     </Text>
                   </Pressable>
                 </SolitoLink>
-                &nbsp;for changes to these Terms. Use of the SaaS Template may
-                be subject to additional terms and conditions presented by SaaS
+                &nbsp;for changes to these Terms. Use of the SaleSpin may be
+                subject to additional terms and conditions presented by SaaS
                 Template.
               </Text>
               <Text

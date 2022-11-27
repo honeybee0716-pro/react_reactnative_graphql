@@ -72,9 +72,9 @@ export default function PasswordReset(props: any) {
                   <Hidden from="lg">
                     <Center flexDir="row">
                       <Image
-                        w={{ base: '2.5rem', sm: '3.5rem' }}
-                        h={{ base: '2.5rem', sm: '3.5rem' }}
-                        source={require('shared/images/contact-blaster-blue.png')}
+                        w="80px"
+                        h="40px"
+                        source={require('shared/images/salespinLogo.png')}
                       />
                       <Text
                         color={theme.colors.shared.softBlack}
@@ -82,7 +82,7 @@ export default function PasswordReset(props: any) {
                         fontWeight="semibold"
                         marginLeft={'4'}
                       >
-                        SaaS Template
+                        SaleSpin
                       </Text>
                     </Center>
                   </Hidden>
@@ -387,7 +387,7 @@ export default function PasswordReset(props: any) {
                   fontSize={{ base: '4xl', xl: '5xl' }}
                   fontWeight="semibold"
                 >
-                  SaaS Template
+                  SaleSpin
                 </Text>
               </Box>
             </Box>

@@ -14,7 +14,8 @@ import open from 'open';
 
 import {typeDefs} from './graphql/typeDefs/index';
 import {resolvers} from './graphql/resolvers';
-import getUserByID from './graphql/resolvers/queries/getUserByID';
+import getBusinessByID from './graphql/resolvers/queries/getBusinessByID';
+import getCustomerByID from './graphql/resolvers/queries/getCustomerByID';
 
 if (process.env.NODE_ENV !== 'localhost') {
   Sentry.init({
@@ -58,14 +59,45 @@ const createContext = async ({req}: any) => {
     throw new AuthenticationError(errorMessage);
   }
 
-  const user = await getUserByID(undefined, {input: {id: decodedJWT.id}});
+  let user = await getBusinessByID(undefined, {input: {id: decodedJWT.id}})
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
 
-  if (!user) {
-    throw new AuthenticationError(errorMessage);
+      return null;
+    });
+
+  if (user == null) {
+    user = await getCustomerByID(undefined, {input: {id: decodedJWT.id}})
+      .then((res) => res)
+      .catch((err) => {
+        console.log(err);
+
+        return null;
+      });
   }
 
+  if (user == null) {
+    throw new AuthenticationError('request not susccessful');
+  }
+
+  /* try{
+  let user = await getBusinessByID(undefined, {input: {id: decodedJWT.id}});
+
+  if (!user) {
+    user = await getCustomerByID(undefined, {input: {id: decodedJWT.id}});
+    if(!user)
+        throw new AuthenticationError(errorMessage);
+  }
+}catch(err){
+  console.log("error here:",err)
+  user = await getCustomerByID(undefined, {input: {id: decodedJWT.id}});
+} */
+
   return {
-    user: user.data,
+    user: user?.data,
     ipAddress: req.ip,
     req,
   };
@@ -86,28 +118,52 @@ const isAdmin = rule()(
 const permissions = shield(
   {
     Query: {
-      getLeadByID: isAuthenticated,
-      getUserByID: isAuthenticated,
-      getUsersRemainingCredits: isAuthenticated,
-      getUserByEmail: isAuthenticated,
-      loginUserWithPassword: any,
-      loginUserWithMagicLink: any,
-      verifyUser: isAuthenticated,
-      getUserLeads: isAuthenticated,
+      getBusinessByID: isAuthenticated,
+      getCustomerByID: isAuthenticated,
+      getBusinessByEmail: isAuthenticated,
+      getCustomerByEmail: isAuthenticated,
+      loginBusinessWithPassword: any,
+      loginCustomerWithPassword: any,
+      loginBusinessWithMagicLink: any,
+      loginCustomerWithMagicLink: any,
+      verifyBusiness: isAuthenticated,
+      verifyCustomer: isAuthenticated,
       createStripeCheckoutPage: isAuthenticated,
-      getUserSubscriptionData: isAuthenticated,
+      getBusinessSubscriptionData: isAuthenticated,
       cancelSubscription: isAuthenticated,
-      searchForLeads: isAuthenticated,
+      getBusinessDetails: isAuthenticated,
+      getCustomerDetails: isAuthenticated,
+      getCustomerDetailsBusiness: isAuthenticated,
+      getAllTransactions: isAuthenticated,
+      getProductDetailsBusiness: isAuthenticated,
+      getProductById: isAuthenticated,
+      getCompanyLogo: isAuthenticated,
+      getIntegrationSettings:isAuthenticated
     },
     Mutation: {
       changePassword: isAuthenticated,
       confirmForgotPasswordCode: isNotAuthenticated,
-      createUser: isNotAuthenticated,
+      confirmForgotPasswordCodeCustomer: isNotAuthenticated,
+      createBusiness: isNotAuthenticated,
+      createCustomer: isNotAuthenticated,
+      createCustomerWithBusiness: isAuthenticated,
+      createProduct: isAuthenticated,
+      deleteProduct: isAuthenticated,
+      updateProduct: isAuthenticated,
       forgotPassword: isNotAuthenticated,
-      updateUser: isAuthenticated,
-      banUser: isAdmin,
+      forgotPasswordCustomer: isNotAuthenticated,
+      updateBusiness: isAuthenticated,
+      updateCustomer: isAuthenticated,
+      addCompanyLogo: isAuthenticated,
+      banBusiness: isAdmin,
+      banCustomer: isAdmin,
       confirmEmailValidationCode: isAuthenticated,
+      confirmEmailValidationCodeCustomer: isAuthenticated,
       resendCode: isAuthenticated,
+      resendCodeCustomer: isAuthenticated,
+      createTransaction: isAuthenticated,
+      sendMessageToUsers: isAuthenticated,
+      setIntegrationSettings:isAuthenticated,
     },
   },
   {
@@ -148,12 +204,12 @@ export const setupServer = async () => {
     app,
     cors: {
       origin: [
-        'https://development.saastemplate.io',
-        'https://www.development.saastemplate.io',
-        'https://staging.saastemplate.io',
-        'https://www.staging.saastemplate.io',
-        'https://saastemplate.io',
-        'https://www.saastemplate.io',
+        'https://developmentsalespin.co',
+        'https://www.development.salespin.co',
+        'https://staging.salespin.co',
+        'https://www.staging.salespin.co',
+        'https://app.salespin.co',
+        'https://www.app.salespin.co',
         'http://localhost:3000',
       ],
     },

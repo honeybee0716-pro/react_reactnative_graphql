@@ -33,8 +33,11 @@ import LandingPageFooter from 'shared/components/LandingPage/LandingPageFooter'
 import LandingPageTopNavigation from 'shared/components/LandingPage/LandingPageTopNavigation'
 import IconInfo from 'shared/components/icons/IconInfo'
 import IconLine from 'shared/components/icons/IconLine'
+import { useTranslation } from 'react-i18next'
 
 export default function LandingPage() {
+  const { t, i18n } = useTranslation()
+
   const [listFeature, setListFeature] = useState([
     {
       feature: 'Manage Campaigns',
@@ -80,6 +83,10 @@ export default function LandingPage() {
     }
   ])
 
+  const changeLanguage = (e) => {
+    i18n.changeLanguage(e.target.value)
+  }
+
   return (
     <>
       <StatusBar
@@ -94,6 +101,15 @@ export default function LandingPage() {
       />
 
       <LandingPageTopNavigation />
+
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <button value={'en'} onClick={changeLanguage}>
+          {'English'}
+        </button>
+        <button value={'tha'} onClick={changeLanguage}>
+          {'Thai'}
+        </button>
+      </div>
 
       <Box position="relative">
         <Image
@@ -168,14 +184,14 @@ export default function LandingPage() {
           >
             <Hidden till="sm">
               <>
-                A Comprehensive dashboard allowing you to manage all
+                {t('A comprehensive dashboard allowing you to manage all')}
                 <br />
-                aspects of your business in one platform
+                {t("aspects of your business in one platform")}
               </>
             </Hidden>
             <Hidden from="sm">
               <>
-                A Comprehensive dashboard allowing you
+                A comprehensive dashboard allowing you
                 <br />
                 to manage all aspects of your business in
                 <br />
@@ -272,7 +288,7 @@ export default function LandingPage() {
             marginTop="16"
             textAlign="center"
           >
-            Trusted by many companies worldwide
+            Trusted by some of the world's biggest companies
           </Text>
           <Hidden till="sm">
             <HStack
@@ -618,7 +634,7 @@ export default function LandingPage() {
                   textAlign="center"
                   marginTop="4"
                 >
-                  Manage your Campaigns
+                  Manage your campaigns
                 </Text>
               </Box>
               <Box
@@ -647,7 +663,7 @@ export default function LandingPage() {
                   textAlign="center"
                   marginTop="4"
                 >
-                  Manage your Billing
+                  Manage your billing
                 </Text>
               </Box>
             </HStack>
@@ -851,7 +867,7 @@ export default function LandingPage() {
                     Free Trial
                   </Text>
                   <Text fontSize="13px" fontWeight="medium">
-                    14 days of free trial
+                    1 month free trial
                   </Text>
                   <HStack alignItems="start">
                     <Text fontSize="20px" fontWeight="medium">
@@ -1133,7 +1149,7 @@ export default function LandingPage() {
                     Free Trial
                   </Text>
                   <Text fontSize="13px" fontWeight="medium">
-                    14 days of free trial
+                    1 month free trial
                   </Text>
                 </Box>
               </HStack>
@@ -1802,7 +1818,7 @@ export default function LandingPage() {
             fontWeight="medium"
             color={theme.colors.shared.gray2}
           >
-            learn how to get started
+            Learn how to get started
           </Text>
           <Text
             fontSize={{ base: '28px', sm: '35px', lg: '45px' }}
@@ -1820,7 +1836,7 @@ export default function LandingPage() {
           >
             <Hidden till="lg">
               <>
-                Join SaaS Template community now to get free updates and
+                Join SaleSpin community now to get free updates and
                 <br />
                 also a lot of offers are waiting for you
               </>
@@ -1828,8 +1844,7 @@ export default function LandingPage() {
             <Hidden till="sm">
               <Hidden from="lg">
                 <>
-                  Join SaaS Template community now to get free updates and also
-                  a
+                  Join SaleSpin community now to get free updates and also a
                   <br />
                   lot of offers are waiting for you
                 </>
@@ -1837,7 +1852,7 @@ export default function LandingPage() {
             </Hidden>
             <Hidden from="sm">
               <>
-                Join SaaS Template community now to get free
+                Join SaleSpin community now to get free
                 <br />
                 updates and also a lot of offers are waiting for you
               </>
@@ -1947,19 +1962,19 @@ export default function LandingPage() {
             <VStack alignItems="center" space="3">
               {[
                 {
-                  text: 'How to create and schedule campaign ?'
+                  text: 'How to create and schedule a new campaign?'
                 },
                 {
-                  text: 'How can i add a new list ?'
+                  text: 'How can I add a new list?'
                 },
                 {
-                  text: 'How can i add a new list ?'
+                  text: 'How can I add a new list?'
                 },
                 {
-                  text: 'How to change my account password ?'
+                  text: 'How to change my account password?'
                 },
                 {
-                  text: 'How to add a new team member ?'
+                  text: 'How to add a new team member?'
                 }
               ].map((item2, i) => (
                 <Fragment key={`item2${i}`}>

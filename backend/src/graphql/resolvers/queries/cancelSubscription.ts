@@ -2,7 +2,7 @@ import {gql} from 'apollo-server';
 
 import {stripe} from '../../../utils/stripe';
 
-import getUserSubscriptionData from './getUserSubscriptionData';
+import getUserSubscriptionData from './getBusinessSubscriptionData';
 
 export const cancelSubscriptionSchema = gql`
   scalar JSON

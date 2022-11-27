@@ -3,17 +3,16 @@ import { Platform } from 'react-native'
 export const theme = {
   colors: {
     shared: {
-      clientEyePrimary: '#7d55c9',
-      clientEyeSecondary: '#846ab4',
+      SaleSpinPrimary: '#355DFF',
+      SaleSpinSecondary: '#000000',
+      transparent: 'rgba(0, 0, 0, 0)',
       white: '#FFFFFF',
       blue: '#355DFF',
       purple: '#9757D7',
       yellow: '#FFB21A',
       pink: '#EF466F',
-
       white_50: '#FFFFFF80',
       white_60: '#FFFFFF99',
-
       black_2: '#00000005',
       black_3: '#00000008',
       black_4: '#0000000A',
@@ -56,25 +55,19 @@ export const theme = {
       aliceBlue: '#F4F7FE',
       softViolet: '#c6c4dc',
       lavenderBlue: '#CABDFF',
-
       redStop: '#FF2626',
       redOrange: '#FF4500',
       redOrange_20: '#FF450033',
       redText: '#FF363C',
-
       orange: '#FF592C',
-
       fireOrange: '#FF9158',
       fireOrange_20: '#FF915833',
-
       purple1: '#7F60FF',
       purple1_34: '#CABDFF57',
       purple2: '#FC00E3',
       purple2_15: '#FC00E326',
-
       lightBlue: '#4AC7FF',
       lightBlue_34: '#B1E5FC57',
-
       green: '#00B976',
       green_10: '#00B9761A',
       green2: '#00A642',
@@ -84,15 +77,12 @@ export const theme = {
       lightGreen: '#B5E4CA',
       lightGreen2: '#11ED8B',
       lightGreen3: '#A5FF9E',
-
       tosca: '#00F1B7',
       tosca_10: '#00F1B71A',
-
       darkPink: '#F00073',
       darkPink_15: '#F0007326',
       darkPink2: '#BF00A0',
       darkPink2_15: '#BF00A026',
-
       masterCardYellow: '#F79E1B',
       masterCardYellow_15: '#F79E1B26'
     },

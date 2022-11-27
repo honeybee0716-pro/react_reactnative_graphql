@@ -27,14 +27,14 @@ const forgotPassword = async (parent: any, args: any) => {
 
   const passwordResetCode = generateRandomNumber();
 
-  const user = await prismaContext.prisma.user.findFirst({
+  const user = await prismaContext.prisma.business.findFirst({
     where: {
       email,
     },
   });
 
   if (user) {
-    await prismaContext.prisma.user.update({
+    await prismaContext.prisma.business.update({
       where: {
         email,
       },
@@ -56,7 +56,7 @@ const forgotPassword = async (parent: any, args: any) => {
     // });
 
     await nodemailer.sendMail({
-      from: '"SaaS Template Alerts" <alerts@saastemplate.io>', // sender address
+      from: '"SaleSpin Alerts" <alerts@salespin.co>', // sender address
       to: email, // list of receivers
       subject: 'Password Reset',
       text: `Please use this code to reset your password: ${passwordResetCode}`,

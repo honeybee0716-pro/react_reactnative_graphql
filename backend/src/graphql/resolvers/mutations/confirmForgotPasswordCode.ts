@@ -2,7 +2,7 @@ import {gql} from 'apollo-server';
 import bcrypt from 'bcrypt';
 
 import {prismaContext} from '../../prismaContext';
-import getUserByEmail from '../queries/getUserByEmail';
+import getUserByEmail from '../queries/getBusinessByEmail';
 
 export const confirmForgotPasswordCodeSchema = gql`
   scalar JSON
@@ -46,7 +46,7 @@ const confirmForgotPasswordCode = async (parent: null, args: any) => {
   const hashedPassword = await bcrypt.hash(args.input.newPassword, salt);
 
   if (args.input.code === passwordResetCode && !isExpired) {
-    await prismaContext.prisma.user.update({
+    await prismaContext.prisma.business.update({
       where: {
         email: args.input.email,
       },

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import '../styles/global.scss'
 import 'raf/polyfill'
+import '../locales/config'
 // @ts-ignore
 global.setImmediate = requestAnimationFrame
 import 'setimmediate'
@@ -17,8 +18,15 @@ import { RecoilRoot } from 'recoil'
 import { DataProvider } from 'shared/DataProvider'
 import { DebugObserver } from 'shared/state'
 import { sendRudderstackEvent } from '../../../shared/utils/rudderstack'
+import { useTranslation } from 'react-i18next'
 
 export default function App({ Component, pageProps }: AppProps) {
+  const { t, i18n } = useTranslation()
+
+  useEffect(() => {
+    document.body.dir = i18n.dir()
+  })
+
   useEffect(() => {
     sendRudderstackEvent()
   }, [Component])
@@ -26,8 +34,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>SaaS Template</title>
-        <meta key="title" name="title" content="SaaS Template" />
+        <title>SaleSpin</title>
+        <meta key="title" name="title" content="SaleSpin" />
         <link rel="shortcut icon" type="image/x-icon" href="/favicon.png" />
         <meta
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"

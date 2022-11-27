@@ -86,7 +86,7 @@ export default function ThankYouPage() {
                       >
                         Your account is ready to use. Thank you
                         <br />
-                        for choosing SaaS Template.
+                        for choosing SaleSpin.
                       </Text>
                       <Pressable
                         backgroundColor={theme.colors.shared.blueGentianFlower}

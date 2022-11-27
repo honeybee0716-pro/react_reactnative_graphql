@@ -1,7 +1,7 @@
 import {gql} from 'apollo-server';
 
 import {prismaContext} from '../../prismaContext';
-import getUserByID from '../queries/getUserByID';
+import getBusinessByID from '../queries/getBusinessByID';
 
 export const confirmEmailValidationCodeSchema = gql`
   scalar JSON
@@ -29,7 +29,7 @@ const confirmEmailValidationCode = async (
   args: any,
   context: any,
 ) => {
-  const foundUser = await getUserByID(undefined, {
+  const foundUser = await getBusinessByID(undefined, {
     input: {id: context.user.id},
   });
 
@@ -44,7 +44,7 @@ const confirmEmailValidationCode = async (
   const isExpired = Date.now() - timestampInMilliseconds > 1000 * 60 * 100;
 
   if (args.input.code === verifyEmailCode && !isExpired) {
-    await prismaContext.prisma.user.update({
+    await prismaContext.prisma.business.update({
       where: {
         id: context.user.id,
       },

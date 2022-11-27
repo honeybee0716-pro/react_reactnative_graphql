@@ -20,7 +20,7 @@ export const SignOut = ({ client }) => {
       // client.clearStore()
       setJWT(undefined)
       await client.cache.reset()
-      push('/sign-in')
+      push('/sign-in-business')
     })()
   }, [])
 

@@ -15,7 +15,36 @@ model PrismaInfo {
   prismaIsConnected Boolean @default(true)
 }
 
-model User {
+model Business {
+  id                         String        @id @default(auto()) @map("_id") @db.ObjectId
+  stripeCustomerID           String        @unique
+  firstName                  String
+  lastName                   String
+  companyName                String?
+  email                      String        @unique
+  emailIsVerified            Boolean       @default(false)
+  password                   String
+  createdAt                  DateTime      @default(now())
+  updatedAt                  DateTime      @default(now())
+  deletedAt                  DateTime?
+  bannedAt                   DateTime?
+  allowMarketingEmails       Boolean       @default(true)
+  createdIPAddress           String
+  knownIPAddresses           String[]
+  passwordResetCode          Int?
+  passwordResetCodeTimestamp DateTime?
+  verifyEmailCode            Int?
+  verifyEmailCodeTimestamp   DateTime?
+  trialCreatedAt             DateTime?
+  companyLogo                String     @default("")
+  role                       Role       @default(BASIC)
+  Customer                   Customer[]
+  Product                    Product[]
+  Transaction                Transaction[]
+  integrationSettings        integrationSettings?
+}
+
+model Customer {
   id                         String    @id @default(auto()) @map("_id") @db.ObjectId
   stripeCustomerID           String    @unique
   firstName                  String
@@ -36,43 +65,40 @@ model User {
   verifyEmailCode            Int?
   verifyEmailCodeTimestamp   DateTime?
   trialCreatedAt             DateTime?
-  firstLeadReceivedAt        DateTime?
   role                       Role      @default(BASIC)
-  leads                      Lead[]
+  business                   Business? @relation(fields: [businessId], references: [id])
+  businessId                 String?
+}
+
+model Product {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  price       Float
+  description String
+  img         String
+  isDeleted   Boolean  @default(false)
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id])
+}
+
+model Transaction {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  purchaseAmount  Float
+  transactionDate DateTime  @default(now())
+  business        Business? @relation(fields: [businessId], references: [id])
+  businessId      String?
+}
+
+model integrationSettings {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  lineAPIKey   String
+  shopeeAPIKey String
+  lazadaAPIKey String
+  business     Business? @relation(fields: [businessId], references: [id])
+  businessId   String?   @unique // relation scalar field (used in the `@relation` attribute above)
 }
 
 enum Role {
   BASIC
   ADMIN
-}
-
-model Lead {
-  id                        String   @id @default(auto()) @map("_id") @db.ObjectId
-  user                      User?    @relation(fields: [userID], references: [id])
-  userID                    String?  @db.ObjectId
-  code                      String?
-  firstName                 String?
-  lastName                  String?
-  companyName               String?
-  title                     String?
-  email                     String?
-  phone                     String?
-  verificationStatus        String?
-  website                   String?
-  dbID                      String?
-  companyID                 String?
-  companyURL                String?
-  durationInCompany         String?
-  durationInRole            String?
-  industry                  String?
-  isPremium                 String?
-  linkedInProfileURL        String?
-  location                  String?
-  profileImageURL           String?
-  query                     String?
-  leadSource                String?
-  dateAdded                 DateTime
-  linkedInSalesNavigatorURL String?
-  stripeUsageLoggedAt       DateTime?
-  noSubscriptionFoundForStripeUsage       DateTime?
 }

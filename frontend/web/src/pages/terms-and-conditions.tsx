@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <NextSeo
-        title="SaaS Template - Terms and Conditions"
+        title="SaleSpin - Terms and Conditions"
         description="Terms and Conditions"
         noindex={false}
       />
