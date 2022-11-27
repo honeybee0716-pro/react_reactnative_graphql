@@ -7,7 +7,10 @@ import {
   Text,
   HStack,
   Input,
-  Pressable
+  Pressable,
+  useToast,
+  AlertDialog,
+  Button
 } from 'native-base'
 import { theme } from 'shared/styles/theme'
 import { Dimensions } from 'react-native'
@@ -31,18 +34,142 @@ import IconLayers from 'shared/components/icons/IconLayers'
 import IconFlag from 'shared/components/icons/IconFlag'
 import IconCheckCircle from 'shared/components/icons/IconCheckCircle'
 import IconFourSquare from 'shared/components/icons/IconFourSquare'
+import { gql, useLazyQuery, useMutation } from '@apollo/client'
 
 const { width } = Dimensions.get('window')
 
+const GET_CUSTOMER_DETAILS_BUSINESS = gql`
+  query getCustomerDetailsBusiness {
+    getCustomerDetailsBusiness {
+      message
+      status
+      dataBusiness
+    }
+  }
+`
+
+const SEND_MESSAGE = gql`
+  mutation Mutation($sendMessageToUsersInput: sendMessageToUsersInput) {
+    sendMessageToUsers(input: $sendMessageToUsersInput) {
+      message
+      status
+      users
+    }
+  }
+`
+
 export default function Campaigns() {
+
+  const toast = useToast()
+
+  const [getC] = useLazyQuery(GET_CUSTOMER_DETAILS_BUSINESS)
+  const [sM] = useMutation(SEND_MESSAGE)
+
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const onClose = () => setIsOpen(false);
+
+  const [item1,setItem1]=useState({msg:""})
+
+  const cancelRef = React.useRef(null);
+
+  const [Bcustomers,setBcustomers]=useState([])
   const [openCreateNewCampaignModal, setOpenCreateNewCampaignModal] =
     useState(false)
   const refCreateNewCampaignModal = useRef<HTMLDivElement>()
 
+  const getCs = () => {
+    getC({
+      onCompleted: async ({ getCustomerDetailsBusiness }) => {
+        if (getCustomerDetailsBusiness?.status === 'success') {
+          //console.log(getCustomerDetailsBusiness.dataBusiness)
+          setBcustomers(getCustomerDetailsBusiness.dataBusiness)
+        }
+        if (getCustomerDetailsBusiness?.message) {
+          toast.show({
+            description: getCustomerDetailsBusiness.message
+          })
+          return
+        } else {
+          toast.show({
+            description: 'There was a problem....'
+          })
+        }
+      },
+      onError: (error) => {
+        toast.show({
+          description: `${error.message}`
+        })
+      }
+    })
+  }
+
+  React.useEffect(() => {
+    getCs()
+  }, [])
+
+  const sendMsg = async ()=>{
+    const myele = document.getElementById("myct")
+    const tempc=[]
+    if(myele!==undefined)
+    {
+      const ies = myele?.getElementsByTagName(`input`)
+      if(ies?.length>0)
+      {
+        for(let j = 0;j<ies?.length;j++)
+        {
+          if(ies[j].checked)
+          {
+            tempc.push(ies[j].value)
+          }
+        }
+      }
+      if(tempc.length>0)
+      {
+        sM({
+          variables: {
+            sendMessageToUsersInput: {
+              msg:item1.msg,
+              users:tempc
+            }
+          },
+          onCompleted: async (sendMessageToUsersData) => {
+            console.log(sendMessageToUsersData)
+            if (
+              sendMessageToUsersData?.sendMessageToUsers?.status === 'success'
+            ) {
+              toast.show({
+                description: 'message sent successfully'
+              })
+              
+              return
+            }
+            if (sendMessageToUsersData?.sendMessageToUsers?.message) {
+              toast.show({
+                description: sendMessageToUsersData.sendMessageToUsers.message
+              })
+              return
+            }
+            toast.show({
+              description: 'There was an error'
+            })
+            return
+          },
+          onError: (error) => {
+            toast.show({
+              description: `${error.message}`
+            })
+          }
+        })
+      }
+    }
+  }
+
   return (
     <>
       <DashboardLayout>
-        <Box flexDirection={{ base: 'column', lg: 'row' }}>
+
+        {/*<Box flexDirection={{ base: 'column', lg: 'row' }}>
           <Hidden from="lg">
             <Box width="full">
               <Box
@@ -485,7 +612,7 @@ export default function Campaigns() {
                 borderBottomWidth="1"
                 borderBottomColor={theme.colors.shared.softer2Gray}
               ></Box>
-              {/* Manage Campaigns */}
+              
               <Stack flexDirection="row" flexWrap="wrap" marginTop="4">
                 {[
                   { status: 'running' },
@@ -1178,6 +1305,47 @@ export default function Campaigns() {
               </Box>
             </Box>
           </Hidden>
+        </Box>*/}
+        <Box>
+        <table style={{marginTop:"40px",padding:"10px",marginBottom:"50px"}} id="myct">
+  <tr style={{textAlign:"left", height:"50px"}}>
+    <th>Email</th>
+    <th>name</th>
+  </tr>
+  {Bcustomers.map((c,i)=>{
+    return (
+  <tr style={{backgroundColor:"white",height:"35px"}} key={i}>
+    <td>{c?.email}</td>
+    <td>{c?.firstName}</td>
+    <td><input type="checkbox" value={c?.email}/></td>
+  </tr>)
+  })}
+  <button style={{margin:"10px",marginLeft:"0px"}} onClick={()=>{setIsOpen(!isOpen)}}>Send Message</button>
+</table>
+<AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
+        <AlertDialog.Content>
+          <AlertDialog.CloseButton />
+          <AlertDialog.Header>Send Message</AlertDialog.Header>
+          <AlertDialog.Body>
+            Please write the message that you want to send to selected users
+            <textarea  onChange={e => setItem1({ ...item1, msg: e.target.value })}  placeholder='message...'></textarea>
+          </AlertDialog.Body>
+          <AlertDialog.Footer>
+            <Button.Group space={2}>
+              <Button variant="unstyled" colorScheme="danger" onPress={onClose} ref={cancelRef}>
+                Cancel
+              </Button>
+              
+              <Button colorScheme="success" onPress={()=>{
+                sendMsg()
+                onClose()
+                }}>
+                Send
+              </Button>
+            </Button.Group>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
         </Box>
       </DashboardLayout>
     </>

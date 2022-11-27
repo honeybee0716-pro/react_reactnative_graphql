@@ -43,6 +43,7 @@ import {getProductByIdSchema} from '../resolvers/queries/getProductById';
 import {getCustomerDetailsBusinessSchema} from '../resolvers/queries/getCustomerDetailsBusiness';
 import {getCompanyLogoSchema} from '../resolvers/queries/getCompanyLogo';
 import {addCompanyLogoSchema} from '../resolvers/mutations/addCompanyLogo';
+import { sendMessageToUsersSchema } from '../resolvers/mutations/sendMessageToUsers';
 
 import {sharedSchema} from './shared';
 
@@ -91,4 +92,5 @@ export const typeDefs = mergeTypeDefs([
   getProductByIdSchema,
   deleteProductSchema,
   getCompanyLogoSchema,
+  sendMessageToUsersSchema
 ]) as any;

@@ -16,6 +16,7 @@ import resendCodeCustomer from './resendCodeCustomer';
 import deleteProduct from './deleteProduct';
 import updateProduct from './updateProduct';
 import addCompanyLogo from './addCompanyLogo';
+import sendMessageToUsers from './sendMessageToUsers';
 
 const RootMutation = {
   createBusiness,
@@ -36,6 +37,7 @@ const RootMutation = {
   deleteProduct,
   updateProduct,
   addCompanyLogo,
+  sendMessageToUsers
 };
 
 export default RootMutation;

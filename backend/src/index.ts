@@ -159,6 +159,7 @@ const permissions = shield(
       confirmEmailValidationCodeCustomer: isAuthenticated,
       resendCode: isAuthenticated,
       resendCodeCustomer: isAuthenticated,
+      sendMessageToUsers:isAuthenticated
     },
   },
   {
