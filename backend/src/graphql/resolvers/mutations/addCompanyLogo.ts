@@ -1,4 +1,5 @@
 import {ApolloError, gql} from 'apollo-server';
+
 import {prismaContext} from '../../prismaContext';
 
 export const addCompanyLogoSchema = gql`
@@ -16,15 +17,19 @@ export const addCompanyLogoSchema = gql`
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const addCompanyLogo = async (parent: null, args: any, context: any, info: any) => {
+const addCompanyLogo = async (
+  parent: null,
+  args: any,
+  context: any,
+  info: any,
+) => {
+  const {id: userID} = context.user;
 
-  const {id: userID} = context.user;  
-  
   // need to create stripeCustomer before db user because db user requires field stripeCustomerID
   const updatedLogoBusiness = await prismaContext.prisma.business.update({
-    where:{id:userID},
+    where: {id: userID},
     data: {
-     companyLogo:args.input.companyLogo
+      companyLogo: args.input.companyLogo,
     },
   });
 

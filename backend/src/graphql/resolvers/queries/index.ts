@@ -19,6 +19,7 @@ import getBusinessDetails from './getBusinessDetails';
 import getCustomerDetails from './getCustomerDetails';
 import getProductDetailsBusiness from './getProductDetailsBusiness';
 import getCustomerDetailsBusiness from './getCustomerDetailsBusiness';
+import getAllTransactions from './getAllTransactions';
 import getCompanyLogo from './getCompanyLogo';
 import getProductById from './getProductById';
 
@@ -43,6 +44,7 @@ export const RootQuery = {
   getBusinessDetails,
   getProductDetailsBusiness,
   getCustomerDetails,
+  getAllTransactions,
   getCustomerDetailsBusiness,
   getCompanyLogo,
   getProductById,

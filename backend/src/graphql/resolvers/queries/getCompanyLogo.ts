@@ -20,17 +20,16 @@ export const getCompanyLogoSchema = gql`
 const getCompanyLogo = async (parent: any, args: any, context: any) => {
   const {id: userID} = context.user;
 
-
   const dataBusiness = await prismaContext.prisma.business.findUnique({
     where: {
-      id:userID,
+      id: userID,
     },
   });
 
   return {
     message: 'Retrieved company logo',
     status: 'success',
-    companyLogo:dataBusiness?.companyLogo,
+    companyLogo: dataBusiness?.companyLogo,
   };
 };
 /* jscpd:ignore-end */

@@ -22,7 +22,7 @@ import { useRouter } from 'solito/router'
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
-import FileBase64 from 'react-file-base64';
+import FileBase64 from 'react-file-base64'
 
 const GET_COMPANY_LOGO = gql`
   query getCompanyLogo {
@@ -35,33 +35,30 @@ const GET_COMPANY_LOGO = gql`
 `
 
 const ADD_COMPANY_LOGO = gql`
-mutation Mutation($addCompanyLogoInput: addCompanyLogoInput) {
-  addCompanyLogo(input: $addCompanyLogoInput) {
-    message
-    status
+  mutation Mutation($addCompanyLogoInput: addCompanyLogoInput) {
+    addCompanyLogo(input: $addCompanyLogoInput) {
+      message
+      status
+    }
   }
-}
 `
 
 export default function Branding(props: any) {
-
   const toast = useToast()
-  const [item, setItem] = useState({  image: '' });
-  const [titem, setTitem] = useState({  image: '' });
-  const [getCompanyLogo] = useLazyQuery(GET_COMPANY_LOGO )
+  const [item, setItem] = useState({ image: '' })
+  const [titem, setTitem] = useState({ image: '' })
+  const [getCompanyLogo] = useLazyQuery(GET_COMPANY_LOGO)
 
-  const [addLogo, { data, loading, error }] = useMutation(ADD_COMPANY_LOGO,{
-    refetchQueries: [{ query: GET_COMPANY_LOGO }],
+  const [addLogo, { data, loading, error }] = useMutation(ADD_COMPANY_LOGO, {
+    refetchQueries: [{ query: GET_COMPANY_LOGO }]
   })
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     getCompanyLogo({
       onCompleted: async ({ getCompanyLogo }) => {
-        if (
-          getCompanyLogo?.status === 'success'
-        ) {
+        if (getCompanyLogo?.status === 'success') {
           console.log(getCompanyLogo)
-          setItem({image:getCompanyLogo.companyLogo})
+          setItem({ image: getCompanyLogo.companyLogo })
         }
         if (getCompanyLogo?.message) {
           toast.show({
@@ -80,28 +77,24 @@ export default function Branding(props: any) {
         })
       }
     })
-  },[])
+  }, [])
 
-  React.useEffect(()=>{
+  React.useEffect(() => {}, [data])
 
-  },[data])
-
-  const addLogoHere = async ()=>{
+  const addLogoHere = async () => {
     addLogo({
       variables: {
         addCompanyLogoInput: {
-          companyLogo:titem.image
+          companyLogo: titem.image
         }
       },
       onCompleted: async (addCompanyLogoData) => {
         console.log(addCompanyLogoData)
-        if (
-          addCompanyLogoData?.addCompanyLogo?.status === 'success'
-        ) {
+        if (addCompanyLogoData?.addCompanyLogo?.status === 'success') {
           toast.show({
             description: 'logo added successfully'
           })
-          
+
           return
         }
         if (addCompanyLogoData?.addCompanyLogo?.message) {
@@ -126,16 +119,26 @@ export default function Branding(props: any) {
   return (
     <>
       <DashboardLayout>
-        <Center style={{marginTop:"10px"}}>
-      <FileBase64
-         
-          type="file"
-          multiple={false}
-          onDone={({ base64 }) => setTitem({ ...titem, image: base64 })}
-        />
-        <button onClick={addLogoHere}>add/update logo</button>
-        {item.image!=='' && (
-        <img className="activator" style={{  height: "250px",width:"250px",objectFit:"contain",backgroundColor:"white" }} src={item.image} alt="logo"/>)}
+        <Center style={{ marginTop: '10px' }}>
+          <FileBase64
+            type="file"
+            multiple={false}
+            onDone={({ base64 }) => setTitem({ ...titem, image: base64 })}
+          />
+          <button onClick={addLogoHere}>add/update logo</button>
+          {item.image !== '' && (
+            <img
+              className="activator"
+              style={{
+                height: '250px',
+                width: '250px',
+                objectFit: 'contain',
+                backgroundColor: 'white'
+              }}
+              src={item.image}
+              alt="logo"
+            />
+          )}
         </Center>
       </DashboardLayout>
     </>

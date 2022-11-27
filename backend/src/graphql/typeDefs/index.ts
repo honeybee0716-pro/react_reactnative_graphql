@@ -41,9 +41,11 @@ import {deleteProductSchema} from '../resolvers/mutations/deleteProduct';
 import {updateProductSchema} from '../resolvers/mutations/updateProduct';
 import {getProductByIdSchema} from '../resolvers/queries/getProductById';
 import {getCustomerDetailsBusinessSchema} from '../resolvers/queries/getCustomerDetailsBusiness';
+import {getAllTransactionsSchema} from '../resolvers/queries/getAllTransactions';
+import {createTransactionSchema} from '../resolvers/mutations/createTransaction';
 import {getCompanyLogoSchema} from '../resolvers/queries/getCompanyLogo';
 import {addCompanyLogoSchema} from '../resolvers/mutations/addCompanyLogo';
-import { sendMessageToUsersSchema } from '../resolvers/mutations/sendMessageToUsers';
+import {sendMessageToUsersSchema} from '../resolvers/mutations/sendMessageToUsers';
 
 import {sharedSchema} from './shared';
 
@@ -86,11 +88,13 @@ export const typeDefs = mergeTypeDefs([
   getBusinessDetailsSchema,
   getProductDetailsBusinessSchema,
   getCustomerDetailsSchema,
-  getCustomerDetailsBusinessSchema,
   addCompanyLogoSchema,
   updateProductSchema,
   getProductByIdSchema,
   deleteProductSchema,
   getCompanyLogoSchema,
-  sendMessageToUsersSchema
+  sendMessageToUsersSchema,
+  getCustomerDetailsBusinessSchema,
+  getAllTransactionsSchema,
+  createTransactionSchema,
 ]) as any;
