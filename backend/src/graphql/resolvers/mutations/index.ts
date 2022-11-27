@@ -18,6 +18,7 @@ import updateProduct from './updateProduct';
 import createTransaction from './createTransaction';
 import addCompanyLogo from './addCompanyLogo';
 import sendMessageToUsers from './sendMessageToUsers';
+import setIntegrationSettings from './setIntegrationSettings';
 
 const RootMutation = {
   createBusiness,
@@ -40,6 +41,7 @@ const RootMutation = {
   createTransaction,
   addCompanyLogo,
   sendMessageToUsers,
+  setIntegrationSettings,
 };
 
 export default RootMutation;

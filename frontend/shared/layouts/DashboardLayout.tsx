@@ -122,6 +122,10 @@ const DashboardLayout: React.FC = ({ children }) => {
     window.location.href="mailto:support@salespin.co"
   }
 
+  const GotoIntegration = async () =>{
+    push('/integrations')
+  }
+
   return (
     <>
       <StatusBar
@@ -803,6 +807,33 @@ const DashboardLayout: React.FC = ({ children }) => {
                             paddingLeft="4"
                           >
                             Branding
+                          </Text>
+                        </Hidden>
+                      </Pressable>
+                    </Center>
+                    <Center marginY={{ base: '2', lg: '0' }}>
+                      <Pressable
+                        onPress={GotoIntegration}
+                        w={{ lg: 'full' }}
+                        flexDirection="row"
+                        alignItems="center"
+                        paddingX={{ base: '3', lg: '6' }}
+                        paddingY="3"
+                        borderRadius="lg"
+                        _hover={{
+                          backgroundColor: theme.colors.shared.softer2Gray
+                        }}
+                      >
+                        <Box w={{ base: '20px', lg: '24px' }}>
+                         <Text>I</Text>
+                        </Box>
+                        <Hidden till="lg">
+                          <Text
+                            color={theme.colors.shared.soft2Gray}
+                            fontWeight="semibold"
+                            paddingLeft="4"
+                          >
+                            Integrations
                           </Text>
                         </Hidden>
                       </Pressable>

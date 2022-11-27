@@ -41,6 +41,7 @@ model Business {
   Customer                   Customer[]
   Product                    Product[]
   Transaction                Transaction[]
+  integrationSettings        integrationSettings?
 }
 
 model Customer {
@@ -86,6 +87,15 @@ model Transaction {
   transactionDate DateTime  @default(now())
   business        Business? @relation(fields: [businessId], references: [id])
   businessId      String?
+}
+
+model integrationSettings {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  lineAPIKey   String
+  shopeeAPIKey String
+  lazadaAPIKey String
+  business     Business? @relation(fields: [businessId], references: [id])
+  businessId   String?   @unique // relation scalar field (used in the `@relation` attribute above)
 }
 
 enum Role {

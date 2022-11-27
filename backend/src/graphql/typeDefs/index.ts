@@ -46,6 +46,8 @@ import {createTransactionSchema} from '../resolvers/mutations/createTransaction'
 import {getCompanyLogoSchema} from '../resolvers/queries/getCompanyLogo';
 import {addCompanyLogoSchema} from '../resolvers/mutations/addCompanyLogo';
 import {sendMessageToUsersSchema} from '../resolvers/mutations/sendMessageToUsers';
+import { setIntegrationSettingsSchema } from '../resolvers/mutations/setIntegrationSettings';
+import { getIntegrationSettingsSchema } from '../resolvers/queries/getIntegrationSettings';
 
 import {sharedSchema} from './shared';
 
@@ -97,4 +99,6 @@ export const typeDefs = mergeTypeDefs([
   getCustomerDetailsBusinessSchema,
   getAllTransactionsSchema,
   createTransactionSchema,
+  setIntegrationSettingsSchema,
+  getIntegrationSettingsSchema,
 ]) as any;

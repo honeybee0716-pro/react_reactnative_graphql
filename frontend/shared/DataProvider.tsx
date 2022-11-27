@@ -70,7 +70,8 @@ export const DataProvider = ({ children }) => {
           document.location.href.includes('campaigns') ||
           document.location.href.includes('help') ||
           document.location.href.includes('account') ||
-          document.location.href.includes('shopping')
+          document.location.href.includes('shopping') ||
+          document.location.href.includes('integrations')
         ) {
           push('/sign-in-business')
         }
@@ -99,7 +100,8 @@ export const DataProvider = ({ children }) => {
           document.location.href.includes('products') ||
           document.location.href.includes('reports') ||
           document.location.href.includes('branding') ||
-          document.location.href.includes('campaigns') ))
+          document.location.href.includes('campaigns') ||
+          document.location.href.includes('integrations') ))
           push('/home')
         else if(data.getBusinessSubscriptionData.stripeCustomer.metadata.accountType==="business" && 
         document.location.href.includes('shopping'))
