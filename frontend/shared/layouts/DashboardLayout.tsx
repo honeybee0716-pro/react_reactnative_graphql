@@ -49,21 +49,23 @@ const { width, height } = Dimensions.get('window')
 const DashboardLayout: React.FC = ({ children }) => {
   const [shouldOverlapWithTrigger] = useState(false)
   const [position, setPosition] = React.useState('auto')
-  const  [control,setControl]=React.useState("")
+  const [control, setControl] = React.useState('')
   const { push } = useRouter()
   const [userSubscriptionData, setUserSubscriptionData] = useRecoilState<any>(
     userSubscriptionDataState
   )
 
-  React.useEffect(()=>{
-    if(userSubscriptionData.stripeCustomer.metadata.accountType==="business")
-    {
-      setControl("business")
-    }else if (userSubscriptionData.stripeCustomer.metadata.accountType==="customer")
-    {
-      setControl("customer")
+  React.useEffect(() => {
+    if (
+      userSubscriptionData.stripeCustomer.metadata.accountType === 'business'
+    ) {
+      setControl('business')
+    } else if (
+      userSubscriptionData.stripeCustomer.metadata.accountType === 'customer'
+    ) {
+      setControl('customer')
     }
-  },[userSubscriptionData])
+  }, [userSubscriptionData])
 
   const handleSignOut = async () => {
     push('/sign-out')
@@ -119,10 +121,10 @@ const DashboardLayout: React.FC = ({ children }) => {
 
   const goToHelp = async () => {
     //push('/help')
-    window.location.href="mailto:support@salespin.co"
+    window.location.href = 'mailto:support@salespin.co'
   }
 
-  const GotoIntegration = async () =>{
+  const GotoIntegration = async () => {
     push('/integrations')
   }
 
@@ -437,46 +439,46 @@ const DashboardLayout: React.FC = ({ children }) => {
                       </Hidden>
                     </Pressable>
                   </Center>*/}
-                  {control==="business"&& (
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      onPress={goToCampaigns}
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box flexDirection="row" alignItems="center">
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <IconFlag />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Campaigns
-                          </Text>
-                        </Hidden>
-                      </Box>
-                      {/*<Hidden till="lg">
+                    {control === 'business' && (
+                      <Center marginY={{ base: '2', lg: '0' }}>
+                        <Pressable
+                          onPress={goToCampaigns}
+                          w={{ lg: 'full' }}
+                          flexDirection="row"
+                          alignItems="center"
+                          justifyContent="space-between"
+                          paddingX={{ base: '3', lg: '6' }}
+                          paddingY="3"
+                          borderRadius="lg"
+                          _hover={{
+                            backgroundColor: theme.colors.shared.softer2Gray
+                          }}
+                        >
+                          <Box flexDirection="row" alignItems="center">
+                            <Box w={{ base: '20px', lg: '24px' }}>
+                              <IconFlag />
+                            </Box>
+                            <Hidden till="lg">
+                              <Text
+                                color={theme.colors.shared.soft2Gray}
+                                fontWeight="semibold"
+                                paddingLeft="4"
+                              >
+                                Campaigns
+                              </Text>
+                            </Hidden>
+                          </Box>
+                          {/*<Hidden till="lg">
                       <Center>
                         <Box w="20px">
                           <IconChevronDown rotation={180} />
                         </Box>
                       </Center>
                     </Hidden>*/}
-                    </Pressable>
-                  </Center>
-                  )}
-                    
+                        </Pressable>
+                      </Center>
+                    )}
+
                     {/*<Hidden till="lg">
                     <Box marginLeft="33px">
                       <Box
@@ -556,9 +558,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                       </Hidden>
                     </Pressable>
                   </Center>*/}
-                  
-                    
-                  
+
                     <Center marginY={{ base: '2', lg: '0' }}>
                       <Pressable
                         onPress={GotoTransaction}
@@ -591,254 +591,256 @@ const DashboardLayout: React.FC = ({ children }) => {
                         </Hidden>
                       </Pressable>
                     </Center>
-                    {control==="customer" && (
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      onPress={goToShopping}
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                      <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/shopping.svg')}
-                          />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={theme.colors.shared.soft2Gray}
-                          fontWeight="semibold"
-                          paddingLeft="4"
+                    {control === 'customer' && (
+                      <Center marginY={{ base: '2', lg: '0' }}>
+                        <Pressable
+                          onPress={goToShopping}
+                          w={{ lg: 'full' }}
+                          flexDirection="row"
+                          alignItems="center"
+                          paddingX={{ base: '3', lg: '6' }}
+                          paddingY="3"
+                          borderRadius="lg"
+                          _hover={{
+                            backgroundColor: theme.colors.shared.softer2Gray
+                          }}
                         >
-                          Shopping
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>)}
-                    {control==="business" && (
+                          <Box w={{ base: '20px', lg: '24px' }}>
+                            <Image
+                              w="6"
+                              h="6"
+                              source={require('shared/images/shopping.svg')}
+                            />
+                          </Box>
+                          <Hidden till="lg">
+                            <Text
+                              color={theme.colors.shared.soft2Gray}
+                              fontWeight="semibold"
+                              paddingLeft="4"
+                            >
+                              Shopping
+                            </Text>
+                          </Hidden>
+                        </Pressable>
+                      </Center>
+                    )}
+                    {control === 'business' && (
                       <>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoCustomers}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/company.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
+                        <Center marginY={{ base: '2', lg: '0' }}>
+                          <Pressable
+                            onPress={GotoCustomers}
+                            w={{ lg: 'full' }}
+                            flexDirection="row"
+                            alignItems="center"
+                            paddingX={{ base: '3', lg: '6' }}
+                            paddingY="3"
+                            borderRadius="lg"
+                            _hover={{
+                              backgroundColor: theme.colors.shared.softer2Gray
+                            }}
                           >
-                            Customers
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoTiers}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/tiers.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
+                            <Box w={{ base: '20px', lg: '24px' }}>
+                              <Image
+                                w="6"
+                                h="6"
+                                source={require('shared/images/company.svg')}
+                              />
+                            </Box>
+                            <Hidden till="lg">
+                              <Text
+                                color={theme.colors.shared.soft2Gray}
+                                fontWeight="semibold"
+                                paddingLeft="4"
+                              >
+                                Customers
+                              </Text>
+                            </Hidden>
+                          </Pressable>
+                        </Center>
+                        <Center marginY={{ base: '2', lg: '0' }}>
+                          <Pressable
+                            onPress={GotoTiers}
+                            w={{ lg: 'full' }}
+                            flexDirection="row"
+                            alignItems="center"
+                            paddingX={{ base: '3', lg: '6' }}
+                            paddingY="3"
+                            borderRadius="lg"
+                            _hover={{
+                              backgroundColor: theme.colors.shared.softer2Gray
+                            }}
                           >
-                            Tiers
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoAutomation}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/automation.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
+                            <Box w={{ base: '20px', lg: '24px' }}>
+                              <Image
+                                w="6"
+                                h="6"
+                                source={require('shared/images/tiers.svg')}
+                              />
+                            </Box>
+                            <Hidden till="lg">
+                              <Text
+                                color={theme.colors.shared.soft2Gray}
+                                fontWeight="semibold"
+                                paddingLeft="4"
+                              >
+                                Tiers
+                              </Text>
+                            </Hidden>
+                          </Pressable>
+                        </Center>
+                        <Center marginY={{ base: '2', lg: '0' }}>
+                          <Pressable
+                            onPress={GotoAutomation}
+                            w={{ lg: 'full' }}
+                            flexDirection="row"
+                            alignItems="center"
+                            paddingX={{ base: '3', lg: '6' }}
+                            paddingY="3"
+                            borderRadius="lg"
+                            _hover={{
+                              backgroundColor: theme.colors.shared.softer2Gray
+                            }}
                           >
-                            Automation
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoProducts}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/products.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
+                            <Box w={{ base: '20px', lg: '24px' }}>
+                              <Image
+                                w="6"
+                                h="6"
+                                source={require('shared/images/automation.svg')}
+                              />
+                            </Box>
+                            <Hidden till="lg">
+                              <Text
+                                color={theme.colors.shared.soft2Gray}
+                                fontWeight="semibold"
+                                paddingLeft="4"
+                              >
+                                Automation
+                              </Text>
+                            </Hidden>
+                          </Pressable>
+                        </Center>
+                        <Center marginY={{ base: '2', lg: '0' }}>
+                          <Pressable
+                            onPress={GotoProducts}
+                            w={{ lg: 'full' }}
+                            flexDirection="row"
+                            alignItems="center"
+                            paddingX={{ base: '3', lg: '6' }}
+                            paddingY="3"
+                            borderRadius="lg"
+                            _hover={{
+                              backgroundColor: theme.colors.shared.softer2Gray
+                            }}
                           >
-                            Products
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoReports}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/reports.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
+                            <Box w={{ base: '20px', lg: '24px' }}>
+                              <Image
+                                w="6"
+                                h="6"
+                                source={require('shared/images/products.svg')}
+                              />
+                            </Box>
+                            <Hidden till="lg">
+                              <Text
+                                color={theme.colors.shared.soft2Gray}
+                                fontWeight="semibold"
+                                paddingLeft="4"
+                              >
+                                Products
+                              </Text>
+                            </Hidden>
+                          </Pressable>
+                        </Center>
+                        <Center marginY={{ base: '2', lg: '0' }}>
+                          <Pressable
+                            onPress={GotoReports}
+                            w={{ lg: 'full' }}
+                            flexDirection="row"
+                            alignItems="center"
+                            paddingX={{ base: '3', lg: '6' }}
+                            paddingY="3"
+                            borderRadius="lg"
+                            _hover={{
+                              backgroundColor: theme.colors.shared.softer2Gray
+                            }}
                           >
-                            Reports
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoBranding}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="3"
-                            h="4"
-                            source={require('shared/images/b.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
+                            <Box w={{ base: '20px', lg: '24px' }}>
+                              <Image
+                                w="6"
+                                h="6"
+                                source={require('shared/images/reports.svg')}
+                              />
+                            </Box>
+                            <Hidden till="lg">
+                              <Text
+                                color={theme.colors.shared.soft2Gray}
+                                fontWeight="semibold"
+                                paddingLeft="4"
+                              >
+                                Reports
+                              </Text>
+                            </Hidden>
+                          </Pressable>
+                        </Center>
+                        <Center marginY={{ base: '2', lg: '0' }}>
+                          <Pressable
+                            onPress={GotoBranding}
+                            w={{ lg: 'full' }}
+                            flexDirection="row"
+                            alignItems="center"
+                            paddingX={{ base: '3', lg: '6' }}
+                            paddingY="3"
+                            borderRadius="lg"
+                            _hover={{
+                              backgroundColor: theme.colors.shared.softer2Gray
+                            }}
                           >
-                            Branding
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoIntegration}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                         <Text>I</Text>
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
+                            <Box w={{ base: '20px', lg: '24px' }}>
+                              <Image
+                                w="3"
+                                h="4"
+                                source={require('shared/images/b.svg')}
+                              />
+                            </Box>
+                            <Hidden till="lg">
+                              <Text
+                                color={theme.colors.shared.soft2Gray}
+                                fontWeight="semibold"
+                                paddingLeft="4"
+                              >
+                                Branding
+                              </Text>
+                            </Hidden>
+                          </Pressable>
+                        </Center>
+                        <Center marginY={{ base: '2', lg: '0' }}>
+                          <Pressable
+                            onPress={GotoIntegration}
+                            w={{ lg: 'full' }}
+                            flexDirection="row"
+                            alignItems="center"
+                            paddingX={{ base: '3', lg: '6' }}
+                            paddingY="3"
+                            borderRadius="lg"
+                            _hover={{
+                              backgroundColor: theme.colors.shared.softer2Gray
+                            }}
                           >
-                            Integrations
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    </>)}
+                            <Box w={{ base: '20px', lg: '24px' }}>
+                              <Text>I</Text>
+                            </Box>
+                            <Hidden till="lg">
+                              <Text
+                                color={theme.colors.shared.soft2Gray}
+                                fontWeight="semibold"
+                                paddingLeft="4"
+                              >
+                                Integrations
+                              </Text>
+                            </Hidden>
+                          </Pressable>
+                        </Center>
+                      </>
+                    )}
                   </ScrollView>
                 </Box>
                 <br />
@@ -886,7 +888,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                       ></Box>
                     </>
                   </Hidden>
-                 
+
                   <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
                       onPress={goToBilling}
@@ -944,7 +946,6 @@ const DashboardLayout: React.FC = ({ children }) => {
                   <Center marginY={{ base: '2', lg: '0' }}>
                     <Pressable
                       onPress={goToHelp}
-                      
                       w={{ lg: 'full' }}
                       flexDirection="row"
                       alignItems="center"
