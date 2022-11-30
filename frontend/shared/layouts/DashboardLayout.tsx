@@ -22,7 +22,8 @@ import {
   MaterialIcons,
   Ionicons,
   Feather,
-  SimpleLineIcons
+  SimpleLineIcons,
+  Foundation
 } from '@expo/vector-icons'
 
 enum showOn {
@@ -227,6 +228,20 @@ const DashboardLayout: React.FC = ({ children }) => {
       ),
       onClick: () => push('/integrations'),
       showOn: showOn.business,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Points',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Points')}
+          as={Foundation}
+          name="dollar-bill"
+        />
+      ),
+      onClick: () => push('/points'),
+      showOn: showOn.both,
       position: sidebarItemPosition.top
     },
     {
