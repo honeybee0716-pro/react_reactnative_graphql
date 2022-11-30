@@ -209,21 +209,24 @@ export default function Customer(props: any) {
             placeholder="search..."
             onChange={(e) => setFilter(e.target.value)}
           />
+            <table style={{marginTop:"40px",padding:"10px"}}>
+  <tr style={{textAlign:"left", height:"50px"}}>
+    <th>Customer Email</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Customer Company</th>
+  </tr>
           {fdata.map((i: any, k) => {
             return (
-              <div
-                style={{ width: '100%', marginTop: '5px', marginBottom: '5px' }}
-              >
-                <h4>{i.email}</h4>
-                <div style={{ backgroundColor: 'white', margin: '5px' }}>
-                  <p>Customer Email: {i.email}</p>
-                  <p>Customer First Name: {i.firstName}</p>
-                  <p>Customer Last Name: {i.lastName}</p>
-                  <p>Customer Company: {i.companyName}</p>
-                </div>
-              </div>
+              <tr style={{backgroundColor:"white",height:"35px"}}>
+                  <td>{i.email}</td>
+                  <td>{i.firstName}</td>
+                  <td>{i.lastName}</td>
+                  <td>{i.companyName}</td>
+              </tr>
             )
           })}
+          </table>
         </Box>
       </DashboardLayout>
     </>

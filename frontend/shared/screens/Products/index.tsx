@@ -27,6 +27,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
 import FileBase64 from 'react-file-base64'
 import IconTrashBin from '../../components/icons/IconTrashBin'
+import IconEdit from "../../components/icons/IconEdit"
 
 const CREATE_PRODUCT = gql`
   mutation Mutation($createProductInput: createProductInput) {
@@ -367,43 +368,43 @@ export default function Products(props: any) {
           </Popover>
         </Box>
         <div style={{ margin: '5px', marginTop: '20px' }}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '25% 25% 25% 25%',
-              gridTemplateRows: 'auto'
-            }}
-          >
+        <table style={{marginTop:"40px",padding:"10px",width:"100%"}}>
+  <tr style={{textAlign:"left", height:"50px"}}>
+    <th></th>
+    <th>Product Name</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th></th>
+  </tr>
             {fitems?.map((item) => (
               <>
-                <div>
+                <tr style={{backgroundColor:"white"}}>
+                  <td>
                   <img
                     className="activator"
                     style={{
-                      height: '250px',
-                      width: '250px',
+                      height: '50px',
+                      width: '50px',
                       objectFit: 'contain',
                       backgroundColor: 'white'
                     }}
                     src={item.img}
+                    
                   />
-                  <p>Product Name: {item.name}</p>
-                  <p>Price: {item.price}$</p>
-                  <p>{item.description}</p>
+                  </td>
+                  <td>{item.name}</td>
+                  <td>{item.price}$</td>
+                  <td>{item.description}</td>
 
-                  <Box
-                    style={{
-                      width: '60px',
-                      height: '20px',
-                      marginBottom: '14px'
-                    }}
-                  >
+                 <td style={{display:"flex",justifyContent:"space-between",width:"90px"}}>
+                  <Box>
                     <Button
                       colorScheme="danger"
                       onPress={() => {
                         setDelId(item.id)
                         setIsOpen(!isOpen)
                       }}
+                      style={{marginTop:"10px",marginLeft:"15px"}}
                     >
                       <Box w={{ base: '15px', lg: '14px' }}>
                         <IconTrashBin color={theme.colors.shared.white} />
@@ -461,13 +462,15 @@ export default function Products(props: any) {
                           {...triggerProps}
                           style={{
                             backgroundColor: 'gray',
-                            width: '60px',
-                            height: '30px',
-                            marginTop: '5px'
+                           
+                            marginTop:"10px",
+                            marginLeft:"15px"
                           }}
                           colorScheme="danger"
                         >
-                          Edit
+                          <Box w={{ base: '15px', lg: '14px' }}>
+                        <IconEdit color={theme.colors.shared.white} />
+                      </Box>
                         </Button>
                       )
                     }}
@@ -551,10 +554,11 @@ export default function Products(props: any) {
                       </Popover.Footer>
                     </Popover.Content>
                   </Popover>
-                </div>
+                  </td>
+                </tr>
               </>
             ))}
-          </div>
+          </table>
         </div>
       </DashboardLayout>
     </>
