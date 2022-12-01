@@ -14,7 +14,8 @@ import {
   Pressable,
   useToast,
   Popover,
-  FormControl
+  FormControl,
+  AlertDialog
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
@@ -47,13 +48,15 @@ const CREATE_TRANSACTION = gql`
 export default function Orders(props: any) {
   const initialFocusRef = React.useRef(null)
   const [item0, setItem0] = useState({ purchaseAmount: '' })
-
+  const [isOpen0, setIsOpen0] = React.useState(false)
   const toast = useToast()
   const [transactions, setTransactions] = useState([])
   const [getT] = useLazyQuery(GET_TRANSACTIONS)
   const [cT, { data }] = useMutation(CREATE_TRANSACTION, {
     refetchQueries: [{ query: GET_TRANSACTIONS }]
   })
+
+  const onClose0 = () => setIsOpen0(false)
 
   React.useEffect(() => {
     getT({
@@ -121,8 +124,8 @@ export default function Orders(props: any) {
   return (
     <>
       <DashboardLayout>
-        <Box w="100%" alignItems="center">
-          <Popover
+        <Box w="100%" >
+          {/*<Popover
             initialFocusRef={initialFocusRef}
             trigger={(triggerProps) => {
               return <Button {...triggerProps}>Create a new order</Button>
@@ -131,7 +134,7 @@ export default function Orders(props: any) {
             <Popover.Content width="56">
               <Popover.Arrow />
               <Popover.CloseButton />
-              {/* @ts-ignore */}
+              
               <Popover.Header>Order Details</Popover.Header>
               <Popover.Body>
                 <FormControl mt="3">
@@ -160,9 +163,74 @@ export default function Orders(props: any) {
                 </Button.Group>
               </Popover.Footer>
             </Popover.Content>
-          </Popover>
+          </Popover>*/}
+           <Box>
+                    <Button
+                      onPress={() => {
+                        setIsOpen0(!isOpen0)
+                      }}
+                      style={{marginTop:"10px",marginRight:"25px",
+                      marginBottom:"0px",width:"150px",height:"40px"}}
+                      color={theme.colors.shared.white}
+                      alignSelf="end"
+                    >
+                        create order
+                    </Button>
+                    <AlertDialog
+                      
+                      isOpen={isOpen0}
+                      
+                      onClose={onClose0}
+                    >
+                      <AlertDialog.Content>
+                        <AlertDialog.CloseButton />
+                        <AlertDialog.Header>Order Details</AlertDialog.Header>
+                        <AlertDialog.Body>
+                        <FormControl mt="3">
+                  <FormControl.Label
+                    _text={{
+                      fontSize: 'xs',
+                      fontWeight: 'medium'
+                    }}
+                  >
+                    Purchase Amount
+                  </FormControl.Label>
+                  <input
+                    type="number"
+                    placeholder={item0.purchaseAmount}
+                    onChange={(e) =>
+                      setItem0({ ...item0, purchaseAmount: e.target.value })
+                    }
+                  />
+                </FormControl>
+                        </AlertDialog.Body>
+                        <AlertDialog.Footer>
+                          <Button.Group space={2}>
+                            <Button
+                              variant="unstyled"
+                              colorScheme="coolGray"
+                              onPress={onClose0}
+                              
+                            >
+                              Cancel
+                            </Button>
+
+                            <Button
+                              colorScheme="success"
+                              onPress={() => {
+                                handleS()
+                                onClose0()
+                              }}
+                            >
+                              Save
+                            </Button>
+                          </Button.Group>
+                        </AlertDialog.Footer>
+                      </AlertDialog.Content>
+                    </AlertDialog>
+                  </Box>
         </Box>
-        <table style={{ marginTop: '40px', padding: '10px' }}>
+        <table style={{ marginTop: '20px', padding: '10px' }}>
           <tr style={{ textAlign: 'left', height: '50px' }}>
             <th>Order Id</th>
             <th>Purchase Amount</th>

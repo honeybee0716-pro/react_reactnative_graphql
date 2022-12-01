@@ -1,7 +1,8 @@
-import { Box, Input, Button, Popover, FormControl, useToast } from 'native-base'
+import { Box, Input, Button, Popover, FormControl, useToast,AlertDialog } from 'native-base'
 import React, { useState } from 'react'
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
+import { theme } from 'shared/styles/theme'
 
 const CREATE_CUSTOMER_WITH_BUSINESS = gql`
   mutation Mutation(
@@ -25,10 +26,15 @@ const GET_CUSTOMER_DETAILS_BUSINESS = gql`
 `
 
 export default function Customer(props: any) {
-  const initialFocusRef = React.useRef(null) //first name
-  const initialFocusRef1 = React.useRef(null) // last name
-  const initialFocusRef2 = React.useRef(null) // email
-  const initialFocusRef3 = React.useRef(null) // company
+  const [isOpen0, setIsOpen0] = React.useState(false)
+  const [item0, setItem0] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    comapny: ''
+  })
+
+  const onClose0 = () => setIsOpen0(false)
 
   const [cdata, setCdata] = useState([])
   const [fdata, setFdata] = useState([])
@@ -94,10 +100,10 @@ export default function Customer(props: any) {
     createCB({
       variables: {
         createCustomerWithBusinessInput: {
-          email: initialFocusRef2.current.value,
-          firstName: initialFocusRef.current.value,
-          lastName: initialFocusRef1.current.value,
-          companyName: initialFocusRef3.current.value
+          email: item0.email,
+          firstName: item0.firstName,
+          lastName: item0.lastName,
+          companyName: item0.comapny
         }
       },
       onCompleted: async (signUpUserWithData) => {
@@ -133,21 +139,31 @@ export default function Customer(props: any) {
   return (
     <>
       <DashboardLayout>
-        <h3>Search your customers</h3>
-        <Box w="100%" alignItems="center">
-          <Popover
-            initialFocusRef={initialFocusRef}
-            trigger={(triggerProps) => {
-              return <Button {...triggerProps}>Create a new customer</Button>
-            }}
-          >
-            <Popover.Content width="56">
-              <Popover.Arrow />
-              <Popover.CloseButton />
-              {/* @ts-ignore */}
-              <Popover.Header>Personal Details</Popover.Header>
-              <Popover.Body>
-                <FormControl>
+        
+        <Box w="100%" >
+          <Box>
+                    <Button
+                      onPress={() => {
+                        setIsOpen0(!isOpen0)
+                      }}
+                      style={{marginTop:"10px",marginRight:"25px",
+                      marginBottom:"10px",width:"150px",height:"40px"}}
+                      color={theme.colors.shared.white}
+                      alignSelf="end"
+                    >
+                        create customer
+                    </Button>
+                    <AlertDialog
+                      
+                      isOpen={isOpen0}
+                      
+                      onClose={onClose0}
+                    >
+                      <AlertDialog.Content>
+                        <AlertDialog.CloseButton />
+                        <AlertDialog.Header>Customer Details</AlertDialog.Header>
+                        <AlertDialog.Body>
+                        <FormControl>
                   <FormControl.Label
                     _text={{
                       fontSize: 'xs',
@@ -156,7 +172,10 @@ export default function Customer(props: any) {
                   >
                     First Name
                   </FormControl.Label>
-                  <Input rounded="sm" fontSize="xs" ref={initialFocusRef} />
+                  <input type="text"    onChange={(e) =>
+                      setItem0({ ...item0, firstName: e.target.value })
+                    }
+                    placeholder={item0.firstName} />
                 </FormControl>
                 <FormControl mt="3">
                   <FormControl.Label
@@ -167,7 +186,10 @@ export default function Customer(props: any) {
                   >
                     Last Name
                   </FormControl.Label>
-                  <Input rounded="sm" fontSize="xs" ref={initialFocusRef1} />
+                  <input type="text"   onChange={(e) =>
+                      setItem0({ ...item0, lastName: e.target.value })
+                    }
+                    placeholder={item0.lastName}/>
                 </FormControl>
                 <FormControl mt="3">
                   <FormControl.Label
@@ -178,7 +200,11 @@ export default function Customer(props: any) {
                   >
                     Email
                   </FormControl.Label>
-                  <Input rounded="sm" fontSize="xs" ref={initialFocusRef2} />
+                  <input type="text"  onChange={(e) =>
+                      setItem0({ ...item0, email: e.target.value })
+                    }
+                    placeholder={item0.email}
+                    />
                 </FormControl>
                 <FormControl mt="3">
                   <FormControl.Label
@@ -189,27 +215,47 @@ export default function Customer(props: any) {
                   >
                     Company
                   </FormControl.Label>
-                  <Input rounded="sm" fontSize="xs" ref={initialFocusRef3} />
+                  <input type="text"    onChange={(e) =>
+                      setItem0({ ...item0, comapny: e.target.value })
+                    }
+                    placeholder={item0.comapny} />
                 </FormControl>
-              </Popover.Body>
-              <Popover.Footer>
-                <Button.Group>
-                  <Button colorScheme="coolGray" variant="ghost">
-                    Cancel
-                  </Button>
-                  <Button onPress={handleS}>Save</Button>
-                </Button.Group>
-              </Popover.Footer>
-            </Popover.Content>
-          </Popover>
+                        </AlertDialog.Body>
+                        <AlertDialog.Footer>
+                          <Button.Group space={2}>
+                            <Button
+                              variant="unstyled"
+                              colorScheme="coolGray"
+                              onPress={onClose0}
+                              
+                            >
+                              Cancel
+                            </Button>
+
+                            <Button
+                              colorScheme="success"
+                              onPress={() => {
+                                handleS()
+                                onClose0()
+                              }}
+                            >
+                              Save
+                            </Button>
+                          </Button.Group>
+                        </AlertDialog.Footer>
+                      </AlertDialog.Content>
+                    </AlertDialog>
+                  </Box>
         </Box>
         <Box>
           <input
             type="text"
             placeholder="search..."
             onChange={(e) => setFilter(e.target.value)}
+            style={{height:"40px",margin:"5px",borderRadius:"25px",
+            borderWidth:"0px",borderColor:"none",paddingLeft:"10px",paddingRight:"10px"}}
           />
-            <table style={{marginTop:"40px",padding:"10px"}}>
+            <table style={{marginTop:"10px",padding:"10px"}}>
   <tr style={{textAlign:"left", height:"50px"}}>
     <th>Customer Email</th>
     <th>First Name</th>

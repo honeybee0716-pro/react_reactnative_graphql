@@ -401,7 +401,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                 borderRightWidth="1"
                 borderRightColor={theme.colors.shared.softer2Gray}
               >
-                <Box flex="1">
+                <Box flex="1" style={{overflow:"scroll"}}>
                   {sidebarRoutes
                     .filter((e) => {
                       if (e.position !== sidebarItemPosition.top) {
