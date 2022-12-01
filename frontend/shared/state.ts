@@ -31,6 +31,12 @@ export const userSubscriptionDataState = atom({
   effects_UNSTABLE: [persistAtom]
 })
 
+export const homePageDataState = atom({
+  key: 'homePageData',
+  default: undefined,
+  effects_UNSTABLE: [persistAtom]
+})
+
 export const leadsState = atom({
   key: 'leads',
   default: [],

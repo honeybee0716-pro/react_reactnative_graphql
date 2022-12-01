@@ -18,7 +18,8 @@ import {
   Pressable,
   Flex,
   Select,
-  CheckIcon
+  CheckIcon,
+  useToast
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
@@ -50,8 +51,22 @@ import IconShoppingCart from 'shared/components/icons/IconShoppingCart'
 import IconMoreVertical from 'shared/components/icons/IconMoreVertical'
 import IconChevronDown from '../../components/icons/IconChevronDown'
 import IconPlayCircle from '../../components/icons/IconPlayCircle'
+import { useRecoilState } from 'recoil'
+import { userSubscriptionDataState } from '../../state'
+import { gql, useLazyQuery, useMutation } from '@apollo/client'
 
 const { width, height } = Dimensions.get('window')
+
+const GET_DETAILS_BUSINESS = gql`
+  query getDetailsBusiness {
+    getDetailsBusiness {
+      message
+      status
+      noTransactions
+      noCustomers
+    }
+  }
+`
 
 export default function DashBoard() {
   const [chartContactData, setChartContactData] = useState({
@@ -84,12 +99,62 @@ export default function DashBoard() {
     width >= 480 ? 410 : 160
   )
   const [chartSelectMonth, setChartSelectMonth] = useState('')
+  const [userSubscriptionData] = useRecoilState<any>(userSubscriptionDataState)
+  const [control, setControl] = React.useState('')
+  const [getD] = useLazyQuery(GET_DETAILS_BUSINESS,
+    {
+      fetchPolicy: 'network-only'
+    })
+  const toast = useToast()
+  const [noCustomers,setNoCustomers]=useState(0)
+  const [noTransactions,setNoTransactions]=useState(0)
+
+  React.useEffect(() => {
+    if (
+      userSubscriptionData.stripeCustomer.metadata.accountType === 'business'
+    ) {
+      setControl('business')
+    } else if (
+      userSubscriptionData.stripeCustomer.metadata.accountType === 'customer'
+    ) {
+      setControl('customer')
+    }
+  }, [userSubscriptionData])
+
+  React.useEffect(()=>{
+    if(control==="business")
+    {
+    console.log("called")
+      getD({
+        onCompleted: async ({ getDetailsBusiness }) => {
+          if (getDetailsBusiness?.status === 'success') {
+            console.log(getDetailsBusiness)
+            setNoCustomers(getDetailsBusiness.noCustomers)
+            setNoTransactions(getDetailsBusiness.noTransactions)
+          }
+          if (getDetailsBusiness?.message) {
+           
+            return
+          } else {
+           
+          }
+        },
+        onError: (error) => {
+          toast.show({
+            description: `${error.message}`
+          })
+        }
+      })
+    }
+  },[control])
 
   return (
     <>
       <DashboardLayout>
+        {control==='customer' && (
+          <>
         <Box flexDirection={{ lg: 'row' }}>
-          {/* Chart contacts sent */}
+          
           <Box flex="1">
             <Box
               h="full"
@@ -221,7 +286,7 @@ export default function DashBoard() {
               </VStack>
             </Box>
           </Box>
-          {/* Account overview */}
+          
           <Box width={{ lg: '430px' }}>
             <Box
               margin="5"
@@ -502,7 +567,7 @@ export default function DashBoard() {
             </Box>
           </Box>
         </Box>
-        {/* Bottom Get started part */}
+       
         <Box>
           <Box
             marginBottom="5"
@@ -668,6 +733,13 @@ export default function DashBoard() {
             </Hidden>
           </Box>
         </Box>
+        </>)}
+        {control==="business" && (
+          <div>
+            <p>no. of transactions: {noTransactions}</p>
+            <p>no. of customers: {noCustomers}</p>
+          </div>
+        )}
       </DashboardLayout>
     </>
   )

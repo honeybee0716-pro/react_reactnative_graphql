@@ -139,6 +139,7 @@ const permissions = shield(
       getProductById: isAuthenticated,
       getCompanyLogo: isAuthenticated,
       getIntegrationSettings: isAuthenticated,
+      getDetailsBusiness:isAuthenticated
     },
     Mutation: {
       changePassword: isAuthenticated,

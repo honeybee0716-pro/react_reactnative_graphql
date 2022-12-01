@@ -23,6 +23,7 @@ import getAllTransactions from './getAllTransactions';
 import getCompanyLogo from './getCompanyLogo';
 import getProductById from './getProductById';
 import getIntegrationSettings from './getIntegrationSettings';
+import getDetailsBusiness from './getDetailsBusiness';
 
 export const RootQuery = {
   getBusinessByID,
@@ -50,6 +51,7 @@ export const RootQuery = {
   getCompanyLogo,
   getProductById,
   getIntegrationSettings,
+  getDetailsBusiness
 };
 
 export default RootQuery;
