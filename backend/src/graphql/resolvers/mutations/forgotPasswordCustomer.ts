@@ -27,16 +27,22 @@ const forgotPasswordCustomer = async (parent: any, args: any) => {
 
   const passwordResetCode = generateRandomNumber();
 
-  const user = await prismaContext.prisma.customer.findFirst({
+  const user = await prismaContext.prisma.customer.findUnique({
     where: {
-      email,
+      customerIdentifier:{
+        email,
+        businessId:args.input.businessId
+      }
     },
   });
 
   if (user) {
     await prismaContext.prisma.customer.update({
       where: {
-        email,
+        customerIdentifier:{
+          email,
+          businessId:args.input.businessId
+        }
       },
       data: {
         passwordResetCode,

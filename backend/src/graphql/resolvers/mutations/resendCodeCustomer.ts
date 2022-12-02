@@ -25,7 +25,10 @@ const resendCodeCustomer = async (parent: any, args: any, context: any) => {
 
   await prismaContext.prisma.customer.update({
     where: {
-      email: user.email,
+      customerIdentifier:{
+        email: user.email,
+        businessId:user.businessId
+      }
     },
     data: {
       verifyEmailCode,

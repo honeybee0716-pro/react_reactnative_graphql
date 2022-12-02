@@ -28,7 +28,7 @@ export const confirmForgotPasswordCodeCustomerSchema = gql`
 /* jscpd:ignore-start */
 const confirmForgotPasswordCodeCustomer = async (parent: null, args: any) => {
   const foundUser = await getUserByEmail(undefined, {
-    input: {email: args.input.email},
+    input: {email: args.input.email,businessId:args.input.businessId},
   });
 
   if (!foundUser) {
@@ -48,7 +48,10 @@ const confirmForgotPasswordCodeCustomer = async (parent: null, args: any) => {
   if (args.input.code === passwordResetCode && !isExpired) {
     await prismaContext.prisma.customer.update({
       where: {
-        email: args.input.email,
+        customerIdentifier:{
+          email: args.input.email,
+          businessId:args.input.businessId
+        }
       },
       data: {
         password: hashedPassword,

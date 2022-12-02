@@ -8,13 +8,14 @@ import getUserByEmail from './getCustomerByEmail';
 export const loginCustomerWithPasswordSchema = gql`
   scalar JSON
 
-  input loginUserWithPasswordInput {
+  input loginCustomerWithPasswordInput {
     email: String!
     password: String!
+    businessId: String!
   }
 
   type Query {
-    loginCustomerWithPassword(input: loginUserWithPasswordInput): loginUserResponse!
+    loginCustomerWithPassword(input: loginCustomerWithPasswordInput): loginUserResponse!
   }
 `;
 
@@ -23,9 +24,8 @@ const loginCustomerWithPassword = async (parent: null, args: any) => {
   
   const formattedEmail = args.input.email.toLowerCase().trim();
 
-  console.log('loginUserWithPassword init');
   const foundUser = await getUserByEmail(undefined, {
-    input: {email: formattedEmail},
+    input: {email: formattedEmail,businessId:args.input.businessId},
   });
   
   if (!foundUser) {
@@ -35,10 +35,6 @@ const loginCustomerWithPassword = async (parent: null, args: any) => {
       status: 'failed',
     };
   }
-
-  console.log('loginUserWithPassword', foundUser.data.emailIsVerified);
-
-  
 
   const passwordMatches = await bcrypt.compare(
     args.input.password,
@@ -53,8 +49,6 @@ const loginCustomerWithPassword = async (parent: null, args: any) => {
         expiresIn: '7d',
       },
     );
-
- 
 
     return {
       jwt: token,
