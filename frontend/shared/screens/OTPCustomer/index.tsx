@@ -14,14 +14,16 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { useState } from 'react'
-import { gql, useMutation, useLazyQuery  } from '@apollo/client'
+import { gql, useMutation, useLazyQuery } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 import { useRouter } from 'solito/router'
 import { useRecoilState } from 'recoil'
-import { userSubscriptionDataState} from '../../state'
+import { userSubscriptionDataState } from '../../state'
 
 const CONFIRM_EMAIL_VALIDATION_CODE_CUSTOMER = gql`
-  mutation ConfirmEmailValidationCodeCustomer($input: confirmEmailValidationCodeInput) {
+  mutation ConfirmEmailValidationCodeCustomer(
+    $input: confirmEmailValidationCodeInput
+  ) {
     confirmEmailValidationCodeCustomer(input: $input) {
       message
       status
@@ -52,7 +54,7 @@ export default function OTPCUST(props: any) {
   const { push } = useRouter()
   const [code, setCode] = useState('')
 
-  const [getBusinessSubscriptionData ,{ data }] = useLazyQuery(
+  const [getBusinessSubscriptionData, { data }] = useLazyQuery(
     GET_BUSINESS_SUBSCRIPTION_DATA,
     {
       fetchPolicy: 'network-only'
@@ -68,7 +70,6 @@ export default function OTPCUST(props: any) {
   )
 
   React.useEffect(() => {
-    
     if (data?.getBusinessSubscriptionData) {
       setUserSubscriptionData(data.getBusinessSubscriptionData)
     }
@@ -121,7 +122,7 @@ export default function OTPCUST(props: any) {
       },
       onError: (error) => {
         //toast.show({
-          //description: error
+        //description: error
         //})
         console.log(error)
         return
