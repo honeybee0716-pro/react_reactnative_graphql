@@ -1,3 +1,4 @@
+import react,{useRef,useEffect} from 'react'
 import {
   StatusBar,
   Box,
@@ -17,6 +18,7 @@ import {
   FormControl,
   AlertDialog
 } from 'native-base'
+import { CSVLink } from "react-csv";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
@@ -55,7 +57,9 @@ export default function Orders(props: any) {
   const [cT, { data }] = useMutation(CREATE_TRANSACTION, {
     refetchQueries: [{ query: GET_TRANSACTIONS }]
   })
-
+  const csvLink = useRef()
+  const [exportedData,setExportedData]=useState([])
+  const [selectedExportItems,setSelectedExportItems]=useState({})
   const onClose0 = () => setIsOpen0(false)
 
   React.useEffect(() => {
@@ -120,7 +124,35 @@ export default function Orders(props: any) {
       }
     })
   }
-
+  const exportProducts=()=>{
+    
+    let data=[]
+      Object.keys(selectedExportItems).map((item)=>{
+   
+  let index=transactions.findIndex((product)=>product.id==item)
+  
+  let {id,purchaseAmount
+    ,transactionDate}=transactions[index]
+         data.push(
+     {
+      id,purchaseAmount
+      ,transactionDate
+     }
+   )
+      })
+  
+  setExportedData(data)
+  
+  
+  console.log("exportedData",exportedData)
+  
+    }
+  React.useEffect(()=>{
+   if(exportedData.length>0) {
+    csvLink.current.link.click()
+    }
+  },[exportedData])
+  console.log("transaction",transactions)
   return (
     <>
       <DashboardLayout>
@@ -164,7 +196,7 @@ export default function Orders(props: any) {
               </Popover.Footer>
             </Popover.Content>
           </Popover>*/}
-           <Box>
+           <Box style={{flexDirection:"row",justifyContent:"flex-end"}}>
                     <Button
                       onPress={() => {
                         setIsOpen0(!isOpen0)
@@ -175,6 +207,25 @@ export default function Orders(props: any) {
                       alignSelf="end"
                     >
                         create order
+                    </Button>
+
+
+
+       <CSVLink
+         data={exportedData}
+         filename='order.csv'
+         className='hidden'
+         ref={csvLink}
+         target='_blank'
+      />
+                    <Button
+                       colorScheme="success"
+                      onPress={exportProducts}
+                      style={{marginTop:"10px",marginRight:"25px",width:"150px",height:"40px"}}
+                      color={theme.colors.shared.white}
+                      alignSelf="end"
+                    >
+                        export
                     </Button>
                     <AlertDialog
                       
@@ -235,6 +286,7 @@ export default function Orders(props: any) {
             <th>Order Id</th>
             <th>Purchase Amount</th>
             <th>Date</th>
+            <th></th>
           </tr>
           {transactions.map((tr) => {
             return (
@@ -242,6 +294,18 @@ export default function Orders(props: any) {
                 <td>{tr?.id}</td>
                 <td>{tr?.purchaseAmount}</td>
                 <td>{tr?.transactionDate}</td>
+               
+                <Checkbox
+                    style={{marginTop:"30%"}}
+              value={selectedExportItems[tr.id]||false}
+              isChecked={selectedExportItems[tr.id]||false}
+              onChange={(value)=>{
+              let temp={...selectedExportItems}
+             value? temp={...selectedExportItems,[tr.id]:value}:delete temp[tr.id]
+              setSelectedExportItems({...temp})
+              }}
+              accessibilityLabel="Export this lead"
+            />
               </tr>
             )
           })}

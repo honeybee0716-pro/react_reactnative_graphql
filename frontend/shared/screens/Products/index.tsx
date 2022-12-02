@@ -1,3 +1,4 @@
+import react,{useRef} from 'react'
 import {
   StatusBar,
   Box,
@@ -17,6 +18,8 @@ import {
   useToast,
   AlertDialog
 } from 'native-base'
+import { CSVLink } from "react-csv";
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
@@ -80,7 +83,8 @@ export default function Products(props: any) {
   const [isOpen1, setIsOpen1] = React.useState(false)
   const [isOpen0, setIsOpen0] = React.useState(false)
   const [delId, setDelId] = React.useState('')
-
+  const csvLink = useRef()
+const [exportedData,setExportedData]=useState([])
   const onClose = () => setIsOpen(false)
   const onClose1 = () => setIsOpen1(false)
   const onClose0 = () => setIsOpen0(false)
@@ -97,11 +101,12 @@ export default function Products(props: any) {
     description: '',
     image: ''
   })
+  const [selectedExportItems,setSelectedExportItems]=useState({})
   const [item1, setItem1] = useState({ name: '',id:'', price: '', description: '' })
 
   const [items, setItems] = useState([])
   const [fitems, setFitems] = useState([])
-
+console.log("fitems",fitems)
   const initialFocusRef = React.useRef(null)
 
   const [getProductDetails] = useLazyQuery(GET_PRODUCT_DETAILS)
@@ -280,13 +285,42 @@ export default function Products(props: any) {
       }
     })
   }
+  const exportProducts=()=>{
+    
+  let data=[]
+    Object.keys(selectedExportItems).map((item)=>{
+ 
+let index=fitems.findIndex((product)=>product.id==item)
 
+let {name,price,description,img}=fitems[index]
+       data.push(
+   {
+ name,
+ price,
+  description,
+ img
+   }
+ )
+    })
+
+setExportedData(data)
+
+
+console.log("exportedData",exportedData)
+
+  }
+React.useEffect(()=>{
+ if(exportedData.length>0) {
+  csvLink.current.link.click()
+  }
+},[exportedData])
   return (
     <>
       <DashboardLayout>
         <Box w="100%">
            <Box>
-                    <Button
+          <Box style={{flexDirection:"row",justifyContent:"flex-end"}}>
+           <Button
                       onPress={() => {
                         setItem0({ ...item0, image: '' })
                         setIsOpen0(!isOpen0)
@@ -297,6 +331,26 @@ export default function Products(props: any) {
                     >
                         create product
                     </Button>
+                  
+  
+
+       <CSVLink
+         data={exportedData}
+         filename='product.csv'
+         className='hidden'
+         ref={csvLink}
+         target='_blank'
+      />
+                    <Button
+                       colorScheme="success"
+                      onPress={exportProducts}
+                      style={{marginTop:"10px",marginRight:"25px",width:"150px",height:"40px"}}
+                      color={theme.colors.shared.white}
+                      alignSelf="end"
+                    >
+                        export
+                    </Button>
+                    </Box>
                     <AlertDialog
                       leastDestructiveRef={cancelRef0}
                       isOpen={isOpen0}
@@ -432,7 +486,7 @@ export default function Products(props: any) {
                   <td>{item.price}$</td>
                   <td>{item.description}</td>
 
-                 <td style={{display:"flex",justifyContent:"space-between",width:"90px"}}>
+                 <td style={{display:"flex",justifyContent:"space-between",width:"120px",alignItems:"center"}}>
                   <Box>
                     <Button
                       colorScheme="danger"
@@ -499,7 +553,9 @@ export default function Products(props: any) {
                       <Box w={{ base: '15px', lg: '14px' }}>
                         <IconEdit color={theme.colors.shared.white} />
                       </Box>
+
                     </Button>
+               
                     <AlertDialog
                       leastDestructiveRef={cancelRef1}
                       isOpen={isOpen1}
@@ -589,6 +645,21 @@ export default function Products(props: any) {
                       </AlertDialog.Content>
                     </AlertDialog>
                   </Box>
+               
+        <Box  style={{marginLeft:20,marginTop:7}}>
+        <Checkbox
+           
+              value={selectedExportItems[item.id]||false}
+              isChecked={selectedExportItems[item.id]||false}
+              onChange={(value)=>{
+              let temp={...selectedExportItems}
+             value? temp={...selectedExportItems,[item.id]:value}:delete temp[item.id]
+              setSelectedExportItems({...temp})
+              }}
+              accessibilityLabel="Export this lead"
+            />
+      
+        </Box>
                   </td>
                 </tr>
               </>

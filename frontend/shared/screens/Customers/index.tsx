@@ -1,9 +1,9 @@
-import { Box, Input, Button, Popover, FormControl, useToast,AlertDialog } from 'native-base'
-import React, { useState } from 'react'
+import { Box, Input, Button, Popover, FormControl, useToast,AlertDialog,Checkbox } from 'native-base'
+import React, { useState,useRef } from 'react'
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
 import { theme } from 'shared/styles/theme'
-
+import { CSVLink } from "react-csv";
 const CREATE_CUSTOMER_WITH_BUSINESS = gql`
   mutation Mutation(
     $createCustomerWithBusinessInput: createCustomerWithBusinessInput
@@ -35,7 +35,9 @@ export default function Customer(props: any) {
   })
 
   const onClose0 = () => setIsOpen0(false)
-
+  const csvLink = useRef()
+  const [exportedData,setExportedData]=useState([])
+  const [selectedExportItems,setSelectedExportItems]=useState({})
   const [cdata, setCdata] = useState([])
   const [fdata, setFdata] = useState([])
 
@@ -136,12 +138,41 @@ export default function Customer(props: any) {
     })
   }
 
+  const exportProducts=()=>{
+    
+    let data=[]
+      Object.keys(selectedExportItems).map((item)=>{
+   
+  let index=fdata.findIndex((product)=>product.id==item)
+  
+  let {email,firstName
+    ,lastName,companyName}=fdata[index]
+         data.push(
+     {
+      email,firstName
+      ,lastName,companyName
+     }
+   )
+      })
+  
+  setExportedData(data)
+  
+  
+  console.log("exportedData",exportedData)
+  
+    }
+  React.useEffect(()=>{
+   if(exportedData.length>0) {
+    csvLink.current.link.click()
+    setExportedData([])
+    }
+  },[exportedData])
   return (
     <>
       <DashboardLayout>
         
         <Box w="100%" >
-          <Box>
+          <Box style={{flexDirection:"row",justifyContent:"flex-end"}}>
                     <Button
                       onPress={() => {
                         setIsOpen0(!isOpen0)
@@ -152,6 +183,26 @@ export default function Customer(props: any) {
                       alignSelf="end"
                     >
                         create customer
+                    </Button>
+
+       <CSVLink
+         data={exportedData}
+         filename='customer.csv'
+         className='hidden'
+         ref={csvLink}
+         target='_blank'
+      />
+                    <Button
+                    
+                       colorScheme="success"
+                      onPress={exportProducts}
+                      style={{marginTop:"10px",marginRight:"25px",
+                      marginBottom:"10px",width:"150px",height:"40px"}}
+                      color={theme.colors.shared.white}
+                      alignSelf="end"
+                      
+                    >
+                        export
                     </Button>
                     <AlertDialog
                       
@@ -269,6 +320,21 @@ export default function Customer(props: any) {
                   <td>{i.firstName}</td>
                   <td>{i.lastName}</td>
                   <td>{i.companyName}</td>
+                {/* <td> */}
+                  <Checkbox
+                  style={{marginTop:"30%"}}
+                
+              value={selectedExportItems[i.id]||false}
+              isChecked={selectedExportItems[i.id]||false}
+              onChange={(value)=>{
+              let temp={...selectedExportItems}
+             value? temp={...selectedExportItems,[i.id]:value}:delete temp[i.id]
+              setSelectedExportItems({...temp})
+              }}
+              accessibilityLabel="Export this lead"
+            />
+            {/* </td> */}
+             
               </tr>
             )
           })}
