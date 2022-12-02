@@ -9,7 +9,7 @@ import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
-import open from 'open';
+// import open from 'open';
 // import {createClient} from 'redis';
 
 import {typeDefs} from './graphql/typeDefs/index';
@@ -139,7 +139,7 @@ const permissions = shield(
       getProductById: isAuthenticated,
       getCompanyLogo: isAuthenticated,
       getIntegrationSettings: isAuthenticated,
-      getDetailsBusiness:isAuthenticated
+      getDetailsBusiness: isAuthenticated,
     },
     Mutation: {
       changePassword: isAuthenticated,
@@ -220,9 +220,9 @@ export const setupServer = async () => {
     console.log(
       `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`,
     );
-    if (process.env.NODE_ENV === 'localhost') {
-      open(`http://localhost:${process.env.PORT}${server.graphqlPath}`);
-    }
+    // if (process.env.NODE_ENV === 'localhost') {
+    //   open(`http://localhost:${process.env.PORT}${server.graphqlPath}`);
+    // }
   });
 
   app.get('/', (req, res) => {
