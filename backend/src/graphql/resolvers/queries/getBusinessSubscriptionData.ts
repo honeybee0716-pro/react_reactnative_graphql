@@ -34,7 +34,7 @@ const getBusinessSubscriptionData = async (
 ) => {
   const {user} = context;
 
-  console.log("user:",user)
+  console.log('user:', user);
 
   const stripeCustomer: any = await stripe.customers.retrieve(
     user.stripeCustomerID,
@@ -87,7 +87,6 @@ const getBusinessSubscriptionData = async (
   data.isCustomPlan = false;
   data.userInternalID = user.id;
   data.userEmail = user.email;
-  
 
   return {
     ...data,

@@ -3,128 +3,302 @@ import {
   StatusBar,
   Box,
   Center,
-  Stack,
   Hidden,
   Text,
   Image,
   HStack,
   VStack,
-  Input,
-  InputGroup,
-  Button,
-  Checkbox,
-  Link,
-  Icon,
   Pressable,
-  ScrollView,
-  Menu
+  Icon
 } from 'native-base'
-import { Dimensions, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { theme } from 'shared/styles/theme'
-import { Link as SolitoLink } from 'solito/link'
-import IconMacCommand from 'shared/components/icons/IconMacCommand'
-import IconCredits from 'shared/components/icons/IconCredits'
-import IconSun from 'shared/components/icons/IconSun'
-import IconNotificationBell from 'shared/components/icons/IconNotificationBell'
-import IconHome from 'shared/components/icons/IconHome'
-import IconLists from 'shared/components/icons/IconLists'
-import IconMessages from 'shared/components/icons/IconMessages'
-import IconFlag from 'shared/components/icons/IconFlag'
-import IconTrashBin from 'shared/components/icons/IconTrashBin'
-import IconCreditCard from 'shared/components/icons/IconCreditCard'
-import IconUser from 'shared/components/icons/IconUser'
-import IconHelpCircle from 'shared/components/icons/IconHelpCircle'
-import IconChevronDown from 'shared/components/icons/IconChevronDown'
-import IconArrowRight from 'shared/components/icons/IconArrowRight'
-import IconMenu from 'shared/components/icons/IconMenu'
-import IconExit from '../components/icons/IconExit'
 import { useRouter } from 'solito/router'
 import { useRecoilState } from 'recoil'
-import { userSubscriptionDataState, jwtState } from '../state'
+import { userSubscriptionDataState } from '../state'
+import {
+  FontAwesome,
+  MaterialCommunityIcons,
+  MaterialIcons,
+  Ionicons,
+  Feather,
+  SimpleLineIcons,
+  Foundation
+} from '@expo/vector-icons'
 
-const { width, height } = Dimensions.get('window')
+enum showOn {
+  business = 'business',
+  customer = 'customer',
+  both = 'both'
+}
+
+enum sidebarItemPosition {
+  top = 'top',
+  bottom = 'bottom'
+}
+
+enum accountTypes {
+  business = 'business',
+  customer = 'customer'
+}
+
+const SideBarItem = ({ e }: any) => {
+  const [path, setPath] = useState(document.location.href.toLowerCase())
+
+  React.useEffect(() => {
+    setPath(document.location.href)
+  }, [document.location.href])
+
+  return (
+    <Pressable
+      onPress={e.onClick}
+      flexDirection="row"
+      backgroundColor={
+        path.includes(e.label.toLowerCase())
+          ? theme.colors.shared.SaleSpinPrimary
+          : theme.colors.shared.white
+      }
+      paddingX={{ base: '3', lg: '6' }}
+      paddingY="4"
+      borderRadius="lg"
+    >
+      {e.icon}
+      <Text
+        color={
+          path.includes(e.label.toLowerCase())
+            ? theme.colors.shared.white
+            : theme.colors.shared.soft2Gray
+        }
+        fontWeight="semibold"
+        paddingLeft="4"
+      >
+        {e.label}
+      </Text>
+    </Pressable>
+  )
+}
 
 const DashboardLayout: React.FC = ({ children }) => {
-  const [shouldOverlapWithTrigger] = useState(false)
-  const [position, setPosition] = React.useState('auto')
-  const  [control,setControl]=React.useState("")
+  const [control, setControl] = React.useState(accountTypes.customer)
   const { push } = useRouter()
-  const [userSubscriptionData, setUserSubscriptionData] = useRecoilState<any>(
-    userSubscriptionDataState
-  )
+  const [userSubscriptionData] = useRecoilState<any>(userSubscriptionDataState)
 
-  React.useEffect(()=>{
-    if(userSubscriptionData.stripeCustomer.metadata.accountType==="business")
+  const getSideBarColor = (label: string) => {
+    return document.location.href.toLowerCase().includes(label.toLowerCase())
+      ? theme.colors.shared.white
+      : theme.colors.shared.soft2Gray
+  }
+
+  const sidebarRoutes = [
     {
-      setControl("business")
-    }else if (userSubscriptionData.stripeCustomer.metadata.accountType==="customer")
+      label: 'Home',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Home')}
+          as={Ionicons}
+          name="home"
+        />
+      ),
+      onClick: () => push('/home'),
+      showOn: showOn.both,
+      position: sidebarItemPosition.top
+    },
     {
-      setControl("customer")
+      label: 'Campaigns',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Campaigns')}
+          as={Ionicons}
+          name="flag"
+        />
+      ),
+      onClick: () => push('/campaigns'),
+      showOn: showOn.business,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Orders',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Orders')}
+          as={MaterialCommunityIcons}
+          name="cash-register"
+        />
+      ),
+      onClick: () => push('/orders'),
+      showOn: showOn.both,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Customers',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Customers')}
+          as={Ionicons}
+          name="people"
+        />
+      ),
+      onClick: () => push('/customers'),
+      showOn: showOn.business,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Tiers',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Tiers')}
+          as={Ionicons}
+          name={'medal'}
+        />
+      ),
+      onClick: () => push('/tiers'),
+      showOn: showOn.business,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Automation',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Automation')}
+          as={MaterialCommunityIcons}
+          name={'robot'}
+        />
+      ),
+      onClick: () => push('/automation'),
+      showOn: showOn.business,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Products',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Product')}
+          as={Feather}
+          name="package"
+        />
+      ),
+      onClick: () => push('/products'),
+      showOn: showOn.business,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Shopping',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Shopping')}
+          as={SimpleLineIcons}
+          name="present"
+        />
+      ),
+      onClick: () => push('/shopping'),
+      showOn: showOn.customer,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Branding',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Branding')}
+          as={MaterialCommunityIcons}
+          name="mirror"
+        />
+      ),
+      onClick: () => push('/branding'),
+      showOn: showOn.business,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Integrations',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Integrations')}
+          as={FontAwesome}
+          name="chain"
+        />
+      ),
+      onClick: () => push('/integrations'),
+      showOn: showOn.business,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Points',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Points')}
+          as={Foundation}
+          name="dollar-bill"
+        />
+      ),
+      onClick: () => push('/points'),
+      showOn: showOn.both,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Billing',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Billing')}
+          as={FontAwesome}
+          name="credit-card"
+        />
+      ),
+      onClick: () => push('/billing'),
+      showOn: showOn.business,
+      position: sidebarItemPosition.bottom
+    },
+    {
+      label: 'Help',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Help')}
+          as={MaterialIcons}
+          name="support-agent"
+        />
+      ),
+      onClick: () => push('/help'),
+      showOn: showOn.both,
+      position: sidebarItemPosition.bottom
+    },
+    {
+      label: 'Account',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Account')}
+          as={Ionicons}
+          name="person"
+        />
+      ),
+      onClick: () => push('/account'),
+      showOn: showOn.both,
+      position: sidebarItemPosition.bottom
     }
-  },[userSubscriptionData])
+  ]
 
-  const handleSignOut = async () => {
-    push('/sign-out')
-  }
-
-  const GotoTransaction = async () => {
-    push('/transactions')
-  }
-
-  const GotoCustomers = async () => {
-    push('/customers')
-  }
-
-  const GotoTiers = async () => {
-    push('/tiers')
-  }
-
-  const GotoAutomation = async () => {
-    push('/automation')
-  }
-
-  const GotoReports = async () => {
-    push('/reports')
-  }
-
-  const GotoProducts = async () => {
-    push('/products')
-  }
-
-  const GotoBranding = async () => {
-    push('/branding')
-  }
-
-  const goToBilling = async () => {
-    push('/billing')
-  }
-
-  const goToShopping = async () => {
-    push('/shopping')
-  }
-
-  const goToHome = async () => {
-    push('/home')
-  }
-
-  const goToCampaigns = async () => {
-    push('/campaigns')
-  }
-
-  const goToAccount = async () => {
-    push('/account')
-  }
-
-  const goToHelp = async () => {
-    //push('/help')
-    window.location.href="mailto:support@salespin.co"
-  }
-
-  const GotoIntegration = async () =>{
-    push('/integrations')
-  }
+  React.useEffect(() => {
+    if (
+      userSubscriptionData.stripeCustomer.metadata.accountType === 'business'
+    ) {
+      setControl(accountTypes.business)
+    } else if (
+      userSubscriptionData.stripeCustomer.metadata.accountType === 'customer'
+    ) {
+      setControl(accountTypes.customer)
+    }
+  }, [userSubscriptionData])
 
   return (
     <>
@@ -151,7 +325,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         borderBottomWidth="1"
         borderBottomColor={theme.colors.shared.softGray}
       >
-        {/* Logo SaleSpin */}
+        {/* Logo */}
         <Hidden from="sm">
           <Center
             flex="1"
@@ -176,146 +350,6 @@ const DashboardLayout: React.FC = ({ children }) => {
             </Box>
           </Center>
         </Hidden>
-        {/* Search here */}
-        {/*<Hidden till="sm">
-          <Center flex="1" paddingLeft="6">
-            <Input
-              borderRadius="lg"
-              flex={{ md: undefined, lg: undefined, base: 1 }}
-              w="full"
-              h={{ base: '2.5rem', sm: '2.9rem' }}
-              backgroundColor={theme.colors.shared.softer2Gray}
-              py={3}
-              _light={{ bg: 'white' }}
-              _dark={{ bg: { base: 'coolGray.800', md: 'coolGray.900' } }}
-              InputLeftElement={
-                <Icon
-                  as={<AntDesign name="search1" />}
-                  size={{ base: '4', md: '7' }}
-                  paddingLeft="1"
-                  my={2}
-                  ml={2}
-                  _light={{
-                    color: 'coolGray.800'
-                  }}
-                  _dark={{
-                    color: 'coolGray.300'
-                  }}
-                />
-              }
-              InputRightElement={
-                <Hidden till="lg">
-                  <Box
-                    flexDirection="row"
-                    alignItems="center"
-                    borderWidth="1"
-                    paddingY="4px"
-                    paddingX="8px"
-                    borderColor={theme.colors.shared.soft4Gray_50}
-                    borderRadius="md"
-                    backgroundColor={theme.colors.shared.white}
-                    marginRight="2"
-                  >
-                    <Box w="12px">
-                      <IconMacCommand />
-                    </Box>
-                    <Text marginLeft="1" fontSize="sm">
-                      F
-                    </Text>
-                  </Box>
-                </Hidden>
-              }
-              color="coolGray.800"
-              placeholder="Search here"
-            />
-          </Center>
-        </Hidden>*/}
-        <HStack
-          marginLeft={{ base: '5', lg: '0' }}
-          width={{ lg: '430px' }}
-          justifyContent="end"
-          paddingRight={{ base: '4', sm: '5' }}
-          style={{ width: '100%' }}
-        >
-          {/*<Hidden till="sm">
-            <Center>
-              <HStack
-                alignItems="center"
-                space="1"
-                backgroundColor={theme.colors.shared.blueGentianFlower}
-                paddingY="2"
-                paddingX="6"
-                rounded="full"
-              >
-                <Box w="24px">
-                  <IconCredits />
-                </Box>
-                <Text color="white" fontWeight="semibold">
-                  8,752
-                </Text>
-              </HStack>
-            </Center>
-          </Hidden>
-          <Hidden till="lg">
-            <Center marginLeft="6">
-              <Pressable>
-                <Box w="24px">
-                  <IconSun />
-                </Box>
-              </Pressable>
-            </Center>
-          </Hidden>
-          <Center marginLeft={{ base: '0', sm: '6' }}>
-            <Pressable>
-              <Box w="20px">
-                <IconNotificationBell />
-              </Box>
-            </Pressable>
-      </Center>*/}
-          <Center
-            marginLeft={{ base: '4', sm: '8' }}
-            style={{ marginRight: '10px' }}
-          >
-            <Menu
-              w="160"
-              shouldOverlapWithTrigger={shouldOverlapWithTrigger} // @ts-ignore
-              placement={position == 'auto' ? undefined : position}
-              trigger={(triggerProps) => {
-                return (
-                  <Button
-                    variant="solid"
-                    {...triggerProps}
-                    style={{ backgroundColor: 'none' }}
-                  >
-                    <Image
-                      w={{ base: '35px', sm: '12' }}
-                      h={{ base: '35px', sm: '12' }}
-                      borderRadius="full"
-                      borderWidth="1"
-                      borderColor={theme.colors.shared.darkerGray}
-                      source={require('shared/images/eclipse4.jpeg')}
-                    />
-                  </Button>
-                )
-              }}
-            >
-              <Menu.Item>
-                <Pressable onPress={handleSignOut}>
-                  <Text>Sign Out</Text>
-                </Pressable>
-              </Menu.Item>
-            </Menu>
-          </Center>
-          <Hidden from="lg">
-            <Center marginLeft={{ base: '4', sm: '8' }}>
-              <Box p="1">
-                <Box w="24px">
-                  <IconMenu />
-                </Box>
-              </Box>
-            </Center>
-          </Hidden>
-        </HStack>
       </HStack>
       {/* Left Navbar */}
       <Hidden till="sm">
@@ -367,639 +401,68 @@ const DashboardLayout: React.FC = ({ children }) => {
                 borderRightWidth="1"
                 borderRightColor={theme.colors.shared.softer2Gray}
               >
-                <Box flex="1">
-                  <ScrollView>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={goToHome}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        backgroundColor={theme.colors.shared.brightBlue}
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <IconHome color="white" />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color="white"
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Home
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
+                <Box flex="1" style={{ overflow: 'scroll' }}>
+                  {sidebarRoutes
+                    .filter((e) => {
+                      if (e.position !== sidebarItemPosition.top) {
+                        return false
+                      }
 
-                    {/*
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box flexDirection="row" alignItems="center">
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <IconMessages />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Messages
-                          </Text>
-                        </Hidden>
-                      </Box>
-                      <Hidden till="lg">
-                        <Center>
-                          <Box
-                            paddingX="2"
-                            paddingY="  0.125rem"
-                            borderRadius="lg"
-                            backgroundColor={theme.colors.shared.lavenderBlue}
-                          >
-                            <Text fontWeight="semibold">6</Text>
-                          </Box>
-                        </Center>
-                      </Hidden>
-                    </Pressable>
-                  </Center>*/}
-                  {control==="business"&& (
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      onPress={goToCampaigns}
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box flexDirection="row" alignItems="center">
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <IconFlag />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Campaigns
-                          </Text>
-                        </Hidden>
-                      </Box>
-                      {/*<Hidden till="lg">
-                      <Center>
-                        <Box w="20px">
-                          <IconChevronDown rotation={180} />
-                        </Box>
-                      </Center>
-                    </Hidden>*/}
-                    </Pressable>
-                  </Center>
-                  )}
-                    
-                    {/*<Hidden till="lg">
-                    <Box marginLeft="33px">
-                      <Box
-                        marginLeft="2px"
-                        w="1px"
-                        h="5"
-                        backgroundColor={theme.colors.shared.soft4Gray}
-                      ></Box>
-                      <HStack h="1px">
-                        <Box
-                          backgroundColor={theme.colors.shared.soft4Gray}
-                          w="5px"
-                          h="5px"
-                          borderRadius="full"
-                        ></Box>
-                        <Box position="relative" w="full" marginLeft="7">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            position="absolute"
-                            top="-5px"
-                          >
-                            SEO Agencies
-                          </Text>
-                        </Box>
-                      </HStack>
-                      <Box
-                        marginLeft="2px"
-                        w="1px"
-                        h="10"
-                        backgroundColor={theme.colors.shared.soft4Gray}
-                      ></Box>
-                      <HStack h="1px">
-                        <Box
-                          backgroundColor={theme.colors.shared.soft4Gray}
-                          w="5px"
-                          h="5px"
-                          borderRadius="full"
-                        ></Box>
-                        <Box position="relative" w="full" marginLeft="7">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            position="absolute"
-                            top="-5px"
-                          >
-                            Advertising
-                          </Text>
-                        </Box>
-                      </HStack>
-                      <Box marginLeft="2px" w="1px" h="7"></Box>
-                    </Box>
-                  </Hidden>*/}
-                    {/*<Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconTrashBin />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={theme.colors.shared.soft2Gray}
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Recycle Bin
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>*/}
-                  
-                    
-                  
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoTransaction}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          {/*<IconLists />*/}
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/transaction.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Transactions
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    {control==="customer" && (
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      onPress={goToShopping}
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                      <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/shopping.svg')}
-                          />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={theme.colors.shared.soft2Gray}
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Shopping
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>)}
-                    {control==="business" && (
-                      <>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoCustomers}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/company.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Customers
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoTiers}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/tiers.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Tiers
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoAutomation}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/automation.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Automation
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoProducts}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/products.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Products
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoReports}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="6"
-                            h="6"
-                            source={require('shared/images/reports.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Reports
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoBranding}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                          <Image
-                            w="3"
-                            h="4"
-                            source={require('shared/images/b.svg')}
-                          />
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Branding
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    <Center marginY={{ base: '2', lg: '0' }}>
-                      <Pressable
-                        onPress={GotoIntegration}
-                        w={{ lg: 'full' }}
-                        flexDirection="row"
-                        alignItems="center"
-                        paddingX={{ base: '3', lg: '6' }}
-                        paddingY="3"
-                        borderRadius="lg"
-                        _hover={{
-                          backgroundColor: theme.colors.shared.softer2Gray
-                        }}
-                      >
-                        <Box w={{ base: '20px', lg: '24px' }}>
-                         <Text>I</Text>
-                        </Box>
-                        <Hidden till="lg">
-                          <Text
-                            color={theme.colors.shared.soft2Gray}
-                            fontWeight="semibold"
-                            paddingLeft="4"
-                          >
-                            Integrations
-                          </Text>
-                        </Hidden>
-                      </Pressable>
-                    </Center>
-                    </>)}
-                  </ScrollView>
+                      if (e.showOn === showOn.both) {
+                        return true
+                      }
+
+                      if (
+                        e.showOn === showOn.business &&
+                        control === accountTypes.business
+                      ) {
+                        return true
+                      }
+
+                      if (
+                        e.showOn === showOn.customer &&
+                        control === accountTypes.customer
+                      ) {
+                        return true
+                      }
+
+                      return false
+                    })
+                    .map((e) => (
+                      <SideBarItem e={e} />
+                    ))}
                 </Box>
                 <br />
                 <Box>
-                  <Hidden from="lg">
-                    <>
-                      <Center marginY={{ base: '2', lg: '0' }}>
-                        <Pressable
-                          w={{ lg: 'full' }}
-                          flexDirection="row"
-                          alignItems="center"
-                          paddingX={{ base: '3', lg: '6' }}
-                          paddingY="3"
-                          borderRadius="lg"
-                          _hover={{
-                            backgroundColor: theme.colors.shared.softer2Gray
-                          }}
-                        >
-                          <Box w="20px">
-                            <IconArrowRight />
-                          </Box>
-                        </Pressable>
-                      </Center>
-                      <Center marginY={{ base: '2', lg: '0' }}>
-                        <Pressable
-                          w={{ lg: 'full' }}
-                          flexDirection="row"
-                          alignItems="center"
-                          paddingX={{ base: '3', lg: '6' }}
-                          paddingY="3"
-                          borderRadius="lg"
-                          _hover={{
-                            backgroundColor: theme.colors.shared.softer2Gray
-                          }}
-                        >
-                          <Box w="20px">
-                            <IconSun />
-                          </Box>
-                        </Pressable>
-                      </Center>
-                      <Box
-                        borderBottomWidth="1px"
-                        borderColor="#0000001A"
-                        marginX="3"
-                      ></Box>
-                    </>
-                  </Hidden>
-                 
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      onPress={goToBilling}
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconCreditCard />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={theme.colors.shared.soft2Gray}
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Billing
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      onPress={goToAccount}
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconUser />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={theme.colors.shared.soft2Gray}
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          Account
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                  <Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                      onPress={goToHelp}
-                      
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                        <IconHelpCircle />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={theme.colors.shared.soft2Gray}
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          {`Help & Support`}
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>
-                  {/*<Center marginY={{ base: '2', lg: '0' }}>
-                    <Pressable
-                    onPress={handleSignOut}
-                      w={{ lg: 'full' }}
-                      flexDirection="row"
-                      alignItems="center"
-                      paddingX={{ base: '3', lg: '6' }}
-                      paddingY="3"
-                      borderRadius="lg"
-                      _hover={{
-                        backgroundColor: theme.colors.shared.softer2Gray
-                      }}
-                    >
-                      <Box w={{ base: '20px', lg: '24px' }}>
-                      <Image
-                            w="5"
-                            h="5"
-                            source={require('shared/images/exit-1.svg')}
-                          />
-                      </Box>
-                      <Hidden till="lg">
-                        <Text
-                          color={theme.colors.shared.soft2Gray}
-                          fontWeight="semibold"
-                          paddingLeft="4"
-                        >
-                          {`Sign out`}
-                        </Text>
-                      </Hidden>
-                    </Pressable>
-                  </Center>*/}
+                  {sidebarRoutes
+                    .filter((e) => {
+                      if (e.position !== sidebarItemPosition.bottom) {
+                        return false
+                      }
+
+                      if (e.showOn === showOn.both) {
+                        return true
+                      }
+
+                      if (
+                        e.showOn === showOn.business &&
+                        control === accountTypes.business
+                      ) {
+                        return true
+                      }
+
+                      if (
+                        e.showOn === showOn.customer &&
+                        control === accountTypes.customer
+                      ) {
+                        return true
+                      }
+
+                      return false
+                    })
+                    .map((e) => (
+                      <SideBarItem e={e} />
+                    ))}
                 </Box>
               </VStack>
             </Box>

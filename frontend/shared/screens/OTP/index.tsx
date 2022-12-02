@@ -14,12 +14,11 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { useState } from 'react'
-import { gql, useMutation,useLazyQuery } from '@apollo/client'
+import { gql, useMutation, useLazyQuery } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 import { useRouter } from 'solito/router'
-import { userSubscriptionDataState} from '../../state'
+import { userSubscriptionDataState } from '../../state'
 import { useRecoilState } from 'recoil'
-
 
 const CONFIRM_EMAIL_VALIDATION_CODE = gql`
   mutation ConfirmEmailValidationCode($input: confirmEmailValidationCodeInput) {
@@ -47,13 +46,12 @@ const GET_BUSINESS_SUBSCRIPTION_DATA = gql`
   }
 `
 
-
 export default function OTP(props: any) {
   const toast = useToast()
   const { push } = useRouter()
   const [code, setCode] = useState('')
 
-  const [getBusinessSubscriptionData ,{ data }] = useLazyQuery(
+  const [getBusinessSubscriptionData, { data }] = useLazyQuery(
     GET_BUSINESS_SUBSCRIPTION_DATA,
     {
       fetchPolicy: 'network-only'
@@ -113,6 +111,7 @@ export default function OTP(props: any) {
           toast.show({
             description: confirmEmailValidationCode.message
           })
+
           return
         }
         toast.show({

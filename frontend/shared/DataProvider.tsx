@@ -80,7 +80,7 @@ export const DataProvider = ({ children }) => {
   }, [])
 
   React.useEffect(() => {
-    console.log("data:",data)
+    console.log('data:', data)
     if (data?.getBusinessSubscriptionData) {
       setUserSubscriptionData(data.getBusinessSubscriptionData)
       // will need to change the line below to not look for document.location.href once we have mobile app
@@ -88,24 +88,32 @@ export const DataProvider = ({ children }) => {
         data.getBusinessSubscriptionData.redirectToOTPPage &&
         !document.location.href.includes('otp')
       ) {
-        if(data.getBusinessSubscriptionData.stripeCustomer.metadata.accountType==="business")
-        push('/otp')
-        else
-        push('/otp-customer')
-      }else{
-        if(data.getBusinessSubscriptionData.stripeCustomer.metadata.accountType==="customer" && 
-          ( document.location.href.includes('customers') ||
-          document.location.href.includes('tiers') ||
-          document.location.href.includes('automation') ||
-          document.location.href.includes('products') ||
-          document.location.href.includes('reports') ||
-          document.location.href.includes('branding') ||
-          document.location.href.includes('campaigns') ||
-          document.location.href.includes('integrations') ))
+        if (
+          data.getBusinessSubscriptionData.stripeCustomer.metadata
+            .accountType === 'business'
+        )
+          push('/otp')
+        else push('/otp-customer')
+      } else {
+        if (
+          data.getBusinessSubscriptionData.stripeCustomer.metadata
+            .accountType === 'customer' &&
+          (document.location.href.includes('customers') ||
+            document.location.href.includes('tiers') ||
+            document.location.href.includes('automation') ||
+            document.location.href.includes('products') ||
+            document.location.href.includes('reports') ||
+            document.location.href.includes('branding') ||
+            document.location.href.includes('campaigns') ||
+            document.location.href.includes('integrations'))
+        )
           push('/home')
-        else if(data.getBusinessSubscriptionData.stripeCustomer.metadata.accountType==="business" && 
-        document.location.href.includes('shopping'))
-        push('/home')  
+        else if (
+          data.getBusinessSubscriptionData.stripeCustomer.metadata
+            .accountType === 'business' &&
+          document.location.href.includes('shopping')
+        )
+          push('/home')
       }
     }
   }, [data])

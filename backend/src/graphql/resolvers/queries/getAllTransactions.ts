@@ -1,4 +1,5 @@
 import {gql} from 'apollo-server';
+
 import {prismaContext} from '../../prismaContext';
 
 export const getAllTransactionsSchema = gql`
@@ -16,11 +17,7 @@ export const getAllTransactionsSchema = gql`
 `;
 
 /* jscpd:ignore-start */
-const getAllTransactions = async (
-  parent: any,
-  args: any,
-  context: any,
-) => {
+const getAllTransactions = async (parent: any, args: any, context: any) => {
   const {id: userID} = context.user;
 
   // TODO: Limit to 100 customers and add pagination

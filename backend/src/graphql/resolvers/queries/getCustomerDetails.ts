@@ -20,10 +20,9 @@ export const getCustomerDetailsSchema = gql`
 const getCustomerDetails = async (parent: any, args: any, context: any) => {
   const {id: userID} = context.user;
 
-
   const dataBusiness = await prismaContext.prisma.customer.findUnique({
     where: {
-      id:userID,
+      id: userID,
     },
   });
 

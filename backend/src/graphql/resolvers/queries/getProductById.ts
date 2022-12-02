@@ -21,10 +21,9 @@ export const getProductByIdSchema = gql`
 
 /* jscpd:ignore-start */
 const getProductById = async (parent: any, args: any, context: any) => {
-
   const dataProduct = await prismaContext.prisma.product.findUnique({
     where: {
-      id:args.input.id
+      id: args.input.id,
     },
   });
 

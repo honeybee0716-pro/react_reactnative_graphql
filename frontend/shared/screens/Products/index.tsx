@@ -1,3 +1,4 @@
+import react,{useRef} from 'react'
 import {
   StatusBar,
   Box,
@@ -17,6 +18,8 @@ import {
   useToast,
   AlertDialog
 } from 'native-base'
+import { CSVLink } from "react-csv";
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
@@ -27,6 +30,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
 import FileBase64 from 'react-file-base64'
 import IconTrashBin from '../../components/icons/IconTrashBin'
+import IconEdit from "../../components/icons/IconEdit"
 
 const CREATE_PRODUCT = gql`
   mutation Mutation($createProductInput: createProductInput) {
@@ -76,11 +80,18 @@ const UPDATE_PRODUCT = gql`
 
 export default function Products(props: any) {
   const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen1, setIsOpen1] = React.useState(false)
+  const [isOpen0, setIsOpen0] = React.useState(false)
   const [delId, setDelId] = React.useState('')
-
+  const csvLink = useRef()
+const [exportedData,setExportedData]=useState([])
   const onClose = () => setIsOpen(false)
+  const onClose1 = () => setIsOpen1(false)
+  const onClose0 = () => setIsOpen0(false)
 
   const cancelRef = React.useRef(null)
+  const cancelRef1 = React.useRef(null)
+  const cancelRef0 = React.useRef(null)
 
   const toast = useToast()
 
@@ -90,11 +101,12 @@ export default function Products(props: any) {
     description: '',
     image: ''
   })
-  const [item1, setItem1] = useState({ name: '', price: '', description: '' })
+  const [selectedExportItems,setSelectedExportItems]=useState({})
+  const [item1, setItem1] = useState({ name: '',id:'', price: '', description: '' })
 
   const [items, setItems] = useState([])
   const [fitems, setFitems] = useState([])
-
+console.log("fitems",fitems)
   const initialFocusRef = React.useRef(null)
 
   const [getProductDetails] = useLazyQuery(GET_PRODUCT_DETAILS)
@@ -273,24 +285,83 @@ export default function Products(props: any) {
       }
     })
   }
+  const exportProducts=()=>{
+    
+  let data=[]
+    Object.keys(selectedExportItems).map((item)=>{
+ 
+let index=fitems.findIndex((product)=>product.id==item)
 
+let {name,price,description,img}=fitems[index]
+       data.push(
+   {
+ name,
+ price,
+  description,
+ img
+   }
+ )
+    })
+
+setExportedData(data)
+
+
+console.log("exportedData",exportedData)
+
+  }
+React.useEffect(()=>{
+ if(exportedData.length>0) {
+  csvLink.current.link.click()
+  }
+},[exportedData])
   return (
     <>
       <DashboardLayout>
-        <Box w="100%" alignItems="center">
-          <Popover
-            initialFocusRef={initialFocusRef}
-            trigger={(triggerProps) => {
-              return <Button {...triggerProps}>create a new product</Button>
-            }}
-          >
-            <Popover.Content width="56">
-              <Popover.Arrow />
-              <Popover.CloseButton />
-              {/* @ts-ignore */}
-              <Popover.Header>Product Details</Popover.Header>
-              <Popover.Body>
-                <FormControl>
+        <Box w="100%">
+           <Box>
+          <Box style={{flexDirection:"row",justifyContent:"flex-end"}}>
+           <Button
+                      onPress={() => {
+                        setItem0({ ...item0, image: '' })
+                        setIsOpen0(!isOpen0)
+                      }}
+                      style={{marginTop:"10px",marginRight:"25px",width:"150px",height:"40px"}}
+                      color={theme.colors.shared.white}
+                      alignSelf="end"
+                    >
+                        create product
+                    </Button>
+                  
+  
+
+       <CSVLink
+         data={exportedData}
+         filename='product.csv'
+         className='hidden'
+         ref={csvLink}
+         target='_blank'
+      />
+                    <Button
+                       colorScheme="success"
+                      onPress={exportProducts}
+                      style={{marginTop:"10px",marginRight:"25px",width:"150px",height:"40px"}}
+                      color={theme.colors.shared.white}
+                      alignSelf="end"
+                    >
+                        export
+                    </Button>
+                    </Box>
+                    <AlertDialog
+                      leastDestructiveRef={cancelRef0}
+                      isOpen={isOpen0}
+                      
+                      onClose={onClose0}
+                    >
+                      <AlertDialog.Content>
+                        <AlertDialog.CloseButton />
+                        <AlertDialog.Header>Product Details</AlertDialog.Header>
+                        <AlertDialog.Body>
+                        <FormControl>
                   <FormControl.Label
                     _text={{
                       fontSize: 'xs',
@@ -304,6 +375,7 @@ export default function Products(props: any) {
                     onChange={(e) =>
                       setItem0({ ...item0, name: e.target.value })
                     }
+                    placeholder={item0.name}
                   />
                 </FormControl>
                 <FormControl mt="3">
@@ -320,6 +392,7 @@ export default function Products(props: any) {
                     onChange={(e) =>
                       setItem0({ ...item0, price: e.target.value })
                     }
+                    placeholder={item0.price}
                   />
                 </FormControl>
                 <FormControl mt="3">
@@ -335,6 +408,7 @@ export default function Products(props: any) {
                     onChange={(e) =>
                       setItem0({ ...item0, description: e.target.value })
                     }
+                    placeholder={item0.description}
                   ></textarea>
                 </FormControl>
                 <FormControl mt="3">
@@ -349,61 +423,78 @@ export default function Products(props: any) {
                   <FileBase64
                     type="file"
                     multiple={false}
+                    
                     onDone={({ base64 }) =>
                       setItem0({ ...item0, image: base64 })
                     }
+                    
                   />
                 </FormControl>
-              </Popover.Body>
-              <Popover.Footer>
-                <Button.Group>
-                  <Button colorScheme="coolGray" variant="ghost">
-                    Cancel
-                  </Button>
-                  <Button onPress={handleS}>Save</Button>
-                </Button.Group>
-              </Popover.Footer>
-            </Popover.Content>
-          </Popover>
+                        </AlertDialog.Body>
+                        <AlertDialog.Footer>
+                          <Button.Group space={2}>
+                            <Button
+                              variant="unstyled"
+                              colorScheme="coolGray"
+                              onPress={onClose0}
+                              ref={cancelRef0}
+                            >
+                              Cancel
+                            </Button>
+
+                            <Button
+                              colorScheme="success"
+                              onPress={() => {
+                                handleS()
+                                onClose0()
+                              }}
+                            >
+                              Save
+                            </Button>
+                          </Button.Group>
+                        </AlertDialog.Footer>
+                      </AlertDialog.Content>
+                    </AlertDialog>
+                  </Box>
         </Box>
-        <div style={{ margin: '5px', marginTop: '20px' }}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '25% 25% 25% 25%',
-              gridTemplateRows: 'auto'
-            }}
-          >
+        <div style={{ margin: '2px' }}>
+        <table style={{marginTop:"0px",padding:"10px",width:"100%"}}>
+  <tr style={{textAlign:"left", height:"50px"}}>
+    <th></th>
+    <th>Product Name</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th></th>
+  </tr>
             {fitems?.map((item) => (
               <>
-                <div>
+                <tr style={{backgroundColor:"white"}}>
+                  <td>
                   <img
                     className="activator"
                     style={{
-                      height: '250px',
-                      width: '250px',
+                      height: '50px',
+                      width: '50px',
                       objectFit: 'contain',
                       backgroundColor: 'white'
                     }}
                     src={item.img}
+                    
                   />
-                  <p>Product Name: {item.name}</p>
-                  <p>Price: {item.price}$</p>
-                  <p>{item.description}</p>
+                  </td>
+                  <td>{item.name}</td>
+                  <td>{item.price}$</td>
+                  <td>{item.description}</td>
 
-                  <Box
-                    style={{
-                      width: '60px',
-                      height: '20px',
-                      marginBottom: '14px'
-                    }}
-                  >
+                 <td style={{display:"flex",justifyContent:"space-between",width:"120px",alignItems:"center"}}>
+                  <Box>
                     <Button
                       colorScheme="danger"
                       onPress={() => {
                         setDelId(item.id)
                         setIsOpen(!isOpen)
                       }}
+                      style={{marginTop:"10px",marginLeft:"15px"}}
                     >
                       <Box w={{ base: '15px', lg: '14px' }}>
                         <IconTrashBin color={theme.colors.shared.white} />
@@ -446,40 +537,35 @@ export default function Products(props: any) {
                     </AlertDialog>
                   </Box>
 
-                  <Popover
-                    placement="top left"
-                    onOpen={() => {
-                      setItem1({
-                        name: item.name,
-                        price: item.price,
-                        description: item.description
-                      })
-                    }}
-                    trigger={(triggerProps) => {
-                      return (
-                        <Button
-                          {...triggerProps}
-                          style={{
-                            backgroundColor: 'gray',
-                            width: '60px',
-                            height: '30px',
-                            marginTop: '5px'
-                          }}
-                          colorScheme="danger"
-                        >
-                          Edit
-                        </Button>
-                      )
-                    }}
-                  >
-                    <Popover.Content
-                      accessibilityLabel="Delete Customerd"
-                      w="56"
+                  <Box>
+                    <Button
+                      onPress={() => {
+                          setItem1({
+                            id:item.id,
+                            name: item.name,
+                            price: item.price,
+                            description: item.description
+                          })
+                        setIsOpen1(!isOpen1)
+                      }}
+                      style={{marginTop:"10px",marginLeft:"15px"}}
                     >
-                      <Popover.Arrow />
-                      <Popover.CloseButton />
-                      <Popover.Header>Edit Product</Popover.Header>
-                      <Popover.Body>
+                      <Box w={{ base: '15px', lg: '14px' }}>
+                        <IconEdit color={theme.colors.shared.white} />
+                      </Box>
+
+                    </Button>
+               
+                    <AlertDialog
+                      leastDestructiveRef={cancelRef1}
+                      isOpen={isOpen1}
+                      
+                      onClose={onClose1}
+                    >
+                      <AlertDialog.Content>
+                        <AlertDialog.CloseButton />
+                        <AlertDialog.Header>Edit Product</AlertDialog.Header>
+                        <AlertDialog.Body>
                         <FormControl>
                           <FormControl.Label
                             _text={{
@@ -491,7 +577,7 @@ export default function Products(props: any) {
                           </FormControl.Label>
                           <input
                             type="text"
-                            placeholder={item.name}
+                            placeholder={item1.name}
                             onChange={(e) =>
                               setItem1({ ...item1, name: e.target.value })
                             }
@@ -508,7 +594,7 @@ export default function Products(props: any) {
                           </FormControl.Label>
                           <input
                             type="number"
-                            placeholder={item.price}
+                            placeholder={item1.price}
                             onChange={(e) =>
                               setItem1({ ...item1, price: e.target.value })
                             }
@@ -524,7 +610,7 @@ export default function Products(props: any) {
                             Description
                           </FormControl.Label>
                           <textarea
-                            placeholder={item.description}
+                            placeholder={item1.description}
                             onChange={(e) =>
                               setItem1({
                                 ...item1,
@@ -533,28 +619,52 @@ export default function Products(props: any) {
                             }
                           ></textarea>
                         </FormControl>
-                      </Popover.Body>
-                      <Popover.Footer justifyContent="flex-end">
-                        <Button.Group space={2}>
-                          <Button colorScheme="coolGray" variant="ghost">
-                            Cancel
-                          </Button>
-                          <Button
-                            colorScheme="danger"
-                            onPress={() => {
-                              editP(item)
-                            }}
-                          >
-                            Save
-                          </Button>
-                        </Button.Group>
-                      </Popover.Footer>
-                    </Popover.Content>
-                  </Popover>
-                </div>
+                        </AlertDialog.Body>
+                        <AlertDialog.Footer>
+                          <Button.Group space={2}>
+                            <Button
+                              variant="unstyled"
+                              colorScheme="coolGray"
+                              onPress={onClose1}
+                              ref={cancelRef1}
+                            >
+                              Cancel
+                            </Button>
+
+                            <Button
+                              colorScheme="success"
+                              onPress={() => {
+                                editP(item1)
+                                onClose1()
+                              }}
+                            >
+                              Save
+                            </Button>
+                          </Button.Group>
+                        </AlertDialog.Footer>
+                      </AlertDialog.Content>
+                    </AlertDialog>
+                  </Box>
+               
+        <Box  style={{marginLeft:20,marginTop:7}}>
+        <Checkbox
+           
+              value={selectedExportItems[item.id]||false}
+              isChecked={selectedExportItems[item.id]||false}
+              onChange={(value)=>{
+              let temp={...selectedExportItems}
+             value? temp={...selectedExportItems,[item.id]:value}:delete temp[item.id]
+              setSelectedExportItems({...temp})
+              }}
+              accessibilityLabel="Export this lead"
+            />
+      
+        </Box>
+                  </td>
+                </tr>
               </>
             ))}
-          </div>
+          </table>
         </div>
       </DashboardLayout>
     </>

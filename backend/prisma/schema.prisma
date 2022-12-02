@@ -16,19 +16,19 @@ model PrismaInfo {
 }
 
 model Business {
-  id                         String        @id @default(auto()) @map("_id") @db.ObjectId
-  stripeCustomerID           String        @unique
+  id                         String               @id @default(auto()) @map("_id") @db.ObjectId
+  stripeCustomerID           String               @unique
   firstName                  String
   lastName                   String
   companyName                String?
-  email                      String        @unique
-  emailIsVerified            Boolean       @default(false)
+  email                      String               @unique
+  emailIsVerified            Boolean              @default(false)
   password                   String
-  createdAt                  DateTime      @default(now())
-  updatedAt                  DateTime      @default(now())
+  createdAt                  DateTime             @default(now())
+  updatedAt                  DateTime             @default(now())
   deletedAt                  DateTime?
   bannedAt                   DateTime?
-  allowMarketingEmails       Boolean       @default(true)
+  allowMarketingEmails       Boolean              @default(true)
   createdIPAddress           String
   knownIPAddresses           String[]
   passwordResetCode          Int?
@@ -36,8 +36,8 @@ model Business {
   verifyEmailCode            Int?
   verifyEmailCodeTimestamp   DateTime?
   trialCreatedAt             DateTime?
-  companyLogo                String     @default("")
-  role                       Role       @default(BASIC)
+  companyLogo                String               @default("")
+  role                       Role                 @default(BASIC)
   Customer                   Customer[]
   Product                    Product[]
   Transaction                Transaction[]
@@ -90,7 +90,7 @@ model Transaction {
 }
 
 model integrationSettings {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
   lineAPIKey   String
   shopeeAPIKey String
   lazadaAPIKey String
