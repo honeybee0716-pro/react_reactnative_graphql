@@ -15,18 +15,21 @@ export const getProductDetailsBusinessSchema = gql`
 `;
 
 /* jscpd:ignore-start */
-const getProductDetailsBusiness = async (parent: any, args: any, context: any) => {
+const getProductDetailsBusiness = async (
+  parent: any,
+  args: any,
+  context: any,
+) => {
   const {id: userID} = context.user;
-
 
   const dataProducts = await prismaContext.prisma.product.findMany({
     where: {
-      businessId:userID,
+      businessId: userID,
     },
   });
 
   return {
-    message: 'Retrieved product details where business',
+    message: 'Retrieved product details.',
     status: 'success',
     dataProducts,
   };

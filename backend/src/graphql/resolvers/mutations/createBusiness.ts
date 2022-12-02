@@ -1,13 +1,12 @@
 import bcrypt from 'bcrypt';
 import {ApolloError, gql} from 'apollo-server';
 import jwt from 'jsonwebtoken';
-// import {sendEmail} from '../../../utils/sendgrid';
-import isEmail from 'isemail';
 
 import {nodemailer} from '../../../utils/nodemailer';
 import {stripe} from '../../../utils/stripe';
 import {prismaContext} from '../../prismaContext';
 import {generateRandomNumber} from '../../../utils/generateRandomNumber';
+import {validateEmail} from '../../../utils/validateEmail';
 
 export const createBusinessSchema = gql`
   scalar JSON
@@ -32,19 +31,17 @@ export const createBusinessSchema = gql`
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const createBusiness = async (parent: null, args: any, context: any, info: any) => {
+const createBusiness = async (parent: null, args: any, context: any) => {
   const formattedEmail = args.input.email.toLowerCase().trim();
   const cname = args.input.companyName.trim();
 
-  const validEmail = isEmail.validate(formattedEmail);
-
-  if(cname==="")
-  {
-    throw new ApolloError('kindly provide a company name');
+  const validateEmailResponse = await validateEmail(formattedEmail);
+  if (!validateEmailResponse.result) {
+    throw new ApolloError(validateEmailResponse.message);
   }
 
-  if (!validEmail) {
-    throw new ApolloError('That does not appear to be a valid email address.');
+  if (cname === '') {
+    throw new ApolloError('Please provide a company name.');
   }
 
   const foundEmail = await prismaContext.prisma.business.findUnique({
@@ -69,7 +66,6 @@ const createBusiness = async (parent: null, args: any, context: any, info: any) 
 
   const verifyEmailCode = generateRandomNumber();
 
-  
   // create stripe customer
   const stripeCustomer = await stripe.customers.create({
     email: formattedEmail,
@@ -80,11 +76,10 @@ const createBusiness = async (parent: null, args: any, context: any, info: any) 
       lastName: args.input.lastName,
       phoneNumber: args.input.phoneNumber,
       companyName: args.input.companyName,
-      accountType:"business"
+      accountType: 'business',
     },
   });
 
-  
   // need to create stripeCustomer before db user because db user requires field stripeCustomerID
   const createdUser = await prismaContext.prisma.business.create({
     data: {
@@ -97,33 +92,16 @@ const createBusiness = async (parent: null, args: any, context: any, info: any) 
     },
   });
 
- 
   // update stripeCustomer with userID
   await stripe.customers.update(stripeCustomer.id, {
     metadata: {userID: createdUser.id},
   });
 
-  // await sendEmail({
-  //   to: args.input.email,
-  //   subject: 'Please verify your email.',
-  //   text: `Please use this code to verify your account: ${verifyEmailCode}`,
-  // html: `
-  //   <p>
-  //     You've just signed up for an account on ${process.env.PROTOCOL}://${process.env.DOMAIN}.
-  //   </p>
-  //   <p>
-  //     Please use this code to verify your account: ${verifyEmailCode}
-  //   </p>
-  // `,
-  // });
-
-  if(process.env.NODE_ENV==="production")
-  {
   await nodemailer.sendMail({
-    from: '"SaaS Template Alerts" <alerts@saastemplates.io>', // sender address
-    to: formattedEmail, // list of receivers
-    subject: 'Please verify your email.', // Subject line
-    text: `Please use this code to verify your account: ${verifyEmailCode}`, // plain text body
+    from: process.env.EMAIL_FROM,
+    to: formattedEmail,
+    subject: 'Please verify your email.',
+    text: `Please use this code to verify your account: ${verifyEmailCode}`,
     html: `
       <p>
         You've just signed up for an account on ${process.env.PROTOCOL}://${process.env.DOMAIN}.
@@ -133,13 +111,10 @@ const createBusiness = async (parent: null, args: any, context: any, info: any) 
       </p>
     `,
   });
-}
 
   const token = jwt.sign({id: createdUser.id}, <string>process.env.JWT_SECRET, {
     expiresIn: '1d',
   });
-
-  //token
 
   return {
     jwt: token,
