@@ -61,6 +61,11 @@ const SideBarItem = ({ e }: any) => {
       paddingX={{ base: '3', lg: '6' }}
       paddingY="4"
       borderRadius="lg"
+      _hover={{
+        backgroundColor: path.includes(e.label.toLowerCase())
+          ? theme.colors.shared.SaleSpinPrimary
+          : theme.colors.shared.softer2Gray
+      }}
     >
       {e.icon}
       <Text
