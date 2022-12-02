@@ -259,20 +259,6 @@ const DashboardLayout: React.FC = ({ children }) => {
       position: sidebarItemPosition.bottom
     },
     {
-      label: 'Account',
-      icon: (
-        <Icon
-          size="5"
-          color={getSideBarColor('Account')}
-          as={Ionicons}
-          name="person"
-        />
-      ),
-      onClick: () => push('/account'),
-      showOn: showOn.both,
-      position: sidebarItemPosition.bottom
-    },
-    {
       label: 'Help',
       icon: (
         <Icon
@@ -283,6 +269,20 @@ const DashboardLayout: React.FC = ({ children }) => {
         />
       ),
       onClick: () => push('/help'),
+      showOn: showOn.both,
+      position: sidebarItemPosition.bottom
+    },
+    {
+      label: 'Account',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Account')}
+          as={Ionicons}
+          name="person"
+        />
+      ),
+      onClick: () => push('/account'),
       showOn: showOn.both,
       position: sidebarItemPosition.bottom
     }
@@ -299,68 +299,6 @@ const DashboardLayout: React.FC = ({ children }) => {
       setControl(accountTypes.customer)
     }
   }, [userSubscriptionData])
-
-  const handleSignOut = async () => {
-    push('/sign-out')
-  }
-
-  const GotoTransaction = async () => {
-    push('/transactions')
-  }
-
-  const GotoCustomers = async () => {
-    push('/customers')
-  }
-
-  const GotoTiers = async () => {
-    push('/tiers')
-  }
-
-  const GotoAutomation = async () => {
-    push('/automation')
-  }
-
-  const GotoReports = async () => {
-    push('/reports')
-  }
-
-  const GotoProducts = async () => {
-    push('/products')
-  }
-
-  const GotoBranding = async () => {
-    push('/branding')
-  }
-
-  const goToBilling = async () => {
-    push('/billing')
-  }
-
-  const goToShopping = async () => {
-    push('/shopping')
-  }
-
-  const goToHome = async () => {
-    push('/home')
-  }
-
-  const goToCampaigns = async () => {
-    push('/campaigns')
-  }
-
-  const goToAccount = async () => {
-    push('/account')
-  }
-
-  const goToHelp = async () => {
-    push('/help')
-    // window.location.href='tel:+17864960562'
-    // window.location.href = 'mailto:support@salespin.co'
-  }
-
-  const GotoIntegration = async () => {
-    push('/integrations')
-  }
 
   return (
     <>
@@ -463,7 +401,7 @@ const DashboardLayout: React.FC = ({ children }) => {
                 borderRightWidth="1"
                 borderRightColor={theme.colors.shared.softer2Gray}
               >
-                <Box flex="1" style={{overflow:"scroll"}}>
+                <Box flex="1" style={{ overflow: 'scroll' }}>
                   {sidebarRoutes
                     .filter((e) => {
                       if (e.position !== sidebarItemPosition.top) {
