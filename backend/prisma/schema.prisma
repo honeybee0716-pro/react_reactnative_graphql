@@ -50,7 +50,7 @@ model Customer {
   firstName                  String
   lastName                   String
   companyName                String?
-  email                      String    @unique
+  email                      String
   emailIsVerified            Boolean   @default(false)
   password                   String
   createdAt                  DateTime  @default(now())
@@ -68,6 +68,8 @@ model Customer {
   role                       Role      @default(BASIC)
   business                   Business? @relation(fields: [businessId], references: [id])
   businessId                 String?
+
+  @@unique([email, businessId], name: "customerIdentifier")
 }
 
 model Product {

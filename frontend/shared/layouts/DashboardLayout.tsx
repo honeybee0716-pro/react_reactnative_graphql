@@ -9,13 +9,17 @@ import {
   HStack,
   VStack,
   Pressable,
+  ScrollView,
+  Menu,
+  useToast,
   Icon
 } from 'native-base'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { useRouter } from 'solito/router'
 import { useRecoilState } from 'recoil'
-import { userSubscriptionDataState } from '../state'
+import { userSubscriptionDataState,userLogoDataState,pageTitleState, jwtState } from '../state'
+import { gql, useLazyQuery } from '@apollo/client'
 import {
   FontAwesome,
   MaterialCommunityIcons,
@@ -83,10 +87,92 @@ const SideBarItem = ({ e }: any) => {
   )
 }
 
-const DashboardLayout: React.FC = ({ children }) => {
-  const [control, setControl] = React.useState(accountTypes.customer)
+const GET_B_LOGO_TXT = gql`
+  query getBlogoTxt($input: getBlogoTxtInput) {
+    getBlogoTxt(input: $input) {
+      message
+      status
+      companyLogo
+      companyName
+    }
+  }
+`
+
+const DashboardLayout: React.FC = ({children}) => {
+
+  const [control, setControl] = React.useState('')
+  const toast = useToast()
+  const [displayCompanyLogo,setDisplayCompanyLogo]=useState('')
+  const [displayCompanyName,setDisplayCompanyName]=useState('')
+  const [shouldOverlapWithTrigger] = useState(false)
+  const [position, setPosition] = React.useState('auto')
+  const [businessId,setBusinessId]=React.useState(null)
   const { push } = useRouter()
-  const [userSubscriptionData] = useRecoilState<any>(userSubscriptionDataState)
+  const [getBlogotxt,{loading:loadingLogo}] = useLazyQuery(GET_B_LOGO_TXT)
+  const [userSubscriptionData, setUserSubscriptionData] = useRecoilState<any>(
+    userSubscriptionDataState
+  )
+
+  const [userLogoData,setUserLogoData]=useRecoilState<any>(
+    userLogoDataState
+  )
+
+  const [pageTitle,setPageTitle]=useRecoilState<any>(
+    pageTitleState
+  )
+
+  React.useEffect(() => {
+    if (
+      userSubscriptionData.stripeCustomer.metadata.accountType === 'business'
+    ) {
+      setControl(accountTypes.business)
+      setBusinessId(userSubscriptionData.stripeCustomer.metadata.userID)
+    } else if (
+      userSubscriptionData.stripeCustomer.metadata.accountType === 'customer'
+    ) {
+      setControl(accountTypes.customer)
+      setBusinessId(userSubscriptionData.stripeCustomer.metadata.businessId)
+    }
+  }, [userSubscriptionData])
+
+  React.useEffect(()=>{
+    if(userLogoData!==undefined)
+    setDisplayCompanyLogo(userLogoData.image)
+  },[userLogoData])
+
+  React.useEffect(()=>{
+    console.log("businessId:",businessId)
+    getBlogotxt({
+      variables: {
+        input: {
+          id:businessId?businessId:'',
+        }
+      },
+      onCompleted: async ({ getBlogoTxt }) => {
+        if (
+          getBlogoTxt?.status === 'success'
+        ) {
+          console.log(getBlogoTxt)
+          setPageTitle({companyName:getBlogoTxt.companyName})
+          setDisplayCompanyLogo(getBlogoTxt.companyLogo)
+          setDisplayCompanyName(getBlogoTxt.companyName)
+          return
+        }
+        if (getBlogoTxt?.message) {
+         
+          return
+        }
+        
+        return
+      },
+      onError: (error) => {
+        toast.show({
+          description: `${error.message}`
+        })
+      }
+    })
+  
+  },[businessId])
 
   const getSideBarColor = (label: string) => {
     return document.location.href.toLowerCase().includes(label.toLowerCase())
@@ -293,17 +379,6 @@ const DashboardLayout: React.FC = ({ children }) => {
     }
   ]
 
-  React.useEffect(() => {
-    if (
-      userSubscriptionData.stripeCustomer.metadata.accountType === 'business'
-    ) {
-      setControl(accountTypes.business)
-    } else if (
-      userSubscriptionData.stripeCustomer.metadata.accountType === 'customer'
-    ) {
-      setControl(accountTypes.customer)
-    }
-  }, [userSubscriptionData])
 
   return (
     <>
@@ -339,10 +414,10 @@ const DashboardLayout: React.FC = ({ children }) => {
             borderBottomColor={theme.colors.shared.softer2Gray}
           >
             <Box flexDir="row" alignItems="center" w="full">
-              <Image
-                w="80px"
-                h="40px"
-                source={require('shared/images/salespinLogo.png')}
+              <img
+                width="80px"
+                height="40px"
+                src={displayCompanyLogo!==''?displayCompanyLogo: require('shared/images/salespinLogo.png')}
               />
               <Text
                 color={theme.colors.shared.softBlack}
@@ -350,7 +425,9 @@ const DashboardLayout: React.FC = ({ children }) => {
                 fontWeight="semibold"
                 marginLeft={'2'}
               >
-                SaleSpin
+                {!loadingLogo &&  (
+                  displayCompanyName!==''?displayCompanyName:'SaleSpin'
+                    )}
               </Text>
             </Box>
           </Center>
@@ -381,11 +458,13 @@ const DashboardLayout: React.FC = ({ children }) => {
                 borderRightWidth="1"
                 borderRightColor={theme.colors.shared.softer2Gray}
               >
-                <Image
-                  w="80px"
-                  h="40px"
-                  source={require('shared/images/salespinLogo.png')}
+                {!loadingLogo && businessId!==null &&  (
+                <img
+                  width="80px"
+                  height="40px"
+                  src={displayCompanyLogo!==''?displayCompanyLogo: require('shared/images/salespinLogo.png')}
                 />
+                )}
                 <Hidden till="lg">
                   <Text
                     color={theme.colors.shared.softBlack}
@@ -393,7 +472,9 @@ const DashboardLayout: React.FC = ({ children }) => {
                     fontWeight="semibold"
                     marginLeft={'4'}
                   >
-                    SaleSpin
+                     {!loadingLogo &&  businessId!==null && (
+                    displayCompanyName!==''?displayCompanyName:'SaleSpin'
+                     )}
                   </Text>
                 </Hidden>
               </Center>
@@ -500,6 +581,8 @@ const DashboardLayout: React.FC = ({ children }) => {
           overScrollMode="auto"
         >
           {children}
+          
+         
         </KeyboardAwareScrollView>
       </Box>
     </>

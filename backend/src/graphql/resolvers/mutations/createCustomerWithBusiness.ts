@@ -52,14 +52,17 @@ const createCustomerWithBusiness = async (parent: null, args: any, context: any,
       id: true,
     },
     where: {
+      customerIdentifier:{
       email: formattedEmail,
+      businessId:userID
+      },
     },
   });
 
   if (foundEmail) {
     return {
       message:
-        'An account with this email already exists here. Please use another email.',
+        'An account with this email already exists in this business. Please use another email.',
       status: 'failed',
     };
   }
@@ -80,7 +83,8 @@ const createCustomerWithBusiness = async (parent: null, args: any, context: any,
       lastName: args.input.lastName,
       phoneNumber: args.input.phoneNumber,
       companyName: args.input.companyName,
-      accountType:"customer"
+      accountType:"customer",
+      businessId:userID,
     },
   });
 

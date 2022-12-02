@@ -22,10 +22,11 @@ import { useRouter } from 'solito/router'
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 import { useTranslation } from 'react-i18next'
+import { createParam } from 'solito'
 
 const CREATE_USER = gql`
-  mutation Mutation($createUserInput: createUserInput) {
-    createCustomer(input: $createUserInput) {
+  mutation Mutation($createCustomerInput: createCustomerInput) {
+    createCustomer(input: $createCustomerInput) {
       jwt
       message
       status
@@ -33,7 +34,21 @@ const CREATE_USER = gql`
   }
 `
 
+const GET_B_LOGO_TXT = gql`
+  query getBlogoTxt($input: getBlogoTxtInput) {
+    getBlogoTxt(input: $input) {
+      message
+      status
+      companyLogo
+      companyName
+    }
+  }
+`
+
 export default function SignUp(props: any) {
+
+  const { useParam } = createParam()
+  const [businessId, setBusinessId] = useParam('businessID')
   const { t, i18n } = useTranslation()
   const { push } = useRouter()
   const [showPass, setShowPass] = useState(false)
@@ -42,8 +57,13 @@ export default function SignUp(props: any) {
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [companyName, setCompanyName] = useState('')
+  const [displayCompanyLogo,setDisplayCompanyLogo]=useState('')
+  const [displayCompanyName,setDisplayCompanyName]=useState('')
   const toast = useToast()
 
+
+  const [getBlogotxt,{loading:loadingLogo}] = useLazyQuery(GET_B_LOGO_TXT)
+  
   const [signUpUser, { data, loading, error }] = useMutation(CREATE_USER)
 
   if (loading) {
@@ -55,17 +75,65 @@ export default function SignUp(props: any) {
     console.log(data)
   }
 
+  React.useEffect(()=>{
+    console.log("businessId:",businessId)
+    getBlogotxt({
+      variables: {
+        input: {
+          id:businessId?businessId:'',
+        }
+      },
+      onCompleted: async ({ getBlogoTxt }) => {
+        
+        if (
+          getBlogoTxt?.status === 'success'
+        ) {
+          console.log(getBlogoTxt)
+
+          if(getBlogoTxt.companyLogo!==null)
+          setDisplayCompanyLogo(getBlogoTxt.companyLogo)
+          if(getBlogoTxt.companyName!==null)
+          setDisplayCompanyName(getBlogoTxt.companyName)
+          return
+        }
+        if (getBlogoTxt?.message) {
+         
+          return
+        }
+        
+        return
+      },
+      onError: (error) => {
+        toast.show({
+          description: `${error.message}`
+        })
+      }
+    })
+  },[businessId])
+
+  
+
   const handleSignUp = async () => {
+
+    if(businessId===undefined)
+    {
+      toast.show({
+        description: 'please provide a business Id'
+      })
+      return
+    }
+    
     console.log(email)
     await AsyncStorage.removeItem('jwt')
     signUpUser({
       variables: {
-        createUserInput: {
+        createCustomerInput: {
           email,
           password,
           firstName: firstname,
           lastName: lastname,
-          companyName
+          companyName,
+          businessId
         }
       },
       onCompleted: async (signUpUserWithData) => {
@@ -116,11 +184,13 @@ export default function SignUp(props: any) {
         h="full"
         backgroundColor="white"
       >
+
         <Box
           w={{ base: 'full', lg: '1/2' }}
           h="full"
           backgroundColor={{ base: theme.colors.shared.softViolet, lg: 'none' }}
         >
+                  {businessId?(
           <Box
             flexDirection="row"
             justifyContent="center"
@@ -585,7 +655,7 @@ export default function SignUp(props: any) {
                 </Box>
               </Center>
             </KeyboardAwareScrollView>
-          </Box>
+          </Box>):<p style={{textAlign:"center"}}>please provide a businessID</p>}
         </Box>
         <Hidden till="lg">
           <Box
@@ -620,11 +690,14 @@ export default function SignUp(props: any) {
                 h="full"
               >
                 <Box flexDir="row" justifyContent="center">
-                  <Image
-                    w="200px"
-                    h="128px"
-                    source={require('shared/images/salespinLogo.png')}
-                  />
+
+                {!loadingLogo &&  (
+                  <img
+                    width="200px"
+                    height="128px"
+                    src={displayCompanyLogo!==''?displayCompanyLogo: require('shared/images/salespinLogo.png')}
+                  />)}
+
                 </Box>
                 <Text
                   color="white"
@@ -632,7 +705,9 @@ export default function SignUp(props: any) {
                   fontSize={{ base: '4xl', xl: '5xl' }}
                   fontWeight="semibold"
                 >
-                  SaleSpin
+                  {!loadingLogo &&  (
+                  displayCompanyName!==''?displayCompanyName:'SaleSpin'
+                  )}
                 </Text>
               </Box>
             </Box>

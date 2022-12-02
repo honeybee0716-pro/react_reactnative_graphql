@@ -36,6 +36,8 @@ const LOGIN_USER = gql`
 `
 
 export function SignInForm(props: any) {
+
+  
   const toast = useToast()
   const { push } = useRouter()
   const [email, setEmail] = useState('')
@@ -44,6 +46,7 @@ export function SignInForm(props: any) {
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER)
 
   const handleSignIn = async () => {
+
     await AsyncStorage.removeItem('jwt')
     loginUser({
       variables: {

@@ -49,6 +49,7 @@ import {sendMessageToUsersSchema} from '../resolvers/mutations/sendMessageToUser
 import {setIntegrationSettingsSchema} from '../resolvers/mutations/setIntegrationSettings';
 import {getIntegrationSettingsSchema} from '../resolvers/queries/getIntegrationSettings';
 import { getDetailsBusinessSchema } from '../resolvers/queries/getDetailsBusiness';
+import { getBlogoTxtSchema } from '../resolvers/queries/getBlogoTxt';
 
 import {sharedSchema} from './shared';
 
@@ -103,5 +104,6 @@ export const typeDefs = mergeTypeDefs([
   createTransactionSchema,
   setIntegrationSettingsSchema,
   getIntegrationSettingsSchema,
-  getDetailsBusinessSchema
+  getBlogoTxtSchema,
+  getDetailsBusinessSchema,
 ]) as any;

@@ -17,16 +17,17 @@ export const createCustomerSchema = gql`
     jwt: String
   }
 
-  input createUserInput {
+  input createCustomerInput {
     firstName: String!
     lastName: String!
     companyName: String!
     email: String!
     password: String!
+    businessId:String!
   }
 
   type Mutation {
-    createCustomer(input: createUserInput): createUserResponse!
+    createCustomer(input: createCustomerInput): createUserResponse!
   }
 `;
 
@@ -35,13 +36,39 @@ const createCustomer = async (parent: null, args: any, context: any) => {
   const formattedEmail = args.input.email.toLowerCase().trim();
   const cname = args.input.companyName.trim();
 
-  const validateEmailResponse = await validateEmail(formattedEmail);
-  if (!validateEmailResponse.result) {
-    throw new ApolloError(validateEmailResponse.message);
+  try{
+  const foundBusiness = await prismaContext.prisma.business.findUnique({
+    select: {
+      id: true,
+    },
+    where: {
+        id:args.input.businessId,
+    },
+  });
+
+  if (!foundBusiness) {
+    return {
+      message:
+        'such business doesnot exist',
+      status: 'failed',
+    };
   }
+
+}catch(err){
+  return {
+    message:
+      'such business doesnot exist',
+    status: 'failed',
+  };
+}
 
   if (cname === '') {
     throw new ApolloError('kindly provide a company name');
+  }
+  
+  const validateEmailResponse = await validateEmail(formattedEmail);
+  if (!validateEmailResponse.result) {
+    throw new ApolloError(validateEmailResponse.message);
   }
 
   const foundEmail = await prismaContext.prisma.customer.findUnique({
@@ -49,7 +76,10 @@ const createCustomer = async (parent: null, args: any, context: any) => {
       id: true,
     },
     where: {
-      email: formattedEmail,
+      customerIdentifier:{
+        email: formattedEmail,
+        businessId:args.input.businessId
+      }
     },
   });
 
@@ -76,7 +106,8 @@ const createCustomer = async (parent: null, args: any, context: any) => {
       lastName: args.input.lastName,
       phoneNumber: args.input.phoneNumber,
       companyName: args.input.companyName,
-      accountType: 'customer',
+      accountType:"customer",
+      businessId:args.input.businessId
     },
   });
 
