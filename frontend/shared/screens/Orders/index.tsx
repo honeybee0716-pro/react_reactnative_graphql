@@ -1,4 +1,4 @@
-import react,{useRef,useEffect} from 'react'
+import react, { useRef, useEffect } from 'react'
 import {
   StatusBar,
   Box,
@@ -16,9 +16,10 @@ import {
   useToast,
   Popover,
   FormControl,
-  AlertDialog
+  AlertDialog,
+  ScrollView
 } from 'native-base'
-import { CSVLink } from "react-csv";
+import { CSVLink } from 'react-csv'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { theme } from 'shared/styles/theme'
 import { Link as SolitoLink } from 'solito/link'
@@ -58,8 +59,8 @@ export default function Orders(props: any) {
     refetchQueries: [{ query: GET_TRANSACTIONS }]
   })
   const csvLink = useRef()
-  const [exportedData,setExportedData]=useState([])
-  const [selectedExportItems,setSelectedExportItems]=useState({})
+  const [exportedData, setExportedData] = useState([])
+  const [selectedExportItems, setSelectedExportItems] = useState({})
   const onClose0 = () => setIsOpen0(false)
 
   React.useEffect(() => {
@@ -124,39 +125,33 @@ export default function Orders(props: any) {
       }
     })
   }
-  const exportProducts=()=>{
-    
-    let data=[]
-      Object.keys(selectedExportItems).map((item)=>{
-   
-  let index=transactions.findIndex((product)=>product.id==item)
-  
-  let {id,purchaseAmount
-    ,transactionDate}=transactions[index]
-         data.push(
-     {
-      id,purchaseAmount
-      ,transactionDate
-     }
-   )
+  const exportProducts = () => {
+    let data = []
+    Object.keys(selectedExportItems).map((item) => {
+      let index = transactions.findIndex((product) => product.id == item)
+
+      let { id, purchaseAmount, transactionDate } = transactions[index]
+      data.push({
+        id,
+        purchaseAmount,
+        transactionDate
       })
-  
-  setExportedData(data)
-  
-  
-  console.log("exportedData",exportedData)
-  
+    })
+
+    setExportedData(data)
+
+    console.log('exportedData', exportedData)
+  }
+  React.useEffect(() => {
+    if (exportedData.length > 0) {
+      csvLink.current.link.click()
     }
-  React.useEffect(()=>{
-   if(exportedData.length>0) {
-    csvLink.current.link.click()
-    }
-  },[exportedData])
-  console.log("transaction",transactions)
+  }, [exportedData])
+  console.log('transaction', transactions)
   return (
     <>
       <DashboardLayout>
-        <Box w="100%" >
+        <Box w="100%">
           {/*<Popover
             initialFocusRef={initialFocusRef}
             trigger={(triggerProps) => {
@@ -196,120 +191,129 @@ export default function Orders(props: any) {
               </Popover.Footer>
             </Popover.Content>
           </Popover>*/}
-           <Box style={{flexDirection:"row",justifyContent:"flex-end"}}>
-                    <Button
-                      onPress={() => {
-                        setIsOpen0(!isOpen0)
-                      }}
-                      style={{marginTop:"10px",marginRight:"25px",
-                      marginBottom:"0px",width:"150px",height:"40px"}}
-                      color={theme.colors.shared.white}
-                      alignSelf="end"
-                    >
-                        create order
-                    </Button>
-
-
-
-       <CSVLink
-         data={exportedData}
-         filename='order.csv'
-         className='hidden'
-         ref={csvLink}
-         target='_blank'
-      />
-                    <Button
-                       colorScheme="success"
-                      onPress={exportProducts}
-                      style={{marginTop:"10px",marginRight:"25px",width:"150px",height:"40px"}}
-                      color={theme.colors.shared.white}
-                      alignSelf="end"
-                    >
-                        export
-                    </Button>
-                    <AlertDialog
-                      
-                      isOpen={isOpen0}
-                      
-                      onClose={onClose0}
-                    >
-                      <AlertDialog.Content>
-                        <AlertDialog.CloseButton />
-                        <AlertDialog.Header>Order Details</AlertDialog.Header>
-                        <AlertDialog.Body>
-                        <FormControl mt="3">
-                  <FormControl.Label
-                    _text={{
-                      fontSize: 'xs',
-                      fontWeight: 'medium'
-                    }}
-                  >
-                    Purchase Amount
-                  </FormControl.Label>
-                  <input
-                    type="number"
-                    placeholder={item0.purchaseAmount}
-                    onChange={(e) =>
-                      setItem0({ ...item0, purchaseAmount: e.target.value })
-                    }
-                  />
-                </FormControl>
-                        </AlertDialog.Body>
-                        <AlertDialog.Footer>
-                          <Button.Group space={2}>
-                            <Button
-                              variant="unstyled"
-                              colorScheme="coolGray"
-                              onPress={onClose0}
-                              
-                            >
-                              Cancel
-                            </Button>
-
-                            <Button
-                              colorScheme="success"
-                              onPress={() => {
-                                handleS()
-                                onClose0()
-                              }}
-                            >
-                              Save
-                            </Button>
-                          </Button.Group>
-                        </AlertDialog.Footer>
-                      </AlertDialog.Content>
-                    </AlertDialog>
-                  </Box>
-        </Box>
-        <table style={{ marginTop: '20px', padding: '10px' }}>
-          <tr style={{ textAlign: 'left', height: '50px' }}>
-            <th>Order Id</th>
-            <th>Purchase Amount</th>
-            <th>Date</th>
-            <th></th>
-          </tr>
-          {transactions.map((tr) => {
-            return (
-              <tr style={{ backgroundColor: 'white', height: '35px' }}>
-                <td>{tr?.id}</td>
-                <td>{tr?.purchaseAmount}</td>
-                <td>{tr?.transactionDate}</td>
-               
-                <Checkbox
-                    style={{marginTop:"30%"}}
-              value={selectedExportItems[tr.id]||false}
-              isChecked={selectedExportItems[tr.id]||false}
-              onChange={(value)=>{
-              let temp={...selectedExportItems}
-             value? temp={...selectedExportItems,[tr.id]:value}:delete temp[tr.id]
-              setSelectedExportItems({...temp})
+          <Box style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <Button
+              onPress={() => {
+                setIsOpen0(!isOpen0)
               }}
-              accessibilityLabel="Export this lead"
+              style={{
+                marginTop: '10px',
+                marginRight: '25px',
+                marginBottom: '0px',
+                width: '150px',
+                height: '40px'
+              }}
+              color={theme.colors.shared.white}
+              alignSelf="end"
+            >
+              create order
+            </Button>
+
+            <CSVLink
+              data={exportedData}
+              filename="order.csv"
+              className="hidden"
+              ref={csvLink}
+              target="_blank"
             />
-              </tr>
-            )
-          })}
-        </table>
+            <Button
+              colorScheme="success"
+              onPress={exportProducts}
+              style={{
+                marginTop: '10px',
+                marginRight: '25px',
+                width: '150px',
+                height: '40px'
+              }}
+              color={theme.colors.shared.white}
+              alignSelf="end"
+            >
+              export
+            </Button>
+            <AlertDialog isOpen={isOpen0} onClose={onClose0}>
+              <AlertDialog.Content>
+                <AlertDialog.CloseButton />
+                <AlertDialog.Header>Order Details</AlertDialog.Header>
+                <AlertDialog.Body>
+                  <FormControl mt="3">
+                    <FormControl.Label
+                      _text={{
+                        fontSize: 'xs',
+                        fontWeight: 'medium'
+                      }}
+                    >
+                      Purchase Amount
+                    </FormControl.Label>
+                    <input
+                      type="number"
+                      placeholder={item0.purchaseAmount}
+                      onChange={(e) =>
+                        setItem0({ ...item0, purchaseAmount: e.target.value })
+                      }
+                    />
+                  </FormControl>
+                </AlertDialog.Body>
+                <AlertDialog.Footer>
+                  <Button.Group space={2}>
+                    <Button
+                      variant="unstyled"
+                      colorScheme="coolGray"
+                      onPress={onClose0}
+                    >
+                      Cancel
+                    </Button>
+
+                    <Button
+                      colorScheme="success"
+                      onPress={() => {
+                        handleS()
+                        onClose0()
+                      }}
+                    >
+                      Save
+                    </Button>
+                  </Button.Group>
+                </AlertDialog.Footer>
+              </AlertDialog.Content>
+            </AlertDialog>
+          </Box>
+        </Box>
+        <ScrollView style={{ overflow: 'scroll' }}>
+          <table style={{ marginTop: '20px', padding: '10px', width: '150%' }}>
+            <tr style={{ textAlign: 'left', height: '50px' }}>
+              <th>Order Id</th>
+              <th>Purchase Amount</th>
+              <th>Date</th>
+              <th>Business</th>
+              <th>BusinessID</th>
+            </tr>
+            {transactions.map((tr) => {
+              return (
+                <tr style={{ backgroundColor: 'white', height: '35px' }}>
+                  <td>{tr?.id}</td>
+                  <td>{tr?.purchaseAmount}</td>
+                  <td>{tr?.transactionDate}</td>
+                  <td>{tr?.business}</td>
+                  <td>{tr?.businessId}</td>
+
+                  <Checkbox
+                    style={{ marginTop: '30%' }}
+                    value={selectedExportItems[tr.id] || false}
+                    isChecked={selectedExportItems[tr.id] || false}
+                    onChange={(value) => {
+                      let temp = { ...selectedExportItems }
+                      value
+                        ? (temp = { ...selectedExportItems, [tr.id]: value })
+                        : delete temp[tr.id]
+                      setSelectedExportItems({ ...temp })
+                    }}
+                    accessibilityLabel="Export this lead"
+                  />
+                </tr>
+              )
+            })}
+          </table>
+        </ScrollView>
       </DashboardLayout>
     </>
   )
