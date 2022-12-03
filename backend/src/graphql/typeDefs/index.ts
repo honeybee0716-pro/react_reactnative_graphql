@@ -50,6 +50,9 @@ import {setIntegrationSettingsSchema} from '../resolvers/mutations/setIntegratio
 import {getIntegrationSettingsSchema} from '../resolvers/queries/getIntegrationSettings';
 import { getDetailsBusinessSchema } from '../resolvers/queries/getDetailsBusiness';
 import { getBlogoTxtSchema } from '../resolvers/queries/getBlogoTxt';
+import { addTiersSchema } from '../resolvers/mutations/addTiers';
+import { getTiersSchema } from '../resolvers/queries/getTiers';
+import { getPointsSchema } from '../resolvers/queries/getPoints';
 
 import {sharedSchema} from './shared';
 
@@ -106,4 +109,7 @@ export const typeDefs = mergeTypeDefs([
   getIntegrationSettingsSchema,
   getBlogoTxtSchema,
   getDetailsBusinessSchema,
+  addTiersSchema,
+  getTiersSchema,
+  getPointsSchema
 ]) as any;

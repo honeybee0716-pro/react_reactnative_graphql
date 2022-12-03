@@ -25,6 +25,8 @@ import getProductById from './getProductById';
 import getIntegrationSettings from './getIntegrationSettings';
 import getDetailsBusiness from './getDetailsBusiness';
 import getBlogoTxt from './getBlogoTxt'
+import getTiers from './getTiers';
+import getPoints from './getPoints';
 
 export const RootQuery = {
   getBusinessByID,
@@ -54,6 +56,8 @@ export const RootQuery = {
   getIntegrationSettings,
   getDetailsBusiness,
   getBlogoTxt,
+  getTiers,
+  getPoints
 };
 
 export default RootQuery;
