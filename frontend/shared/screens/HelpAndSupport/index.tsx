@@ -105,7 +105,10 @@ export default function Credits() {
           <Box flex="1">
             <Pressable
               onPress={() => {
-                window.open('https://www.google.com', '_blank')
+                window.open(
+                  'https://tawk.to/chat/638b943ab0d6371309d279b6/1gjcjm24t',
+                  '_blank'
+                )
               }}
               marginTop={{ base: '3', sm: '5' }}
               marginLeft={{ base: '3', sm: '5' }}
