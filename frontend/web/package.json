@@ -30,6 +30,7 @@
     "react-native-svg": "^12.3.0",
     "react-native-web": "^0.17.7",
     "react-onesignal": "^2.0.4",
+    "react-qr-code": "^2.0.8",
     "resize-observer-polyfill": "1.5.1",
     "sass": "1.38.0",
     "setimmediate": "1.0.5",

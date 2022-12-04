@@ -237,6 +237,20 @@ const DashboardLayout: React.FC = ({children}) => {
       position: sidebarItemPosition.top
     },
     {
+      label: 'Sharing',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Sharing')}
+          as={Feather}
+          name="share"
+        />
+      ),
+      onClick: () => push('/sharing'),
+      showOn: showOn.both,
+      position: sidebarItemPosition.top
+    },
+    {
       label: 'Campaigns',
       icon: (
         <Icon
@@ -419,7 +433,6 @@ const DashboardLayout: React.FC = ({children}) => {
       position: sidebarItemPosition.bottom
     }
   ]
-
 
   return (
     <>
