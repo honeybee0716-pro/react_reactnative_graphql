@@ -28,6 +28,7 @@ import { useRouter } from 'solito/router'
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
+import LoadingSpinner from '../../components/LoadingSpinner'
 
 const GET_TRANSACTIONS = gql`
   query getAllTransactions {
@@ -51,6 +52,9 @@ const CREATE_TRANSACTION = gql`
 export default function Orders(props: any) {
   const initialFocusRef = React.useRef(null)
   const [item0, setItem0] = useState({ purchaseAmount: '' })
+
+  const [loading, setLoading] = React.useState(true)
+
   const [isOpen0, setIsOpen0] = React.useState(false)
   const toast = useToast()
   const [transactions, setTransactions] = useState([])
@@ -69,6 +73,7 @@ export default function Orders(props: any) {
         if (getAllTransactions?.status === 'success') {
           console.log(getAllTransactions)
           setTransactions(getAllTransactions.dataTransactions)
+          setLoading(false)
         }
         if (getAllTransactions?.message) {
           toast.show({
@@ -148,172 +153,189 @@ export default function Orders(props: any) {
     }
   }, [exportedData])
   console.log('transaction', transactions)
+
   return (
     <>
       <DashboardLayout>
-        <Box w="100%">
-          {/*<Popover
-            initialFocusRef={initialFocusRef}
-            trigger={(triggerProps) => {
-              return <Button {...triggerProps}>Create a new order</Button>
-            }}
-          >
-            <Popover.Content width="56">
-              <Popover.Arrow />
-              <Popover.CloseButton />
-              
-              <Popover.Header>Order Details</Popover.Header>
-              <Popover.Body>
-                <FormControl mt="3">
-                  <FormControl.Label
-                    _text={{
-                      fontSize: 'xs',
-                      fontWeight: 'medium'
-                    }}
-                  >
-                    Purchase Amount
-                  </FormControl.Label>
-                  <input
-                    type="number"
-                    onChange={(e) =>
-                      setItem0({ ...item0, purchaseAmount: e.target.value })
-                    }
-                  />
-                </FormControl>
-              </Popover.Body>
-              <Popover.Footer>
-                <Button.Group>
-                  <Button colorScheme="coolGray" variant="ghost">
-                    Cancel
-                  </Button>
-                  <Button onPress={handleS}>Save</Button>
-                </Button.Group>
-              </Popover.Footer>
-            </Popover.Content>
-          </Popover>*/}
-          <Box style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-            <Button
-              onPress={() => {
-                setIsOpen0(!isOpen0)
-              }}
-              style={{
-                marginTop: '10px',
-                marginRight: '25px',
-                marginBottom: '0px',
-                width: '150px',
-                height: '40px'
-              }}
-              color={theme.colors.shared.white}
-              alignSelf="end"
-            >
-              create order
-            </Button>
+        {loading ? (
+          <div>
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <>
+            <Box w="100%">
+              {/*<Popover
+          initialFocusRef={initialFocusRef}
+          trigger={(triggerProps) => {
+            return <Button {...triggerProps}>Create a new order</Button>
+          }}
+        >
+          <Popover.Content width="56">
+            <Popover.Arrow />
+            <Popover.CloseButton />
+            
+            <Popover.Header>Order Details</Popover.Header>
+            <Popover.Body>
+              <FormControl mt="3">
+                <FormControl.Label
+                  _text={{
+                    fontSize: 'xs',
+                    fontWeight: 'medium'
+                  }}
+                >
+                  Purchase Amount
+                </FormControl.Label>
+                <input
+                  type="number"
+                  onChange={(e) =>
+                    setItem0({ ...item0, purchaseAmount: e.target.value })
+                  }
+                />
+              </FormControl>
+            </Popover.Body>
+            <Popover.Footer>
+              <Button.Group>
+                <Button colorScheme="coolGray" variant="ghost">
+                  Cancel
+                </Button>
+                <Button onPress={handleS}>Save</Button>
+              </Button.Group>
+            </Popover.Footer>
+          </Popover.Content>
+        </Popover>*/}
+              <Box style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <Button
+                  onPress={() => {
+                    setIsOpen0(!isOpen0)
+                  }}
+                  style={{
+                    marginTop: '10px',
+                    marginRight: '25px',
+                    marginBottom: '0px',
+                    width: '150px',
+                    height: '40px'
+                  }}
+                  color={theme.colors.shared.white}
+                  alignSelf="end"
+                >
+                  create order
+                </Button>
 
-            <CSVLink
-              data={exportedData}
-              filename="order.csv"
-              className="hidden"
-              ref={csvLink}
-              target="_blank"
-            />
-            <Button
-              colorScheme="success"
-              onPress={exportProducts}
-              style={{
-                marginTop: '10px',
-                marginRight: '25px',
-                width: '150px',
-                height: '40px'
-              }}
-              color={theme.colors.shared.white}
-              alignSelf="end"
-            >
-              export
-            </Button>
-            <AlertDialog isOpen={isOpen0} onClose={onClose0}>
-              <AlertDialog.Content>
-                <AlertDialog.CloseButton />
-                <AlertDialog.Header>Order Details</AlertDialog.Header>
-                <AlertDialog.Body>
-                  <FormControl mt="3">
-                    <FormControl.Label
-                      _text={{
-                        fontSize: 'xs',
-                        fontWeight: 'medium'
-                      }}
-                    >
-                      Purchase Amount
-                    </FormControl.Label>
-                    <input
-                      type="number"
-                      placeholder={item0.purchaseAmount}
-                      onChange={(e) =>
-                        setItem0({ ...item0, purchaseAmount: e.target.value })
-                      }
-                    />
-                  </FormControl>
-                </AlertDialog.Body>
-                <AlertDialog.Footer>
-                  <Button.Group space={2}>
-                    <Button
-                      variant="unstyled"
-                      colorScheme="coolGray"
-                      onPress={onClose0}
-                    >
-                      Cancel
-                    </Button>
+                <CSVLink
+                  data={exportedData}
+                  filename="order.csv"
+                  className="hidden"
+                  ref={csvLink}
+                  target="_blank"
+                />
+                <Button
+                  colorScheme="success"
+                  onPress={exportProducts}
+                  style={{
+                    marginTop: '10px',
+                    marginRight: '25px',
+                    width: '150px',
+                    height: '40px'
+                  }}
+                  color={theme.colors.shared.white}
+                  alignSelf="end"
+                >
+                  export
+                </Button>
+                <AlertDialog isOpen={isOpen0} onClose={onClose0}>
+                  <AlertDialog.Content>
+                    <AlertDialog.CloseButton />
+                    <AlertDialog.Header>Order Details</AlertDialog.Header>
+                    <AlertDialog.Body>
+                      <FormControl mt="3">
+                        <FormControl.Label
+                          _text={{
+                            fontSize: 'xs',
+                            fontWeight: 'medium'
+                          }}
+                        >
+                          Purchase Amount
+                        </FormControl.Label>
+                        <input
+                          type="number"
+                          placeholder={item0.purchaseAmount}
+                          onChange={(e) =>
+                            setItem0({
+                              ...item0,
+                              purchaseAmount: e.target.value
+                            })
+                          }
+                        />
+                      </FormControl>
+                    </AlertDialog.Body>
+                    <AlertDialog.Footer>
+                      <Button.Group space={2}>
+                        <Button
+                          variant="unstyled"
+                          colorScheme="coolGray"
+                          onPress={onClose0}
+                        >
+                          Cancel
+                        </Button>
 
-                    <Button
-                      colorScheme="success"
-                      onPress={() => {
-                        handleS()
-                        onClose0()
-                      }}
-                    >
-                      Save
-                    </Button>
-                  </Button.Group>
-                </AlertDialog.Footer>
-              </AlertDialog.Content>
-            </AlertDialog>
-          </Box>
-        </Box>
-        <ScrollView style={{ overflow: 'scroll' }}>
-          <table style={{ marginTop: '20px', padding: '10px', width: '150%' }}>
-            <tr style={{ textAlign: 'left', height: '50px' }}>
-              <th>Order Id</th>
-              <th>Purchase Amount</th>
-              <th>Date</th>
-              <th>Business</th>
-              <th>BusinessID</th>
-            </tr>
-            {transactions.map((tr) => {
-              return (
-                <tr style={{ backgroundColor: 'white', height: '35px' }}>
-                  <td>{tr?.id}</td>
-                  <td>{tr?.purchaseAmount}</td>
-                  <td>{tr?.transactionDate}</td>
-                  <td>{tr?.business}</td>
-                  <td>{tr?.businessId}</td>
-
-                  <Checkbox
-                    style={{ marginTop: '30%' }}
-                    value={selectedExportItems[tr.id] || false}
-                    isChecked={selectedExportItems[tr.id] || false}
-                    onChange={(value) => {
-                      let temp = { ...selectedExportItems }
-                      value
-                        ? (temp = { ...selectedExportItems, [tr.id]: value })
-                        : delete temp[tr.id]
-                      setSelectedExportItems({ ...temp })
-                    }}
-                    accessibilityLabel="Export this lead"
-                  />
+                        <Button
+                          colorScheme="success"
+                          onPress={() => {
+                            handleS()
+                            onClose0()
+                          }}
+                        >
+                          Save
+                        </Button>
+                      </Button.Group>
+                    </AlertDialog.Footer>
+                  </AlertDialog.Content>
+                </AlertDialog>
+              </Box>
+            </Box>
+            <ScrollView style={{ overflow: 'scroll' }}>
+              <table
+                style={{ marginTop: '20px', padding: '10px', width: '150%' }}
+              >
+                <tr style={{ textAlign: 'left', height: '50px' }}>
+                  <th>Order Id</th>
+                  <th>Purchase Amount</th>
+                  <th>Date</th>
+                  <th>Business</th>
+                  <th>BusinessID</th>
                 </tr>
-              )
-            })}
-          </table>
-        </ScrollView>
+                {transactions.map((tr) => {
+                  return (
+                    <tr style={{ backgroundColor: 'white', height: '35px' }}>
+                      <td>{tr?.id}</td>
+                      <td>{tr?.purchaseAmount}</td>
+                      <td>{tr?.transactionDate}</td>
+                      <td>{tr?.business}</td>
+                      <td>{tr?.businessId}</td>
+
+                      <Checkbox
+                        style={{ marginTop: '30%' }}
+                        value={selectedExportItems[tr.id] || false}
+                        isChecked={selectedExportItems[tr.id] || false}
+                        onChange={(value) => {
+                          let temp = { ...selectedExportItems }
+                          value
+                            ? (temp = {
+                                ...selectedExportItems,
+                                [tr.id]: value
+                              })
+                            : delete temp[tr.id]
+                          setSelectedExportItems({ ...temp })
+                        }}
+                        accessibilityLabel="Export this lead"
+                      />
+                    </tr>
+                  )
+                })}
+              </table>
+            </ScrollView>
+          </>
+        )}
       </DashboardLayout>
     </>
   )

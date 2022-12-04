@@ -23,6 +23,7 @@ import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
 import FileBase64 from 'react-file-base64'
+import LoadingSpinner from '../../components/LoadingSpinner'
 import { useRecoilState } from 'recoil'
 import { userLogoDataState } from '../../state'
 
@@ -51,9 +52,7 @@ export default function Branding(props: any) {
   const [titem, setTitem] = useState({ image: '' })
   const [getCompanyLogo] = useLazyQuery(GET_COMPANY_LOGO)
 
-  const [userLogoData,setUserLogoData]=useRecoilState<any>(
-    userLogoDataState
-  )
+  const [userLogoData, setUserLogoData] = useRecoilState<any>(userLogoDataState)
 
   const [addLogo, { data, loading, error }] = useMutation(ADD_COMPANY_LOGO, {
     refetchQueries: [{ query: GET_COMPANY_LOGO }]
@@ -66,7 +65,6 @@ export default function Branding(props: any) {
           console.log(getCompanyLogo)
           setItem({ image: getCompanyLogo.companyLogo })
           setUserLogoData({ image: getCompanyLogo.companyLogo })
-         
         }
         if (getCompanyLogo?.message) {
           toast.show({
@@ -127,27 +125,35 @@ export default function Branding(props: any) {
   return (
     <>
       <DashboardLayout>
-        <Center style={{ marginTop: '10px' }}>
-          <FileBase64
-            type="file"
-            multiple={false}
-            onDone={({ base64 }) => setTitem({ ...titem, image: base64 })}
-          />
-          <button onClick={addLogoHere}>add/update logo</button>
-          {item.image !== '' && (
-            <img
-              className="activator"
-              style={{
-                height: '250px',
-                width: '250px',
-                objectFit: 'contain',
-                backgroundColor: 'white'
-              }}
-              src={item.image}
-              alt="logo"
-            />
-          )}
-        </Center>
+        {loading ? (
+          <div>
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <>
+            <Center style={{ marginTop: '10px' }}>
+              <FileBase64
+                type="file"
+                multiple={false}
+                onDone={({ base64 }) => setTitem({ ...titem, image: base64 })}
+              />
+              <button onClick={addLogoHere}>add/update logo</button>
+              {item.image !== '' && (
+                <img
+                  className="activator"
+                  style={{
+                    height: '250px',
+                    width: '250px',
+                    objectFit: 'contain',
+                    backgroundColor: 'white'
+                  }}
+                  src={item.image}
+                  alt="logo"
+                />
+              )}
+            </Center>
+          </>
+        )}
       </DashboardLayout>
     </>
   )

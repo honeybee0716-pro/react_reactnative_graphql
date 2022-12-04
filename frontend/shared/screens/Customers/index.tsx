@@ -12,8 +12,10 @@ import {
 import React, { useState, useRef } from 'react'
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
+import LoadingSpinner from '../../components/LoadingSpinner'
 import { theme } from 'shared/styles/theme'
 import { CSVLink } from 'react-csv'
+
 const CREATE_CUSTOMER_WITH_BUSINESS = gql`
   mutation Mutation(
     $createCustomerWithBusinessInput: createCustomerWithBusinessInput
@@ -57,7 +59,9 @@ export default function Customer(props: any) {
 
   const toast = useToast()
 
-  const [createCB, { data, loading, error }] = useMutation(
+  const [loading, setLoading] = React.useState(true)
+
+  const [createCB, { data, error }] = useMutation(
     CREATE_CUSTOMER_WITH_BUSINESS,
     {
       refetchQueries: [{ query: GET_CUSTOMER_DETAILS_BUSINESS }]
@@ -71,6 +75,7 @@ export default function Customer(props: any) {
           console.log(getCustomerDetailsBusiness.dataBusiness)
           setCdata(getCustomerDetailsBusiness.dataBusiness)
           setFdata(getCustomerDetailsBusiness.dataBusiness)
+          setLoading(false)
         }
         if (getCustomerDetailsBusiness?.message) {
           toast.show({
@@ -173,8 +178,12 @@ export default function Customer(props: any) {
     }
   }, [exportedData])
   return (
-    <>
-      <DashboardLayout>
+    <DashboardLayout>
+      {loading ? (
+        <div>
+          <LoadingSpinner />
+        </div>
+      ) : (
         <Box w="100%">
           <Box style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
             <Button
@@ -314,70 +323,70 @@ export default function Customer(props: any) {
               </AlertDialog.Content>
             </AlertDialog>
           </Box>
-        </Box>
-        <Box>
-          <input
-            type="text"
-            placeholder="search..."
-            onChange={(e) => setFilter(e.target.value)}
-            style={{
-              height: '40px',
-              margin: '5px',
-              borderRadius: '25px',
-              borderWidth: '0px',
-              borderColor: 'none',
-              paddingLeft: '10px',
-              paddingRight: '10px'
-            }}
-          />
-          <ScrollView style={{ overflow: 'scroll' }}>
-            <table
+          <Box>
+            <input
+              type="text"
+              placeholder="search..."
+              onChange={(e) => setFilter(e.target.value)}
               style={{
-                marginTop: '10px',
-                padding: '10px',
-                width: '150%'
+                height: '40px',
+                margin: '5px',
+                borderRadius: '25px',
+                borderWidth: '0px',
+                borderColor: 'none',
+                paddingLeft: '10px',
+                paddingRight: '10px'
               }}
-            >
-              <tr style={{ textAlign: 'left', height: '50px' }}>
-                <th style={{ width: '250px' }}>Customer Email</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Company Name</th>
-                <th>id</th>
-                <th>password</th>
-                <th>stripeCustomerID</th>
-              </tr>
-              {fdata.map((i: any, k) => {
-                return (
-                  <tr style={{ backgroundColor: 'white', height: '35px' }}>
-                    <td>{i.email}</td>
-                    <td>{i.firstName}</td>
-                    <td>{i.lastName}</td>
-                    <td>{i.companyName}</td>
-                    <td>{i.id}</td>
-                    <td>{i.password}</td>
-                    <td>{i.stripeCustomerID}</td>
-                    <Checkbox
-                      style={{ marginTop: '30%' }}
-                      value={selectedExportItems[i.id] || false}
-                      isChecked={selectedExportItems[i.id] || false}
-                      onChange={(value) => {
-                        let temp = { ...selectedExportItems }
-                        value
-                          ? (temp = { ...selectedExportItems, [i.id]: value })
-                          : delete temp[i.id]
-                        setSelectedExportItems({ ...temp })
-                      }}
-                      accessibilityLabel="Export this lead"
-                    />
-                    {/* </td> */}
-                  </tr>
-                )
-              })}
-            </table>
-          </ScrollView>
+            />
+            <ScrollView style={{ overflow: 'scroll' }}>
+              <table
+                style={{
+                  marginTop: '10px',
+                  padding: '10px',
+                  width: '150%'
+                }}
+              >
+                <tr style={{ textAlign: 'left', height: '50px' }}>
+                  <th style={{ width: '250px' }}>Customer Email</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Company Name</th>
+                  <th>id</th>
+                  <th>password</th>
+                  <th>stripeCustomerID</th>
+                </tr>
+                {fdata.map((i: any, k) => {
+                  return (
+                    <tr style={{ backgroundColor: 'white', height: '35px' }}>
+                      <td>{i.email}</td>
+                      <td>{i.firstName}</td>
+                      <td>{i.lastName}</td>
+                      <td>{i.companyName}</td>
+                      <td>{i.id}</td>
+                      <td>{i.password}</td>
+                      <td>{i.stripeCustomerID}</td>
+                      <Checkbox
+                        style={{ marginTop: '30%' }}
+                        value={selectedExportItems[i.id] || false}
+                        isChecked={selectedExportItems[i.id] || false}
+                        onChange={(value) => {
+                          let temp = { ...selectedExportItems }
+                          value
+                            ? (temp = { ...selectedExportItems, [i.id]: value })
+                            : delete temp[i.id]
+                          setSelectedExportItems({ ...temp })
+                        }}
+                        accessibilityLabel="Export this lead"
+                      />
+                      {/* </td> */}
+                    </tr>
+                  )
+                })}
+              </table>
+            </ScrollView>
+          </Box>
         </Box>
-      </DashboardLayout>
-    </>
+      )}
+    </DashboardLayout>
   )
 }
