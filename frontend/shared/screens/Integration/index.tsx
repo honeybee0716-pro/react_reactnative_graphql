@@ -23,6 +23,7 @@ import { useRouter } from 'solito/router'
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-community/async-storage'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
+import LoadingSpinner from '../../components/LoadingSpinner'
 
 const SET_INTEGRATION = gql`
   mutation Mutation($setIntegrationSettingsInput: setIntegrationSettingsInput) {
@@ -64,6 +65,7 @@ export default function Integrations(props: any) {
     shopeeAPIKey: null,
     lazadaAPIKey: null
   })
+  const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
     getIs({
@@ -75,6 +77,7 @@ export default function Integrations(props: any) {
             shopeeAPIKey: getIntegrationSettings.shopeeAPIKey,
             lazadaAPIKey: getIntegrationSettings.lazadaAPIKey
           })
+          setLoading(false)
         }
         if (getIntegrationSettings?.message) {
           /*toast.show({
@@ -144,58 +147,76 @@ export default function Integrations(props: any) {
   return (
     <>
       <DashboardLayout>
-        <Center>
-          <form style={{ width: '200px', height: '500px', marginTop: '100px' }}>
-            <FormControl>
-              <FormControl.Label>
-                <text style={{ fontSize: '12px' }}>Line Api Key</text>
-              </FormControl.Label>
-              <input
-                type="text"
-                style={{ margin: '5px', height: '25px' }}
-                placeholder={
-                  item1?.lineAPIKey ? item1.lineAPIKey : 'value not set yet'
-                }
-                onChange={(e) =>
-                  setItem0({ ...item0, lineAPIKey: e.target.value })
-                }
-              />
-            </FormControl>
-            <FormControl>
-              <FormControl.Label>
-                <text style={{ fontSize: '12px' }}>Shope Api Key</text>
-              </FormControl.Label>
-              <input
-                type="text"
-                style={{ margin: '5px', height: '25px' }}
-                placeholder={
-                  item1?.shopeeAPIKey ? item1.shopeeAPIKey : 'value not set yet'
-                }
-                onChange={(e) =>
-                  setItem0({ ...item0, shopeeAPIKey: e.target.value })
-                }
-              />
-            </FormControl>
-            <FormControl>
-              <FormControl.Label>
-                <text style={{ fontSize: '12px' }}>Lazada Api Key</text>
-              </FormControl.Label>
-              <input
-                type="text"
-                style={{ margin: '5px', height: '25px', marginBottom: '20px' }}
-                placeholder={
-                  item1?.lazadaAPIKey ? item1.lazadaAPIKey : 'value not set yet'
-                }
-                onChange={(e) =>
-                  setItem0({ ...item0, lazadaAPIKey: e.target.value })
-                }
-              />
-            </FormControl>
-            <Button style={{ height: '30px' }} onPress={handleS}>
-              Save
-            </Button>
-          </form>
-        </Center>
+        {loading ? (
+          <div>
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <>
+            <Center>
+              <form
+                style={{ width: '200px', height: '500px', marginTop: '100px' }}
+              >
+                <FormControl>
+                  <FormControl.Label>
+                    <text style={{ fontSize: '12px' }}>Line Api Key</text>
+                  </FormControl.Label>
+                  <input
+                    type="text"
+                    style={{ margin: '5px', height: '25px' }}
+                    placeholder={
+                      item1?.lineAPIKey ? item1.lineAPIKey : 'value not set yet'
+                    }
+                    onChange={(e) =>
+                      setItem0({ ...item0, lineAPIKey: e.target.value })
+                    }
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormControl.Label>
+                    <text style={{ fontSize: '12px' }}>Shope Api Key</text>
+                  </FormControl.Label>
+                  <input
+                    type="text"
+                    style={{ margin: '5px', height: '25px' }}
+                    placeholder={
+                      item1?.shopeeAPIKey
+                        ? item1.shopeeAPIKey
+                        : 'value not set yet'
+                    }
+                    onChange={(e) =>
+                      setItem0({ ...item0, shopeeAPIKey: e.target.value })
+                    }
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormControl.Label>
+                    <text style={{ fontSize: '12px' }}>Lazada Api Key</text>
+                  </FormControl.Label>
+                  <input
+                    type="text"
+                    style={{
+                      margin: '5px',
+                      height: '25px',
+                      marginBottom: '20px'
+                    }}
+                    placeholder={
+                      item1?.lazadaAPIKey
+                        ? item1.lazadaAPIKey
+                        : 'value not set yet'
+                    }
+                    onChange={(e) =>
+                      setItem0({ ...item0, lazadaAPIKey: e.target.value })
+                    }
+                  />
+                </FormControl>
+                <Button style={{ height: '30px' }} onPress={handleS}>
+                  Save
+                </Button>
+              </form>
+            </Center>
+          </>
+        )}
       </DashboardLayout>
     </>
   )

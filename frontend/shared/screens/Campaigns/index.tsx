@@ -35,6 +35,7 @@ import IconFlag from 'shared/components/icons/IconFlag'
 import IconCheckCircle from 'shared/components/icons/IconCheckCircle'
 import IconFourSquare from 'shared/components/icons/IconFourSquare'
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
+import LoadingSpinner from '../../components/LoadingSpinner'
 
 const { width } = Dimensions.get('window')
 
@@ -60,6 +61,7 @@ const SEND_MESSAGE = gql`
 
 export default function Campaigns() {
   const toast = useToast()
+  const [loading, setLoading] = React.useState(true)
 
   const [getC] = useLazyQuery(GET_CUSTOMER_DETAILS_BUSINESS)
   const [sM] = useMutation(SEND_MESSAGE)
@@ -83,6 +85,7 @@ export default function Campaigns() {
         if (getCustomerDetailsBusiness?.status === 'success') {
           //console.log(getCustomerDetailsBusiness.dataBusiness)
           setBcustomers(getCustomerDetailsBusiness.dataBusiness)
+          setLoading(false)
         }
         if (getCustomerDetailsBusiness?.message) {
           toast.show({
@@ -162,7 +165,13 @@ export default function Campaigns() {
   return (
     <>
       <DashboardLayout>
-        {/*<Box flexDirection={{ base: 'column', lg: 'row' }}>
+        {loading ? (
+          <div>
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <>
+            {/*<Box flexDirection={{ base: 'column', lg: 'row' }}>
           <Hidden from="lg">
             <Box width="full">
               <Box
@@ -1299,78 +1308,87 @@ export default function Campaigns() {
             </Box>
           </Hidden>
         </Box>*/}
-        <Box>
-          <table
-            style={{ marginTop: '40px', padding: '10px', marginBottom: '50px' }}
-            id="myct"
-          >
-            <tr style={{ textAlign: 'left', height: '50px' }}>
-              <th>Email</th>
-              <th>name</th>
-            </tr>
-            {Bcustomers.map((c, i) => {
-              return (
-                <tr
-                  style={{ backgroundColor: 'white', height: '35px' }}
-                  key={i}
-                >
-                  <td>{c?.email}</td>
-                  <td>{c?.firstName}</td>
-                  <td>
-                    <input type="checkbox" value={c?.email} />
-                  </td>
+            <Box>
+              <table
+                style={{
+                  marginTop: '40px',
+                  padding: '10px',
+                  marginBottom: '50px'
+                }}
+                id="myct"
+              >
+                <tr style={{ textAlign: 'left', height: '50px' }}>
+                  <th>Email</th>
+                  <th>name</th>
                 </tr>
-              )
-            })}
-            <button
-              style={{ margin: '10px', marginLeft: '0px' }}
-              onClick={() => {
-                setIsOpen(!isOpen)
-              }}
-            >
-              Send Message
-            </button>
-          </table>
-          <AlertDialog
-            leastDestructiveRef={cancelRef}
-            isOpen={isOpen}
-            onClose={onClose}
-          >
-            <AlertDialog.Content>
-              <AlertDialog.CloseButton />
-              <AlertDialog.Header>Send Message</AlertDialog.Header>
-              <AlertDialog.Body>
-                Please write the message that you want to send to selected users
-                <textarea
-                  onChange={(e) => setItem1({ ...item1, msg: e.target.value })}
-                  placeholder="message..."
-                ></textarea>
-              </AlertDialog.Body>
-              <AlertDialog.Footer>
-                <Button.Group space={2}>
-                  <Button
-                    variant="unstyled"
-                    colorScheme="danger"
-                    onPress={onClose}
-                    ref={cancelRef}
-                  >
-                    Cancel
-                  </Button>
+                {Bcustomers.map((c, i) => {
+                  return (
+                    <tr
+                      style={{ backgroundColor: 'white', height: '35px' }}
+                      key={i}
+                    >
+                      <td>{c?.email}</td>
+                      <td>{c?.firstName}</td>
+                      <td>
+                        <input type="checkbox" value={c?.email} />
+                      </td>
+                    </tr>
+                  )
+                })}
+                <button
+                  style={{ margin: '10px', marginLeft: '0px' }}
+                  onClick={() => {
+                    setIsOpen(!isOpen)
+                  }}
+                >
+                  Send Message
+                </button>
+              </table>
+              <AlertDialog
+                leastDestructiveRef={cancelRef}
+                isOpen={isOpen}
+                onClose={onClose}
+              >
+                <AlertDialog.Content>
+                  <AlertDialog.CloseButton />
+                  <AlertDialog.Header>Send Message</AlertDialog.Header>
+                  <AlertDialog.Body>
+                    Please write the message that you want to send to selected
+                    users
+                    <textarea
+                      onChange={(e) =>
+                        setItem1({ ...item1, msg: e.target.value })
+                      }
+                      placeholder="message..."
+                    ></textarea>
+                  </AlertDialog.Body>
+                  <AlertDialog.Footer>
+                    <Button.Group space={2}>
+                      <Button
+                        variant="unstyled"
+                        colorScheme="danger"
+                        onPress={onClose}
+                        ref={cancelRef}
+                      >
+                        Cancel
+                      </Button>
 
-                  <Button
-                    colorScheme="success"
-                    onPress={() => {
-                      sendMsg()
-                      onClose()
-                    }}
-                  >
-                    Send
-                  </Button>
-                </Button.Group>
-              </AlertDialog.Footer>
-            </AlertDialog.Content>
-          </AlertDialog>
-        </Box>
+                      <Button
+                        colorScheme="success"
+                        onPress={() => {
+                          sendMsg()
+                          onClose()
+                        }}
+                      >
+                        Send
+                      </Button>
+                    </Button.Group>
+                  </AlertDialog.Footer>
+                </AlertDialog.Content>
+              </AlertDialog>
+            </Box>
+          </>
+        )}
       </DashboardLayout>
     </>
   )

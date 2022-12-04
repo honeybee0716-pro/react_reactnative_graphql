@@ -5,7 +5,6 @@ import {
   Hidden,
   Text,
   Image,
-  HStack,
   VStack,
   Checkbox,
   Pressable,
@@ -34,6 +33,7 @@ import IconPlus from 'shared/components/icons/IconPlus'
 import { useRecoilState } from 'recoil'
 import { userSubscriptionDataState, jwtState } from '../../state'
 import { gql, useLazyQuery } from '@apollo/client'
+import LoadingSpinner from '../../components/LoadingSpinner'
 
 const GET_BUSINESS_DETAILS = gql`
   query getBusinessDetails {
@@ -130,31 +130,36 @@ export default function Account() {
 
   return (
     <DashboardLayout>
-      <h1>account page</h1>
       {loading ? (
-        <div>loading ...</div>
-      ) : (
         <div>
-          <p>
-            Account type:{' '}
-            {userSubscriptionData.stripeCustomer.metadata.accountType}
-          </p>
-          <p>firstname: {bd?.firstName}</p>
-          <p>lastname: {bd?.lastName}</p>
-          <p>email: {bd?.email}</p>
-          <p>company name: {bd?.companyName}</p>
+          <LoadingSpinner />
         </div>
+      ) : (
+        <>
+          <div>
+            <h1>Account Page</h1>
+            <p>
+              Account type:{' '}
+              {userSubscriptionData.stripeCustomer.metadata.accountType}
+            </p>
+            <p>firstname: {bd?.firstName}</p>
+            <p>lastname: {bd?.lastName}</p>
+            <p>email: {bd?.email}</p>
+            <p>company name: {bd?.companyName}</p>
+          </div>
+
+          <Pressable
+            width={100}
+            backgroundColor={theme.colors.shared.SaleSpinPrimary}
+            onPress={() => push('/sign-out')}
+            padding="10px"
+          >
+            <Center>
+              <Text color={theme.colors.shared.white}>Sign out</Text>
+            </Center>
+          </Pressable>
+        </>
       )}
-      <Pressable
-        width={100}
-        backgroundColor={theme.colors.shared.SaleSpinPrimary}
-        onPress={() => push('/sign-out')}
-        padding="10px"
-      >
-        <Center>
-          <Text color={theme.colors.shared.white}>Sign out</Text>
-        </Center>
-      </Pressable>
     </DashboardLayout>
   )
 }

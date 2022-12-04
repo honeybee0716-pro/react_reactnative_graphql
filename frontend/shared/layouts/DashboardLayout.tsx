@@ -98,6 +98,17 @@ const GET_B_LOGO_TXT = gql`
   }
 `
 
+const GET_POINT = gql`
+  query getPoints {
+    getPoints {
+      message
+      status
+      points
+      color
+    }
+  }
+`
+
 const DashboardLayout: React.FC = ({children}) => {
 
   const [control, setControl] = React.useState('')
@@ -109,6 +120,10 @@ const DashboardLayout: React.FC = ({children}) => {
   const [businessId,setBusinessId]=React.useState(null)
   const { push } = useRouter()
   const [getBlogotxt,{loading:loadingLogo}] = useLazyQuery(GET_B_LOGO_TXT)
+  const [getPoint] = useLazyQuery(GET_POINT)
+  const [points,setPoints]=useState(0)
+  const [pcolor,setPcolor]=useState('#0000FF')
+
   const [userSubscriptionData, setUserSubscriptionData] = useRecoilState<any>(
     userSubscriptionDataState
   )
@@ -174,6 +189,32 @@ const DashboardLayout: React.FC = ({children}) => {
   
   },[businessId])
 
+  React.useEffect(()=>{
+    if(control==="customer")
+    {
+      getPoint({
+        onCompleted: async ({ getPoints }) => {
+          if (getPoints?.status === 'success') {
+            console.log(getPoints)
+            setPoints(getPoints.points)
+            setPcolor(getPoints.color)
+          }
+          if (getPoints?.message) {
+            
+            return
+          } else {
+            
+          }
+        },
+        onError: (error) => {
+          toast.show({
+            description: `${error.message}`
+          })
+        }
+      })
+    }
+  },[control])
+
   const getSideBarColor = (label: string) => {
     return document.location.href.toLowerCase().includes(label.toLowerCase())
       ? theme.colors.shared.white
@@ -192,6 +233,20 @@ const DashboardLayout: React.FC = ({children}) => {
         />
       ),
       onClick: () => push('/home'),
+      showOn: showOn.both,
+      position: sidebarItemPosition.top
+    },
+    {
+      label: 'Sharing',
+      icon: (
+        <Icon
+          size="5"
+          color={getSideBarColor('Sharing')}
+          as={Feather}
+          name="share"
+        />
+      ),
+      onClick: () => push('/sharing'),
       showOn: showOn.both,
       position: sidebarItemPosition.top
     },
@@ -379,7 +434,6 @@ const DashboardLayout: React.FC = ({children}) => {
     }
   ]
 
-
   return (
     <>
       <StatusBar
@@ -432,6 +486,15 @@ const DashboardLayout: React.FC = ({children}) => {
             </Box>
           </Center>
         </Hidden>
+        {control==="customer" && (
+        <div style={{height:"36px",width:"100px",borderRadius:"30px",
+        backgroundColor:pcolor,position:"absolute",
+        right:"0px",margin:"10px",marginTop:"20px",marginRight:"20px"}}>
+          <Center>
+          <Text style={{color:"white",fontSize:"18px",marginTop:"4px"}}>{points}</Text>
+          </Center>
+        </div>
+        )}
       </HStack>
       {/* Left Navbar */}
       <Hidden till="sm">

@@ -140,7 +140,9 @@ const permissions = shield(
       getCompanyLogo: isAuthenticated,
       getDetailsBusiness:isAuthenticated,
       getIntegrationSettings:isAuthenticated,
-      getBlogoTxt:any
+      getBlogoTxt:any,
+      getTiers:isAuthenticated,
+      getPoints:isAuthenticated
     },
     Mutation: {
       changePassword: isAuthenticated,
@@ -166,6 +168,7 @@ const permissions = shield(
       createTransaction: isAuthenticated,
       sendMessageToUsers: isAuthenticated,
       setIntegrationSettings: isAuthenticated,
+      addTiers:isAuthenticated
     },
   },
   {

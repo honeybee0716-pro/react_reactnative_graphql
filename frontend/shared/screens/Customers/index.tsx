@@ -1,9 +1,21 @@
-import { Box, Input, Button, Popover, FormControl, useToast,AlertDialog,Checkbox } from 'native-base'
-import React, { useState,useRef } from 'react'
+import {
+  Box,
+  Input,
+  Button,
+  Popover,
+  FormControl,
+  useToast,
+  AlertDialog,
+  Checkbox,
+  ScrollView
+} from 'native-base'
+import React, { useState, useRef } from 'react'
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
 import DashboardLayout from 'shared/layouts/DashboardLayout'
+import LoadingSpinner from '../../components/LoadingSpinner'
 import { theme } from 'shared/styles/theme'
-import { CSVLink } from "react-csv";
+import { CSVLink } from 'react-csv'
+
 const CREATE_CUSTOMER_WITH_BUSINESS = gql`
   mutation Mutation(
     $createCustomerWithBusinessInput: createCustomerWithBusinessInput
@@ -36,8 +48,8 @@ export default function Customer(props: any) {
 
   const onClose0 = () => setIsOpen0(false)
   const csvLink = useRef()
-  const [exportedData,setExportedData]=useState([])
-  const [selectedExportItems,setSelectedExportItems]=useState({})
+  const [exportedData, setExportedData] = useState([])
+  const [selectedExportItems, setSelectedExportItems] = useState({})
   const [cdata, setCdata] = useState([])
   const [fdata, setFdata] = useState([])
 
@@ -47,7 +59,9 @@ export default function Customer(props: any) {
 
   const toast = useToast()
 
-  const [createCB, { data, loading, error }] = useMutation(
+  const [loading, setLoading] = React.useState(true)
+
+  const [createCB, { data, error }] = useMutation(
     CREATE_CUSTOMER_WITH_BUSINESS,
     {
       refetchQueries: [{ query: GET_CUSTOMER_DETAILS_BUSINESS }]
@@ -61,6 +75,7 @@ export default function Customer(props: any) {
           console.log(getCustomerDetailsBusiness.dataBusiness)
           setCdata(getCustomerDetailsBusiness.dataBusiness)
           setFdata(getCustomerDetailsBusiness.dataBusiness)
+          setLoading(false)
         }
         if (getCustomerDetailsBusiness?.message) {
           toast.show({
@@ -138,209 +153,240 @@ export default function Customer(props: any) {
     })
   }
 
-  const exportProducts=()=>{
-    
-    let data=[]
-      Object.keys(selectedExportItems).map((item)=>{
-   
-  let index=fdata.findIndex((product)=>product.id==item)
-  
-  let {email,firstName
-    ,lastName,companyName}=fdata[index]
-         data.push(
-     {
-      email,firstName
-      ,lastName,companyName
-     }
-   )
+  const exportProducts = () => {
+    let data = []
+    Object.keys(selectedExportItems).map((item) => {
+      let index = fdata.findIndex((product) => product.id == item)
+
+      let { email, firstName, lastName, companyName } = fdata[index]
+      data.push({
+        email,
+        firstName,
+        lastName,
+        companyName
       })
-  
-  setExportedData(data)
-  
-  
-  console.log("exportedData",exportedData)
-  
+    })
+
+    setExportedData(data)
+
+    console.log('exportedData', exportedData)
+  }
+  React.useEffect(() => {
+    if (exportedData.length > 0) {
+      csvLink.current.link.click()
+      setExportedData([])
     }
-  React.useEffect(()=>{
-   if(exportedData.length>0) {
-    csvLink.current.link.click()
-    setExportedData([])
-    }
-  },[exportedData])
+  }, [exportedData])
   return (
-    <>
-      <DashboardLayout>
-        
-        <Box w="100%" >
-          <Box style={{flexDirection:"row",justifyContent:"flex-end"}}>
-                    <Button
-                      onPress={() => {
-                        setIsOpen0(!isOpen0)
-                      }}
-                      style={{marginTop:"10px",marginRight:"25px",
-                      marginBottom:"10px",width:"150px",height:"40px"}}
-                      color={theme.colors.shared.white}
-                      alignSelf="end"
-                    >
-                        create customer
-                    </Button>
-
-       <CSVLink
-         data={exportedData}
-         filename='customer.csv'
-         className='hidden'
-         ref={csvLink}
-         target='_blank'
-      />
-                    <Button
-                    
-                       colorScheme="success"
-                      onPress={exportProducts}
-                      style={{marginTop:"10px",marginRight:"25px",
-                      marginBottom:"10px",width:"150px",height:"40px"}}
-                      color={theme.colors.shared.white}
-                      alignSelf="end"
-                      
-                    >
-                        export
-                    </Button>
-                    <AlertDialog
-                      
-                      isOpen={isOpen0}
-                      
-                      onClose={onClose0}
-                    >
-                      <AlertDialog.Content>
-                        <AlertDialog.CloseButton />
-                        <AlertDialog.Header>Customer Details</AlertDialog.Header>
-                        <AlertDialog.Body>
-                        <FormControl>
-                  <FormControl.Label
-                    _text={{
-                      fontSize: 'xs',
-                      fontWeight: 'medium'
-                    }}
-                  >
-                    First Name
-                  </FormControl.Label>
-                  <input type="text"    onChange={(e) =>
-                      setItem0({ ...item0, firstName: e.target.value })
-                    }
-                    placeholder={item0.firstName} />
-                </FormControl>
-                <FormControl mt="3">
-                  <FormControl.Label
-                    _text={{
-                      fontSize: 'xs',
-                      fontWeight: 'medium'
-                    }}
-                  >
-                    Last Name
-                  </FormControl.Label>
-                  <input type="text"   onChange={(e) =>
-                      setItem0({ ...item0, lastName: e.target.value })
-                    }
-                    placeholder={item0.lastName}/>
-                </FormControl>
-                <FormControl mt="3">
-                  <FormControl.Label
-                    _text={{
-                      fontSize: 'xs',
-                      fontWeight: 'medium'
-                    }}
-                  >
-                    Email
-                  </FormControl.Label>
-                  <input type="text"  onChange={(e) =>
-                      setItem0({ ...item0, email: e.target.value })
-                    }
-                    placeholder={item0.email}
-                    />
-                </FormControl>
-                <FormControl mt="3">
-                  <FormControl.Label
-                    _text={{
-                      fontSize: 'xs',
-                      fontWeight: 'medium'
-                    }}
-                  >
-                    Company
-                  </FormControl.Label>
-                  <input type="text"    onChange={(e) =>
-                      setItem0({ ...item0, comapny: e.target.value })
-                    }
-                    placeholder={item0.comapny} />
-                </FormControl>
-                        </AlertDialog.Body>
-                        <AlertDialog.Footer>
-                          <Button.Group space={2}>
-                            <Button
-                              variant="unstyled"
-                              colorScheme="coolGray"
-                              onPress={onClose0}
-                              
-                            >
-                              Cancel
-                            </Button>
-
-                            <Button
-                              colorScheme="success"
-                              onPress={() => {
-                                handleS()
-                                onClose0()
-                              }}
-                            >
-                              Save
-                            </Button>
-                          </Button.Group>
-                        </AlertDialog.Footer>
-                      </AlertDialog.Content>
-                    </AlertDialog>
-                  </Box>
-        </Box>
-        <Box>
-          <input
-            type="text"
-            placeholder="search..."
-            onChange={(e) => setFilter(e.target.value)}
-            style={{height:"40px",margin:"5px",borderRadius:"25px",
-            borderWidth:"0px",borderColor:"none",paddingLeft:"10px",paddingRight:"10px"}}
-          />
-            <table style={{marginTop:"10px",padding:"10px"}}>
-  <tr style={{textAlign:"left", height:"50px"}}>
-    <th>Customer Email</th>
-    <th>First Name</th>
-    <th>Last Name</th>
-    <th>Customer Company</th>
-  </tr>
-          {fdata.map((i: any, k) => {
-            return (
-              <tr style={{backgroundColor:"white",height:"35px"}}>
-                  <td>{i.email}</td>
-                  <td>{i.firstName}</td>
-                  <td>{i.lastName}</td>
-                  <td>{i.companyName}</td>
-                {/* <td> */}
-                  <Checkbox
-                  style={{marginTop:"30%"}}
-                
-              value={selectedExportItems[i.id]||false}
-              isChecked={selectedExportItems[i.id]||false}
-              onChange={(value)=>{
-              let temp={...selectedExportItems}
-             value? temp={...selectedExportItems,[i.id]:value}:delete temp[i.id]
-              setSelectedExportItems({...temp})
+    <DashboardLayout>
+      {loading ? (
+        <div>
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <Box w="100%">
+          <Box style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <Button
+              onPress={() => {
+                setIsOpen0(!isOpen0)
               }}
-              accessibilityLabel="Export this lead"
+              style={{
+                marginTop: '10px',
+                marginRight: '25px',
+                marginBottom: '10px',
+                width: '150px',
+                height: '40px'
+              }}
+              color={theme.colors.shared.white}
+              alignSelf="end"
+            >
+              create customer
+            </Button>
+
+            <CSVLink
+              data={exportedData}
+              filename="customer.csv"
+              className="hidden"
+              ref={csvLink}
+              target="_blank"
             />
-            {/* </td> */}
-             
-              </tr>
-            )
-          })}
-          </table>
+            <Button
+              colorScheme="success"
+              onPress={exportProducts}
+              style={{
+                marginTop: '10px',
+                marginRight: '25px',
+                marginBottom: '10px',
+                width: '150px',
+                height: '40px'
+              }}
+              color={theme.colors.shared.white}
+              alignSelf="end"
+            >
+              export
+            </Button>
+            <AlertDialog isOpen={isOpen0} onClose={onClose0}>
+              <AlertDialog.Content>
+                <AlertDialog.CloseButton />
+                <AlertDialog.Header>Customer Details</AlertDialog.Header>
+                <AlertDialog.Body>
+                  <FormControl>
+                    <FormControl.Label
+                      _text={{
+                        fontSize: 'xs',
+                        fontWeight: 'medium'
+                      }}
+                    >
+                      First Name
+                    </FormControl.Label>
+                    <input
+                      type="text"
+                      onChange={(e) =>
+                        setItem0({ ...item0, firstName: e.target.value })
+                      }
+                      placeholder={item0.firstName}
+                    />
+                  </FormControl>
+                  <FormControl mt="3">
+                    <FormControl.Label
+                      _text={{
+                        fontSize: 'xs',
+                        fontWeight: 'medium'
+                      }}
+                    >
+                      Last Name
+                    </FormControl.Label>
+                    <input
+                      type="text"
+                      onChange={(e) =>
+                        setItem0({ ...item0, lastName: e.target.value })
+                      }
+                      placeholder={item0.lastName}
+                    />
+                  </FormControl>
+                  <FormControl mt="3">
+                    <FormControl.Label
+                      _text={{
+                        fontSize: 'xs',
+                        fontWeight: 'medium'
+                      }}
+                    >
+                      Email
+                    </FormControl.Label>
+                    <input
+                      type="text"
+                      onChange={(e) =>
+                        setItem0({ ...item0, email: e.target.value })
+                      }
+                      placeholder={item0.email}
+                    />
+                  </FormControl>
+                  <FormControl mt="3">
+                    <FormControl.Label
+                      _text={{
+                        fontSize: 'xs',
+                        fontWeight: 'medium'
+                      }}
+                    >
+                      Company
+                    </FormControl.Label>
+                    <input
+                      type="text"
+                      onChange={(e) =>
+                        setItem0({ ...item0, comapny: e.target.value })
+                      }
+                      placeholder={item0.comapny}
+                    />
+                  </FormControl>
+                </AlertDialog.Body>
+                <AlertDialog.Footer>
+                  <Button.Group space={2}>
+                    <Button
+                      variant="unstyled"
+                      colorScheme="coolGray"
+                      onPress={onClose0}
+                    >
+                      Cancel
+                    </Button>
+
+                    <Button
+                      colorScheme="success"
+                      onPress={() => {
+                        handleS()
+                        onClose0()
+                      }}
+                    >
+                      Save
+                    </Button>
+                  </Button.Group>
+                </AlertDialog.Footer>
+              </AlertDialog.Content>
+            </AlertDialog>
+          </Box>
+          <Box>
+            <input
+              type="text"
+              placeholder="search..."
+              onChange={(e) => setFilter(e.target.value)}
+              style={{
+                height: '40px',
+                margin: '5px',
+                borderRadius: '25px',
+                borderWidth: '0px',
+                borderColor: 'none',
+                paddingLeft: '10px',
+                paddingRight: '10px'
+              }}
+            />
+            <ScrollView style={{ overflow: 'scroll' }}>
+              <table
+                style={{
+                  marginTop: '10px',
+                  padding: '10px',
+                  width: '150%'
+                }}
+              >
+                <tr style={{ textAlign: 'left', height: '50px' }}>
+                  <th style={{ width: '250px' }}>Customer Email</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Company Name</th>
+                  <th>id</th>
+                  <th>password</th>
+                  <th>stripeCustomerID</th>
+                </tr>
+                {fdata.map((i: any, k) => {
+                  return (
+                    <tr style={{ backgroundColor: 'white', height: '35px' }}>
+                      <td>{i.email}</td>
+                      <td>{i.firstName}</td>
+                      <td>{i.lastName}</td>
+                      <td>{i.companyName}</td>
+                      <td>{i.id}</td>
+                      <td>{i.password}</td>
+                      <td>{i.stripeCustomerID}</td>
+                      <Checkbox
+                        style={{ marginTop: '30%' }}
+                        value={selectedExportItems[i.id] || false}
+                        isChecked={selectedExportItems[i.id] || false}
+                        onChange={(value) => {
+                          let temp = { ...selectedExportItems }
+                          value
+                            ? (temp = { ...selectedExportItems, [i.id]: value })
+                            : delete temp[i.id]
+                          setSelectedExportItems({ ...temp })
+                        }}
+                        accessibilityLabel="Export this lead"
+                      />
+                      {/* </td> */}
+                    </tr>
+                  )
+                })}
+              </table>
+            </ScrollView>
+          </Box>
         </Box>
-      </DashboardLayout>
-    </>
+      )}
+    </DashboardLayout>
   )
 }
