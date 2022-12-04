@@ -1,4 +1,5 @@
-import {ApolloError, gql} from 'apollo-server';
+import {gql} from 'apollo-server';
+
 import {prismaContext} from '../../prismaContext';
 
 export const getPointsSchema = gql`
@@ -15,52 +16,47 @@ export const getPointsSchema = gql`
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getPoints = async (
-  parent: null,
-  args: any,
-  context: any,
-  info: any,
-) => {
+const getPoints = async (parent: null, args: any, context: any, info: any) => {
   const {id: userID} = context.user;
 
- 
   const dataCustomer = await prismaContext.prisma.customer.findUnique({
     where: {
       id: userID,
     },
   });
 
-  let rcolor = '#0000FF'
+  let rcolor = '#0000FF';
 
   const alreadyTier = await prismaContext.prisma.tiers.findMany({
     select: {
-        id: true,
-        rangeStart:true,
-        rangeEnd:true,
-        color:true
-      },
-      where: {
-        businessId: dataCustomer?.businessId?dataCustomer.businessId:'',
-      },
+      id: true,
+      rangeStart: true,
+      rangeEnd: true,
+      color: true,
+    },
+    where: {
+      businessId: dataCustomer?.businessId ? dataCustomer.businessId : '',
+    },
   });
 
-  if(alreadyTier && dataCustomer?.points)
-  {
-    for(let i = 0;i<alreadyTier.length;i++)
-    {
-        if(dataCustomer?.points >= alreadyTier[i].rangeStart && dataCustomer?.points <= alreadyTier[i].rangeEnd)
-        {
-            rcolor=alreadyTier[i].color
-            break
-        }
+  if (alreadyTier && dataCustomer?.points) {
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < alreadyTier.length; i++) {
+      if (
+        dataCustomer?.points >= alreadyTier[i].rangeStart &&
+        dataCustomer?.points <= alreadyTier[i].rangeEnd
+      ) {
+        rcolor = alreadyTier[i].color;
+        break;
+      }
     }
   }
 
   return {
     message: 'customer points get successfully',
     status: 'success',
-    points:dataCustomer?.points,
-    color:rcolor
+    points: dataCustomer?.points ? dataCustomer?.points : 0,
+    color: rcolor,
   };
 };
 
