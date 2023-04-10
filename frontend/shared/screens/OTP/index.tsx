@@ -111,7 +111,7 @@ export default function OTP(props: any) {
           toast.show({
             description: confirmEmailValidationCode.message
           })
-
+          push('/home')
           return
         }
         toast.show({

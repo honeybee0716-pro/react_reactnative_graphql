@@ -80,8 +80,8 @@ export const filterCompanyName = atom({
   effects_UNSTABLE: [persistAtom]
 })
 
-export const filterJobTitle = atom({
-  key: 'filterJobTitle',
+export const filterEmail = atom({
+  key: 'filterEmail',
   default: '',
   effects_UNSTABLE: [persistAtom]
 })
